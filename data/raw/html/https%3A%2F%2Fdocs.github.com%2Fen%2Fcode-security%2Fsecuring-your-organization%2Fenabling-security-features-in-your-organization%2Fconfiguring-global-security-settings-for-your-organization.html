@@ -1,0 +1,117 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Secure your organization" href="/en/code-security/securing-your-organization">Secure your organization</a><span>/</span>
+</li>
+<li>
+<a title="Enable security features" href="/en/code-security/securing-your-organization/enabling-security-features-in-your-organization">Enable security features</a><span>/</span>
+</li>
+<li><a title="Configure global settings" href="/en/code-security/securing-your-organization/enabling-security-features-in-your-organization/configuring-global-security-settings-for-your-organization">Configure global settings</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Configuring global security settings for your organization</h1></div></div>
+<div>
+<div><p>Customize Advanced Security features to strengthen the security of your organization.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Organization owners, security managers, and organization members with the <strong>admin</strong> role</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-global-settings"><div><span>About global settings</span></div></a></li>
+<li><a href="#accessing-the-global-settings-page-for-your-organization"><div><span>Accessing the global settings page for your organization</span></div></a></li>
+<li><a href="#configuring-global-dependabot-settings"><div><span>Configuring global Dependabot settings</span></div></a></li>
+<li><a href="#configuring-global-code-scanning-settings"><div><span>Configuring global code scanning settings</span></div></a></li>
+<li><a href="#configuring-global-secret-scanning-settings"><div><span>Configuring global secret scanning settings</span></div></a></li>
+<li><a href="#creating-security-managers-for-your-organization"><div><span>Creating security managers for your organization</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-global-settings">About global settings</a></h2>
+<p>Alongside security configurations, which determine repository-level security settings, you should also configure global settings for your organization. Global settings apply to your entire organization, and can customize Advanced Security features based on your needs.</p>
+<h2><a href="#accessing-the-global-settings-page-for-your-organization">Accessing the global settings page for your organization</a></h2>
+<ol>
+<li>
+<p>In the upper-right corner of GitHub, select your profile photo, then click </p>
+</li>
+<li>
+<p>Under your organization name, click <strong>Settings</strong>.</p>
+<div><picture><source><img src="/assets/cb-49309/images/help/discussions/org-settings-global-nav-update.png" alt="Screenshot of the tabs in an organization's profile. The &quot;Settings&quot; tab is outlined in dark orange." width="1440" height="106"></source></picture></div>
+</li>
+<li>
+<p>In the "Security" section of the sidebar, select the <strong>Advanced Security</strong> dropdown menu, then click <strong>Global settings</strong>.</p>
+</li>
+</ol>
+<h2><a href="#configuring-global-dependabot-settings">Configuring global Dependabot settings</a></h2>
+<p>Dependabot consists of three different features that help you manage your dependencies:</p>
+<ul>
+<li>Dependabot alerts: Inform you about vulnerabilities in the dependencies that you use in your repository.</li>
+<li>Dependabot security updates: Automatically raise pull requests to update the dependencies you use that have known security vulnerabilities.</li>
+<li>Dependabot version updates: Automatically raise pull requests to keep your dependencies up-to-date.</li>
+</ul>
+<p>You can customize several global settings for Dependabot:</p>
+<ul>
+<li><a href="#creating-and-managing-dependabot-auto-triage-rules">Creating and managing Dependabot auto-triage rules</a></li>
+<li><a href="#grouping-dependabot-security-updates">Grouping Dependabot security updates</a></li>
+<li><a href="#enabling-dependency-updates-on-github-actions-runners">Enabling dependency updates on GitHub Actions runners</a></li>
+<li><a href="#granting-dependabot-access-to-private-repositories">Granting Dependabot access to private repositories</a></li>
+</ul>
+<h3><a href="#creating-and-managing-dependabot-auto-triage-rules">Creating and managing Dependabot auto-triage rules</a></h3>
+<p>You can create and manage Dependabot auto-triage rules to instruct Dependabot to automatically dismiss or snooze Dependabot alerts, and even open pull requests to attempt to resolve them. To configure Dependabot auto-triage rules, click </p>
+<ul>
+<li>You can create a new rule by clicking <strong>New rule</strong>, then entering the details for your rule and clicking <strong>Create rule</strong>.</li>
+<li>You can edit an existing rule by clicking <strong>Save rule</strong>.</li>
+</ul>
+<p>For more information on Dependabot auto-triage rules, see <a href="/en/code-security/dependabot/dependabot-auto-triage-rules/about-dependabot-auto-triage-rules">About Dependabot auto-triage rules</a> and <a href="/en/code-security/dependabot/dependabot-auto-triage-rules/customizing-auto-triage-rules-to-prioritize-dependabot-alerts#adding-custom-auto-triage-rules-to-your-organization">Customizing auto-triage rules to prioritize Dependabot alerts</a>.</p>
+<h3><a href="#grouping-dependabot-security-updates">Grouping Dependabot security updates</a></h3>
+<p>Dependabot can group all automatically suggested security updates into a single pull request. To enable grouped security updates, select <strong>Grouped security updates</strong>. For more information about grouped updates and customization options, see <a href="/en/code-security/dependabot/dependabot-security-updates/configuring-dependabot-security-updates#grouping-dependabot-security-updates-into-a-single-pull-request">Configuring Dependabot security updates</a>.</p>
+<h3><a href="#enabling-dependency-updates-on-github-actions-runners">Enabling dependency updates on GitHub Actions runners</a></h3>
+<p>If both Dependabot and GitHub Actions are enabled for existing repositories in your organization, GitHub will automatically use GitHub-hosted runners to run dependency updates for those repositories.</p>
+<p>Otherwise, to allow Dependabot to use GitHub Actions runners to perform dependency updates for all existing repositories in the organization, select "Dependabot on Actions runners".</p>
+<p>For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/about-dependabot-on-github-actions-runners">About Dependabot on GitHub Actions runners</a>.</p>
+<p>To have greater control over Dependabot's access to your private registries and internal network resources, you can configure Dependabot to run on GitHub Actions self-hosted runners. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/about-dependabot-on-github-actions-runners">About Dependabot on GitHub Actions runners</a> and <a href="/en/code-security/dependabot/maintain-dependencies/managing-dependabot-on-self-hosted-runners">Managing Dependabot on self-hosted runners</a>.</p>
+<h3><a href="#granting-dependabot-access-to-private-repositories">Granting Dependabot access to private repositories</a></h3>
+<p>To update private dependencies of repositories in your organization, Dependabot needs access to those repositories. To grant Dependabot access to the desired private repository, scroll down to the "Grant Dependabot access to private repositories" section, then use the search bar to find and select the desired repository. Be aware that granting Dependabot access to a repository means all users in your organization will have access to the contents of that repository through Dependabot updates. For more information about the supported ecosystems for private repositories, see <a href="/en/code-security/dependabot/ecosystems-supported-by-dependabot/supported-ecosystems-and-repositories">Dependabot supported ecosystems and repositories</a>.</p>
+<h2><a href="#configuring-global-code-scanning-settings">Configuring global code scanning settings</a></h2>
+<p>Code scanning is a feature that you use to analyze the code in a GitHub repository to find security vulnerabilities and coding errors. Any problems identified by the analysis are shown in your repository.</p>
+<p>You can customize several global settings for code scanning:</p>
+<ul>
+<li><a href="#enabling-copilot-autofix-for-codeql">Enabling Copilot Autofix for CodeQL</a></li>
+<li><a href="#enabling-copilot-autofix-for-third-party-code-scanning-tools">Enabling Copilot Autofix for third-party code scanning tools</a></li>
+<li><a href="#recommending-the-extended-query-suite-for-default-setup">Recommending the extended query suite for default setup</a></li>
+</ul>
+<h3><a href="#recommending-the-extended-query-suite-for-default-setup">Recommending the extended query suite for default setup</a></h3>
+<p>Code scanning offers specific groups of CodeQL queries, called CodeQL query suites, to run against your code. By default, the "Default" query suite is run. GitHub also offers the "Extended" query suite, which contains all the queries in the "Default" query suite, plus additional queries with lower precision and severity. To suggest the "Extended" query suite across your organization, select <strong>Recommend the extended query suite for repositories enabling default setup</strong>. For more information on built-in query suites for CodeQL default setup, see <a href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/codeql-query-suites">CodeQL query suites</a>.</p>
+<h3><a href="#enabling-copilot-autofix-for-codeql">Enabling Copilot Autofix for CodeQL</a></h3>
+<p>You can select <strong>Copilot Autofix</strong> to enable Copilot Autofix for all the repositories in your organization that use CodeQL default setup or CodeQL advanced setup. Copilot Autofix is an expansion of code scanning that suggests fixes for code scanning alerts. For more information, see <a href="/en/code-security/code-scanning/managing-code-scanning-alerts/responsible-use-autofix-code-scanning">Responsible use of Copilot Autofix for code scanning</a>.</p>
+<h3><a href="#enabling-copilot-autofix-for-third-party-code-scanning-tools">Enabling Copilot Autofix for third-party code scanning tools</a></h3>
+<div>
+<p>
+Third-party code scanning tool support is in public preview, and subject to change. Currently, the third-party tool ESLint is supported. For more information, see <a href="/en/code-security/code-scanning/managing-code-scanning-alerts/responsible-use-autofix-code-scanning">Responsible use of Copilot Autofix for code scanning</a>.</p>
+</div>
+<p>You can select <strong>Copilot Autofix for third-party tools</strong> to enable Copilot Autofix for all the repositories in your organization that use third-party tools. Copilot Autofix is an expansion of code scanning that suggests fixes for code scanning alerts.</p>
+<h2><a href="#configuring-global-secret-scanning-settings">Configuring global secret scanning settings</a></h2>
+<p>Secret scanning is a security tool that scans the entire Git history of repositories, as well as issues, pull requests, discussions, and wikis in those repositories, for leaked secrets that have been accidentally committed, such as tokens or private keys.</p>
+<p>You can customize several global settings for secret scanning:</p>
+<ul>
+<li><a href="#adding-a-resource-link-for-blocked-commits">Adding a resource link for blocked commits</a></li>
+<li><a href="#defining-custom-patterns">Defining custom patterns</a></li>
+</ul>
+<h3><a href="#adding-a-resource-link-for-blocked-commits">Adding a resource link for blocked commits</a></h3>
+<p>To provide context for developers when secret scanning blocks a commit, you can display a link with more information on why the commit was blocked. To include a link, select <strong>Add a resource link in the CLI and the web UI when a commit is blocked</strong>. In the text box, type the link to the desired resource, then click <strong>Save Link</strong>.</p>
+<h3><a href="#defining-custom-patterns">Defining custom patterns</a></h3>
+<p>You can define custom patterns for secret scanning with regular expressions. Custom patterns can identify secrets that are not detected by the default patterns supported by secret scanning. To create a custom pattern, click <strong>New pattern</strong>, then enter the details for your pattern and click <strong>Save and dry run</strong>. For more information on custom patterns, see <a href="/en/code-security/secret-scanning/using-advanced-secret-scanning-and-push-protection-features/custom-patterns/defining-custom-patterns-for-secret-scanning">Defining custom patterns for secret scanning</a>.</p>
+<h2><a href="#creating-security-managers-for-your-organization">Creating security managers for your organization</a></h2>
+<p>The security manager role grants members of your organization the ability to manage security settings and alerts across your organization. Security managers can view data for all repositories in your organization through security overview.</p>
+<p>To learn more about the security manager role, see <a href="/en/organizations/managing-peoples-access-to-your-organization-with-roles/managing-security-managers-in-your-organization">Managing security managers in your organization</a>.</p>
+<p>To assign the security manager role, see <a href="/en/organizations/managing-peoples-access-to-your-organization-with-roles/using-organization-roles#assigning-an-organization-role">Using organization roles</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

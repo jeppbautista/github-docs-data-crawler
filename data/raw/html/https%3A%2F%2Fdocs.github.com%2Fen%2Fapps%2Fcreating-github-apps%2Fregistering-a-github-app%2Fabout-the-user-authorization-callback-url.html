@@ -1,0 +1,26 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Apps" href="/en/apps">Apps</a><span>/</span>
+</li>
+<li>
+<a title="Creating GitHub Apps" href="/en/apps/creating-github-apps">Creating GitHub Apps</a><span>/</span>
+</li>
+<li>
+<a title="Registering a GitHub App" href="/en/apps/creating-github-apps/registering-a-github-app">Registering a GitHub App</a><span>/</span>
+</li>
+<li><a title="Callback URL" href="/en/apps/creating-github-apps/registering-a-github-app/about-the-user-authorization-callback-url">Callback URL</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>About the user authorization callback URL</h1></div></div>
+<div><div><p>You can specify a URL that users will be redirected to after they authorize a GitHub App.</p></div></div>
+<div><div><div>
+<p>When you register a GitHub App, you can specify a callback URL. When you use the web application flow to generate a user access token in order to act on behalf of a user, users will be redirected to the callback URL after they authorize the GitHub App.</p>
+<p>You can specify up to 10 callback URLs. If you specify multiple callback URLs, you can use the <code>redirect_uri</code> parameter when you prompt the user to authorize your GitHub App, to indicate which callback URL the user should be redirected to. If you do not specify <code>redirect_uri</code>, the first callback URL will be used. For more information about using the <code>redirect_uri</code> parameter, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app">Generating a user access token for a GitHub App</a>.</p>
+<p>The callback URL is different from the setup URL. Users are redirected to the setup URL after they install a GitHub App. Users are redirected to the callback URL when they authorize a GitHub App via the web application flow. For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/about-the-setup-url">About the setup URL</a>.</p>
+<p>For more information about generating user access tokens, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app">Generating a user access token for a GitHub App</a>. For more information about registering a GitHub App, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/creating-a-github-app">Registering a GitHub App</a>. For more information about modifying a GitHub App registration, see <a href="/en/apps/maintaining-github-apps/modifying-a-github-app">Modifying a GitHub App registration</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

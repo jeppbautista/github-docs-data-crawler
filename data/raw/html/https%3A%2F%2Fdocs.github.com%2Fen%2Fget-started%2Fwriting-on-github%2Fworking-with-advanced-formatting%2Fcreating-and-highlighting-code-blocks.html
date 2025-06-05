@@ -1,0 +1,83 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Get started" href="/en/get-started">Get started</a><span>/</span>
+</li>
+<li>
+<a title="Writing on GitHub" href="/en/get-started/writing-on-github">Writing on GitHub</a><span>/</span>
+</li>
+<li>
+<a title="Work with advanced formatting" href="/en/get-started/writing-on-github/working-with-advanced-formatting">Work with advanced formatting</a><span>/</span>
+</li>
+<li><a title="Create code blocks" href="/en/get-started/writing-on-github/working-with-advanced-formatting/creating-and-highlighting-code-blocks">Create code blocks</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Creating and highlighting code blocks</h1></div></div>
+<div>
+<div><p>Share samples of code with fenced code blocks and enabling syntax highlighting.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Markdown can be used in the GitHub web interface.</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#fenced-code-blocks"><div><span>Fenced code blocks</span></div></a></li>
+<li><a href="#syntax-highlighting"><div><span>Syntax highlighting</span></div></a></li>
+<li><a href="#creating-diagrams"><div><span>Creating diagrams</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#fenced-code-blocks">Fenced code blocks</a></h2>
+<p>You can create fenced code blocks by placing triple backticks <code>```</code> before and after the code block. We recommend placing a blank line before and after code blocks to make the raw formatting easier to read.</p>
+<pre><code>```
+function test() {
+  console.log("notice the blank line before this function?");
+}
+```
+</code></pre>
+<p><picture><source><img src="/assets/cb-30161/images/help/writing/fenced-code-block-rendered.png" alt='Screenshot of rendered GitHub Markdown showing the use of triple backticks to create code blocks. The block begins with "function test() {."' width="720" height="95"></source></picture></p>
+<div>
+<p>
+To preserve your formatting within a list, make sure to indent non-fenced code blocks by eight spaces.</p>
+</div>
+<p>To display triple backticks in a fenced code block, wrap them inside quadruple backticks.</p>
+<pre><code>````
+```
+Look! You can see my backticks.
+```
+````
+</code></pre>
+<p><picture><source><img src="/assets/cb-4725/images/help/writing/fenced-code-show-backticks-rendered.png" alt="Screenshot of rendered Markdown showing that when you write triple backticks between quadruple backticks they are visible in the rendered content." width="720" height="116"></source></picture></p>
+<p>If you are frequently editing code snippets and tables, you may benefit from enabling a fixed-width font in all comment fields on GitHub. For more information, see <a href="/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/about-writing-and-formatting-on-github#enabling-fixed-width-fonts-in-the-editor">About writing and formatting on GitHub</a>.</p>
+<h2><a href="#syntax-highlighting">Syntax highlighting</a></h2>
+<p>You can add an optional language identifier to enable syntax highlighting in your fenced code block.</p>
+<p>Syntax highlighting changes the color and style of source code to make it easier to read.</p>
+<p>For example, to syntax highlight Ruby code:</p>
+<pre><code>```ruby
+require 'redcarpet'
+markdown = Redcarpet.new("Hello World!")
+puts markdown.to_html
+```
+</code></pre>
+<p>This will display the code block with syntax highlighting:</p>
+<p><picture><source><img src="/assets/cb-19380/images/help/writing/code-block-syntax-highlighting-rendered.png" alt="Screenshot of three lines of Ruby code as displayed on GitHub. Elements of the code display in purple, blue, and red type for scannability." width="720" height="119"></source></picture></p>
+<div>
+<p>
+When you create a fenced code block that you also want to have syntax highlighting on a GitHub Pages site, use lower-case language identifiers. For more information, see <a href="/en/pages/setting-up-a-github-pages-site-with-jekyll/about-github-pages-and-jekyll#syntax-highlighting">About GitHub Pages and Jekyll</a>.</p>
+</div>
+<p>We use <a href="https://github.com/github-linguist/linguist">Linguist</a> to perform language detection and to select <a href="https://github.com/github-linguist/linguist/blob/main/vendor/README.md">third-party grammars</a> for syntax highlighting. You can find out which keywords are valid in <a href="https://github.com/github-linguist/linguist/blob/main/lib/linguist/languages.yml">the languages YAML file</a>.</p>
+<h2><a href="#creating-diagrams">Creating diagrams</a></h2>
+<p>You can also use code blocks to create diagrams in Markdown. GitHub supports Mermaid, GeoJSON, TopoJSON, and ASCII STL syntax. For more information, see <a href="/en/get-started/writing-on-github/working-with-advanced-formatting/creating-diagrams">Creating diagrams</a>.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="https://github.github.com/gfm/">GitHub Flavored Markdown Spec</a></li>
+<li><a href="/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax">Basic writing and formatting syntax</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

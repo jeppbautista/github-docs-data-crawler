@@ -1,0 +1,286 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Setting up your project" href="/en/codespaces/setting-up-your-project-for-codespaces">Setting up your project</a><span>/</span>
+</li>
+<li>
+<a title="Adding a dev container configuration" href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration">Adding a dev container configuration</a><span>/</span>
+</li>
+<li><a title="Setting up a PHP project" href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/setting-up-your-php-project-for-codespaces">Setting up a PHP project</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Setting up a PHP project for GitHub Codespaces</h1></div></div>
+<div><div><p>Get started with a PHP project in GitHub Codespaces by creating a custom dev container configuration.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#step-1-open-the-project-in-a-codespace"><div><span>Step 1: Open the project in a codespace</span></div></a></li>
+<li><a href="#step-2-add-a-dev-container-configuration"><div><span>Step 2: Add a dev container configuration</span></div></a></li>
+<li><a href="#step-3-modify-your-devcontainerjson-file"><div><span>Step 3: Modify your devcontainer.json file</span></div></a></li>
+<li><a href="#step-4-run-your-application"><div><span>Step 4: Run your application</span></div></a></li>
+<li><a href="#step-5-commit-your-changes"><div><span>Step 5: Commit your changes</span></div></a></li>
+<li><a href="#next-steps"><div><span>Next steps</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>This guide shows you how to set up an example PHP project in GitHub Codespaces using the Visual Studio Code web client. It will step you through the process of opening the project in a codespace, and adding and modifying a predefined dev container configuration.</p>
+<p>After you complete this tutorial, you'll be able to add a dev container configuration to your own repository, using either the VS Code web client or the VS Code desktop application.</p>
+<p>For more information about dev containers, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers">Introduction to dev containers</a>.</p>
+<h2><a href="#step-1-open-the-project-in-a-codespace">Step 1: Open the project in a codespace</a></h2>
+<ol>
+<li>
+<p>Sign in to GitHub.com, if you haven't already done so.</p>
+</li>
+<li>
+<p>Go to <a href="https://github.com/microsoft/vscode-remote-try-php">https://github.com/microsoft/vscode-remote-try-php</a>.</p>
+</li>
+<li>
+<p>Click <strong>Use this template</strong>, then click <strong>Open in a codespace</strong>.</p>
+<div><picture><source><img src="/assets/cb-76823/images/help/repository/use-this-template-button.png" alt='Screenshot of the "Use this template" button and the dropdown menu expanded to show the "Open in a codespace" option.' width="400" height="169"></source></picture></div>
+</li>
+</ol>
+<p>When you create a codespace, your project is created on a remote virtual machine that is dedicated to you. By default, the container for your codespace has many languages and runtimes including PHP. It also includes a common set of tools, such as Composer, XDebug, Apache, pecl, nvm, git, lynx, and curl.</p>
+<p>You can customize your codespace by adjusting the amount of vCPUs and RAM, adding dotfiles to personalize your environment, or by modifying the tools and scripts installed. For more information, see <a href="/en/codespaces/customizing-your-codespace">Customizing your codespace</a>.</p>
+<p>GitHub Codespaces uses a file called <code>devcontainer.json</code> to configure the development container that you use when you work in a codespace. Each repository can contain one or more <code>devcontainer.json</code> files, to give you exactly the development environment you need to work on your code in a codespace.</p>
+<p>On launch, GitHub Codespaces uses a <code>devcontainer.json</code> file, and any dependent files that make up the dev container configuration, to install tools and runtimes, and perform other setup tasks that the project requires. For more information, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers">Introduction to dev containers</a>.</p>
+<h2><a href="#step-2-add-a-dev-container-configuration">Step 2: Add a dev container configuration</a></h2>
+<p>The default development container, or "dev container," for GitHub Codespaces will allow you to work successfully on a PHP project like <a href="https://github.com/microsoft/vscode-remote-try-php">vscode-remote-try-php</a>. However, we recommend that you configure your own dev container to include all of the tools and scripts your project needs. This will ensure a fully reproducible environment for all GitHub Codespaces users in your repository.</p>
+<p>To set up your repository to use a custom dev container, you will need to create one or more <code>devcontainer.json</code> files. You can either add these from a predefined configuration template, in Visual Studio Code, or you can write your own. For more information on dev container configurations, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers">Introduction to dev containers</a>.</p>
+<ol>
+<li>
+<p>Access the Visual Studio Code Command Palette (<kbd>Shift</kbd>+<kbd>Command</kbd>+<kbd>P</kbd> / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>), then start typing "add dev". Click <strong>Codespaces: Add Dev Container Configuration Files</strong>.</p>
+<div><picture><source><img src="/assets/cb-12613/images/help/codespaces/add-prebuilt-container-command.png" alt='Screenshot of the Command Palette, with "add dev" entered and "Codespaces: Add Dev Container Configuration Files" listed.' width="624" height="96"></source></picture></div>
+</li>
+<li>
+<p>Click <strong>Create a new configuration</strong>.</p>
+</li>
+<li>
+<p>In this example, the template repository from which you created the codespace already contains a dev container configuration, so a message is displayed telling you that the configuration file already exists. We're going to overwrite the existing configuration file, so click <strong>Continue</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Show All Definitions</strong>.</p>
+<div><picture><source><img src="/assets/cb-38549/images/help/codespaces/show-all-definitions.png" alt='Screenshot of the "Add Dev Container Configuration Files" dropdown, showing various options, including "Show All Definitions."' width="509" height="184"></source></picture></div>
+</li>
+<li>
+<p>Type <code>php</code> and click <strong>PHP</strong>. Other options are available if your project uses particular tools. For example, <strong>PHP &amp; MariaDB</strong>.</p>
+</li>
+<li>
+<p>Choose the version of PHP you want to use for your project. In this case, select the version marked "(default)."</p>
+</li>
+<li>
+<p>A list of additional features you can install is displayed. We'll install GitHub CLI, a tool for interacting with GitHub from the command line. To install this tool, type <code>github</code>, select <code>GitHub CLI</code>, then click <strong>OK</strong>, then select <strong>Keep defaults</strong>.</p>
+</li>
+<li>
+<p>A message is displayed telling you that the dev container configuration file already exists. Click <strong>Overwrite</strong>.</p>
+<p>A <code>devcontainer.json</code> file is created and is opened in the editor.</p>
+</li>
+</ol>
+<h3><a href="#details-of-your-custom-dev-container-configuration">Details of your custom dev container configuration</a></h3>
+<p>If you look in the Visual Studio Code Explorer you'll see that a <code>.devcontainer</code> directory has been added to the root of your project's repository containing the <code>devcontainer.json</code> file. This is the main configuration file for codespaces created from this repository.</p>
+<h4><a href="#devcontainerjson">devcontainer.json</a></h4>
+<p>The <code>devcontainer.json</code> file that you have added will contain values for the <code>name</code>, <code>image</code>, and <code>features</code> properties. Some additional properties that you may find useful are included but are commented out.</p>
+<p>The file will look similar to this, depending on which image you chose:</p>
+<pre><code><span>// For format details, see https://aka.ms/devcontainer.json. For config options, see the</span>
+<span>// README at: https://github.com/devcontainers/templates/tree/main/src/php</span>
+<span>{</span>
+  <span>"name"</span><span>:</span> <span>"PHP"</span><span>,</span>
+  <span>// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile</span>
+  <span>"image"</span><span>:</span> <span>"mcr.microsoft.com/devcontainers/php:1-8.2-bullseye"</span><span>,</span>
+
+  <span>// Features to add to the dev container. More info: https://containers.dev/features.</span>
+  <span>// "features": {},</span>
+
+  <span>// Configure tool-specific properties.</span>
+  <span>// "customizations": {},</span>
+
+  <span>// Use 'forwardPorts' to make a list of ports inside the container available locally.</span>
+  <span>"forwardPorts"</span><span>:</span> <span>[</span>
+    <span>8080</span>
+  <span>]</span><span>,</span>
+  <span>"features"</span><span>:</span> <span>{</span>
+    <span>"ghcr.io/devcontainers/features/github-cli:1"</span><span>:</span> <span>{</span><span>}</span>
+  <span>}</span>
+
+  <span>// Use 'postCreateCommand' to run commands after the container is created.</span>
+  <span>// "postCreateCommand": "sudo chmod a+x \"$(pwd)\" &amp;&amp; sudo rm -rf /var/www/html &amp;&amp; sudo ln -s \"$(pwd)\" /var/www/html"</span>
+
+  <span>// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.</span>
+  <span>// "remoteUser": "root"</span>
+<span>}</span>
+</code></pre>
+<ul>
+<li>
+<strong>name:</strong> You can name your dev container anything you want. A default value is supplied.</li>
+<li>
+<strong>image:</strong> The name of an image in a container registry (<a href="https://hub.docker.com/">DockerHub</a>, <a href="/en/packages/learn-github-packages/introduction-to-github-packages">GitHub Container registry</a>, or <a href="https://azure.microsoft.com/services/container-registry/">Azure Container Registry</a>) that will be used to create the dev container for the codespace.</li>
+<li>
+<strong>features:</strong> A list of one or more objects, each of which references one of the available dev container features. Features are self-contained, shareable units of installation code and development container configuration. They provide an easy way to add more tooling, runtime, or library features to your development container. You can add features either within VS Code or in the <code>devcontainer.json</code> editor on GitHub. For more information, click either the <strong>Visual Studio Code</strong> or <strong>Web browser</strong> tab in <a href="/en/codespaces/setting-up-your-project-for-codespaces/configuring-dev-containers/adding-features-to-a-devcontainer-file?tool=webui">Adding features to a devcontainer.json file</a>.</li>
+<li>
+<strong>forwardPorts:</strong> Any ports listed here will be forwarded automatically. For more information, see <a href="/en/codespaces/developing-in-codespaces/forwarding-ports-in-your-codespace">Forwarding ports in your codespace</a>.</li>
+<li>
+<strong>postCreateCommand:</strong> Use this property to run commands after your codespace is created. This can be formatted as a string (as above), an array, or an object. For more information, see the <a href="https://containers.dev/implementors/json_reference/#lifecycle-scripts">dev containers specification</a> on the Development Containers website.</li>
+<li>
+<strong>customizations:</strong> This property allows you to customize a specific tool or service when it is used for working in a codespace. For example, you can configure specific settings and extensions for VS Code. For more information, see <a href="https://containers.dev/supporting">Supporting tools and services</a> on the Development Containers website.</li>
+<li>
+<strong>remoteUser:</strong> By default, you’re running as the vscode user, but you can optionally set this to root.
+For a complete list of available properties, see the <a href="https://containers.dev/implementors/json_reference/">dev containers specification</a> on the Development Containers website.</li>
+</ul>
+<h4><a href="#additional-dev-container-configuration-files">Additional dev container configuration files</a></h4>
+<p>If you are familiar with Docker, you may want to use a Dockerfile, or Docker Compose, to configure your codespace environment, in addition to the <code>devcontainer.json</code> file. You can do this by adding your <code>Dockerfile</code> or <code>docker-compose.yml</code> files alongside the <code>devcontainer.json</code> file. For more information, see <a href="https://containers.dev/guide/dockerfile">Using Images, Dockerfiles, and Docker Compose</a> on the Development Containers website.</p>
+<h2><a href="#step-3-modify-your-devcontainerjson-file">Step 3: Modify your devcontainer.json file</a></h2>
+<p>With your dev container configuration added and a basic understanding of what everything does, you can now make changes to customize your environment further. In this example, you'll add properties that will:</p>
+<ul>
+<li>Run <code>composer install</code>, after the dev container is created, to install the dependencies listed in a <code>composer.json</code> file.</li>
+<li>Automatically install a VS Code extension in this codespace.</li>
+</ul>
+<ol>
+<li>
+<p>In the <code>devcontainer.json</code> file, delete the two commented-out lines about features:</p>
+<pre><code><span>// Features to add to the dev container. More info: https://containers.dev/features.</span>
+<span>// "features": {},</span>
+</code></pre>
+</li>
+<li>
+<p>Edit the <code>customizations</code> property as follows to install the "Composer" extension.</p>
+<div>
+<header><span>JSONC</span><pre>// Configure tool-specific properties.
+"customizations": {
+  // Configure properties specific to VS Code.
+  "vscode": {
+    "extensions": [
+      "ikappas.composer"
+    ]
+  }
+},
+</pre></header><pre><code><span>// Configure tool-specific properties.</span>
+<span>"customizations"</span><span>:</span> <span>{</span>
+  <span>// Configure properties specific to VS Code.</span>
+  <span>"vscode"</span><span>:</span> <span>{</span>
+    <span>"extensions"</span><span>:</span> <span>[</span>
+      <span>"ikappas.composer"</span>
+    <span>]</span>
+  <span>}</span>
+<span>}</span><span>,</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Add a comma after the <code>features</code> property.</p>
+<pre><code><span>"features"</span><span>:</span> <span>{</span>
+  <span>"ghcr.io/devcontainers/features/github-cli:1"</span><span>:</span> <span>{</span><span>}</span>
+<span>}</span><span>,</span>
+</code></pre>
+</li>
+<li>
+<p>Uncomment the <code>postCreateCommand</code> property and add some text to the end to run the command <code>composer install</code> if a <code>composer.json</code> file exists. (The existing commands are just some setup procedures that allow Apache to access the files in the workspace.)</p>
+<div>
+<header><span>JSONC</span><pre>// Use 'postCreateCommand' to run commands after the container is created.
+"postCreateCommand": "sudo chmod a+x \"$(pwd)\" &amp;&amp; sudo rm -rf /var/www/html &amp;&amp; sudo ln -s \"$(pwd)\" /var/www/html; if [ -f composer.json ];then composer install;fi"
+</pre></header><pre><code><span>// Use 'postCreateCommand' to run commands after the container is created.</span>
+<span>"postCreateCommand"</span><span>:</span> <span>"sudo chmod a+x \"$(pwd)\" &amp;&amp; sudo rm -rf /var/www/html &amp;&amp; sudo ln -s \"$(pwd)\" /var/www/html; if [ -f composer.json ];then composer install;fi"</span>
+</code></pre>
+</div>
+</li>
+</ol>
+<p>The <code>devcontainer.json</code> file should now look similar to this, depending on which image you chose:</p>
+<pre><code><span>// For format details, see https://aka.ms/devcontainer.json. For config options, see the</span>
+<span>// README at: https://github.com/devcontainers/templates/tree/main/src/php</span>
+<span>{</span>
+  <span>"name"</span><span>:</span> <span>"PHP"</span><span>,</span>
+  <span>// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile</span>
+  <span>"image"</span><span>:</span> <span>"mcr.microsoft.com/devcontainers/php:1-8.2-bullseye"</span><span>,</span>
+
+  <span>// Configure tool-specific properties.</span>
+  <span>"customizations"</span><span>:</span> <span>{</span>
+    <span>// Configure properties specific to VS Code.</span>
+    <span>"vscode"</span><span>:</span> <span>{</span>
+      <span>"extensions"</span><span>:</span> <span>[</span>
+        <span>"ikappas.composer"</span>
+      <span>]</span>
+    <span>}</span>
+  <span>}</span><span>,</span>
+
+  <span>// Use 'forwardPorts' to make a list of ports inside the container available locally.</span>
+  <span>"forwardPorts"</span><span>:</span> <span>[</span>
+    <span>8080</span>
+  <span>]</span><span>,</span>
+  <span>"features"</span><span>:</span> <span>{</span>
+    <span>"ghcr.io/devcontainers/features/github-cli:1"</span><span>:</span> <span>{</span><span>}</span>
+  <span>}</span><span>,</span>
+
+  <span>// Use 'postCreateCommand' to run commands after the container is created.</span>
+  <span>"postCreateCommand"</span><span>:</span> <span>"sudo chmod a+x \"$(pwd)\" &amp;&amp; sudo rm -rf /var/www/html &amp;&amp; sudo ln -s \"$(pwd)\" /var/www/html; if [ -f composer.json ];then composer install;fi"</span>
+
+  <span>// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.</span>
+  <span>// "remoteUser": "root"</span>
+<span>}</span>
+</code></pre>
+<ol>
+<li>
+<p>Save your changes.</p>
+</li>
+<li>
+<p>Access the VS Code Command Palette (<kbd>Shift</kbd>+<kbd>Command</kbd>+<kbd>P</kbd> / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>), then start typing "rebuild". Click <strong>Codespaces: Rebuild Container</strong>.</p>
+<div><picture><source><img src="/assets/cb-22518/images/help/codespaces/codespaces-rebuild.png" alt='Screenshot of the Command Palette with a search for "rebuild container" and the "Codespace: Rebuild Container" option highlighted in the dropdown.' width="720" height="106"></source></picture></div>
+<div>
+<p>
+You may occasionally want to perform a full rebuild to clear your cache and rebuild your container with fresh images. For more information, see <a href="/en/codespaces/developing-in-codespaces/rebuilding-the-container-in-a-codespace#about-rebuilding-a-container">Rebuilding the container in a codespace</a>.
+Rebuilding inside your codespace ensures your changes work as expected before you commit the changes to the repository. If something does result in a failure, you’ll be placed in a codespace with a recovery container that you can rebuild from to keep adjusting your container.</p>
+</div>
+<p>After the dev container is rebuilt, and your codespace becomes available again, the <code>postCreateCommand</code> will have been run, installing any Composer dependencies, and the "Composer" extension will be available for use.</p>
+</li>
+</ol>
+<h2><a href="#step-4-run-your-application">Step 4: Run your application</a></h2>
+<p>In the previous section, you modified the <code>postCreateCommand</code> to install a set of packages via the <code>composer install</code> command. With the dependencies now installed, you can run the application. However, in this scenario we first need to change the ports that Apache will listen on. We're forwarding port 8080, so we'll instruct Apache to use this port rather than the default port 80.</p>
+<ol>
+<li>
+<p>In the Terminal of your codespace, enter:</p>
+<div>
+<header><span>Shell</span><pre>sudo sed -i 's/Listen 80$//' /etc/apache2/ports.conf
+</pre></header><pre><code>sudo sed -i 's/Listen 80$//' /etc/apache2/ports.conf
+</code></pre>
+</div>
+</li>
+<li>
+<p>Then, enter:</p>
+<div>
+<header><span>Shell</span><pre>sudo sed -i 's/&lt;VirtualHost \*:80&gt;/ServerName 127.0.0.1\n&lt;VirtualHost \*:8080&gt;/' /etc/apache2/sites-enabled/000-default.conf
+</pre></header><pre><code>sudo sed -i 's/&lt;VirtualHost \*:80&gt;/ServerName 127.0.0.1\n&lt;VirtualHost \*:8080&gt;/' /etc/apache2/sites-enabled/000-default.conf
+</code></pre>
+</div>
+</li>
+<li>
+<p>Then start Apache using its control tool:</p>
+<div>
+<header><span>Shell</span><pre>apache2ctl start
+</pre></header><pre><code>apache2ctl start
+</code></pre>
+</div>
+</li>
+<li>
+<p>When your project starts, you should see a "toast" notification message at the bottom right corner of VS Code, telling you that your application is available on a forwarded port. To view the running application, click <strong>Open in Browser</strong>.</p>
+</li>
+</ol>
+<h2><a href="#step-5-commit-your-changes">Step 5: Commit your changes</a></h2>
+<p>When you've made changes to your codespace, either new code or configuration changes, you'll want to commit your changes. Committing configuration changes to your repository ensures that anyone else who creates a codespace from this repository has the same configuration. Any customization you do, such as adding VS Code extensions, will be available to all users.</p>
+<p>For this tutorial, you created a codespace from a template repository, so the code in your codespace is not yet stored in a repository. You can create a repository by publishing the current branch to GitHub.</p>
+<p>For information, see <a href="/en/codespaces/developing-in-codespaces/using-source-control-in-your-codespace?tool=webui#publishing-a-codespace-created-from-a-template">Using source control in your codespace</a>.</p>
+<h2><a href="#next-steps">Next steps</a></h2>
+<p>You should now be able to add a custom dev container configuration to your own PHP project.</p>
+<p>Here are some additional resources for more advanced scenarios.</p>
+<ul>
+<li><a href="/en/codespaces/setting-up-your-project-for-codespaces/configuring-dev-containers/adding-features-to-a-devcontainer-file?tool=webui">Adding features to a devcontainer.json file</a></li>
+<li><a href="/en/codespaces/managing-your-codespaces/managing-your-account-specific-secrets-for-github-codespaces">Managing your account-specific secrets for GitHub Codespaces</a></li>
+<li><a href="/en/codespaces/managing-your-codespaces/managing-gpg-verification-for-github-codespaces">Managing GPG verification for GitHub Codespaces</a></li>
+<li><a href="/en/codespaces/developing-in-codespaces/forwarding-ports-in-your-codespace">Forwarding ports in your codespace</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

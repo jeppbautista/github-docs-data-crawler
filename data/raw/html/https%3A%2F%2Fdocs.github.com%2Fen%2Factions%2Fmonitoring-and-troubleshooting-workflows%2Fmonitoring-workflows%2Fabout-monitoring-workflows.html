@@ -1,0 +1,50 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Monitor &amp; troubleshoot" href="/en/actions/monitoring-and-troubleshooting-workflows">Monitor &amp; troubleshoot</a><span>/</span>
+</li>
+<li>
+<a title="Monitor" href="/en/actions/monitoring-and-troubleshooting-workflows/monitoring-workflows">Monitor</a><span>/</span>
+</li>
+<li><a title="About monitoring" href="/en/actions/monitoring-and-troubleshooting-workflows/monitoring-workflows/about-monitoring-workflows">About monitoring</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>About monitoring workflows</h1></div></div>
+<div><div><p>You can use the tools in GitHub Actions to monitor your workflows, metrics, and self-hosted runners.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#monitoring-your-workflows"><div><span>Monitoring your workflows</span></div></a></li>
+<li><a href="#monitoring-github-actions-metrics"><div><span>Monitoring GitHub Actions metrics</span></div></a></li>
+<li><a href="#monitoring-self-hosted-runners"><div><span>Monitoring self-hosted runners</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#monitoring-your-workflows">Monitoring your workflows</a></h2>
+<h3><a href="#monitoring-your-current-jobs-in-your-organization-or-enterprise">Monitoring your current jobs in your organization or enterprise</a></h3>
+<p>To identify any constraints with concurrency or queuing, you can check how many jobs are currently being processed on the GitHub-hosted runners in your organization or enterprise. For more information, see <a href="/en/actions/using-github-hosted-runners/monitoring-your-current-jobs">Monitoring your current jobs</a>.</p>
+<h3><a href="#using-the-visualization-graph">Using the visualization graph</a></h3>
+<p>Every workflow run generates a real-time graph that illustrates the run progress. You can use this graph to monitor and debug workflows. For example:</p>
+<p><picture><source><img src="/assets/cb-63715/images/help/actions/workflow-graph.png" alt="Screenshot of the visualization graph of a workflow run." width="720" height="436"></source></picture></p>
+<p>For more information, see <a href="/en/actions/monitoring-and-troubleshooting-workflows/using-the-visualization-graph">Using the visualization graph</a>.</p>
+<h3><a href="#adding-a-workflow-status-badge">Adding a workflow status badge</a></h3>
+<p>A status badge shows whether a workflow is currently failing or passing. A common place to add a status badge is in the <code>README.md</code> file of your repository, but you can add it to any web page you'd like. By default, badges display the status of your default branch. If there are no workflow runs on your default branch, it will display the status of the most recent run across all branches. You can display the status of a workflow run for a specific branch or event using the <code>branch</code> and <code>event</code> query parameters in the URL.</p>
+<p><picture><source><img src="/assets/cb-16218/images/help/repository/actions-workflow-status-badge.png" alt='Screenshot of a workflow status badge. From right to left it shows: the GitHub logo, workflow name ("GitHub Actions Demo"), and status ("passing").' width="407" height="53"></source></picture></p>
+<p>For more information, see <a href="/en/actions/monitoring-and-troubleshooting-workflows/adding-a-workflow-status-badge">Adding a workflow status badge</a>.</p>
+<h3><a href="#viewing-job-execution-time">Viewing job execution time</a></h3>
+<p>To identify how long a job took to run, you can view its execution time. For more information, see <a href="/en/actions/monitoring-and-troubleshooting-workflows/viewing-job-execution-time">Viewing job execution time</a>.</p>
+<h3><a href="#viewing-workflow-run-history">Viewing workflow run history</a></h3>
+<p>You can view the status of each job and step in a workflow. For more information, see <a href="/en/actions/monitoring-and-troubleshooting-workflows/viewing-workflow-run-history">Viewing workflow run history</a>.</p>
+<h2><a href="#monitoring-github-actions-metrics">Monitoring GitHub Actions metrics</a></h2>
+<p>To analyze the efficiency and reliability of your workflows using metrics, see <a href="/en/actions/administering-github-actions/viewing-github-actions-metrics">Viewing GitHub Actions metrics</a>.</p>
+<h2><a href="#monitoring-self-hosted-runners">Monitoring self-hosted runners</a></h2>
+<p>If you use self-hosted runners, you can view their activity and diagnose common issues.</p>
+<p>For more information, see <a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners/monitoring-and-troubleshooting-self-hosted-runners">Monitoring and troubleshooting self-hosted runners</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

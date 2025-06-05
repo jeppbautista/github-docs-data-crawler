@@ -1,0 +1,621 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Code scanning" href="/en/code-security/code-scanning">Code scanning</a><span>/</span>
+</li>
+<li>
+<a title="Create advanced setup" href="/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning">Create advanced setup</a><span>/</span>
+</li>
+<li><a title="CodeQL for compiled languages" href="/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/codeql-code-scanning-for-compiled-languages">CodeQL for compiled languages</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>CodeQL code scanning for compiled languages</h1></div></div>
+<div>
+<div><p>Understand how CodeQL analyzes compiled languages, the build options available, and learn how you can customize the database generation process if you need to.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Users with <strong>write</strong> access if <a href="/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/configuring-advanced-setup-for-code-scanning">advanced setup</a> is already enabled</p></div></div>
+<div><div>
+<p>Code scanning is available for the following repository types:</p>
+<ul>
+<li>Public repositories on GitHub.com</li>
+<li>Organization-owned repositories on GitHub Team with <a href="/en/get-started/learning-about-github/about-github-advanced-security">GitHub Code Security</a> enabled</li>
+</ul>
+</div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-the-codeql-analysis-workflow-and-compiled-languages"><div><span>About the CodeQL analysis workflow and compiled languages</span></div></a></li>
+<li><a href="#codeql-build-modes"><div><span>CodeQL build modes</span></div></a></li>
+<li><a href="#about-dependency-caching-for-codeql"><div><span>About dependency caching for CodeQL</span></div></a></li>
+<li><a href="#about-build-mode-none-for-codeql"><div><span>About build mode None for CodeQL</span></div></a></li>
+<li><a href="#about-autobuild-for-codeql"><div><span>About Autobuild for CodeQL</span></div></a></li>
+<li><a href="#about-specifying-build-steps-manually"><div><span>About specifying build steps manually</span></div></a></li>
+<li><a href="#autobuild-steps-for-compiled-languages"><div><span>Autobuild steps for compiled languages</span></div></a></li>
+<li><a href="#building-cc"><div><span>Building C/C++</span></div></a></li>
+<li><a href="#building-c"><div><span>Building C#</span></div></a></li>
+<li><a href="#building-go"><div><span>Building Go</span></div></a></li>
+<li><a href="#building-java-and-kotlin"><div><span>Building Java and Kotlin</span></div></a></li>
+<li><a href="#building-swift"><div><span>Building Swift</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-the-codeql-analysis-workflow-and-compiled-languages">About the CodeQL analysis workflow and compiled languages</a></h2>
+<p>Code scanning works by running queries against one or more CodeQL databases. Each database contains a representation of the code in a single language in your repository. For the compiled languages C/C++, C#, Go, Java, Kotlin, and Swift, the process of populating this database often involves building the code and extracting data.</p>
+<p>When you enable code scanning, both default and advanced setup generate a CodeQL database for analysis using the simplest method available. For C# and Java, the CodeQL database is generated directly from the codebase without requiring a build (<code>none</code> build mode). For other compiled languages, CodeQL builds the codebase using the <code>autobuild</code> build mode. Alternatively, you can use the <code>manual</code> build mode to specify explicit build commands to analyze only the files that are built by these custom commands.</p>
+<p>You can use dependency caching with CodeQL to store dependencies as a GitHub Actions cache instead of downloading them from registries. For more information, see <a href="#about-dependency-caching-for-codeql">About dependency caching for CodeQL</a> later in this article.</p>
+<h2><a href="#codeql-build-modes">CodeQL build modes</a></h2>
+<p>The CodeQL action supports three different build modes for compiled languages:</p>
+<ul>
+<li>
+<code>none</code> - the CodeQL database is created directly from the codebase without building the codebase (supported for all interpreted languages, and additionally supported for C# and Java).</li>
+<li>
+<code>autobuild</code> - CodeQL detects the most likely build method and uses this to attempt to build the codebase and create a database for analysis (supported for all compiled languages).</li>
+<li>
+<code>manual</code> - you define the build steps to use for the codebase in the workflow (supported for all compiled languages).</li>
+</ul>
+<h3><a href="#comparison-of-the-build-modes">Comparison of the build modes</a></h3>
+<div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Build mode characteristic</th>
+<th>None</th>
+<th>Autobuild</th>
+<th>Manual</th>
+</tr></thead>
+<tbody>
+<tr>
+<th>Used by default setup and for organization-level enablement</th>
+<td>Yes (C# and Java)</td>
+<td>Yes, where <code>none</code> is not supported</td>
+<td>No</td>
+</tr>
+<tr>
+<th>Analysis succeeds without user configuration</th>
+<td>Yes</td>
+<td>Variable</td>
+<td>No</td>
+</tr>
+<tr>
+<th>Completeness of analysis</th>
+<td>Generated code not analyzed</td>
+<td>Variable</td>
+<td>User controlled</td>
+</tr>
+<tr>
+<th>Accuracy of analysis</th>
+<td>Good</td>
+<td>Good</td>
+<td>Best</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3><a href="#recommendations">Recommendations</a></h3>
+<p>When you are setting up code scanning for the first time, or across multiple repositories, it's best to use default setup. Default setup uses the simplest method available to generate a CodeQL database and analyze your code, so that you can start fixing alerts as soon as possible. Once you have resolved the initial alerts, you may want to switch to advanced setup with a manual build process for high risk repositories.</p>
+<h3><a href="#using-multiple-build-modes-in-a-multi-language-repository">Using multiple build modes in a multi-language repository</a></h3>
+<p>For repositories with multiple compiled languages, you can use different build modes for different languages. For example, if your repository contains C/C++, C# and Java, you might want to provide manual build steps for one language (here C/C++). This workflow specifies a different build mode for each language.</p>
+<pre><code><span>strategy:</span>
+  <span>matrix:</span>
+    <span>include:</span>
+      <span># Analyzes C and C++ code using the commands in `Build C and C++ code`</span>
+      <span>-</span> <span>language:</span> <span>c-cpp</span>
+        <span>build-mode:</span> <span>manual</span>
+      <span># Analyzes C# code by automatically detecting a build</span>
+      <span>-</span> <span>language:</span> <span>csharp</span>
+        <span>build-mode:</span> <span>autobuild</span>
+      <span># Analyzes Java code directly from the codebase without a build</span>
+      <span>-</span> <span>language:</span> <span>java-kotlin</span>
+        <span>build-mode:</span> <span>none</span> <span># analyzes Java only</span>
+<span>steps:</span>
+<span>-</span> <span>name:</span> <span>Checkout</span> <span>repository</span>
+  <span>uses:</span> <span>actions/checkout@v4</span>
+
+<span># Initializes CodeQL tools and creates a codebase for analysis.</span>
+<span>-</span> <span>name:</span> <span>Initialize</span> <span>CodeQL</span>
+  <span>uses:</span> <span>github/codeql-action/init@v3</span>
+  <span>with:</span>
+    <span>languages:</span> <span>${{</span> <span>matrix.language</span> <span>}}</span>
+<span>-</span> <span>if:</span> <span>${{</span> <span>matrix.build-mode</span> <span>==</span> <span>'manual'</span> <span>}}</span>
+  <span>name:</span> <span>Build</span> <span>C</span> <span>and</span> <span>C++</span> <span>code</span>
+  <span>run:</span> <span>|
+    echo 'If you are using a "manual" build mode for one or more of the' \
+      'languages you are analyzing, replace this with the commands to build' \
+      'your code, for example:'
+    echo ' make bootstrap'
+    echo ' make release'
+    exit 1
+</span></code></pre>
+<p>For information about the languages, libraries, and frameworks that are supported in the latest version of CodeQL, see <a href="https://codeql.github.com/docs/codeql-overview/supported-languages-and-frameworks">Supported languages and frameworks</a> in the CodeQL documentation. For information about the system requirements for running the latest version of CodeQL, see <a href="https://codeql.github.com/docs/codeql-overview/system-requirements/#additional-software-requirements">System requirements</a> in the CodeQL documentation.</p>
+<h2><a href="#about-dependency-caching-for-codeql">About dependency caching for CodeQL</a></h2>
+<p>You can use dependency caching with CodeQL to store dependencies as a GitHub Actions cache instead of downloading them from registries. This reduces the risk of losing alerts when third party registries don't work well, and may result in a performance improvement for projects that have a large number of dependencies or work with slow registries. To read more about how caching dependencies can speed up workflows, see <a href="/en/actions/writing-workflows/choosing-what-your-workflow-does/caching-dependencies-to-speed-up-workflows">Caching dependencies to speed up workflows</a>.</p>
+<p>Dependency caching works with all build modes, and is supported by Java, Go, and C#.</p>
+<div>
+<p>
+Using dependency caching will store CodeQL-specific caches that will be subject to cache quotas for a repository. See <a href="/en/actions/writing-workflows/choosing-what-your-workflow-does/caching-dependencies-to-speed-up-workflows#usage-limits-and-eviction-policy">Caching dependencies to speed up workflows</a>.</p>
+</div>
+<h3><a href="#enabling-dependency-caching-for-codeql">Enabling dependency caching for CodeQL</a></h3>
+<p>For default setup workflows, dependency caching is enabled only for GitHub-hosted runners in public and private repositories.</p>
+<p>For advanced setup workflows, dependency caching is disabled by default. To enable dependency caching for CodeQL, use the <code>dependency-caching</code> setting for the CodeQL action in your advanced setup workflow. This setting accepts the following values:</p>
+<ul>
+<li>
+<code>false</code>/<code>none</code>/<code>off</code>: Dependency caching is disabled (default)</li>
+<li>
+<code>restore</code>: Only restore existing caches, do not store new caches</li>
+<li>
+<code>store</code>: Only store new caches, do not restore existing caches</li>
+<li>
+<code>true</code>/<code>full</code>/<code>on</code>: Restore existing caches, and store new caches</li>
+</ul>
+<p>For example, the following settings would enable dependency caching for the CodeQL action:</p>
+<pre><code>    <span># Initializes CodeQL with dependency caching enabled</span>
+    <span>-</span> <span>name:</span> <span>Initialize</span> <span>CodeQL</span>
+      <span>uses:</span> <span>github/codeql-action/init@v3</span>
+      <span>with:</span>
+        <span>languages:</span> <span>java</span>
+        <span>dependency-caching:</span> <span>true</span>
+</code></pre>
+<h2><a href="#about-build-mode-none-for-codeql">About build mode None for CodeQL</a></h2>
+<p>For C# and Java, CodeQL creates a database without requiring a build when you enable default setup for code scanning unless the repository also includes Kotlin code. If a repository contains Kotlin code in addition to Java code, default setup is enabled with the autobuild process because Kotlin analysis requires a build.</p>
+<p>Creating a CodeQL database without a build may produce less accurate results than using <code>autobuild</code> or manual build steps if:</p>
+<ul>
+<li>The build scripts cannot be queried for dependency information, and dependency guesses are inaccurate.</li>
+<li>The repository normally generates code during the build process.</li>
+</ul>
+<p>To use <code>autobuild</code> or manual build steps, you can use advanced setup.</p>
+<div>
+<p> For Java analysis, if <code>build-mode</code> is set to <code>none</code> and Kotlin code is found in the repository, the Kotlin code will not be analyzed and a warning will be produced. See <a href="#building-java-and-kotlin">Building Java and Kotlin</a>.</p>
+</div>
+<h2><a href="#about-autobuild-for-codeql">About Autobuild for CodeQL</a></h2>
+<p>The CodeQL action uses <code>autobuild</code> to analyze compiled languages in the following cases.</p>
+<ul>
+<li>Default setup is enabled and the language does not support <code>none</code> build (supported for C# and Java).</li>
+<li>Advanced setup is enabled and the workflow specifies <code>build-mode: autobuild</code>.</li>
+<li>Advanced setup is enabled and the workflow has an Autobuild step for the language using the <code>autobuild</code> action (<code>github/codeql-action/autobuild@v3</code>).</li>
+</ul>
+<h3><a href="#example-using-the-build-mode-option">Example using the <code>build-mode</code> option</a></h3>
+<pre><code><span># Initializes the CodeQL tools for scanning.</span>
+<span>name:</span> <span>Analyze</span>
+<span>strategy:</span>
+  <span>matrix:</span>
+    <span>include:</span>
+      <span># Analyze C and C++ code</span>
+      <span>-</span> <span>language:</span> <span>c-cpp</span>
+        <span>build-mode:</span> <span>autobuild</span>
+      <span># Analyze Go code</span>
+      <span>-</span> <span>language:</span> <span>go</span>
+        <span>build-mode:</span> <span>autobuild</span>
+
+<span>steps:</span>
+  <span>-</span> <span>uses:</span> <span>github/codeql-action/init@v3</span>
+    <span>with:</span>
+      <span>languages:</span> <span>${{</span> <span>matrix.language</span> <span>}}</span>
+      <span>build-mode:</span> <span>${{</span> <span>matrix.build-mode</span> <span>}}</span>
+</code></pre>
+<h3><a href="#example-using-the-autobuild-step">Example using the Autobuild step</a></h3>
+<pre><code>    <span># Initializes the CodeQL tools for scanning.</span>
+    <span>-</span> <span>name:</span> <span>Initialize</span> <span>CodeQL</span>
+      <span>uses:</span> <span>github/codeql-action/init@v3</span>
+      <span>with:</span>
+        <span>languages:</span> <span>${{</span> <span>matrix.language</span> <span>}}</span>
+
+    <span>-</span> <span>name:</span> <span>Autobuild</span>
+      <span>uses:</span> <span>github/codeql-action/autobuild@v3</span>
+</code></pre>
+<h2><a href="#about-specifying-build-steps-manually">About specifying build steps manually</a></h2>
+<p>You can only specify manual build steps if you have enabled advanced setup, see <a href="/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/configuring-advanced-setup-for-code-scanning#configuring-advanced-setup-for-a-repository">Configuring advanced setup for code scanning</a>.</p>
+<p>If <code>autobuild</code> fails, or you want to analyze a different set of source files from those built by the <code>autobuild</code> process, you'll need to do the following:</p>
+<ul>
+<li>If your workflow specifies a build mode for the language, change the build mode to <code>manual</code>.</li>
+<li>If your workflow contains an <code>autobuild</code> step, remove or comment out the <code>autobuild</code> step in the workflow.</li>
+</ul>
+<p>Then uncomment the <code>run</code> step and manually specify the build process to use. For C/C++, C#, Go, Java, Kotlin, and Swift, CodeQL will analyze whatever source code is built by your specified build steps. For information on how to edit the workflow file, see <a href="/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#editing-a-code-scanning-workflow">Customizing your advanced setup for code scanning</a>.</p>
+<p>Update your workflow to define the <code>build-mode</code> as <code>manual</code>.</p>
+<pre><code><span># Initializes the CodeQL tools for scanning.</span>
+<span>-</span> <span>name:</span> <span>Initialize</span> <span>CodeQL</span>
+<span>-</span> <span>uses:</span> <span>github/codeql-action/init@v3</span>
+  <span>with:</span>
+    <span>languages:</span> <span>${{</span> <span>matrix.language</span> <span>}}</span>
+    <span>build-mode:</span> <span>manual</span>
+<span>-</span> <span>uses:</span> <span>github/codeql-action/analyze@v3</span>
+  <span>with:</span>
+    <span>category:</span> <span>"/language:$<span>{{ matrix.language }}</span>"</span>
+</code></pre>
+<p>Alternatively, update your workflow to comment out the "Autobuild" step.</p>
+<pre><code>    <span># Autobuild attempts to build any compiled languages.</span>
+    <span># - name: Autobuild</span>
+    <span>#  uses: github/codeql-action/autobuild@v3</span>
+</code></pre>
+<h3><a href="#specifying-build-commands">Specifying build commands</a></h3>
+<p>When manual building is enabled, uncomment the <code>run</code> step in the workflow and add build commands that are suitable for your repository. The <code>run</code> step runs command-line programs using the operating system's shell. You can modify these commands and add more commands to customize the build process.</p>
+<pre><code><span>-</span> <span>run:</span> <span>|
+    make bootstrap
+    make release
+</span></code></pre>
+<p>For more information about the <code>run</code> keyword, see <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun">Workflow syntax for GitHub Actions</a>.</p>
+<p>If you added manual build steps for compiled languages and code scanning is still not working on your repository, contact us through the <a href="https://support.github.com">GitHub Support portal</a>.</p>
+<h2><a href="#autobuild-steps-for-compiled-languages">Autobuild steps for compiled languages</a></h2>
+<p>GitHub-hosted runners are always run with the software required by <code>autobuild</code>. If you use self-hosted runners for GitHub Actions, you may need to install additional software to use the <code>autobuild</code> process. Additionally, if your repository requires a specific version of a build tool, you may need to install it manually.</p>
+<ul>
+<li><a href="#building-cc">Building C/C++</a></li>
+<li><a href="#building-c">Building C#</a></li>
+<li><a href="#building-go">Building Go</a></li>
+<li><a href="#building-java-and-kotlin">Building Java and Kotlin</a></li>
+<li><a href="#building-swift">Building Swift</a></li>
+</ul>
+<div>
+<p>
+If your workflow uses a <code>language</code> matrix, <code>autobuild</code> attempts to build each of the compiled languages listed in the matrix. Without a matrix <code>autobuild</code> attempts to build the supported compiled language that has the most source files in the repository. With the exception of Go, analysis of other compiled languages in your repository will fail unless you supply explicit build commands.</p>
+</div>
+<h2><a href="#building-cc">Building C/C++</a></h2>
+<p>CodeQL supports build modes <code>autobuild</code> or <code>manual</code> for C/C++ code.</p>
+<h3><a href="#autobuild-summary-for-cc">Autobuild summary for C/C++</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Supported system type</th>
+<th>System name</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Operating system</td>
+<td>Windows, macOS, and Linux</td>
+</tr>
+<tr>
+<td>Build system</td>
+<td>Windows: MSbuild and build scripts<br>Linux and macOS: Autoconf, Make, CMake, qmake, Meson, Waf, SCons, Linux Kbuild, and build scripts</td>
+</tr>
+</tbody>
+</table>
+<p>The behavior of the <code>autobuild</code> step varies according to the operating system that the extraction runs on.</p>
+<h3><a href="#windows-autodetection">Windows autodetection</a></h3>
+<p>On Windows, the <code>autobuild</code> step attempts to autodetect a suitable build method for C/C++ using the following approach:</p>
+<ol>
+<li>Invoke <code>MSBuild.exe</code> on the solution (<code>.sln</code>) or project (<code>.vcxproj</code>) file closest to the root.
+If <code>autobuild</code> detects multiple solution or project files at the same (shortest) depth from the top level directory, it will attempt to build all of them.</li>
+<li>Invoke a script that looks like a build script—<em>build.bat</em>, <em>build.cmd</em>, <em>and build.exe</em> (in that order).</li>
+</ol>
+<h3><a href="#linux-and-macos-autodetection">Linux and macOS autodetection</a></h3>
+<p>On Linux and macOS, the <code>autobuild</code> step reviews the files present in the repository to determine the build system used:</p>
+<ol>
+<li>Look for a build system in the root directory.</li>
+<li>If none are found, search subdirectories for a unique directory with a build system for C/C++.</li>
+<li>Run an appropriate command to configure the system.</li>
+</ol>
+<h4><a href="#runner-requirements-for-cc">Runner requirements for C/C++</a></h4>
+<p>On Ubuntu Linux runners, <code>autobuild</code> may try to automatically install dependencies required by the detected configuration and build steps. By default, this behavior is enabled on GitHub-hosted runners and disabled on self-hosted runners. You can enable or disable this feature explicitly by setting <code>CODEQL_EXTRACTOR_CPP_AUTOINSTALL_DEPENDENCIES</code> to <code>true</code> or <code>false</code> in the environment. For more information about defining environment variables, see <a href="/en/actions/learn-github-actions/variables#defining-environment-variables-for-a-single-workflow">Store information in variables</a>.</p>
+<p>For self-hosted runners, unless automatic installation of dependencies is enabled, you will likely need to install the <code>gcc</code> compiler, and specific projects may also require access to <code>clang</code> or <code>msvc</code> executables. You will also need to install the build system (for example <code>msbuild</code>, <code>make</code>, <code>cmake</code>, <code>bazel</code>) and utilities (such as <code>python</code>, <code>perl</code>, <code>lex</code>, and <code>yacc</code>) that your projects depend on.
+If you enable automatic installation of dependencies, you must ensure that the runner is using Ubuntu and that it can run <code>sudo apt-get</code> without requiring a password.</p>
+<p>Windows runners require <code>powershell.exe</code> to be on the <code>PATH</code>.</p>
+<h2><a href="#building-c">Building C#</a></h2>
+<p>CodeQL supports build modes <code>none</code>, <code>autobuild</code> or <code>manual</code> for C# code.</p>
+<p>When you enable default setup for a repository that contains C# code, the build mode is set to <code>none</code> automatically.</p>
+<h3><a href="#no-build-for-c">No build for C#</a></h3>
+<p>CodeQL restores dependencies and generates a few additional source files, to give more accurate results, before creating a database from all the source files and dependencies.</p>
+<p>Dependencies are restored using multiple heuristics and strategies. The following files are the primary source of information: <code>*.csproj</code>, <code>*.sln</code>, <code>nuget.config</code>, <code>packages.config</code>, <code>global.json</code>, and <code>project.assets.json</code>. If a private NuGet feed is defined for the organization, this is also used, see <a href="/en/code-security/securing-your-organization/enabling-security-features-in-your-organization/giving-org-access-private-registries#code-scanning-default-setup-access-to-private-registries">Code scanning default setup access to private registries</a> and <a href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/viewing-code-scanning-logs#determining-whether-code-scanning-default-setup-used-any-private-registries">Determining whether code scanning default setup used any private registries</a>.</p>
+<p>The following generated source files are optional, but significantly increase the correctness of the CodeQL database:</p>
+<ul>
+<li>
+<code>global</code> generated <code>using</code> directives to handle the implicit <code>using</code> feature of MSbuild.</li>
+<li>ASP.NET core view files, <code>.cshtml</code> files are converted to <code>.cs</code> files.</li>
+</ul>
+<p>The information from the dependency assembly names, generated source files, dependencies stored in private feeds, and the source files in the repository is compiled and used to create a CodeQL database.</p>
+<h4><a href="#accuracy-of-no-build-analysis-for-c">Accuracy of no build analysis for C#</a></h4>
+<p>Creating a CodeQL database without building the full code relies on being able to restore dependencies and being able to compile together the source files in the repository. When there are problems restoring dependencies or compiling the source code, this can affect the accuracy of the CodeQL database and code scanning analysis results.</p>
+<p>You can ensure a more accurate analysis by taking the following steps:</p>
+<ul>
+<li>Provide access to the public internet or ensure that access to a private NuGet feed is available, see <a href="/en/code-security/securing-your-organization/enabling-security-features-in-your-organization/giving-org-access-private-registries#code-scanning-default-setup-access-to-private-registries">Code scanning default setup access to private registries</a>.</li>
+<li>Check whether the repository requires multiple versions of the same NuGet dependency. CodeQL can use only one version and usually chooses the newer version where there are multiple versions. This approach may not work for all repositories.</li>
+<li>Check whether multiple versions of .NET are referenced, for example, <code>net48</code>, <code>net5.0</code>, and <code>netstandard1.6</code>. CodeQL can use only one version and this may affect accuracy.</li>
+<li>Avoid colliding class names, otherwise this may cause missing method call targets, which has an impact on dataflow analysis.</li>
+</ul>
+<h3><a href="#autobuild-summary-for-c">Autobuild summary for C#</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Supported system type</th>
+<th>System name</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Operating system</td>
+<td>Windows, macOS, and Linux</td>
+</tr>
+<tr>
+<td>Build system</td>
+<td>.NET and MSbuild, as well as build scripts</td>
+</tr>
+</tbody>
+</table>
+<h4><a href="#windows-autodetection-1">Windows autodetection</a></h4>
+<p>The <code>autobuild</code> process attempts to autodetect a suitable build method for C# using the following approach:</p>
+<ol>
+<li>Invoke <code>dotnet build</code> on the solution (<code>.sln</code>) or project (<code>.csproj</code>) file closest to the root.</li>
+<li>Invoke <code>MSBuild.exe</code> on the solution or project file closest to the root.
+If <code>autobuild</code> detects multiple solution or project files at the same (shortest) depth from the top level directory, it will attempt to build all of them.</li>
+<li>Invoke a script that looks like a build script—<code>build.bat</code>, <code>build.cmd</code>, and <code>build.exe</code> (in that order).</li>
+</ol>
+<h4><a href="#runner-requirements-for-c-on-windows">Runner requirements for C# on Windows</a></h4>
+<p>For .NET Core application development on self-hosted runners, the .NET SDK is required (for <code>dotnet</code>).</p>
+<p>For .NET Framework application development, you will need Microsoft Build Tools (for <code>msbuild</code>) and NuGet CLI (for <code>nuget</code>).</p>
+<p>Windows runners require <code>powershell.exe</code> to be on the <code>PATH</code>.</p>
+<p>If you plan to create CodeQL databases using <code>build-mode: none</code>, you also need to provide access to the public internet, or you must ensure that access to a private NuGet feed is available.</p>
+<h4><a href="#linux-and-macos-autodetection-1">Linux and macOS autodetection</a></h4>
+<ol>
+<li>Invoke <code>dotnet build</code> on the solution (<code>.sln</code>) or project (<code>.csproj</code>) file closest to the root.</li>
+<li>Invoke <code>MSbuild</code> on the solution or project file closest to the root.
+If <code>autobuild</code> detects multiple solution or project files at the same (shortest) depth from the top level directory, it will attempt to build all of them.</li>
+<li>Invoke a script that looks like a build script—<code>build</code> and <code>build.sh</code> (in that order).</li>
+</ol>
+<h4><a href="#runner-requirements-for-c-on-linux-and-macos">Runner requirements for C# on Linux and macOS</a></h4>
+<p>For .NET Core application development on self-hosted runners, the .NET SDK is required (for <code>dotnet</code>).</p>
+<p>For .NET Framework application development, you will require Mono Runtime (to run <code>mono</code>, <code>msbuild</code>, or <code>nuget</code>).</p>
+<p>If you plan to create CodeQL databases using <code>build-mode: none</code>, you also need to provide access to the public internet, or you must ensure that access to a private NuGet feed is available.</p>
+<h3><a href="#c-compiler-flags-injected-by-codeql-for-manual-builds">C# compiler flags injected by CodeQL for manual builds</a></h3>
+<p>The CodeQL tracer enables the extraction of all compiled languages by intercepting build processes and forwarding information to the relevant CodeQL language extractors. The tracer injects certain flags into the C# compiler invocation to ensure every component is built and included in the CodeQL database, which may cause your C# code to build in a different way to what you expect during CodeQL analysis.</p>
+<h4><a href="#pmvcbuildviewstrue"><code>/p:MvcBuildViews=true</code></a></h4>
+<p>When this option is set to <code>true</code>, the views in ASP.NET model-view-controller (MVC) projects are precompiled as part of the build process, which can help to catch errors and improve performance. The tracer injects this flag to make sure CodeQL finds and highlights security issues that may involve dataflow through the code generated from these views. For more information, see <a href="https://learn.microsoft.com/en-us/aspnet/mvc/overview/getting-started/introduction/adding-a-view">Adding a View to an MVC Application</a> in Microsoft Learn.</p>
+<h4><a href="#pusesharedcompilationfalse"><code>/p:UseSharedCompilation=false</code></a></h4>
+<p>Setting this option to <code>false</code> disables the use of the shared compilation feature, which may result in slower build times. When <code>/p:UseSharedCompilation=false</code> is <strong>not</strong> specified, <code>msbuild</code> starts a compiler server process, and all the compilation will be done by that single process. However, the CodeQL tracer depends on inspecting the arguments of newly created processes.</p>
+<h4><a href="#pemitcompilergeneratedfilestrue"><code>/p:EmitCompilerGeneratedFiles=true</code></a></h4>
+<p>Setting this option to <code>true</code> will emit compiler-generated files during the build process. This option causes the compiler to generate additional source files that are used to support features such as improved regular expression support, serialization, and web application view generation. These generated artifacts are typically not written to disk by the compiler, but setting the option to <code>true</code> forces writing the files to disk, and so the extractor can process the files.</p>
+<p>For some legacy projects, and projects that use <code>.sqlproj</code> files, you may see that the injected <code>/p:EmitCompilerGeneratedFiles=true</code> property causes unexpected issues with <code>msbuild</code>. For information about troubleshooting this, see <a href="/en/code-security/code-scanning/troubleshooting-code-scanning/c-sharp-compiler-unexpectedly-failing">C# compiler unexpectedly failing</a>.</p>
+<h2><a href="#building-go">Building Go</a></h2>
+<p>CodeQL supports build modes <code>autobuild</code> or <code>manual</code> for Go code.</p>
+<h3><a href="#autobuild-summary-for-go">Autobuild summary for Go</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Supported system type</th>
+<th>System name</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Operating system</td>
+<td>Windows, macOS, and Linux</td>
+</tr>
+<tr>
+<td>Build system</td>
+<td>Go modules, <code>dep</code> and Glide, as well as build scripts including Makefiles and Ninja scripts</td>
+</tr>
+</tbody>
+</table>
+<h3><a href="#autodetection-for-go">Autodetection for Go</a></h3>
+<p>The <code>autobuild</code> process attempts to autodetect a suitable way to install the dependencies needed by a Go repository before extracting all <code>.go</code> files:</p>
+<ol>
+<li>Invoke <code>make</code>, <code>ninja</code>, <code>./build</code> or <code>./build.sh</code> (in that order) until one of these commands succeeds and a subsequent <code>go list ./...</code> also succeeds, indicating that the needed dependencies have been installed.</li>
+<li>If none of those commands succeeded, look for <code>go.mod</code>, <code>Gopkg.toml</code> or <code>glide.yaml</code>, and run <code>go get</code> (unless vendoring is in use), <code>dep ensure -v</code> or <code>glide install</code> respectively to try to install dependencies.</li>
+<li>Finally, if configurations files for these dependency managers are not found, rearrange the repository directory structure suitable for addition to <code>GOPATH</code>, and use <code>go get</code> to install dependencies. The directory structure reverts to normal after extraction completes.</li>
+<li>Extract all Go code in the repository, similar to running <code>go build ./...</code>.</li>
+</ol>
+<div>
+<p>
+If you use default setup, it will look for a <code>go.mod</code> file to automatically install a compatible version of the Go language.</p>
+</div>
+<h3><a href="#extractor-options-for-go">Extractor options for Go</a></h3>
+<p>By default, test code (code in files ending in <code>_test.go</code>) is not analyzed. You can override this with the option <code>--extractor-option extract_tests=true</code> when using the CodeQL CLI, or by setting the environment variable <code>CODEQL_EXTRACTOR_GO_OPTION_EXTRACT_TESTS</code> to <code>true</code>.</p>
+<p>Additionally, <code>vendor</code> directories are excluded from CodeQL Go analysis by default. You can override this by passing the <code>--extractor-option extract_vendor_dirs=true</code> option when using the CodeQL CLI, or by setting the environment variable <code>CODEQL_EXTRACTOR_GO_OPTION_EXTRACT_VENDOR_DIRS</code> to <code>true</code>.</p>
+<h2><a href="#building-java-and-kotlin">Building Java and Kotlin</a></h2>
+<p>CodeQL supports the following build modes.</p>
+<ul>
+<li>Java: <code>none</code>, <code>autobuild</code>, or <code>manual</code>
+</li>
+<li>Kotlin: <code>autobuild</code> or <code>manual</code>
+</li>
+</ul>
+<p>When you first enable default setup for a repository, if only Java code is detected then the build mode is set to <code>none</code>. If Kotlin or a combination of Java and Kotlin code is detected, then the build mode is set to <code>autobuild</code>.</p>
+<p>If you later add Kotlin code to a repository that uses the <code>none</code> build mode, CodeQL analysis reports a warning message explaining that Kotlin is not supported. You will need to disable default setup and re-enable it. When you re-enable default setup, the build mode will change to <code>autobuild</code> so that both languages can be analyzed. Alternatively, you can change to an advanced setup. For more information, see <a href="/en/code-security/code-scanning/troubleshooting-code-scanning/kotlin-detected-in-no-build">Warning: Detected X Kotlin files in your project that could not be processed without a build</a>.</p>
+<h3><a href="#no-build-for-java">No build for Java</a></h3>
+<p>CodeQL will attempt to run Gradle or Maven to extract accurate dependency information (but not to invoke a build), before creating a database from all Java files present. Every root Maven or Gradle project file (a build script without any build script present in an ancestor directory) is queried for dependency information, and more recent dependency versions are preferred if there is a clash. For information about the runner requirements to run Maven or Gradle, see <a href="#runner-requirements-for-java">Runner requirements for Java</a>.</p>
+<p>If a private Maven registry is defined for the organization, this is also used, see <a href="/en/code-security/securing-your-organization/enabling-security-features-in-your-organization/giving-org-access-private-registries#code-scanning-default-setup-access-to-private-registries">Code scanning default setup access to private registries</a> and <a href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/viewing-code-scanning-logs#determining-whether-code-scanning-default-setup-used-any-private-registries">Determining whether code scanning default setup used any private registries</a>.</p>
+<h4><a href="#accuracy-of-no-build-analysis-for-java">Accuracy of no build analysis for Java</a></h4>
+<p>Creating a CodeQL Java database without a build may produce less accurate results than using <code>autobuild</code> or manual build steps if:</p>
+<ul>
+<li>Gradle or Maven build scripts cannot be queried for dependency information, and dependency guesses (based on Java package names) are inaccurate.</li>
+<li>The repository normally generates code during the build process. This would be analyzed if you created the CodeQL database using a different mode.</li>
+</ul>
+<p>You can ensure a more accurate analysis by taking the following steps:</p>
+<ul>
+<li>Provide access to the public internet or ensure that access to a private artifact repository is available, see <a href="/en/code-security/securing-your-organization/enabling-security-features-in-your-organization/giving-org-access-private-registries#code-scanning-default-setup-access-to-private-registries">Code scanning default setup access to private registries</a>.</li>
+<li>Check whether the repository requires multiple versions of the same dependency. CodeQL can use only one version and usually chooses the newer version where there are multiple versions. This approach may not work for all repositories.</li>
+<li>Check whether more than one version of the JDK API is required by different source Java files. When multiple versions are seen, CodeQL will use the highest version required by any build script. This may mean that some files that require a lower version of the JDK will be partially analyzed. For example, if some files require JDK 8 but a JDK 17 requirement is found in one or more build scripts, CodeQL will use JDK 17. Any files that require JDK 8 and could not be built using JDK 17 will be partially analyzed.</li>
+<li>Avoid colliding class names (for example, multiple files defining <code>org.myproject.Test</code>), otherwise this may cause missing method call targets, which has an impact on dataflow analysis.</li>
+</ul>
+<h3><a href="#autobuild-summary-for-java">Autobuild summary for Java</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Supported system type</th>
+<th>System name</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Operating system</td>
+<td>Windows, macOS, and Linux (no restriction)</td>
+</tr>
+<tr>
+<td>Build system</td>
+<td>Gradle, Maven and Ant</td>
+</tr>
+</tbody>
+</table>
+<h3><a href="#autodetection-for-java">Autodetection for Java</a></h3>
+<p>The <code>autobuild</code> process tries to determine the build system for Java codebases by applying this strategy:</p>
+<ol>
+<li>Search for a build file in the root directory. Check for Gradle then Maven then Ant build files.</li>
+<li>Run the first build file found. If both Gradle and Maven files are present, the Gradle file is used.</li>
+<li>Otherwise, search for build files in direct subdirectories of the root directory. If only one subdirectory contains build files, run the first file identified in that subdirectory (using the same preference as for 1). If more than one subdirectory contains build files, report an error.</li>
+</ol>
+<h3><a href="#runner-requirements-for-java">Runner requirements for Java</a></h3>
+<p>If you're using self-hosted runners, the required version(s) of Java should be present:</p>
+<ul>
+<li>
+<p>If the runner will be used for analyzing repositories that need a single version of Java, then the appropriate JDK version needs to be installed, and needs to be present in the PATH variable (so that <code>java</code> and <code>javac</code> can be found).</p>
+</li>
+<li>
+<p>If the runner will be used for analyzing repositories that need multiple versions of Java, then the appropriate JDK versions need to be installed, and can be specified via the <code>toolchains.xml</code> file. This is a configuration file, typically used by Apache Maven, that allows you to specify the location of the tools, the version of the tools, and any additional configuration that is required to use the tools. For more information, see <a href="https://maven.apache.org/guides/mini/guide-using-toolchains.html">Guide to Using Toolchains</a> in the Apache Maven documentation.</p>
+</li>
+</ul>
+<p>The following executables will likely be required for a range of Java projects, and should be present in the PATH variable, but they will not be essential in all cases:</p>
+<ul>
+<li>
+<code>mvn</code> (Apache Maven)</li>
+<li>
+<code>gradle</code> (Gradle)</li>
+<li>
+<code>ant</code> (Apache Ant)</li>
+</ul>
+<p>You will also need to install the build system (for example <code>make</code>, <code>cmake</code>, <code>bazel</code>) and utilities (such as <code>python</code>, <code>perl</code>, <code>lex</code>, and <code>yacc</code>) that your projects depend on.</p>
+<p>Windows runners require <code>powershell.exe</code> to be on the <code>PATH</code>.</p>
+<h2><a href="#building-swift">Building Swift</a></h2>
+<p>CodeQL supports build modes <code>autobuild</code> or <code>manual</code> for Swift code.</p>
+<h3><a href="#autobuild-summary-for-swift">Autobuild summary for Swift</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Supported system type</th>
+<th>System name</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Operating system</td>
+<td>macOS</td>
+</tr>
+<tr>
+<td>Build system</td>
+<td>Xcode</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>autobuild</code> process tries to build the biggest target from an Xcode project or workspace.</p>
+<p>Code scanning of Swift code uses macOS runners by default. Since GitHub-hosted macOS runners are more expensive than Linux and Windows runners, we recommend that you build only the code that you want to analyze. For more information about pricing for GitHub-hosted runners, see <a href="/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions">About billing for GitHub Actions</a>.</p>
+<p>Code scanning of Swift code is not supported for runners that are part of an Actions Runner Controller (ARC), because ARC runners only use Linux and Swift requires macOS runners. However, you can have a mixture of both ARC runners and self-hosted macOS runners. For more information, see <a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/about-actions-runner-controller">About Actions Runner Controller</a>.</p>
+<h3><a href="#customizing-swift-compilation-in-a-codeql-analysis-workflow">Customizing Swift compilation in a CodeQL analysis workflow</a></h3>
+<p><code>xcodebuild</code> and <code>swift build</code> are both supported for Swift builds. We recommend only targeting one architecture during the build. For example, <code>ARCH=arm64</code> for <code>xcodebuild</code>, or <code>--arch arm64</code> for <code>swift build</code>.</p>
+<p>You can pass the <code>archive</code> and <code>test</code> options to <code>xcodebuild</code>. However, the standard <code>xcodebuild</code> command is recommended as it should be the fastest, and should be all that CodeQL requires for a successful scan.</p>
+<p>For Swift analysis, you must always explicitly install dependencies managed via CocoaPods or Carthage before generating the CodeQL database.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

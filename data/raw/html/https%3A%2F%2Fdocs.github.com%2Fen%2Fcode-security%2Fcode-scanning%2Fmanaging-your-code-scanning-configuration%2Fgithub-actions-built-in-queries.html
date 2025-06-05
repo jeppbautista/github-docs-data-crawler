@@ -1,0 +1,385 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Code scanning" href="/en/code-security/code-scanning">Code scanning</a><span>/</span>
+</li>
+<li>
+<a title="Manage code scanning" href="/en/code-security/code-scanning/managing-your-code-scanning-configuration">Manage code scanning</a><span>/</span>
+</li>
+<li><a title="GitHub Actions queries" href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/github-actions-built-in-queries">GitHub Actions queries</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>GitHub Actions queries for CodeQL analysis</h1></div></div>
+<div>
+<div><p>Explore the queries that CodeQL uses to analyze workflows used by GitHub Actions when you select the <code>default</code> or the <code>security-extended</code> query suite.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div>
+<p>CodeQL is available for the following repository types:</p>
+<ul>
+<li>Public repositories on GitHub.com, see <a href="https://github.com/github/codeql-cli-binaries/blob/main/LICENSE.md">GitHub CodeQL Terms and Conditions</a>
+</li>
+<li>Organization-owned repositories on GitHub Team with <a href="/en/get-started/learning-about-github/about-github-advanced-security">GitHub Code Security</a> enabled</li>
+</ul>
+</div></div>
+</div></div>
+</div>
+<div><div><div>
+<p>CodeQL includes many queries for analyzing workflows used by GitHub Actions. All queries in the <code>default</code> query suite are run by default. If you choose to use the <code>security-extended</code> query suite, additional queries are run. For more information, see <a href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/built-in-codeql-query-suites">CodeQL query suites</a>.</p>
+<h2><a href="#built-in-queries-for-workflow-analysis">Built-in queries for workflow analysis</a></h2>
+<p>This table lists the queries available with the latest release of the CodeQL action and CodeQL CLI. For more information, see <a href="https://codeql.github.com/docs/codeql-overview/codeql-changelog/">CodeQL change logs</a> in the CodeQL documentation site.</p>
+<div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Query name</th>
+<th>Related CWEs</th>
+<th>Default</th>
+<th>Extended</th>
+<th>Copilot Autofix</th>
+</tr></thead>
+<tbody>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-artifact-poisoning-critical/">Artifact poisoning</a></th>
+<td>829</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-cache-poisoning-direct-cache/">Cache Poisoning via caching of untrusted files</a></th>
+<td>349</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-cache-poisoning-poisonable-step/">Cache Poisoning via execution of untrusted code</a></th>
+<td>349</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-cache-poisoning-code-injection/">Cache Poisoning via low-privileged code injection</a></th>
+<td>349, 094</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-untrusted-checkout-critical/">Checkout of untrusted code in a privileged context</a></th>
+<td>829</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-untrusted-checkout-high/">Checkout of untrusted code in trusted context</a></th>
+<td>829</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-code-injection-critical/">Code injection</a></th>
+<td>094, 095, 116</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-envvar-injection-critical/">Environment variable built from user-controlled sources</a></th>
+<td>077, 020</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-excessive-secrets-exposure/">Excessive Secrets Exposure</a></th>
+<td>312</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-improper-access-control/">Improper Access Control</a></th>
+<td>285</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-envpath-injection-critical/">PATH environment variable built from user-controlled sources</a></th>
+<td>077, 020</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-secrets-in-artifacts/">Storage of sensitive information in GitHub Actions artifact</a></th>
+<td>312</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-unmasked-secret-exposure/">Unmasked Secret Exposure</a></th>
+<td>312</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-untrusted-checkout-toctou-high/">Untrusted Checkout TOCTOU</a></th>
+<td>367</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-untrusted-checkout-toctou-critical/">Untrusted Checkout TOCTOU</a></th>
+<td>367</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-vulnerable-action/">Use of a known vulnerable action</a></th>
+<td>1395</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-missing-workflow-permissions/">Workflow does not contain permissions</a></th>
+<td>275</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-artifact-poisoning-medium/">Artifact poisoning</a></th>
+<td>829</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-untrusted-checkout-medium/">Checkout of untrusted code in trusted context</a></th>
+<td>829</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-code-injection-medium/">Code injection</a></th>
+<td>094, 095, 116</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-envvar-injection-medium/">Environment variable built from user-controlled sources</a></th>
+<td>077, 020</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-envpath-injection-medium/">PATH environment variable built from user-controlled sources</a></th>
+<td>077, 020</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/actions/actions-unpinned-tag/">Unpinned tag for a non-immutable Action in workflow</a></th>
+<td>829</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

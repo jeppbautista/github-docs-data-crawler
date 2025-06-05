@@ -1,0 +1,155 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Organizations" href="/en/organizations">Organizations</a><span>/</span>
+</li>
+<li>
+<a title="Organize members into teams" href="/en/organizations/organizing-members-into-teams">Organize members into teams</a><span>/</span>
+</li>
+<li><a title="Code review settings" href="/en/organizations/organizing-members-into-teams/managing-code-review-settings-for-your-team">Code review settings</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Managing code review settings for your team</h1></div></div>
+<div>
+<div><p>You can decrease noise for your team by limiting notifications when your team is requested to review a pull request.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Team maintainers and organization owners can configure code review settings.</p></div></div>
+<div><div><p>Code review settings are available in all public repositories owned by an organization, and all private repositories owned by organizations on GitHub Team, GitHub Enterprise Server, and GitHub Enterprise Cloud. For more information, see <a href="/en/get-started/learning-about-github/githubs-plans">GitHub’s plans</a>.</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-code-review-settings"><div><span>About code review settings</span></div></a></li>
+<li><a href="#about-team-notifications"><div><span>About team notifications</span></div></a></li>
+<li><a href="#about-auto-assignment"><div><span>About auto assignment</span></div></a></li>
+<li><a href="#configuring-team-notifications"><div><span>Configuring team notifications</span></div></a></li>
+<li><a href="#configuring-auto-assignment"><div><span>Configuring auto assignment</span></div></a></li>
+<li><a href="#disabling-auto-assignment"><div><span>Disabling auto assignment</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-code-review-settings">About code review settings</a></h2>
+<p>To reduce noise for your team and clarify individual responsibility for pull request reviews, you can configure code review settings.</p>
+<ul>
+<li>Team notifications</li>
+<li>Auto assignment</li>
+</ul>
+<h2><a href="#about-team-notifications">About team notifications</a></h2>
+<p>When you choose to only notify requested team members, you disable sending notifications to the entire team when the team is requested to review a pull request if a specific member of that team is also requested for review. This is especially useful when a repository is configured with teams as code owners, but contributors to the repository often know a specific individual that would be the correct reviewer for their pull request. For more information, see <a href="/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners">About code owners</a>.</p>
+<h2><a href="#about-auto-assignment">About auto assignment</a></h2>
+<p>When you enable auto assignment, any time your team has been requested to review a pull request, the team is removed as a reviewer and a specified subset of team members are assigned in the team's place. Code review assignments allow you to decide whether the whole team or just a subset of team members are notified when a team is requested for review.</p>
+<p>When code owners are automatically requested for review, the team is still removed and replaced with individuals unless a branch protection rule is configured to require review from code owners. If such a branch protection rule is in place, the team request cannot be removed and so the individual request will appear in addition to the team. Once the individual completes their review, the team is removed.</p>
+<h3><a href="#routing-algorithms">Routing algorithms</a></h3>
+<p>Code review assignments automatically choose and assign reviewers based on one of two possible algorithms.</p>
+<p>The round robin algorithm chooses reviewers based on who's received the least recent review request, focusing on alternating between all members of the team regardless of the number of outstanding reviews they currently have.</p>
+<p>The load balance algorithm chooses reviewers based on each member's total number of recent review requests and considers the number of outstanding reviews for each member. The load balance algorithm tries to ensure that each team member reviews an equal number of pull requests in any 30 day period.</p>
+<p>Any team members that have set their status to "Busy" will not be selected for review. If all team members are busy, the pull request will remain assigned to the team itself. For more information about user statuses, see <a href="/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/personalizing-your-profile#setting-a-status">Personalizing your profile</a>.</p>
+<h2><a href="#configuring-team-notifications">Configuring team notifications</a></h2>
+<ol>
+<li>
+<p>In the upper-right corner of GitHub, select your profile photo, then click </p>
+</li>
+<li>
+<p>Click the name of your organization.</p>
+</li>
+<li>
+<p>Under your organization name, click </p>
+<div><picture><source><img src="/assets/cb-22213/images/help/organizations/organization-teams-tab.png" alt='Screenshot of the horizontal navigation bar for an organization. A tab, labeled with the people icon and "Teams," is outlined in dark orange.' width="720" height="91"></source></picture></div>
+</li>
+<li>
+<p>Click the name of the team.</p>
+</li>
+<li>
+<p>At the top of the team page, click </p>
+<div><picture><source><img src="/assets/cb-13532/images/help/teams/team-settings-global-nav-update.png" alt="Screenshot of the header of a team's page. A tab, labeled with a gear icon and &quot;Settings&quot;, is outlined in dark orange." width="1116" height="176"></source></picture></div>
+</li>
+<li>
+<p>In the left sidebar, click </p>
+</li>
+<li>
+<p>Select <strong>Only notify requested team members.</strong></p>
+</li>
+<li>
+<p>Click <strong>Save changes</strong>.</p>
+</li>
+</ol>
+<h2><a href="#configuring-auto-assignment">Configuring auto assignment</a></h2>
+<ol>
+<li>
+<p>In the upper-right corner of GitHub, select your profile photo, then click </p>
+</li>
+<li>
+<p>Click the name of your organization.</p>
+</li>
+<li>
+<p>Under your organization name, click </p>
+<div><picture><source><img src="/assets/cb-22213/images/help/organizations/organization-teams-tab.png" alt='Screenshot of the horizontal navigation bar for an organization. A tab, labeled with the people icon and "Teams," is outlined in dark orange.' width="720" height="91"></source></picture></div>
+</li>
+<li>
+<p>Click the name of the team.</p>
+</li>
+<li>
+<p>At the top of the team page, click </p>
+<div><picture><source><img src="/assets/cb-13532/images/help/teams/team-settings-global-nav-update.png" alt="Screenshot of the header of a team's page. A tab, labeled with a gear icon and &quot;Settings&quot;, is outlined in dark orange." width="1116" height="176"></source></picture></div>
+</li>
+<li>
+<p>In the left sidebar, click </p>
+</li>
+<li>
+<p>Select <strong>Enable auto assignment</strong>.</p>
+</li>
+<li>
+<p>Under "How many team members should be assigned to review?", select the dropdown menu and choose a number of reviewers to be assigned to each pull request.</p>
+</li>
+<li>
+<p>Under "Routing algorithm", use the dropdown menu and choose which algorithm you'd like to use. For more information, see <a href="#routing-algorithms">Routing algorithms</a>.</p>
+</li>
+<li>
+<p>Optionally, to always skip certain members of the team, select <strong>Never assign certain team members</strong>. Then, select one or more team members you'd like to always skip.</p>
+</li>
+<li>
+<p>Optionally, to include members of child teams as potential reviewers when assigning requests, select <strong>Child team members</strong>.</p>
+</li>
+<li>
+<p>Optionally, to count any members whose review has already been requested against the total number of members to assign, select <strong>Count existing requests</strong>.</p>
+</li>
+<li>
+<p>Optionally, to remove the review request from the team when assigning team members, select <strong>Team review request</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Save changes</strong>.</p>
+</li>
+</ol>
+<h2><a href="#disabling-auto-assignment">Disabling auto assignment</a></h2>
+<ol>
+<li>
+<p>In the upper-right corner of GitHub, select your profile photo, then click </p>
+</li>
+<li>
+<p>Click the name of your organization.</p>
+</li>
+<li>
+<p>Under your organization name, click </p>
+<div><picture><source><img src="/assets/cb-22213/images/help/organizations/organization-teams-tab.png" alt='Screenshot of the horizontal navigation bar for an organization. A tab, labeled with the people icon and "Teams," is outlined in dark orange.' width="720" height="91"></source></picture></div>
+</li>
+<li>
+<p>Click the name of the team.</p>
+</li>
+<li>
+<p>At the top of the team page, click </p>
+<div><picture><source><img src="/assets/cb-13532/images/help/teams/team-settings-global-nav-update.png" alt="Screenshot of the header of a team's page. A tab, labeled with a gear icon and &quot;Settings&quot;, is outlined in dark orange." width="1116" height="176"></source></picture></div>
+</li>
+<li>
+<p>Deselect <strong>Enable auto assignment</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Save changes</strong>.</p>
+</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

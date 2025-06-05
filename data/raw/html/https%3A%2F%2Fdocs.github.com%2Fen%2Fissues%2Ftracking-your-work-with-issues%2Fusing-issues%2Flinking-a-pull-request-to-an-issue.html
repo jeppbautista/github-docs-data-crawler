@@ -1,0 +1,161 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Issues" href="/en/issues">GitHub Issues</a><span>/</span>
+</li>
+<li>
+<a title="Issues" href="/en/issues/tracking-your-work-with-issues">Issues</a><span>/</span>
+</li>
+<li>
+<a title="Using issues" href="/en/issues/tracking-your-work-with-issues/using-issues">Using issues</a><span>/</span>
+</li>
+<li><a title="Link PR to issue" href="/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue">Link PR to issue</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Linking a pull request to an issue</h1></div></div>
+<div><div><p>You can link a pull request or branch to an issue to show that a fix is in progress and to automatically close the issue when the pull request or branch is merged.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-linked-issues-and-pull-requests"><div><span>About linked issues and pull requests</span></div></a></li>
+<li><a href="#linking-a-pull-request-to-an-issue-using-a-keyword"><div><span>Linking a pull request to an issue using a keyword</span></div></a></li>
+<li><a href="#manually-linking-a-pull-request-to-an-issue-using-the-pull-request-sidebar"><div><span>Manually linking a pull request to an issue using the pull request sidebar</span></div></a></li>
+<li><a href="#manually-linking-a-pull-request-or-branch-to-an-issue-using-the-issue-sidebar"><div><span>Manually linking a pull request or branch to an issue using the issue sidebar</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-linked-issues-and-pull-requests">About linked issues and pull requests</a></h2>
+<p>You can link an issue to a pull request manually or using a supported keyword in the pull request description, that is, the summary text added by the author when they created the pull request.</p>
+<p>When you link a pull request to the issue the pull request addresses, collaborators can see that someone is working on the issue.</p>
+<p>When you merge a linked pull request into the <strong>default branch</strong> of a repository, its linked issue is automatically closed. For more information about the default branch, see <a href="/en/repositories/configuring-branches-and-merges-in-your-repository/managing-branches-in-your-repository/changing-the-default-branch">Changing the default branch</a>.</p>
+<div>
+<p>
+The special keywords in a pull request description are interpreted only when the pull request targets the repository's <em>default</em> branch. If the pull request targets <em>any other branch</em>, then these keywords are ignored, no links are created, and merging the PR has no effect on the issues.</p>
+</div>
+<h2><a href="#linking-a-pull-request-to-an-issue-using-a-keyword">Linking a pull request to an issue using a keyword</a></h2>
+<p>You can link a pull request to an issue by using a supported keyword in the pull request's description or in a commit message. The pull request <strong>must be</strong> on the default branch.</p>
+<ul>
+<li><code>close</code></li>
+<li><code>closes</code></li>
+<li><code>closed</code></li>
+<li><code>fix</code></li>
+<li><code>fixes</code></li>
+<li><code>fixed</code></li>
+<li><code>resolve</code></li>
+<li><code>resolves</code></li>
+<li><code>resolved</code></li>
+</ul>
+<p>If you use a keyword to reference a pull request comment in another pull request, the pull requests will be linked. Merging the referencing pull request also closes the referenced pull request.</p>
+<p>The syntax for closing keywords depends on whether the issue is in the same repository as the pull request.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Linked issue</th>
+<th>Syntax</th>
+<th>Example</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Issue in the same repository</td>
+<td>KEYWORD #ISSUE-NUMBER</td>
+<td><code>Closes #10</code></td>
+</tr>
+<tr>
+<td>Issue in a different repository</td>
+<td>KEYWORD OWNER/REPOSITORY#ISSUE-NUMBER</td>
+<td><code>Fixes octo-org/<wbr>octo-repo#100</wbr></code></td>
+</tr>
+<tr>
+<td>Multiple issues</td>
+<td>Use full syntax for each issue</td>
+<td><code>Resolves #10, resolves #123, resolves octo-org/<wbr>octo-repo#100</wbr></code></td>
+</tr>
+</tbody>
+</table>
+<p>The keywords can be followed by colons or in uppercase. For example: <code>Closes: #10</code>, <code>CLOSES #10</code>, or <code>CLOSES: #10</code>.</p>
+<p>Only manually linked pull requests can be manually unlinked. To unlink an issue that you linked using a keyword, you must edit the pull request description to remove the keyword.</p>
+<p>You can also use closing keywords in a commit message. The issue will be closed when you merge the commit into the default branch, but the pull request that contains the commit will not be listed as a linked pull request.</p>
+<h2><a href="#manually-linking-a-pull-request-to-an-issue-using-the-pull-request-sidebar">Manually linking a pull request to an issue using the pull request sidebar</a></h2>
+<p>Anyone with write permissions to a repository can manually link a pull request to an issue from the pull request sidebar.</p>
+<p>You can manually link up to ten issues to each pull request. The issue and pull request must be in the same repository.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click </p>
+<div><picture><source><img src="/assets/cb-51156/images/help/repository/repo-tabs-pull-requests-global-nav-update.png" alt='Screenshot of the main page of a repository. In the horizontal navigation bar, a tab, labeled "Pull requests," is outlined in dark orange.' width="1440" height="115"></source></picture></div>
+</li>
+<li>
+<p>In the list of pull requests, click the pull request that you'd like to link to an issue.</p>
+</li>
+<li>
+<p>In the right sidebar, click <strong>Development</strong>.</p>
+<div><picture><source><img src="/assets/cb-3532/images/help/pull_requests/development-menu.png" alt='Screenshot of the issue sidebar. "Development" is outlined in dark orange.' width="309" height="460"></source></picture></div>
+</li>
+<li>
+<p>Click the issue you want to link to the pull request.</p>
+</li>
+</ol>
+<h2><a href="#manually-linking-a-pull-request-or-branch-to-an-issue-using-the-issue-sidebar">Manually linking a pull request or branch to an issue using the issue sidebar</a></h2>
+<p>Anyone with write permissions to a repository can manually link a pull request or branch to an issue from the issue sidebar.</p>
+<p>You can manually link up to ten issues to each pull request. The issue can be in a different repository than the linked pull request or branch. Your last selected repository will be remembered.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click </p>
+<div><picture><source><img src="/assets/cb-51267/images/help/repository/repo-tabs-issues-global-nav-update.png" alt='Screenshot of the main page of a repository. In the horizontal navigation bar, a tab, labeled "Issues," is outlined in dark orange.' width="1440" height="115"></source></picture></div>
+</li>
+<li>
+<p>In the list of issues, click the issue that you'd like to link a pull request or branch to.</p>
+</li>
+<li>
+<p>In the right sidebar, click <strong>Development</strong>.</p>
+<div><picture><source><img src="/assets/cb-28720/images/help/issues/development-menu.png" alt='Screenshot of the issue sidebar. "Development" is outlined in dark orange.' width="353" height="420"></source></picture></div>
+</li>
+<li>
+<p>Click the repository containing the pull request or branch you want to link to the issue.</p>
+</li>
+<li>
+<p>Click the pull request or branch you want to link to the issue.</p>
+</li>
+<li>
+<p>Click <strong>Apply</strong>.</p>
+</li>
+</ol>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/get-started/writing-on-github/working-with-advanced-formatting/autolinked-references-and-urls#issues-and-pull-requests">Autolinked references and URLs</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,104 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Manage workflows and deployments" href="/en/actions/managing-workflow-runs-and-deployments">Manage workflows and deployments</a><span>/</span>
+</li>
+<li>
+<a title="Manage workflow runs" href="/en/actions/managing-workflow-runs-and-deployments/managing-workflow-runs">Manage workflow runs</a><span>/</span>
+</li>
+<li><a title="Manually run a workflow" href="/en/actions/managing-workflow-runs-and-deployments/managing-workflow-runs/manually-running-a-workflow">Manually run a workflow</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Manually running a workflow</h1></div></div>
+<div>
+<div><p>When a workflow is configured to run on the <code>workflow_dispatch</code> event, you can run the workflow using the Actions tab on GitHub, GitHub CLI, or the REST API.</p></div>
+<div>
+<h2>Tool navigation</h2>
+<nav><ul>
+<li><a href="?tool=cli"><span>GitHub CLI</span></a></li>
+<li><a href="?tool=webui"><span>Web browser</span></a></li>
+</ul></nav>
+</div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#configuring-a-workflow-to-run-manually"><div><span>Configuring a workflow to run manually</span></div></a></li>
+<li><a href="#running-a-workflow"><div><span>Running a workflow</span></div></a></li>
+<li><a href="#running-a-workflow-using-the-rest-api"><div><span>Running a workflow using the REST API</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#configuring-a-workflow-to-run-manually">Configuring a workflow to run manually</a></h2>
+<p>To run a workflow manually, the workflow must be configured to run on the <code>workflow_dispatch</code> event.</p>
+<p>To trigger the <code>workflow_dispatch</code> event, your workflow must be in the default branch. For more information about configuring the <code>workflow_dispatch</code> event, see <a href="/en/actions/using-workflows/events-that-trigger-workflows#workflow_dispatch">Events that trigger workflows</a>.</p>
+<p>Write access to the repository is required to perform these steps.</p>
+<h2><a href="#running-a-workflow">Running a workflow</a></h2>
+<div>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click </p>
+<div><picture><source><img src="/assets/cb-12958/images/help/repository/actions-tab-global-nav-update.png" alt='Screenshot of the tabs for the "github/docs" repository. The "Actions" tab is highlighted with an orange outline.' width="1242" height="186"></source></picture></div>
+</li>
+<li>
+<p>In the left sidebar, click the name of the workflow you want to run.</p>
+<div><picture><source><img src="/assets/cb-60473/images/help/repository/actions-select-workflow-2022.png" alt='Screenshot of the "Actions" page. In the left sidebar, a workflow name is highlighted with an outline in dark orange.' width="720" height="163"></source></picture></div>
+</li>
+<li>
+<p>Above the list of workflow runs, click the <strong>Run workflow</strong> button.</p>
+<div>
+<p>
+To see the <strong>Run workflow</strong> button, your workflow file must use the <code>workflow_dispatch</code> event trigger. Only workflow files that use the <code>workflow_dispatch</code> event trigger will have the option to run the workflow manually using the <strong>Run workflow</strong> button. For more information about configuring the <code>workflow_dispatch</code> event, see <a href="/en/actions/using-workflows/events-that-trigger-workflows#workflow_dispatch">Events that trigger workflows</a>.</p>
+</div>
+<div><picture><source><img src="/assets/cb-52943/images/help/actions/actions-workflow-dispatch.png" alt='Screenshot of a workflow page. Above the list of workflow runs, a button, labeled "Run workflow", is outlined in dark orange.' width="692" height="292"></source></picture></div>
+</li>
+<li>
+<p>Select the <strong>Branch</strong> dropdown menu and click a branch to run the workflow on.</p>
+</li>
+<li>
+<p>If the workflow requires input, fill in the fields.</p>
+</li>
+<li>
+<p>Click <strong>Run workflow</strong>.</p>
+</li>
+</ol>
+</div>
+<div>
+<div>
+<p>
+To learn more about GitHub CLI, see <a href="/en/github-cli/github-cli/about-github-cli">About GitHub CLI</a>.</p>
+</div>
+<p>To run a workflow, use the <code>workflow run</code> subcommand. Replace the <code>workflow</code> parameter with either the name, ID, or file name of the workflow you want to run. For example, <code>"Link Checker"</code>, <code>1234567</code>, or <code>"link-check-test.yml"</code>. If you don't specify a workflow, GitHub CLI returns an interactive menu for you to choose a workflow.</p>
+<pre><code>gh workflow run WORKFLOW
+</code></pre>
+<p>If your workflow accepts inputs, GitHub CLI will prompt you to enter them. Alternatively, you can use <code>-f</code> or <code>-F</code> to add an input in <code>key=value</code> format. Use <code>-F</code> to read from a file.</p>
+<pre><code>gh workflow run greet.yml -f name=mona -f greeting=hello -F data=@myfile.txt
+</code></pre>
+<p>You can also pass inputs as JSON by using standard input.</p>
+<pre><code>echo '{"name":"mona", "greeting":"hello"}' | gh workflow run greet.yml --json
+</code></pre>
+<p>To run a workflow on a branch other than the repository's default branch, use the <code>--ref</code> flag.</p>
+<pre><code>gh workflow run WORKFLOW --ref BRANCH
+</code></pre>
+<p>To view the progress of the workflow run, use the <code>run watch</code> subcommand and select the run from the interactive list.</p>
+<pre><code>gh run watch
+</code></pre>
+</div>
+<h2><a href="#running-a-workflow-using-the-rest-api">Running a workflow using the REST API</a></h2>
+<p>When using the REST API, you configure the <code>inputs</code> and <code>ref</code> as request body parameters. If the inputs are omitted, the default values defined in the workflow file are used.</p>
+<div>
+<p>
+You can define up to 10 <code>inputs</code> for a <code>workflow_dispatch</code> event.</p>
+</div>
+<p>For more information about using the REST API, see <a href="/en/rest/actions/workflows#create-a-workflow-dispatch-event">REST API endpoints for workflows</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

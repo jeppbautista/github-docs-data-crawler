@@ -1,0 +1,113 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Organizations" href="/en/organizations">Organizations</a><span>/</span>
+</li>
+<li>
+<a title="Manage membership" href="/en/organizations/managing-membership-in-your-organization">Manage membership</a><span>/</span>
+</li>
+<li><a title="Invite users to join" href="/en/organizations/managing-membership-in-your-organization/inviting-users-to-join-your-organization">Invite users to join</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Inviting users to join your organization</h1></div></div>
+<div>
+<div><p>You can invite anyone to become a member of your organization using their username or email address for GitHub.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Organization owners can invite users to join an organization.</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-organization-invitations"><div><span>About organization invitations</span></div></a></li>
+<li><a href="#inviting-a-user-to-join-your-organization"><div><span>Inviting a user to join your organization</span></div></a></li>
+<li><a href="#retrying-or-canceling-expired-invitations"><div><span>Retrying or canceling expired invitations</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<p> This article does not apply to Enterprise Managed Users. Managed user accounts are provisioned using SCIM, not invited.</p>
+</div>
+<h2><a href="#about-organization-invitations">About organization invitations</a></h2>
+<p>When you invite someone to become a member of your organization, the person receives an email with an invitation link. To join the organization, the invitee clicks the invitation link in the email.</p>
+<p>You can use a person's GitHub username or email address for the invitation.</p>
+<div>
+<p>
+If you use an email address for the invitation, the invitee will only be able to accept the invitation if the email address matches with a verified email address associated with the invitee's personal account on GitHub. For more information, see <a href="/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/verifying-your-email-address">Verifying your email address</a>.</p>
+<p>If an invitee's personal account has been flagged, the invitee won't be able to accept any new or pending invitations to join organizations.</p>
+</div>
+<p>If your organization has a paid per-user subscription, an unused license must be available before you can invite a new member to join the organization or reinstate a former organization member. For more information, see <a href="/en/billing/managing-the-plan-for-your-github-account/about-per-user-pricing">About per-user pricing</a>.</p>
+<p>If an invitee does not accept the invitation within seven days, the pending invitation expires automatically.</p>
+<p>If your organization requires members to use two-factor authentication, users that you invite must enable two-factor authentication before accepting the invitation. For more information, see <a href="/en/organizations/keeping-your-organization-secure/managing-two-factor-authentication-for-your-organization/requiring-two-factor-authentication-in-your-organization">Requiring two-factor authentication in your organization</a> and <a href="/en/authentication/securing-your-account-with-two-factor-authentication-2fa">Securing your account with two-factor authentication (2FA)</a>.</p>
+<p>Organizations that use GitHub Enterprise Cloud can implement SCIM to add, manage, and remove organization members' access to GitHub through an identity provider (IdP). For more information, see <a href="/en/enterprise-cloud@latest/organizations/managing-saml-single-sign-on-for-your-organization/about-scim-for-organizations">About SCIM for organizations</a>" in the GitHub Enterprise Cloud documentation.</p>
+<p>To prevent abuse, you can only create 50 organization invitations within a 24-hour period. If your organization is more than one month old or on a paid plan, the limit is 500 invitations per 24 hour period.</p>
+<h2><a href="#inviting-a-user-to-join-your-organization">Inviting a user to join your organization</a></h2>
+<ol>
+<li>
+<p>In the upper-right corner of GitHub, select your profile photo, then click </p>
+</li>
+<li>
+<p>Click the name of your organization.</p>
+</li>
+<li>
+<p>Under your organization name, click </p>
+<div><picture><source><img src="/assets/cb-18976/images/help/organizations/organization-people-tab.png" alt='Screenshot of the horizontal navigation bar for an organization. A tab, labeled with a person icon and "People," is outlined in dark orange.' width="720" height="108"></source></picture></div>
+</li>
+<li>
+<p>Click <strong>Invite member</strong>.</p>
+</li>
+<li>
+<p>In the search field, type the username, full name, or email address of the person you want to invite and click <strong>Invite</strong>.</p>
+</li>
+<li>
+<p>If the person you're inviting was an organization member within the last three months, select whether to restore their privileges or start fresh, then click <strong>Invite and reinstate</strong> or <strong>Invite and start fresh</strong>.</p>
+</li>
+<li>
+<p>If the person you're inviting has never been a member of the organization or if you cleared their privileges, under "Role in the organization," select an organization role for the user.</p>
+</li>
+<li>
+<p>Optionally, to add the user to a team in the organization, select the team.</p>
+</li>
+<li>
+<p>Click <strong>Send invitation</strong>.</p>
+</li>
+<li>
+<p>The invited person will receive an email inviting them to the organization. They will need to accept the invitation before becoming a member of the organization.
+You can <a href="/en/organizations/managing-membership-in-your-organization/canceling-or-editing-an-invitation-to-join-your-organization">edit or cancel an invitation</a> any time before the user accepts.</p>
+</li>
+</ol>
+<h2><a href="#retrying-or-canceling-expired-invitations">Retrying or canceling expired invitations</a></h2>
+<p>Invitations expire after 7 days. You can retry or cancel expired invitations, either one by one or in bulk. Failed invitations to outside collaborators can also be found in this view.</p>
+<ol>
+<li>
+<p>In the upper-right corner of GitHub, select your profile photo, then click </p>
+</li>
+<li>
+<p>Click the name of your organization.</p>
+</li>
+<li>
+<p>Under your organization name, click </p>
+<div><picture><source><img src="/assets/cb-18976/images/help/organizations/organization-people-tab.png" alt='Screenshot of the horizontal navigation bar for an organization. A tab, labeled with a person icon and "People," is outlined in dark orange.' width="720" height="108"></source></picture></div>
+</li>
+<li>
+<p>In the "Organization permissions" sidebar, click <strong>Failed invitations</strong>.</p>
+</li>
+<li>
+<p>Next to an invitation, select the <strong>Retry invitation</strong> or <strong>Cancel invitation</strong>.</p>
+<div><picture><source><img src="/assets/cb-27352/images/help/organizations/retry-or-cancel-invitation.png" alt="Screenshot of the list of failed invitations for an organization. To the right of the first entry, a kebab icon is outlined in dark orange." width="720" height="119"></source></picture></div>
+</li>
+<li>
+<p>To confirm, click <strong>Retry invitation</strong> or <strong>Cancel invitation</strong>.</p>
+</li>
+</ol>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/organizations/organizing-members-into-teams/adding-organization-members-to-a-team">Adding organization members to a team</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

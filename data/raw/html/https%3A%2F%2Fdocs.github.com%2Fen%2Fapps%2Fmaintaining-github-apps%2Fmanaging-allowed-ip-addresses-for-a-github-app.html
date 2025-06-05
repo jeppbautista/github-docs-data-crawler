@@ -1,0 +1,87 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Apps" href="/en/apps">Apps</a><span>/</span>
+</li>
+<li>
+<a title="Maintaining GitHub Apps" href="/en/apps/maintaining-github-apps">Maintaining GitHub Apps</a><span>/</span>
+</li>
+<li><a title="Manage allowed IP addresses" href="/en/apps/maintaining-github-apps/managing-allowed-ip-addresses-for-a-github-app">Manage allowed IP addresses</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Managing allowed IP addresses for a GitHub App</h1></div></div>
+<div><div><p>You can add an IP allow list to your GitHub App registration to prevent your app from being blocked by an organization's own allow list.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-ip-address-allow-lists-for-github-apps"><div><span>About IP address allow lists for GitHub Apps</span></div></a></li>
+<li><a href="#adding-an-ip-address-allow-list-to-a-github-app-registration"><div><span>Adding an IP address allow list to a GitHub App registration</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-ip-address-allow-lists-for-github-apps">About IP address allow lists for GitHub Apps</a></h2>
+<p>Enterprise and organization owners can restrict access to assets by configuring an IP address allow list. This list specifies the IP addresses that are allowed to connect. For more information, see <a href="/en/enterprise-cloud@latest/admin/policies/enforcing-policies-for-your-enterprise/enforcing-policies-for-security-settings-in-your-enterprise#managing-allowed-ip-addresses-for-organizations-in-your-enterprise">Enforcing policies for security settings in your enterprise</a>.</p>
+<p>When an organization has an allow list, third-party applications that connect via a GitHub App will be denied access unless either of the following condition sets are true:</p>
+<ul>
+<li>The creator of the GitHub App has configured an allow list for the application that specifies the IP addresses at which their application runs. See below for details of how to do this, and</li>
+<li>The organization owner has chosen to permit the addresses in the GitHub App's allow list to be added to their own allow list. For more information, see <a href="/en/enterprise-cloud@latest/organizations/keeping-your-organization-secure/managing-allowed-ip-addresses-for-your-organization#allowing-access-by-github-apps">Managing allowed IP addresses for your organization</a> in the GitHub Enterprise Cloud documentation.</li>
+</ul>
+<p>or</p>
+<ul>
+<li>The organization owner has added an IP allow list entry for the IP addresses from which the application runs. See <a href="/en/enterprise-cloud@latest/organizations/keeping-your-organization-secure/managing-security-settings-for-your-organization/managing-allowed-ip-addresses-for-your-organization#adding-an-allowed-ip-address">Adding an allowed IP address</a> in the GitHub Enterprise Cloud documentation.</li>
+</ul>
+<div>
+<p>
+The addresses in the IP allow list of a GitHub App only affect requests made by installations of the GitHub App. The automatic addition of a GitHub App's IP address to an organization's allow list does not allow access to a GitHub user who connects from that IP address.</p>
+</div>
+<h2><a href="#adding-an-ip-address-allow-list-to-a-github-app-registration">Adding an IP address allow list to a GitHub App registration</a></h2>
+<div>
+<p>
+GitHub is gradually rolling out support for IPv6. As GitHub services continue to add IPv6 support, we will start recognizing IPv6 addresses of GitHub users. To prevent possible access interruptions, please ensure you have added any necessary IPv6 addresses to your IP allow list.</p>
+</div>
+<div>
+<p>
+Due to caching, adding or removing IP addresses can take a few minutes to fully take effect.</p>
+</div>
+<ol>
+<li>
+<p>In the upper-right corner of any page on GitHub, click your profile photo.</p>
+</li>
+<li>
+<p>Navigate to your account settings.</p>
+<ul>
+<li>For an app owned by a personal account, click <strong>Settings</strong>.</li>
+<li>For an app owned by an organization:
+<ol>
+<li>Click <strong>Your organizations</strong>.</li>
+<li>To the right of the organization, click <strong>Settings</strong>.</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p>In the left sidebar, click </p>
+</li>
+<li>
+<p>In the left sidebar, click <strong>GitHub Apps</strong>.</p>
+</li>
+<li>
+<p>To the right of the GitHub App you want to modify, click <strong>Edit</strong>.</p>
+</li>
+<li>
+<p>At the bottom of the "IP allow list" section, in the "IP address or range in CIDR notation" field, type an IP address, or a range of addresses in CIDR notation.</p>
+<div><picture><source><img src="/assets/cb-33293/images/help/security/ip-address-field.png" alt='Screenshot of the IP allow list settings. A text field, labeled "IP address or range in CIDR notation", is highlighted with an orange outline.' width="720" height="186"></source></picture></div>
+</li>
+<li>
+<p>Optionally, in the "Short description of IP address or range" field, enter a description of the allowed IP address or range.
+The description is for your reference and is not used in the allow list of organizations where the GitHub App is installed. Instead, organization allow lists will include "Managed by the NAME GitHub App" as the description.</p>
+</li>
+<li>
+<p>Click </p>
+</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

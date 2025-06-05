@@ -1,0 +1,356 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Dependabot" href="/en/code-security/dependabot">Dependabot</a><span>/</span>
+</li>
+<li>
+<a title="Maintain dependencies at scale" href="/en/code-security/dependabot/maintain-dependencies">Maintain dependencies at scale</a><span>/</span>
+</li>
+<li><a title="Remove access to public registries" href="/en/code-security/dependabot/maintain-dependencies/removing-dependabot-access-to-public-registries">Remove access to public registries</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Removing Dependabot access to public registries</h1></div></div>
+<div>
+<div><p>Examples of how you can configure Dependabot to only access private registries by removing calls to public registries.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Users with <strong>write</strong> access</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-configuring-dependabot-to-only-access-private-registries"><div><span>About configuring Dependabot to only access private registries</span></div></a></li>
+<li><a href="#bundler"><div><span>Bundler</span></div></a></li>
+<li><a href="#docker"><div><span>Docker</span></div></a></li>
+<li><a href="#gradle"><div><span>Gradle</span></div></a></li>
+<li><a href="#maven"><div><span>Maven</span></div></a></li>
+<li><a href="#node"><div><span>Node</span></div></a></li>
+<li><a href="#nuget"><div><span>NuGet</span></div></a></li>
+<li><a href="#python"><div><span>Python</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-configuring-dependabot-to-only-access-private-registries">About configuring Dependabot to only access private registries</a></h2>
+<p>Dependabot can access public registries by default, and you can configure Dependabot to also access private registries. For more information about private registry support and configuration, see <a href="/en/code-security/dependabot/working-with-dependabot/configuring-access-to-private-registries-for-dependabot">Configuring access to private registries for Dependabot</a>. For in-depth information about available options, as well as recommendations and advice when configuring private registries, see <a href="/en/code-security/dependabot/working-with-dependabot/guidance-for-the-configuration-of-private-registries-for-dependabot">Guidance for the configuration of private registries for Dependabot</a>.</p>
+<p>To have greater control over Dependabot's access to your private registries and internal network resources, you can configure Dependabot to run on GitHub Actions self-hosted runners. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/about-dependabot-on-github-actions-runners">About Dependabot on GitHub Actions runners</a> and <a href="/en/code-security/dependabot/maintain-dependencies/managing-dependabot-on-self-hosted-runners">Managing Dependabot on self-hosted runners</a>.</p>
+<p>You can configure Dependabot to access <em>only</em> private registries by removing calls to public registries. This can only be configured for the ecosystems listed in this article.</p>
+<h2><a href="#bundler">Bundler</a></h2>
+<p>To configure the Bundler ecosystem to only access private registries, you can set <code>replaces-base: true</code> in the <code>dependabot.yml</code> file. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/configuring-access-to-private-registries-for-dependabot#rubygems-server">Configuring access to private registries for Dependabot</a>.</p>
+<p>The Bundler ecosystem additionally requires a <code>Gemfile</code> file with the private registry URL to be checked into the repository.</p>
+<div>
+<header><span>YAML</span><pre># Example Gemfile
+
+ source "https://private_registry_url"
+</pre></header><pre><code><span># Example Gemfile</span>
+
+ <span>source</span> <span>"https://private_registry_url"</span>
+</code></pre>
+</div>
+<h2><a href="#docker">Docker</a></h2>
+<p>To configure the Docker ecosystem to only access private registries, you can use these configuration methods.</p>
+<p><strong>Option 1</strong></p>
+<p>Define the private registry configuration in a <code>dependabot.yml</code> file without <code>replaces-base</code>. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/configuring-access-to-private-registries-for-dependabot#docker-registry">Configuring access to private registries for Dependabot</a>.</p>
+<div>
+<p>
+Remove <code>replaces-base: true</code> from the configuration file.</p>
+</div>
+<div>
+<header><span>YAML</span><pre>version: 2
+registries:
+  azuretestregistry: # Define access for a private registry
+    type: docker-registry
+    url: firewallregistrydep.azurecr.io
+    username: firewallregistrydep
+    password: ${{ secrets.AZUREHUB_PASSWORD }}
+</pre></header><pre><code><span>version:</span> <span>2</span>
+<span>registries:</span>
+  <span>azuretestregistry:</span> <span># Define access for a private registry</span>
+    <span>type:</span> <span>docker-registry</span>
+    <span>url:</span> <span>firewallregistrydep.azurecr.io</span>
+    <span>username:</span> <span>firewallregistrydep</span>
+    <span>password:</span> <span>${{</span> <span>secrets.AZUREHUB_PASSWORD</span> <span>}}</span>
+</code></pre>
+</div>
+<p>In the <code>Dockerfile</code> file, add the image name in the format of <code>IMAGE[:TAG]</code>, where <code>IMAGE</code> consists of your username and the name of the repository.</p>
+<div>
+<header><span>YAML</span><pre> FROM firewallregistrydep.azurecr.io/myreg/ubuntu:22.04
+</pre></header><pre><code> <span>FROM</span> <span>firewallregistrydep.azurecr.io/myreg/ubuntu:22.04</span>
+</code></pre>
+</div>
+<p><strong>Option 2</strong></p>
+<p>Set <code>replaces-base: true</code> in the <code>dependabot.yml</code> file. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/configuring-access-to-private-registries-for-dependabot#docker-registry">Configuring access to private registries for Dependabot</a>. The registry configured with the <code>replaces-base</code> can be used as a mirror or a pull through cache. For further details, see <a href="https://docs.docker.com/registry/recipes/mirror/">Registry as a pull through cache</a> in the Docker documentation.</p>
+<h2><a href="#gradle">Gradle</a></h2>
+<p>To configure the Gradle ecosystem to only access private registries, you can use these configuration methods.</p>
+<p>Define the private registry configuration in a <code>dependabot.yml</code> file. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/configuring-access-to-private-registries-for-dependabot#maven-repository">Configuring access to private registries for Dependabot</a>.</p>
+<div>
+<p>
+Remove <code>replaces-base: true</code> from the configuration file.</p>
+</div>
+<p>Additionally, you also need to specify the private registry URL in the <code>repositories</code> section of the <code>build.gradle</code> file.</p>
+<pre><code># Example build.gradle file
+
+repositories {
+    maven {
+        url <span>"https://private_registry_url"</span>
+    }
+}
+</code></pre>
+<h2><a href="#maven">Maven</a></h2>
+<p>To configure the Maven ecosystem to only access private registries, you can use these configuration methods.</p>
+<p><strong>Option 1</strong></p>
+<p>Set <code>replaces-base: true</code> in the <code>dependabot.yml</code> file. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/configuring-access-to-private-registries-for-dependabot#maven-repository">Configuring access to private registries for Dependabot</a>.</p>
+<p><strong>Option 2</strong></p>
+<p>Use only the private registry URL in the <code>pom.xml</code> file.</p>
+<pre><code><span>&lt;<span>project</span>&gt;</span>
+...
+ <span>&lt;<span>repositories</span>&gt;</span>
+  <span>&lt;<span>repository</span>&gt;</span>
+    <span>&lt;<span>id</span>&gt;</span>central<span>&lt;/<span>id</span>&gt;</span>
+    <span>&lt;<span>name</span>&gt;</span>your custom repo<span>&lt;/<span>name</span>&gt;</span>
+    <span>&lt;<span>url</span>&gt;</span>https://private_registry_url<span>&lt;/<span>url</span>&gt;</span>
+ <span>&lt;/<span>repository</span>&gt;</span>
+...
+<span>&lt;/<span>project</span>&gt;</span>
+</code></pre>
+<h2><a href="#node">Node</a></h2>
+<h3><a href="#npm">npm</a></h3>
+<p>To configure the npm ecosystem to only access private registries, you can use these configuration methods.</p>
+<p><strong>Option 1</strong></p>
+<p>Define the private registry configuration in a <code>dependabot.yml</code> file. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/configuring-access-to-private-registries-for-dependabot#npm-registry">Configuring access to private registries for Dependabot</a>.</p>
+<div>
+<p>
+Remove <code>replaces-base: true</code> from the configuration file.</p>
+</div>
+<p>The npm ecosystem additionally requires a <code>.npmrc</code> file with the private registry URL to be checked into the repository.</p>
+<div>
+<header><span>YAML</span><pre> registry=https://private_registry_url
+</pre></header><pre><code> <span>registry=https://private_registry_url</span>
+</code></pre>
+</div>
+<p><strong>Option 2</strong></p>
+<p>If there is no global registry defined in an <code>.npmrc</code> file, you can set <code>replaces-base: true</code> in the <code>dependabot.yml</code> file. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/configuring-access-to-private-registries-for-dependabot#npm-registry">Configuring access to private registries for Dependabot</a>.</p>
+<div>
+<p>
+For scoped dependencies (<code>@my-org/my-dep</code>), Dependabot requires that the private registry is defined in the project's <code>.npmrc</code> file. To define private registries for individual scopes, use <code>@myscope:registry=https://private_registry_url</code>.</p>
+</div>
+<h3><a href="#yarn">Yarn</a></h3>
+<p>Yarn Classic and Yarn Berry private registries are both supported by Dependabot, but Dependabot requires a different configuration for each ecosystem to access only private registries.</p>
+<h4><a href="#yarn-classic">Yarn Classic</a></h4>
+<p>To configure the Yarn Classic ecosystem to only access private registries, you can use these configuration methods.</p>
+<p><strong>Option 1</strong></p>
+<p>Define the private registry configuration in a <code>dependabot.yml</code> file. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/configuring-access-to-private-registries-for-dependabot#npm-registry">Configuring access to private registries for Dependabot</a>.</p>
+<div>
+<p>
+Delete <code>replaces-base: true</code> from the configuration file.</p>
+</div>
+<p>To ensure the private registry is listed as the dependency source in the project's <code>yarn.lock</code> file, run <code>yarn install</code> on a machine with private registry access. Yarn should update the <code>resolved</code> field to include the private registry URL.</p>
+<div>
+<header><span>YAML</span><pre>encoding@^0.1.11:
+  version "0.1.13"
+  resolved "https://private_registry_url/encoding/-/encoding-0.1.13.tgz#56574afdd791f54a8e9b2785c0582a2d26210fa9"
+  integrity sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==
+  dependencies:
+    iconv-lite "^0.6.2"
+</pre></header><pre><code><span>encoding@^0.1.11:</span>
+  <span>version</span> <span>"0.1.13"</span>
+  <span>resolved</span> <span>"https://private_registry_url/encoding/-/encoding-0.1.13.tgz#56574afdd791f54a8e9b2785c0582a2d26210fa9"</span>
+  <span>integrity</span> <span>sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==</span>
+  <span>dependencies:</span>
+    <span>iconv-lite</span> <span>"^0.6.2"</span>
+</code></pre>
+</div>
+<p><strong>Option 2</strong></p>
+<p>If the <code>yarn.lock</code> file doesn't list the private registry as the dependency source, you can set up Yarn Classic according to the normal package manager instructions:</p>
+<ol>
+<li>
+<p>Define the private registry configuration in a <code>dependabot.yml</code> file</p>
+</li>
+<li>
+<p>Add the registry to a <code>.yarnrc</code> file in the project root with the key registry. Alternatively run <code>yarn config set registry &lt;private registry URL&gt;</code>.</p>
+<div>
+<header><span>YAML</span><pre>registry https://private_registry_url
+</pre></header><pre><code><span>registry</span> <span>https://private_registry_url</span>
+</code></pre>
+</div>
+</li>
+</ol>
+<p><strong>Option 3</strong></p>
+<p>If there is no global registry defined in a <code>.yarnrc</code> file, you can set <code>replaces-base: true</code> in the <code>dependabot.yml</code> file. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/configuring-access-to-private-registries-for-dependabot#npm-registry">Configuring access to private registries for Dependabot</a>.</p>
+<div>
+<p>
+For scoped dependencies (<code>@my-org/my-dep</code>), Dependabot requires that the private registry is defined in the project's <code>.npmrc</code> file. To define private registries for individual scopes, use <code>@myscope:registry=https://private_registry_url</code>.</p>
+</div>
+<h4><a href="#yarn-berry">Yarn Berry</a></h4>
+<p>To configure the Yarn Berry ecosystem to only access private registries, you can use these configuration methods.</p>
+<p><strong>Option 1</strong></p>
+<p>Define the private registry configuration in a <code>dependabot.yml</code> file. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/configuring-access-to-private-registries-for-dependabot#npm-registry">Configuring access to private registries for Dependabot</a>.</p>
+<div>
+<p>
+Delete <code>replaces-base: true</code> from the configuration file.</p>
+</div>
+<p>To ensure the private registry is listed as the dependency source in the project's <code>yarn.lock</code> file, run <code>yarn install</code> on a machine with private registry access. Yarn should update the <code>resolved</code> field to include the private registry URL.</p>
+<div>
+<header><span>YAML</span><pre>encoding@^0.1.11:
+  version "0.1.13"
+  resolved "https://private_registry_url/encoding/-/encoding-0.1.13.tgz#56574afdd791f54a8e9b2785c0582a2d26210fa9"
+  integrity sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==
+  dependencies:
+    iconv-lite "^0.6.2"
+</pre></header><pre><code><span>encoding@^0.1.11:</span>
+  <span>version</span> <span>"0.1.13"</span>
+  <span>resolved</span> <span>"https://private_registry_url/encoding/-/encoding-0.1.13.tgz#56574afdd791f54a8e9b2785c0582a2d26210fa9"</span>
+  <span>integrity</span> <span>sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==</span>
+  <span>dependencies:</span>
+    <span>iconv-lite</span> <span>"^0.6.2"</span>
+</code></pre>
+</div>
+<p><strong>Option 2</strong></p>
+<p>If the <code>yarn.lock</code> file doesn't list the private registry as the dependency source, you can set up Yarn Berry according to the normal package manager instructions:</p>
+<ol>
+<li>Define the private registry configuration in a <code>dependabot.yml</code> file</li>
+<li>Add the registry to a <code>.yarnrc.yml</code> file in the project root with the key <code>npmRegistryServer</code>. Alternatively run <code>yarn config set npmRegistryServer &lt;private registry URL&gt;</code>.
+<code>    npmRegistryServer: "https://private_registry_url"    </code>
+</li>
+</ol>
+<div>
+<p>
+For scoped dependencies (<code>@my-org/my-dep</code>), Dependabot requires that the private registry is defined in the project's <code>.yarnrc</code> file. To define private registries for individual scopes, use <code>"@myscope:registry" "https://private_registry_url"</code>.</p>
+</div>
+<h2><a href="#nuget">NuGet</a></h2>
+<p>To allow the NuGet ecosystem to only access private registries, you can configure the <code>dependabot.yml</code> file. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/configuring-access-to-private-registries-for-dependabot#nuget-feed">Configuring access to private registries for Dependabot</a>.</p>
+<p>The NuGet ecosystem additionally requires a <code>nuget.config</code> file to be checked into the repository, with either a <code>&lt; clear /&gt;</code> tag in <code>&lt;packageSources&gt;</code> section or a key <code>nuget.org</code> as true in the <code>disabledPackageSources</code> section of the <code>nuget.config</code> file.</p>
+<p>This is an example of a <code>&lt; clear /&gt;</code> tag in the <code>packageSources</code> section of the <code>nuget.config</code>.</p>
+<pre><code><span>&lt;?xml version=<span>"1.0"</span> encoding=<span>"utf-8"</span>?&gt;</span>
+<span>&lt;<span>configuration</span>&gt;</span>
+ <span>&lt;<span>packageSources</span>&gt;</span>
+   &lt; clear /&gt;
+   <span>&lt;<span>add</span> <span>key</span>=<span>"example-nuget"</span> <span>value</span>=<span>"https://private_registry_url/nuget/example-nuget/index.json"</span> /&gt;</span>
+ <span>&lt;/<span>packageSources</span>&gt;</span>
+<span>&lt;/<span>configuration</span>&gt;</span>
+</code></pre>
+<p>This is an example of adding key <code>nuget.org</code> as true to the <code>disabledPackageSources</code> section of the <code>nuget.config</code></p>
+<pre><code><span>&lt;?xml version=<span>"1.0"</span> encoding=<span>"utf-8"</span>?&gt;</span>
+<span>&lt;<span>configuration</span>&gt;</span>
+  <span>&lt;<span>packageSources</span>&gt;</span>
+    <span>&lt;<span>add</span> <span>key</span>=<span>"example-nuget"</span> <span>value</span>=<span>"https://private_registry_url/nuget/example-nuget/index.json"</span> /&gt;</span>
+  <span>&lt;/<span>packageSources</span>&gt;</span>
+  <span>&lt;<span>disabledPackageSources</span>&gt;</span>
+    <span>&lt;<span>add</span> <span>key</span>=<span>"nuget.org"</span> <span>value</span>=<span>"true"</span> /&gt;</span>
+  <span>&lt;/<span>disabledPackageSources</span>&gt;</span>
+<span>&lt;/<span>configuration</span>&gt;</span>
+</code></pre>
+<p>To configure Dependabot to access both private <em>and</em> public feeds, view the following <code>dependabot.yml</code> example which includes the configured <code>public</code> feed under <code>registries</code>:</p>
+<div>
+<header><span>YAML</span><pre>version: 2
+registries:
+  nuget-example:
+    type: nuget-feed
+    url: https://nuget.example.com/v3/index.json
+    username: $
+    password: $
+  public:
+    type: nuget-feed
+    url: https://api.nuget.org/v3/index.json
+updates:
+  - package-ecosystem: nuget
+    directory: "/"
+    registries: "*"
+    schedule:
+      interval: daily
+</pre></header><pre><code><span>version:</span> <span>2</span>
+<span>registries:</span>
+  <span>nuget-example:</span>
+    <span>type:</span> <span>nuget-feed</span>
+    <span>url:</span> <span>https://nuget.example.com/v3/index.json</span>
+    <span>username:</span> <span>$</span>
+    <span>password:</span> <span>$</span>
+  <span>public:</span>
+    <span>type:</span> <span>nuget-feed</span>
+    <span>url:</span> <span>https://api.nuget.org/v3/index.json</span>
+<span>updates:</span>
+  <span>-</span> <span>package-ecosystem:</span> <span>nuget</span>
+    <span>directory:</span> <span>"/"</span>
+    <span>registries:</span> <span>"*"</span>
+    <span>schedule:</span>
+      <span>interval:</span> <span>daily</span>
+</code></pre>
+</div>
+<h2><a href="#python">Python</a></h2>
+<p>Pip, Pip-compile, Pipenv, and Poetry are the four package managers that the Python ecosystem currently supports.</p>
+<h3><a href="#pip">Pip</a></h3>
+<p>To configure the Pip ecosystem to only access private registries, you can use these configuration methods.</p>
+<p><strong>Option 1</strong></p>
+<p>Define the private registry configuration in a <code>dependabot.yml</code> file. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/configuring-access-to-private-registries-for-dependabot#npm-registry">Configuring access to private registries for Dependabot</a>.</p>
+<div>
+<p>
+Delete <code>replaces-base: true</code> from the configuration file.</p>
+</div>
+<p>Add the private registry URL to the <code>[global]</code> section of the <code>pip.conf</code> file and check the file into the repository.</p>
+<div>
+<header><span>YAML</span><pre>[global]
+timeout = 60
+index-url = https://private_registry_url
+</pre></header><pre><code>[<span>global</span>]
+<span>timeout</span> <span>=</span> <span>60</span>
+<span>index-url</span> <span>=</span> <span>https://private_registry_url</span>
+</code></pre>
+</div>
+<p><strong>Option 2</strong></p>
+<p>Set <code>replaces-base: true</code> in the <code>dependabot.yml</code> file. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/configuring-access-to-private-registries-for-dependabot#python-index">Configuring access to private registries for Dependabot</a>.</p>
+<h3><a href="#pip-compile">Pip-compile</a></h3>
+<p>To configure the Pip-compile ecosystem to only access private registries, you can use these configuration methods.</p>
+<p><strong>Option 1</strong></p>
+<p>Set <code>replaces-base: true</code> in the <code>dependabot.yml</code> file. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/configuring-access-to-private-registries-for-dependabot#python-index">Configuring access to private registries for Dependabot</a>.</p>
+<p><strong>Option 2</strong></p>
+<p>Define the private registry configuration in a <code>dependabot.yml</code> file. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/configuring-access-to-private-registries-for-dependabot#npm-registry">Configuring access to private registries for Dependabot</a>.</p>
+<div>
+<p>
+Delete <code>replaces-base: true</code> from the configuration file.</p>
+</div>
+<p>Add the private registry URL to the <code>requirements.txt</code> file and check the file into the repository.</p>
+<div>
+<header><span>YAML</span><pre>--index-url https://private_registry_url
+</pre></header><pre><code><span>--index-url</span> <span>https://private_registry_url</span>
+</code></pre>
+</div>
+<h3><a href="#pipenv">Pipenv</a></h3>
+<p>To configure Pipenv to only access private registries, remove <code>replaces-base</code> from the <code>dependabot.yml</code> file. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/configuring-access-to-private-registries-for-dependabot#python-index">Configuring access to private registries for Dependabot</a>.</p>
+<div>
+<p>
+Delete <code>replaces-base: true</code> from the configuration file.</p>
+</div>
+<p>Add the private registry URL to the <code>[[source]]</code> section of the <code>Pipfile</code> file and check the file into the repository.</p>
+<div>
+<header><span>YAML</span><pre>[[source]]
+url = "https://private_registry_url"
+verify_ssl = true
+name = "pypi"
+</pre></header><pre><code>[[<span>source</span>]]
+<span>url</span> <span>=</span> <span>"https://private_registry_url"</span>
+<span>verify_ssl</span> <span>=</span> <span>true</span>
+<span>name</span> <span>=</span> <span>"pypi"</span>
+</code></pre>
+</div>
+<h3><a href="#poetry">Poetry</a></h3>
+<p>To configure Poetry to only access private registries, set <code>replaces-base: true</code> in the <code>dependabot.yml</code> file. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/configuring-access-to-private-registries-for-dependabot#python-index">Configuring access to private registries for Dependabot</a>.</p>
+<p>Add the private registry url to the <code>[[tool.poetry.source]]</code> section of the <code>pyproject.toml</code> file and checked it in the repository.</p>
+<div>
+<header><span>YAML</span><pre>[[tool.poetry.source]]
+name = "private"
+url = "https://private_registry_url"
+default = true
+</pre></header><pre><code>[[<span>tool.poetry.source</span>]]
+<span>name</span> <span>=</span> <span>"private"</span>
+<span>url</span> <span>=</span> <span>"https://private_registry_url"</span>
+<span>default</span> <span>=</span> <span>true</span>
+</code></pre>
+</div>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

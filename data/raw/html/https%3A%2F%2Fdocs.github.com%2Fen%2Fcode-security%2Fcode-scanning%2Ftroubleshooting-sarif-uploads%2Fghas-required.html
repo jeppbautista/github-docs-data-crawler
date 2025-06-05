@@ -1,0 +1,30 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Code scanning" href="/en/code-security/code-scanning">Code scanning</a><span>/</span>
+</li>
+<li>
+<a title="Troubleshooting SARIF uploads" href="/en/code-security/code-scanning/troubleshooting-sarif-uploads">Troubleshooting SARIF uploads</a><span>/</span>
+</li>
+<li><a title="GitHub Code Security disabled" href="/en/code-security/code-scanning/troubleshooting-sarif-uploads/ghas-required">GitHub Code Security disabled</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Upload fails because GitHub Code Security is disabled</h1></div></div>
+<div><div><p>You can only upload SARIF results to private or internal repositories where GitHub Code Security is enabled.</p></div></div>
+<div><div><div>
+<h2><a href="#about-this-error">About this error</a></h2>
+<pre><code>GitHub Code Security or GitHub Advanced Security not enabled
+GitHub Code Security or GitHub Advanced Security blocked by a policy
+403: GitHub Code Security or GitHub Advanced Security is not enabled
+</code></pre>
+<p>This error is reported if a process attempts to upload a SARIF file to a repository where GitHub Code Security is not enabled or where use of this feature is blocked by a policy.</p>
+<p>You will only see this error for SARIF files that contain results created using CodeQL and for uploads to repositories with private or internal visibility. GitHub Code Security is enabled by default for all public repositories.</p>
+<p>For information on how to confirm this error and fix the problem, see <a href="/en/code-security/code-scanning/troubleshooting-code-scanning/advanced-security-must-be-enabled">Error: "GitHub Code Security or GitHub Advanced Security must be enabled for this repository to use code scanning"</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

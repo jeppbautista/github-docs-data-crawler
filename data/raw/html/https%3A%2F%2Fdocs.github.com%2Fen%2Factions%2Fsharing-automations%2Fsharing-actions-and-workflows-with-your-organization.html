@@ -1,0 +1,45 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Share automations" href="/en/actions/sharing-automations">Share automations</a><span>/</span>
+</li>
+<li><a title="Share with your organization" href="/en/actions/sharing-automations/sharing-actions-and-workflows-with-your-organization">Share with your organization</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Sharing actions and workflows with your organization</h1></div></div>
+<div><div><p>You can share an action or reusable workflow with your organization without publishing the action or workflow publicly.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-github-actions-access-to-private-repositories"><div><span>About GitHub Actions access to private repositories</span></div></a></li>
+<li><a href="#sharing-actions-and-workflows-with-your-organization"><div><span>Sharing actions and workflows with your organization</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-github-actions-access-to-private-repositories">About GitHub Actions access to private repositories</a></h2>
+<p>You can share actions and reusable workflows within your organization, without publishing them publicly, by allowing GitHub Actions workflows to access a private repository that contains the action or reusable workflow.</p>
+<p>Any actions or reusable workflows stored in the private repository can be used in workflows defined in other private repositories owned by the same organization. Actions and reusable workflows stored in private repositories cannot be used in public repositories.</p>
+<div>
+<ul>
+<li>If you make a private repository accessible to GitHub Actions workflows in other repositories, outside collaborators on the other repositories can indirectly access the private repository, even though they do not have direct access to these repositories. The outside collaborators can view logs for workflow runs when actions or workflows from the private repository are used.</li>
+<li>To allow runners to download these actions, GitHub passes a scoped installation token to the runner. This token has read access to the repository, and automatically expires after one hour.</li>
+</ul>
+</div>
+<h2><a href="#sharing-actions-and-workflows-with-your-organization">Sharing actions and workflows with your organization</a></h2>
+<ol>
+<li>Store the action or reusable workflow in a private repository. For more information, see <a href="/en/repositories/creating-and-managing-repositories/about-repositories#about-repository-visibility">About repositories</a>.</li>
+<li>Configure the repository to allow access to workflows in other private repositories. For more information, see <a href="/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#allowing-access-to-components-in-a-private-repository">Managing GitHub Actions settings for a repository</a>.</li>
+</ol>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/actions/using-workflows/reusing-workflows">Reusing workflows</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

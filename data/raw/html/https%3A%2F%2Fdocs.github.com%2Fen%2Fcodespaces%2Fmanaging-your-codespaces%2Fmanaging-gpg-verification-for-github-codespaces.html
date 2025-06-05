@@ -1,0 +1,65 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Managing your codespaces" href="/en/codespaces/managing-your-codespaces">Managing your codespaces</a><span>/</span>
+</li>
+<li><a title="GPG verification" href="/en/codespaces/managing-your-codespaces/managing-gpg-verification-for-github-codespaces">GPG verification</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Managing GPG verification for GitHub Codespaces</h1></div></div>
+<div><div><p>You can allow GitHub to automatically use GPG to sign commits you make in your codespaces, so other people can be confident that the changes come from a trusted source.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-gpg-verification-in-github-codespaces"><div><span>About GPG verification in GitHub Codespaces</span></div></a></li>
+<li><a href="#enabling-or-disabling-gpg-verification"><div><span>Enabling or disabling GPG verification</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-gpg-verification-in-github-codespaces">About GPG verification in GitHub Codespaces</a></h2>
+<p>After you enable GPG verification, GitHub will automatically sign commits you make in GitHub Codespaces, and the commits will have a verified status on GitHub. For more information about GitHub-signed commits, see <a href="/en/authentication/managing-commit-signature-verification/about-commit-signature-verification">About commit signature verification</a>.</p>
+<p>By default, GPG verification is disabled for codespaces you create. If you enable GPG verification, your commits are signed in repositories that you trust.</p>
+<p>Your list of trusted repositories for GitHub Codespaces is shared between the GPG verification and Settings Sync features. Assuming you have both features enabled, if you have added a selected list of trusted repositories for GPG verification, Settings Sync is turned on in codespaces created from these repositories. If you trust a new repository for Settings Sync, GPG verification is enabled for the same repository. Although the features share the same list of trusted repositories, you can enable or disable GPG verification and Settings Sync independently.</p>
+<div>
+<p>
+If you have previously enabled GPG verification for all repositories, we recommend changing your preferences to use a selected list of trusted repositories. For more information, see <a href="/en/codespaces/codespaces-reference/security-in-github-codespaces#using-settings-sync">Security in GitHub Codespaces</a>.</p>
+</div>
+<p>For more information about managing your preferences for Settings Sync, see <a href="/en/codespaces/setting-your-user-preferences/personalizing-github-codespaces-for-your-account#managing-your-preferences-for-settings-sync">Personalizing GitHub Codespaces for your account</a>.</p>
+<div>
+<p>
+If you have linked a dotfiles repository with GitHub Codespaces, the Git configuration in your dotfiles may conflict with the configuration that GitHub Codespaces requires to sign commits. For more information, see <a href="/en/codespaces/troubleshooting/troubleshooting-gpg-verification-for-github-codespaces">Troubleshooting GPG verification for GitHub Codespaces</a>.</p>
+</div>
+<h2><a href="#enabling-or-disabling-gpg-verification">Enabling or disabling GPG verification</a></h2>
+<ol>
+<li>
+<p>In the upper-right corner of any page on GitHub, click your profile photo, then click </p>
+</li>
+<li>
+<p>In the "Code, planning, and automation" section of the sidebar, click </p>
+</li>
+<li>
+<p>On the page that's displayed, under "GPG verification," enable or disable GPG verification by selecting or deselecting <strong>Enable</strong>.</p>
+</li>
+<li>
+<p>To change your trusted repositories for GPG verification and Settings Sync, under "Trusted repositories," either select <strong>All repositories</strong>, or select <strong>Selected repositories</strong> and use the "Select repositories" dropdown to add repositories you trust.</p>
+<div>
+<p>
+We recommend using a selected list of trusted repositories. For more information, see <a href="/en/codespaces/codespaces-reference/security-in-github-codespaces#using-settings-sync">Security in GitHub Codespaces</a>.</p>
+</div>
+</li>
+</ol>
+<p>Once you enable GPG verification, it will automatically take effect in any new codespaces you create from the relevant repositories. To have GPG verification take effect in an existing active codespace, you will need to stop and restart the codespace. For more information, see <a href="/en/codespaces/developing-in-codespaces/stopping-and-starting-a-codespace">Stopping and starting a codespace</a>.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/codespaces/setting-your-user-preferences">Setting your user preferences</a></li>
+<li><a href="/en/codespaces/customizing-your-codespace">Customizing your codespace</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

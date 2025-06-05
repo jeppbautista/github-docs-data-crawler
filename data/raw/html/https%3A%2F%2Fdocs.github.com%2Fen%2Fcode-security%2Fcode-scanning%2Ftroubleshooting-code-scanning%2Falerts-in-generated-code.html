@@ -1,0 +1,24 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Code scanning" href="/en/code-security/code-scanning">Code scanning</a><span>/</span>
+</li>
+<li>
+<a title="Troubleshooting code scanning" href="/en/code-security/code-scanning/troubleshooting-code-scanning">Troubleshooting code scanning</a><span>/</span>
+</li>
+<li><a title="Alerts in generated code" href="/en/code-security/code-scanning/troubleshooting-code-scanning/alerts-in-generated-code">Alerts in generated code</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Alerts found in generated code</h1></div></div>
+<div><div><p>When analyzing your code with code scanning, you may wish to build only the code which you wish to analyze.</p></div></div>
+<div><div><div>
+<p>For compiled languages like Java, Kotlin, Go, C, C++, and C#, CodeQL analyzes all of the code which was built during the workflow run. To limit the amount of code being analyzed, build only the code which you wish to analyze by specifying your own build steps in a <code>run</code> block. You can combine specifying your own build steps with using the <code>paths</code> or <code>paths-ignore</code> filters on the <code>pull_request</code> and <code>push</code> events to ensure that your workflow only runs when specific code is changed. For more information, see <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#onpushpull_requestpull_request_targetpathspaths-ignore">Workflow syntax for GitHub Actions</a>.</p>
+<p>For languages like JavaScript, Python, and TypeScript, that CodeQL analyzes without compiling the source code, you can specify additional configuration options to limit the amount of code to analyze. For more information, see <a href="/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#specifying-directories-to-scan">Customizing your advanced setup for code scanning</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,59 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Organizations" href="/en/organizations">Organizations</a><span>/</span>
+</li>
+<li>
+<a title="Organization security" href="/en/organizations/keeping-your-organization-secure">Organization security</a><span>/</span>
+</li>
+<li>
+<a title="Manage security settings" href="/en/organizations/keeping-your-organization-secure/managing-security-settings-for-your-organization">Manage security settings</a><span>/</span>
+</li>
+<li><a title="IP addresses in audit log" href="/en/organizations/keeping-your-organization-secure/managing-security-settings-for-your-organization/displaying-ip-addresses-in-the-audit-log-for-your-organization">IP addresses in audit log</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Displaying IP addresses in the audit log for your organization</h1></div></div>
+<div>
+<div><p>You can display the source IP address for events in your organization's audit log.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Organization owners can display IP addresses in the audit log for an enterprise.</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-display-of-ip-addresses-in-the-audit-log"><div><span>About display of IP addresses in the audit log</span></div></a></li>
+<li><a href="#events-that-display-ip-addresses-in-the-audit-log"><div><span>Events that display IP addresses in the audit log</span></div></a></li>
+<li><a href="#enabling-display-of-ip-addresses-in-the-audit-log"><div><span>Enabling display of IP addresses in the audit log</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<p>
+Displaying IP addresses in the audit log for an organization is in public preview and subject to change.</p>
+</div>
+<h2><a href="#about-display-of-ip-addresses-in-the-audit-log">About display of IP addresses in the audit log</a></h2>
+<p>By default, GitHub does not display the source IP address for events in your organization's audit log. Optionally, to ensure compliance and respond to threats, you can display the full IP address associated with the actor responsible for each event. Actors are typically users, but can also be apps or integrations. If you enable this setting, the IP address will be displayed for <strong>new and existing events</strong> in the audit log.</p>
+<p>You are responsible for meeting any legal obligations that accompany the viewing or storage of IP addresses displayed within your organization's audit log.</p>
+<p>When anyone creates an account on GitHub, the person agrees to GitHub's collection of basic information about connections to GitHub's services, including source IP address. For more information, see <a href="/en/site-policy/privacy-policies/github-privacy-statement#usage-information">GitHub General Privacy Statement</a>.</p>
+<p>After you enable the feature, you can access the audit log to view events that include IP addresses. For more information, see <a href="/en/organizations/keeping-your-organization-secure/managing-security-settings-for-your-organization/reviewing-the-audit-log-for-your-organization">Reviewing the audit log for your organization</a>.</p>
+<h2><a href="#events-that-display-ip-addresses-in-the-audit-log">Events that display IP addresses in the audit log</a></h2>
+<p>GitHub displays an IP address for each event in the organization audit log that meets these criteria.</p>
+<ul>
+<li>The actor is an organization member or owner</li>
+<li>The target is either an organization-owned repository that is private or internal, or an organization resource that is not a repository, such as a project.</li>
+</ul>
+<h2><a href="#enabling-display-of-ip-addresses-in-the-audit-log">Enabling display of IP addresses in the audit log</a></h2>
+<ol>
+<li>In the upper-right corner of GitHub, select your profile photo, then click </li>
+<li>Next to the organization, click <strong>Settings</strong>.</li>
+<li>In the "Archive" section of the sidebar, click <strong>Audit log</strong>.</li>
+<li>On the <strong>Settings</strong> tab, under "Disclose actor IP addresses in audit logs", select <strong>Enable source IP disclosure</strong>.</li>
+<li>Click <strong>Save</strong>.</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

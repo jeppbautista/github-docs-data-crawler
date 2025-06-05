@@ -1,0 +1,63 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Setting your user preferences" href="/en/codespaces/setting-your-user-preferences">Setting your user preferences</a><span>/</span>
+</li>
+<li><a title="Set the default editor" href="/en/codespaces/setting-your-user-preferences/setting-your-default-editor-for-github-codespaces">Set the default editor</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Setting your default editor for GitHub Codespaces</h1></div></div>
+<div><div><p>You can set your default editor for Codespaces in your personal settings page.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#setting-your-default-editor"><div><span>Setting your default editor</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>On the settings page, you can set your editor preference so that when you create a codespace, or open an existing codespace, it is opened in your choice of:</p>
+<ul>
+<li>Visual Studio Code (desktop application)</li>
+<li>Visual Studio Code (web client application)</li>
+<li>JupyterLab - the web interface for Project Jupyter</li>
+</ul>
+<p>When you create a new codespace from a template, it is always opened in the Visual Studio Code web client. You can reopen an existing codespace in any supported editor. For more information, see <a href="/en/codespaces/developing-in-codespaces/opening-an-existing-codespace">Opening an existing codespace</a>.</p>
+<p>If you want to use Visual Studio Code as your default editor for GitHub Codespaces, you need to install Visual Studio Code and the GitHub Codespaces extension for Visual Studio Code. For more information, see the <a href="https://code.visualstudio.com/download/">download page for Visual Studio Code</a> and the <a href="https://marketplace.visualstudio.com/items?itemName=GitHub.codespaces">GitHub Codespaces extension on the Visual Studio Code marketplace</a>.</p>
+<h2><a href="#setting-your-default-editor">Setting your default editor</a></h2>
+<ol>
+<li>
+<p>In the upper-right corner of any page on GitHub, click your profile photo, then click </p>
+</li>
+<li>
+<p>In the "Code, planning, and automation" section of the sidebar, click </p>
+</li>
+<li>
+<p>Under "Editor preference", select the option you want.</p>
+<ul>
+<li>
+<p>If you choose <strong>Visual Studio Code</strong>, you must make sure you have VS Code installed on your local machine.<br><br></p>
+</li>
+<li>
+<p>If you choose <strong>Visual Studio Code</strong>, GitHub Codespaces will automatically open in the desktop application when you next create or open a codespace.</p>
+<p>You may need to allow access to both your browser and Visual Studio Code for it to open successfully.<br><br></p>
+</li>
+<li>
+<p>If you choose <strong>JupyterLab</strong>, the JupyterLab application must be installed in the codespaces you open. The default dev container image includes JupyterLab, so codespaces created from the default image will always have JupyterLab installed. For more information about the default image, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers#using-the-default-dev-container-configuration">Introduction to dev containers</a> and the <a href="https://github.com/devcontainers/images/tree/main/src/universal"><code>devcontainers/images</code></a> repository. If you're not using the default image in your dev container configuration, you can install JupyterLab by adding the <code>ghcr.io/devcontainers/features/python</code> feature to your <code>devcontainer.json</code> file. You should include the option <code>"installJupyterlab": true</code>. For more information, see the README for the <a href="https://github.com/devcontainers/features/tree/main/src/python#python-python"><code>python</code></a> feature, in the <code>devcontainers/features</code> repository.</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/codespaces/customizing-your-codespace">Customizing your codespace</a></li>
+<li><a href="/en/codespaces/managing-your-codespaces">Managing your codespaces</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,109 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Code scanning" href="/en/code-security/code-scanning">Code scanning</a><span>/</span>
+</li>
+<li>
+<a title="Manage code scanning" href="/en/code-security/code-scanning/managing-your-code-scanning-configuration">Manage code scanning</a><span>/</span>
+</li>
+<li><a title="View code scanning logs" href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/viewing-code-scanning-logs">View code scanning logs</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Viewing code scanning logs</h1></div></div>
+<div>
+<div><p>You can view the output generated during code scanning analysis in GitHub.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Users with <strong>read</strong> access</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-your-code-scanning-configuration"><div><span>About your code scanning configuration</span></div></a></li>
+<li><a href="#about-analysis-and-diagnostic-information"><div><span>About analysis and diagnostic information</span></div></a></li>
+<li><a href="#viewing-the-logging-output-from-code-scanning"><div><span>Viewing the logging output from code scanning</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-your-code-scanning-configuration">About your code scanning configuration</a></h2>
+<p>You can use a variety of tools to configure code scanning in your repository. For more information, see <a href="/en/code-security/code-scanning/enabling-code-scanning/configuring-default-setup-for-code-scanning">Configuring default setup for code scanning</a> and <a href="/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/configuring-advanced-setup-for-code-scanning">Configuring advanced setup for code scanning</a>.</p>
+<p>The log and diagnostic information available to you depends on the method you use for code scanning in your repository. You can check the type of code scanning you're using in the <strong>Security</strong> tab of your repository, by using the <strong>Tool</strong> drop-down menu in the alert list. For more information, see <a href="/en/code-security/code-scanning/managing-code-scanning-alerts/assessing-code-scanning-alerts-for-your-repository#viewing-the-alerts-for-a-repository">Assessing code scanning alerts for your repository</a>.</p>
+<h2><a href="#about-analysis-and-diagnostic-information">About analysis and diagnostic information</a></h2>
+<p>You can see analysis and diagnostic information for code scanning run using CodeQL analysis on GitHub.</p>
+<p>Analysis information is shown for the most recent analysis in a header at the top of the list of alerts. For more information, see <a href="/en/code-security/code-scanning/managing-code-scanning-alerts/assessing-code-scanning-alerts-for-your-repository#viewing-the-alerts-for-a-repository">Assessing code scanning alerts for your repository</a>.</p>
+<p>Diagnostic information is displayed in the Action workflow logs and consists of summary metrics and extractor diagnostics. For information about accessing code scanning logs on GitHub, see <a href="#viewing-the-logging-output-from-code-scanning">Viewing the logging output from code scanning</a> below.</p>
+<p>If you're using the CodeQL CLI outside GitHub, you'll see diagnostic information in the output generated during database analysis. This information is also included in the SARIF results file you upload to GitHub with the code scanning results.</p>
+<p>For information about the CodeQL CLI, see <a href="/en/code-security/codeql-cli/getting-started-with-the-codeql-cli/analyzing-your-code-with-codeql-queries#viewing-log-and-diagnostic-information">Analyzing your code with CodeQL queries</a>.</p>
+<h3><a href="#about-summary-metrics">About summary metrics</a></h3>
+<p>Summary metrics include:</p>
+<ul>
+<li>Lines of code in the codebase (used as a baseline), before creation and extraction of the CodeQL database</li>
+<li>Lines of code in the CodeQL database extracted from the code, including external libraries and auto-generated files</li>
+<li>Lines of code in the CodeQL database excluding auto-generated files and external libraries</li>
+</ul>
+<h3><a href="#about-codeql-source-code-extraction-diagnostics">About CodeQL source code extraction diagnostics</a></h3>
+<p>Extractor diagnostics only cover files that were seen during the analysis, metrics include:</p>
+<ul>
+<li>Number of files successfully analyzed</li>
+<li>Number of files that generated extractor errors during database creation</li>
+<li>Number of files that generated extractor warnings during database creation</li>
+</ul>
+<p>You can see more detailed information about CodeQL extractor errors and warnings that occurred during database creation by enabling debug logging. For more information, see <a href="/en/code-security/code-scanning/troubleshooting-code-scanning/logs-are-not-detailed-enough#creating-codeql-debugging-artifacts-by-re-running-jobs-with-debug-logging-enabled">Logs are not detailed enough</a>.</p>
+<h2><a href="#viewing-the-logging-output-from-code-scanning">Viewing the logging output from code scanning</a></h2>
+<p>This section applies to code scanning run using GitHub Actions (CodeQL or third-party).</p>
+<p>After configuring code scanning for your repository, you can watch the output of the actions as they run.</p>
+<ol>
+<li>
+<p>Under your repository name, click </p>
+<div><picture><source><img src="/assets/cb-12958/images/help/repository/actions-tab-global-nav-update.png" alt='Screenshot of the tabs for the "github/docs" repository. The "Actions" tab is highlighted with an orange outline.' width="1242" height="186"></source></picture></div>
+<p>You'll see a list that includes an entry for running the code scanning workflow. The text of the entry is the title you gave your commit message.</p>
+<div><picture><source><img src="/assets/cb-37609/images/help/repository/code-scanning-actions-list.png" alt='Screenshot of the "All workflows" page. In the list of workflow runs is a run labeled "Create .github/workflows/codeql.yml."' width="720" height="213"></source></picture></div>
+</li>
+<li>
+<p>Click the entry for the code scanning workflow.</p>
+<div>
+<p>
+If you are looking for the CodeQL workflow run triggered by enabling default setup, the text of the entry is "CodeQL."</p>
+</div>
+</li>
+<li>
+<p>Click the job name on the left. For example, <strong>Analyze (LANGUAGE)</strong>.</p>
+<div><picture><source><img src="/assets/cb-47516/images/help/repository/code-scanning-logging-analyze-action.png" alt='Screenshot of the log output for the "Analyze (go)" job. In the left sidebar, under the "Jobs" heading, "Analyze (go)" is listed.' width="720" height="272"></source></picture></div>
+</li>
+<li>
+<p>Review the logging output from the actions in this workflow as they run.</p>
+</li>
+<li>
+<p>Optionally, to see more detail about the commit that triggered the workflow run, click the short commit hash. The short commit hash is 7 lowercase characters immediately following the commit author's username.</p>
+</li>
+<li>
+<p>Once all jobs are complete, you can view the details of any code scanning alerts that were identified. For more information, see <a href="/en/code-security/code-scanning/managing-code-scanning-alerts/assessing-code-scanning-alerts-for-your-repository#viewing-the-alerts-for-a-repository">Assessing code scanning alerts for your repository</a>.</p>
+</li>
+</ol>
+<h3><a href="#determining-whether-code-scanning-default-setup-used-any-private-registries">Determining whether code scanning default setup used any private registries</a></h3>
+<p>Code scanning default setup includes a <code>Setup proxy or registries</code> step. When you are looking at a log file for default setup, you can expand this step. If the step includes:</p>
+<ul>
+<li>
+<p><code>Using registries_credentials input.</code> At least one private registry is configured for the organization.</p>
+</li>
+<li>
+<p><code>Credentials loaded for the following registries:</code></p>
+<ul>
+<li>No further output in the step. Access was unsuccessful.</li>
+<li>
+<code>Type: nuget_feed;</code> Default set up accessed a private Nuget feed.</li>
+<li>
+<code>Type: maven_repository;</code> Default set up accessed a private Maven repository.</li>
+</ul>
+</li>
+</ul>
+<p>For more information, see <a href="/en/code-security/securing-your-organization/enabling-security-features-in-your-organization/giving-org-access-private-registries">Giving security features access to private registries</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

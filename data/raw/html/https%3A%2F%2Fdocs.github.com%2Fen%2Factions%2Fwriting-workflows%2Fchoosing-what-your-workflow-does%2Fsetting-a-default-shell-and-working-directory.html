@@ -1,0 +1,60 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Write workflows" href="/en/actions/writing-workflows">Write workflows</a><span>/</span>
+</li>
+<li>
+<a title="Choose what workflows do" href="/en/actions/writing-workflows/choosing-what-your-workflow-does">Choose what workflows do</a><span>/</span>
+</li>
+<li><a title="Set default values for jobs" href="/en/actions/writing-workflows/choosing-what-your-workflow-does/setting-a-default-shell-and-working-directory">Set default values for jobs</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Setting a default shell and working directory</h1></div></div>
+<div><div><p>Define the default settings that will apply to all jobs in the workflow, or all steps in a job.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#overview"><div><span>Overview</span></div></a></li>
+<li><a href="#setting-default-shell-and-working-directory"><div><span>Setting default shell and working directory</span></div></a></li>
+<li><a href="#setting-default-values-for-a-specific-job"><div><span>Setting default values for a specific job</span></div></a></li>
+<li><a href="#setting-default-shell-and-working-directory-for-a-job"><div><span>Setting default shell and working directory for a job</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#overview">Overview</a></h2>
+<p>Use <code>defaults</code> to create a <code>map</code> of default settings that will apply to all jobs in the workflow. You can also set default settings that are only available to a job. For more information, see <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_iddefaults"><code>jobs.&lt;job_id&gt;.defaults</code></a>.</p>
+<p>When more than one default setting is defined with the same name, GitHub uses the most specific default setting. For example, a default setting defined in a job will override a default setting that has the same name defined in a workflow.</p>
+<h2><a href="#setting-default-shell-and-working-directory">Setting default shell and working directory</a></h2>
+<p>You can use <code>defaults.run</code> to provide default <code>shell</code> and <code>working-directory</code> options for all <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun"><code>run</code></a> steps in a workflow. You can also set default settings for <code>run</code> that are only available to a job. For more information, see <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_iddefaultsrun"><code>jobs.&lt;job_id&gt;.defaults.run</code></a>. You cannot use contexts or expressions in this keyword.</p>
+<p>When more than one default setting is defined with the same name, GitHub uses the most specific default setting. For example, a default setting defined in a job will override a default setting that has the same name defined in a workflow.</p>
+<h3><a href="#example-set-the-default-shell-and-working-directory">Example: Set the default shell and working directory</a></h3>
+<pre><code><span>defaults:</span>
+  <span>run:</span>
+    <span>shell:</span> <span>bash</span>
+    <span>working-directory:</span> <span>./scripts</span>
+</code></pre>
+<h2><a href="#setting-default-values-for-a-specific-job">Setting default values for a specific job</a></h2>
+<p>Use <code>jobs.&lt;job_id&gt;.defaults</code> to create a <code>map</code> of default settings that will apply to all steps in the job. You can also set default settings for the entire workflow. For more information, see <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#defaults"><code>defaults</code></a>.</p>
+<p>When more than one default setting is defined with the same name, GitHub uses the most specific default setting. For example, a default setting defined in a job will override a default setting that has the same name defined in a workflow.</p>
+<h2><a href="#setting-default-shell-and-working-directory-for-a-job">Setting default shell and working directory for a job</a></h2>
+<p>Use <code>jobs.&lt;job_id&gt;.defaults.run</code> to provide default <code>shell</code> and <code>working-directory</code> to all <code>run</code> steps in the job.</p>
+<p>You can provide default <code>shell</code> and <code>working-directory</code> options for all <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun"><code>run</code></a> steps in a job. You can also set default settings for <code>run</code> for the entire workflow. For more information, see <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#defaultsrun"><code>defaults.run</code></a>.</p>
+<p>These can be overridden at the <code>jobs.&lt;job_id&gt;.defaults.run</code> and <code>jobs.&lt;job_id&gt;.steps[*].run</code> levels.</p>
+<p>When more than one default setting is defined with the same name, GitHub uses the most specific default setting. For example, a default setting defined in a job will override a default setting that has the same name defined in a workflow.</p>
+<h3><a href="#example-setting-default-run-step-options-for-a-job">Example: Setting default <code>run</code> step options for a job</a></h3>
+<pre><code><span>jobs:</span>
+  <span>job1:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>defaults:</span>
+      <span>run:</span>
+        <span>shell:</span> <span>bash</span>
+        <span>working-directory:</span> <span>./scripts</span>
+</code></pre>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

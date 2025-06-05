@@ -1,0 +1,138 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Manage Copilot" href="/en/copilot/managing-copilot">Manage Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Manage for organization" href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization">Manage for organization</a><span>/</span>
+</li>
+<li><a title="Manage policies" href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/managing-policies-for-copilot-in-your-organization">Manage policies</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Managing policies for Copilot in your organization</h1></div></div>
+<div>
+<div><p>Learn how to manage policies for GitHub Copilot in your organization.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Organization owners</p></div></div>
+<div><div><p>Organizations with a GitHub Copilot Business or GitHub Copilot Enterprise plan</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-policies-for-github-copilot"><div><span>About policies for GitHub Copilot</span></div></a></li>
+<li><a href="#enabling-copilot-features-in-your-organization"><div><span>Enabling Copilot features in your organization</span></div></a></li>
+<li><a href="#setting-a-policy-for-github-copilot-extensions-in-your-organization"><div><span>Setting a policy for GitHub Copilot Extensions in your organization</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-policies-for-github-copilot">About policies for GitHub Copilot</a></h2>
+<p>Organization owners can set policies to govern how GitHub Copilot can be used within the organization. For example, an organization owner can enable or disable the following Copilot features:</p>
+<ul>
+<li>Copilot in GitHub.com</li>
+<li>Copilot Chat in the IDE</li>
+<li>Editor preview Copilot features, such as:
+<ul>
+<li>Image support in Copilot Chat (available in VS Code and Visual Studio)
+<div>
+<p> This setting only applies to preview features within Copilot and does not control all preview-related settings in VS Code.</p>
+</div>
+</li>
+</ul>
+</li>
+<li>Copilot coding agent (public preview)</li>
+<li>Copilot Spaces (public preview)</li>
+<li>MCP servers on GitHub.com (public preview)</li>
+<li>Copilot Chat in GitHub Mobile</li>
+<li>Copilot in the CLI and Windows Terminal</li>
+<li>Copilot in GitHub Desktop (public preview)</li>
+<li>Suggestions matching public code</li>
+<li>Access to alternative models for Copilot
+<ul>
+<li>Anthropic Claude in Copilot</li>
+<li>Google Gemini in Copilot</li>
+<li>OpenAI models in Copilot</li>
+</ul>
+</li>
+</ul>
+<p>The policy settings selected by an organization owner determine the behavior of Copilot for all organization members that have been granted access to Copilot through the organization.</p>
+<h3><a href="#policies-for-suggestion-matching">Policies for suggestion matching</a></h3>
+<p>Organization settings include an option to either allow or block code suggestions that match publicly available code. If you choose to block suggestions matching public code, Copilot will check potential code suggestions and the surrounding code of about 150 characters against public code on GitHub. If there is a match, or a near match, the suggestion is not shown.</p>
+<h2><a href="#enabling-copilot-features-in-your-organization">Enabling Copilot features in your organization</a></h2>
+<div>
+<p> Copilot policies are also managed at the enterprise level. If your organization is part of an enterprise, and explicit settings have been selected at the enterprise level, you cannot override those settings at the organization level. For more information on managing policies at the enterprise level, see <a href="/en/enterprise-cloud@latest/copilot/managing-copilot/managing-copilot-for-your-enterprise/managing-policies-and-features-for-copilot-in-your-enterprise">Managing policies and features for Copilot in your enterprise</a>.</p>
+</div>
+<ol>
+<li>
+<p>In the upper-right corner of GitHub, select your profile photo, then click </p>
+</li>
+<li>
+<p>Next to the organization, click <strong>Settings</strong>.</p>
+</li>
+<li>
+<p>In the sidebar, under "Code, planning, and automation", click <strong>Policies</strong>.</p>
+</li>
+<li>
+<p>Use the dropdown options to the right of each feature to enable or disable that feature for your organization.</p>
+<p>For example, to enable or disable suggestion matching, in the "Suggestions matching public code" dropdown, select <strong>Allowed</strong> or <strong>Blocked</strong>.</p>
+</li>
+<li>
+<p>If your organization has a Copilot Business plan and you enable "Copilot in GitHub.com", two additional options are displayed:</p>
+<ul>
+<li>
+<p><strong>Opt in to user feedback collection:</strong> If enabled, users can provide feedback on Copilot pull request summaries. For more information, see <a href="/en/enterprise-cloud@latest/copilot/github-copilot-enterprise/copilot-pull-request-summaries/creating-a-pull-request-summary-with-github-copilot">Creating a pull request summary with GitHub Copilot</a>.</p>
+</li>
+<li>
+<p><strong>Opt in to preview features:</strong> If enabled, users can test new Copilot features that are not yet generally available. Be aware that previews of features may have flaws, and the features may be changed or discontinued at any time. Current previews of Copilot features include:</p>
+<ul>
+<li>Experimental languages in Copilot code review. See <a href="/en/copilot/using-github-copilot/code-review/using-copilot-code-review">Using GitHub Copilot code review</a>.</li>
+<li>Copilot Spaces. See <a href="/en/copilot/using-github-copilot/copilot-spaces/about-organizing-and-sharing-context-with-copilot-spaces">About organizing and sharing context with Copilot Spaces</a>.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<div>
+<p>
+If you choose to enable Copilot coding agent for users, you also need to define which repositories the agent is available in, see <a href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/adding-copilot-coding-agent-to-organization">Adding Copilot coding agent to your organization</a>.</p>
+</div>
+<h2><a href="#setting-a-policy-for-github-copilot-extensions-in-your-organization">Setting a policy for GitHub Copilot Extensions in your organization</a></h2>
+<p>GitHub Copilot Extensions integrate external tools with GitHub Copilot Chat. See <a href="/en/copilot/using-github-copilot/using-extensions-to-integrate-external-tools-with-copilot-chat">Using extensions to integrate external tools with Copilot Chat</a>.</p>
+<p>Before you install Copilot Extensions in your organization, you should set a usage policy for your organization. Setting a usage policy allows you to enable or disable Copilot Extensions for all members of your organization, limiting your security risk.</p>
+<ol>
+<li>In the upper-right corner of GitHub, select your profile photo, then click </li>
+<li>Next to the organization, click <strong>Settings</strong>.</li>
+<li>In the sidebar, under "Code, planning, and automation", click <strong>Policies</strong>.</li>
+<li>In the "Copilot Extensions" section, select the dropdown menu, then enable or disable Copilot Extensions for your organization.</li>
+</ol>
+<h3><a href="#managing-permissions-for-a-github-copilot-extension-in-your-organization">Managing permissions for a GitHub Copilot Extension in your organization</a></h3>
+<p>After you have installed a Copilot Extension in your organization, you can view the permissions the extension has in your organization, and why those permissions are necessary. If you do not want the Copilot Extension to have the listed permissions, you can suspend or uninstall the extension.</p>
+<ol>
+<li>In the upper-right corner of GitHub, select your profile photo, then click </li>
+<li>Next to the organization, click <strong>Settings</strong>.</li>
+<li>In the sidebar, under "Third-party Access," click <strong>GitHub Apps</strong>. A list of the GitHub Apps installed on your organization will be displayed.</li>
+<li>Optionally, to filter your installed GitHub Apps for Copilot Extensions, select the <strong>Filter:</strong> dropdown menu, then click <strong>Copilot Extensions</strong>.</li>
+<li>Next to the Copilot Extension you want to review or modify, click <strong>Configure</strong>.</li>
+<li>In the "Permissions" section, review the permissions listed for the Copilot Extension. Optionally, you can block the Copilot Extension's access to your organization in one of two ways:
+<ul>
+<li>To indefinitely suspend the Copilot Extension's access to resources in your organization while keeping the extension installed, in the "Danger zone" section, click <strong>Suspend</strong>.</li>
+<li>To uninstall a Copilot Extension completely, in the "Danger zone" section, click <strong>Uninstall</strong>.</li>
+</ul>
+</li>
+</ol>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="https://copilot.github.trust.page">GitHub Copilot Trust Center</a></li>
+<li><a href="/en/copilot/using-github-copilot/finding-public-code-that-matches-github-copilot-suggestions">Finding public code that matches GitHub Copilot suggestions</a></li>
+<li><a href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/adding-copilot-coding-agent-to-organization">Adding Copilot coding agent to your organization</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,70 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Getting started" href="/en/codespaces/about-codespaces">Getting started</a><span>/</span>
+</li>
+<li><a title="The codespace lifecycle" href="/en/codespaces/about-codespaces/understanding-the-codespace-lifecycle">The codespace lifecycle</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Understanding the codespace lifecycle</h1></div></div>
+<div><div><p>Learn how to develop in a GitHub Codespaces environment, and maintain your data throughout the entire codespace lifecycle.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-the-lifecycle-of-a-codespace"><div><span>About the lifecycle of a codespace</span></div></a></li>
+<li><a href="#creating-a-codespace"><div><span>Creating a codespace</span></div></a></li>
+<li><a href="#saving-changes-in-a-codespace"><div><span>Saving changes in a codespace</span></div></a></li>
+<li><a href="#timeouts-for-github-codespaces"><div><span>Timeouts for GitHub Codespaces</span></div></a></li>
+<li><a href="#rebuilding-a-codespace"><div><span>Rebuilding a codespace</span></div></a></li>
+<li><a href="#stopping-a-codespace"><div><span>Stopping a codespace</span></div></a></li>
+<li><a href="#deleting-a-codespace"><div><span>Deleting a codespace</span></div></a></li>
+<li><a href="#losing-the-connection-while-using-github-codespaces"><div><span>Losing the connection while using GitHub Codespaces</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<p>
+This article explains the stages in the life of a codespace, from creation to deletion. If you have read the <a href="/en/codespaces/quickstart">Quickstart for GitHub Codespaces</a> article and you now want to start using GitHub Codespaces for your own work, see the articles under <a href="/en/codespaces/developing-in-a-codespace">Developing in a codespace</a>.</p>
+</div>
+<h2><a href="#about-the-lifecycle-of-a-codespace">About the lifecycle of a codespace</a></h2>
+<p>The lifecycle of a codespace begins when you create a codespace and ends when you delete it. You can disconnect and reconnect to an active codespace without affecting its running processes. You may stop and restart a codespace without losing changes that you have made to your project.</p>
+<h2><a href="#creating-a-codespace">Creating a codespace</a></h2>
+<p>When you want to work on a project, you can choose to create a new codespace or open an existing codespace. You might want to create a new codespace from a branch of your repository each time you develop in GitHub Codespaces or keep a long-running codespace for a feature. If you're starting a new project, you might want to create a codespace from a template and publish to a repository on GitHub later. For more information, see <a href="/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository">Creating a codespace for a repository</a> and <a href="/en/codespaces/developing-in-a-codespace/creating-a-codespace-from-a-template">Creating a codespace from a template</a>.</p>
+<p>There are limits to the number of codespaces you can create, and the number of codespaces you can run at the same time. These limits vary based on a number of factors. If you reach the maximum number of codespaces and try to create another, a message is displayed telling you that you must remove an existing codespace before you can create a new one. Similarly, if you reach the maximum number of active codespaces and you try to start another, you are prompted to stop one of your active codespaces.</p>
+<p>If you choose to create a new codespace each time you work on a project, you should regularly push your changes so that any new commits are on GitHub. If you choose to use a long-running codespace for your project, you should pull from your repository's default branch each time you start working in your codespace so that your environment has the latest commits. This workflow is very similar to if you were working with a project on your local machine.</p>
+<p>To speed up codespace creation, repository administrators can enable GitHub Codespaces prebuilds for a repository. For more information, see <a href="/en/codespaces/prebuilding-your-codespaces/about-github-codespaces-prebuilds">About GitHub Codespaces prebuilds</a>.</p>
+<h2><a href="#saving-changes-in-a-codespace">Saving changes in a codespace</a></h2>
+<p>When you connect to a codespace through the web, auto-save is enabled automatically for the web editor and configured to save changes after a delay. When you connect to a codespace through Visual Studio Code running on your desktop, you must enable auto-save. For more information, see <a href="https://code.visualstudio.com/docs/editor/codebasics#_save-auto-save">Save/Auto Save</a> in the Visual Studio Code documentation.</p>
+<p>Your work will be saved on a virtual machine in the cloud. You can close and stop a codespace and return to the saved work later. If you have unsaved changes, your editor will prompt you to save them before exiting. However, if your codespace is deleted, then your work will be deleted too. To persist your work, you will need to commit your changes and push them to your remote repository, or publish your work to a new remote repository if you created your codespace from a template. For more information, see <a href="/en/codespaces/developing-in-a-codespace/using-source-control-in-your-codespace">Using source control in your codespace</a>.</p>
+<h2><a href="#timeouts-for-github-codespaces">Timeouts for GitHub Codespaces</a></h2>
+<p>If you leave your codespace running without interaction, or if you exit your codespace without explicitly stopping it, the codespace will timeout after a period of inactivity and stop running. By default, a codespace will timeout after 30 minutes of inactivity, but you can customize the duration of the timeout period for new codespaces that you create. For more information about setting the default timeout period for your codespaces, see <a href="/en/codespaces/setting-your-user-preferences/setting-your-timeout-period-for-github-codespaces">Setting your timeout period for GitHub Codespaces</a>. For more information about stopping a codespace, see <a href="#stopping-a-codespace">Stopping a codespace</a>.</p>
+<p>When a codespace times out, your data is preserved from the last time your changes were saved. For more information, see <a href="#saving-changes-in-a-codespace">Saving changes in a codespace</a>.</p>
+<h2><a href="#rebuilding-a-codespace">Rebuilding a codespace</a></h2>
+<p>You can rebuild your codespace to implement changes you've made to your dev container configuration. For most uses, you can create a new codespace as an alternative to rebuilding a codespace. By default, when you rebuild your codespace, GitHub Codespaces will reuse images from your cache to speed up the rebuild process. Alternatively, you can perform a full rebuild, which clears your cache and rebuilds the container with fresh images.</p>
+<div>
+<p>
+When you rebuild the container in a codespace, changes you have made outside the <code>/workspaces</code> directory are cleared. Changes you have made inside the <code>/workspaces</code> directory, which includes the clone of the repository or template from which you created the codespace, are preserved over a rebuild. For more information, see <a href="/en/codespaces/about-codespaces/deep-dive#about-the-directory-structure-of-a-codespace">Deep dive into GitHub Codespaces</a>.</p>
+</div>
+<p>For more information, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers">Introduction to dev containers</a> and <a href="/en/codespaces/developing-in-a-codespace/rebuilding-the-container-in-a-codespace">Rebuilding the container in a codespace</a>.</p>
+<h2><a href="#stopping-a-codespace">Stopping a codespace</a></h2>
+<p>You can stop a codespace at any time. When you stop a codespace, any running processes are stopped. Any saved changes in your codespace will still be available when you next start it. The terminal history is preserved, but the visible contents of the terminal window are not preserved between codespace sessions.</p>
+<p>If you do not explicitly stop a codespace, it will continue to run until it times out from inactivity. Closing a codespace does not stop the codespace. For example, if you're using a codespace in the VS Code web client and you close the browser tab, the codespace remains running on the remote machine. For information about timeouts, see <a href="/en/codespaces/about-codespaces/the-codespace-lifecycle#timeouts-for-github-codespaces">Understanding the codespace lifecycle</a>.</p>
+<p>Only running codespaces incur CPU charges. A stopped codespace incurs only storage costs.</p>
+<p>You may want to stop and restart a codespace to apply changes to it. For example, if you change the machine type used for your codespace, you will need to stop and restart it for the change to take effect. You can also stop your codespace and choose to restart or delete it if you encounter an error or something unexpected. For more information, see <a href="/en/codespaces/developing-in-a-codespace/stopping-and-starting-a-codespace">Stopping and starting a codespace</a>.</p>
+<h2><a href="#deleting-a-codespace">Deleting a codespace</a></h2>
+<p>You can create a codespace for a particular task and then safely delete the codespace after you push your changes to a remote branch.</p>
+<p>If you try to delete a codespace with unpushed git commits, your editor will notify you that you have changes that have not been pushed to a remote branch. You can push any desired changes and then delete your codespace, or continue to delete your codespace and any uncommitted changes. You can also export your code to a new branch without creating a new codespace. For more information, see <a href="/en/codespaces/troubleshooting/exporting-changes-to-a-branch">Exporting changes to a branch</a>.</p>
+<p>Codespaces that have been stopped and remain inactive for a specified period of time will be deleted automatically. By default, inactive codespaces are deleted after 30 days, but you can customize your codespace retention period. For more information, see <a href="/en/codespaces/setting-your-user-preferences/configuring-automatic-deletion-of-your-codespaces">Configuring automatic deletion of your codespaces</a>.</p>
+<p>If you create a codespace, it will continue to accrue storage charges until it is deleted, irrespective of whether it is active or stopped. For more information, see <a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/about-billing-for-github-codespaces#about-billing-for-storage-usage">About billing for GitHub Codespaces</a>. Deleting a codespace does not reduce the current billable amount for GitHub Codespaces, which accumulates during each monthly billing cycle. For more information, see <a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/viewing-your-github-codespaces-usage">Viewing your GitHub Codespaces usage</a>.</p>
+<p>For more information on deleting a codespace, see <a href="/en/codespaces/developing-in-a-codespace/deleting-a-codespace">Deleting a codespace</a>.</p>
+<h2><a href="#losing-the-connection-while-using-github-codespaces">Losing the connection while using GitHub Codespaces</a></h2>
+<p>GitHub Codespaces is a cloud-based development environment and requires an internet connection. If you lose connection to the internet while working in a codespace, you will not be able to access your codespace. However, any uncommitted changes will be saved. When you have access to an internet connection again, you can connect to your codespace in the exact same state that it was left in. If you have an unstable internet connection, you should commit and push your changes often.</p>
+<p>If you know that you will often be working offline, you can use your <code>devcontainer.json</code> file with the <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers">"Dev Containers" extension</a> for VS Code to build and attach to a local development container for your repository. For more information, see <a href="https://code.visualstudio.com/docs/remote/containers">Developing inside a container</a> in the Visual Studio Code documentation.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

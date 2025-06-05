@@ -1,0 +1,86 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Monitor &amp; troubleshoot" href="/en/actions/monitoring-and-troubleshooting-workflows">Monitor &amp; troubleshoot</a><span>/</span>
+</li>
+<li>
+<a title="Monitor" href="/en/actions/monitoring-and-troubleshooting-workflows/monitoring-workflows">Monitor</a><span>/</span>
+</li>
+<li><a title="Add a status badge" href="/en/actions/monitoring-and-troubleshooting-workflows/monitoring-workflows/adding-a-workflow-status-badge">Add a status badge</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Adding a workflow status badge</h1></div></div>
+<div><div><p>You can display a status badge in your repository to indicate the status of your workflows.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#using-the-ui"><div><span>Using the UI</span></div></a></li>
+<li><a href="#using-the-workflow-file-name"><div><span>Using the workflow file name</span></div></a></li>
+<li><a href="#using-the-branch-parameter"><div><span>Using the branch parameter</span></div></a></li>
+<li><a href="#using-the-event-parameter"><div><span>Using the event parameter</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<p>
+Workflow badges in a private repository are not accessible externally, so you won't be able to embed them or link to them from an external site.</p>
+</div>
+<p>A status badge shows whether a workflow is currently failing or passing. A common place to add a status badge is in the <code>README.md</code> file of your repository, but you can add it to any web page you'd like. By default, badges display the status of your default branch. If there are no workflow runs on your default branch, it will display the status of the most recent run across all branches. You can display the status of a workflow run for a specific branch or event using the <code>branch</code> and <code>event</code> query parameters in the URL.</p>
+<p><picture><source><img src="/assets/cb-16218/images/help/repository/actions-workflow-status-badge.png" alt='Screenshot of a workflow status badge. From right to left it shows: the GitHub logo, workflow name ("GitHub Actions Demo"), and status ("passing").' width="407" height="53"></source></picture></p>
+<p>To add a workflow status badge to your <code>README.md</code> file, first find the URL for the status badge you would like to display. Then you can use Markdown to display the badge as an image in your <code>README.md</code> file. For more information about image markup in Markdown, see <a href="/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#images">Basic writing and formatting syntax</a>.</p>
+<h2><a href="#using-the-ui">Using the UI</a></h2>
+<p>You can create a workflow status badge directly on the UI using the workflow file name, branch parameter, and event parameter.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click </p>
+<div><picture><source><img src="/assets/cb-12958/images/help/repository/actions-tab-global-nav-update.png" alt='Screenshot of the tabs for the "github/docs" repository. The "Actions" tab is highlighted with an orange outline.' width="1242" height="186"></source></picture></div>
+</li>
+<li>
+<p>In the left sidebar, click the workflow you want to see.</p>
+<div><picture><source><img src="/assets/cb-40551/images/help/actions/superlinter-workflow-sidebar.png" alt='Screenshot of the left sidebar of the "Actions" tab. A workflow, "CodeQL," is outlined in dark orange.' width="335" height="430"></source></picture></div>
+</li>
+<li>
+<p>On the right side of the page, next to the "Filter workflow runs" field, click <strong>Create status badge</strong>.</p>
+</li>
+<li>
+<p>Optionally, select a branch if you want to display the status badge for a branch different from the default branch.</p>
+</li>
+<li>
+<p>Optionally, select the event that will trigger the workflow.</p>
+</li>
+<li>
+<p>Click </p>
+</li>
+<li>
+<p>Copy the Markdown into your <code>README.md</code> file.</p>
+</li>
+</ol>
+<h2><a href="#using-the-workflow-file-name">Using the workflow file name</a></h2>
+<p>You can build the URL for a workflow status badge using the name of the workflow file:</p>
+<pre><code>https://github.com/OWNER/REPOSITORY/actions/workflows/WORKFLOW-FILE/badge.svg
+</code></pre>
+<p>To display the workflow status badge in your <code>README.md</code> file, use the Markdown markup for embedding images. For more information about image markup in Markdown, see <a href="/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#images">Basic writing and formatting syntax</a>.</p>
+<p>For example, add the following Markdown to your <code>README.md</code> file to add a status badge for a workflow with the file path <code>.github/workflows/main.yml</code>. The <code>OWNER</code> of the repository is the <code>github</code> organization and the <code>REPOSITORY</code> name is <code>docs</code>.</p>
+<pre><code>![<span>example workflow</span>](<span>https://github.com/github/docs/actions/workflows/main.yml/badge.svg</span>)
+</code></pre>
+<h2><a href="#using-the-branch-parameter">Using the <code>branch</code> parameter</a></h2>
+<p>To display the status of a workflow run for a specific branch, add <code>?branch=BRANCH-NAME</code> to the end of the status badge URL.</p>
+<p>For example, add the following Markdown to your <code>README.md</code> file to display a status badge for a branch with the name <code>feature-1</code>.</p>
+<pre><code>![<span>example branch parameter</span>](<span>https://github.com/github/docs/actions/workflows/main.yml/badge.svg?branch=feature-1</span>)
+</code></pre>
+<h2><a href="#using-the-event-parameter">Using the <code>event</code> parameter</a></h2>
+<p>To display the status of workflow runs triggered by the <code>push</code> event, add <code>?event=push</code> to the end of the status badge URL.</p>
+<p>For example, add the following Markdown to your <code>README.md</code> file to display a badge with the status of workflow runs triggered by the <code>push</code> event, which will show the status of the build for the current state of that branch.</p>
+<pre><code>![<span>example event parameter</span>](<span>https://github.com/github/docs/actions/workflows/main.yml/badge.svg?event=push</span>)
+</code></pre>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

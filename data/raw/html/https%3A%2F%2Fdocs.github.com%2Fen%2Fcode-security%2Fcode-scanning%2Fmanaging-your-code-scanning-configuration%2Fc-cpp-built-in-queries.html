@@ -1,0 +1,1281 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Code scanning" href="/en/code-security/code-scanning">Code scanning</a><span>/</span>
+</li>
+<li>
+<a title="Manage code scanning" href="/en/code-security/code-scanning/managing-your-code-scanning-configuration">Manage code scanning</a><span>/</span>
+</li>
+<li><a title="C and C++ CodeQL queries" href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/c-cpp-built-in-queries">C and C++ CodeQL queries</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>C and C++ queries for CodeQL analysis</h1></div></div>
+<div>
+<div><p>Explore the queries that CodeQL uses to analyze code written in C or C++ when you select the <code>default</code> or the <code>security-extended</code> query suite.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div>
+<p>CodeQL is available for the following repository types:</p>
+<ul>
+<li>Public repositories on GitHub.com, see <a href="https://github.com/github/codeql-cli-binaries/blob/main/LICENSE.md">GitHub CodeQL Terms and Conditions</a>
+</li>
+<li>Organization-owned repositories on GitHub Team with <a href="/en/get-started/learning-about-github/about-github-advanced-security">GitHub Code Security</a> enabled</li>
+</ul>
+</div></div>
+</div></div>
+</div>
+<div><div><div>
+<p>CodeQL includes many queries for analyzing C and C++ code. All queries in the <code>default</code> query suite are run by default. If you choose to use the <code>security-extended</code> query suite, additional queries are run. For more information, see <a href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/built-in-codeql-query-suites">CodeQL query suites</a>.</p>
+<h2><a href="#built-in-queries-for-c-and-c-analysis">Built-in queries for C and C++ analysis</a></h2>
+<p>This table lists the queries available with the latest release of the CodeQL action and CodeQL CLI. For more information, see <a href="https://codeql.github.com/docs/codeql-overview/codeql-changelog/">CodeQL change logs</a> in the CodeQL documentation site.</p>
+<div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Query name</th>
+<th>Related CWEs</th>
+<th>Default</th>
+<th>Extended</th>
+<th>Copilot Autofix</th>
+</tr></thead>
+<tbody>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-bad-addition-overflow-check/">Bad check for overflow of integer addition</a></th>
+<td>190, 192</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-badly-bounded-write/">Badly bounded write</a></th>
+<td>120, 787, 805</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-memset-may-be-deleted/">Call to <code>memset</code> may be deleted</a></th>
+<td>014</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-alloca-in-loop/">Call to alloca in a loop</a></th>
+<td>770</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-too-few-arguments/">Call to function with fewer arguments than declared parameters</a></th>
+<td>234, 685</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-hresult-boolean-conversion/">Cast between HRESULT and a Boolean type</a></th>
+<td>253</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-incorrect-string-type-conversion/">Cast from char* to wchar_t*</a></th>
+<td>704</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-cgi-xss/">CGI script vulnerable to cross-site scripting</a></th>
+<td>079</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-cleartext-storage-file/">Cleartext storage of sensitive information in file</a></th>
+<td>260, 313</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-cleartext-transmission/">Cleartext transmission of sensitive information</a></th>
+<td>319, 359</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-comparison-with-wider-type/">Comparison of narrow type with wide type in loop condition</a></th>
+<td>190, 197, 835</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-dangerous-cin/">Dangerous use of 'cin'</a></th>
+<td>676</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-system-data-exposure/">Exposure of system data to an unauthorized control sphere</a></th>
+<td>497</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-non-https-url/">Failure to use HTTPS URLs</a></th>
+<td>319, 345</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-open-call-with-mode-argument/">File opened with O_CREAT flag but without mode argument</a></th>
+<td>732</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-incorrectly-checked-scanf/">Incorrect return-value check for a 'scanf'-like function</a></th>
+<td>253</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-iterator-to-expired-container/">Iterator to expired container</a></th>
+<td>416, 664</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-very-likely-overrunning-write/">Likely overrunning write</a></th>
+<td>120, 787, 805</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-new-free-mismatch/">Mismatching new/free or malloc/delete</a></th>
+<td>401</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-integer-multiplication-cast-to-long/">Multiplication result converted to larger type</a></th>
+<td>190, 192, 197, 681</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-no-space-for-terminator/">No space for zero terminator</a></th>
+<td>131, 120, 122</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-pointer-overflow-check/">Pointer overflow check</a></th>
+<td>758</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-double-free/">Potential double free</a></th>
+<td>415</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-use-after-free/">Potential use after free</a></th>
+<td>416</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-overflowing-snprintf/">Potentially overflowing call to snprintf</a></th>
+<td>190, 253</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-unsafe-strncat/">Potentially unsafe call to strncat</a></th>
+<td>788, 676, 119, 251</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-redundant-null-check-simple/">Redundant null check due to previous dereference</a></th>
+<td>476</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-return-stack-allocated-memory/">Returning stack-allocated memory</a></th>
+<td>825</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-unsafe-dacl-security-descriptor/">Setting a DACL to NULL in a SECURITY_DESCRIPTOR</a></th>
+<td>732</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-signed-overflow-check/">Signed overflow check</a></th>
+<td>128, 190</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-static-buffer-overflow/">Static array access may cause overflow</a></th>
+<td>119, 131</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-suspicious-add-sizeof/">Suspicious add with sizeof</a></th>
+<td>468</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-toctou-race-condition/">Time-of-check time-of-use filesystem race condition</a></th>
+<td>367</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-wrong-number-format-arguments/">Too few arguments to formatting function</a></th>
+<td>234, 685</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-uncontrolled-arithmetic/">Uncontrolled data in arithmetic expression</a></th>
+<td>190, 191</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-sql-injection/">Uncontrolled data in SQL query</a></th>
+<td>089</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-command-line-injection/">Uncontrolled data used in OS command</a></th>
+<td>078, 088</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-tainted-format-string/">Uncontrolled format string</a></th>
+<td>134</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-unsafe-use-of-this/">Unsafe use of this in constructor</a></th>
+<td>670</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-unsigned-difference-expression-compared-zero/">Unsigned difference expression compared to zero</a></th>
+<td>191</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-upcast-array-pointer-arithmetic/">Upcast array used in pointer arithmetic</a></th>
+<td>119, 843</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-weak-cryptographic-algorithm/">Use of a broken or risky cryptographic algorithm</a></th>
+<td>327</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-insufficient-key-size/">Use of a cryptographic algorithm with insufficient key size</a></th>
+<td>326</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-openssl-heartbleed/">Use of a version of OpenSSL with Heartbleed</a></th>
+<td>327, 788</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-dangerous-function-overflow/">Use of dangerous function</a></th>
+<td>242, 676</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-using-expired-stack-address/">Use of expired stack-address</a></th>
+<td>825</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-use-of-string-after-lifetime-ends/">Use of string after lifetime ends</a></th>
+<td>416, 664</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-use-of-unique-pointer-after-lifetime-ends/">Use of unique pointer after lifetime ends</a></th>
+<td>416, 664</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-wrong-type-format-argument/">Wrong type of arguments to formatting function</a></th>
+<td>686</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-external-entity-expansion/">XML external entity expansion</a></th>
+<td>611</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-offset-use-before-range-check/">Array offset used before range check</a></th>
+<td>120, 125</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-user-controlled-bypass/">Authentication bypass by spoofing</a></th>
+<td>290</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-boost-tls-settings-misconfiguration/">boost::asio TLS settings misconfiguration</a></th>
+<td>326</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-boost-use-of-deprecated-hardcoded-security-protocol/">boost::asio use of deprecated hardcoded protocol</a></th>
+<td>327</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-overflow-buffer/">Call to memory access function may overflow buffer</a></th>
+<td>119, 121, 122, 126</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-certificate-not-checked/">Certificate not checked</a></th>
+<td>295</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-certificate-result-conflation/">Certificate result conflation</a></th>
+<td>295</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-cleartext-storage-database/">Cleartext storage of sensitive information in an SQLite database</a></th>
+<td>313</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-cleartext-storage-buffer/">Cleartext storage of sensitive information in buffer</a></th>
+<td>312</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-comma-before-misleading-indentation/">Comma before misleading indentation</a></th>
+<td>1078, 670</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-world-writable-file-creation/">File created without restricting permissions</a></th>
+<td>732</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-incorrect-not-operator-usage/">Incorrect 'not' operator usage</a></th>
+<td>480</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-incorrect-allocation-error-handling/">Incorrect allocation-error handling</a></th>
+<td>570, 252, 755</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-invalid-pointer-deref/">Invalid pointer dereference</a></th>
+<td>119, 125, 193, 787</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-missing-check-scanf/">Missing return-value check for a 'scanf'-like function</a></th>
+<td>252, 253</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-non-constant-format/">Non-constant format string</a></th>
+<td>134</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-suspicious-allocation-size/">Not enough memory allocated for array of pointer type</a></th>
+<td>131, 122</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-allocation-too-small/">Not enough memory allocated for pointer type</a></th>
+<td>131, 122</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-unsafe-create-process-call/">NULL application name with an unquoted path in call to CreateProcess</a></th>
+<td>428</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-overrun-write/">Overrunning write</a></th>
+<td>119, 131</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-bad-strncpy-size/">Possibly wrong buffer size in string copy</a></th>
+<td>676, 119, 251</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-potential-system-data-exposure/">Potential exposure of sensitive system data to an unauthorized control sphere</a></th>
+<td>497</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-overrunning-write/">Potentially overrunning write</a></th>
+<td>120, 787, 805</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-overrunning-write-with-float/">Potentially overrunning write with float to string conversion</a></th>
+<td>120, 787, 805</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-uninitialized-local/">Potentially uninitialized local variable</a></th>
+<td>665, 457</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-unsafe-strcat/">Potentially unsafe use of strcat</a></th>
+<td>676, 120, 251</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-suspicious-sizeof/">Suspicious 'sizeof' use</a></th>
+<td>467</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-suspicious-pointer-scaling/">Suspicious pointer scaling</a></th>
+<td>468</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-suspicious-pointer-scaling-void/">Suspicious pointer scaling to void</a></th>
+<td>468</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-type-confusion/">Type confusion</a></th>
+<td>843</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-unbounded-write/">Unbounded write</a></th>
+<td>120, 787, 805</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-uncontrolled-allocation-size/">Uncontrolled allocation size</a></th>
+<td>190, 789</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-path-injection/">Uncontrolled data used in path expression</a></th>
+<td>022, 023, 036, 073</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-uncontrolled-process-operation/">Uncontrolled process operation</a></th>
+<td>114</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-unterminated-variadic-call/">Unterminated variadic call</a></th>
+<td>121</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-tainted-permissions-check/">Untrusted input for a condition</a></th>
+<td>807</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="https://codeql.github.com/codeql-query-help/cpp/cpp-potentially-dangerous-function/">Use of potentially dangerous function</a></th>
+<td>676</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

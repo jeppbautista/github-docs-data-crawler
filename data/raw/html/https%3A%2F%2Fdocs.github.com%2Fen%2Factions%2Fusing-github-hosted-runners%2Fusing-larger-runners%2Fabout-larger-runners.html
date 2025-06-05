@@ -1,0 +1,476 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="GitHub-hosted runners" href="/en/actions/using-github-hosted-runners">GitHub-hosted runners</a><span>/</span>
+</li>
+<li>
+<a title="Using larger runners" href="/en/actions/using-github-hosted-runners/using-larger-runners">Using larger runners</a><span>/</span>
+</li>
+<li><a title="About larger runners" href="/en/actions/using-github-hosted-runners/using-larger-runners/about-larger-runners">About larger runners</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>About larger runners</h1></div></div>
+<div>
+<div><p>GitHub offers runners with advanced features to support more customized use cases.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Larger runners are only available for organizations and enterprises using the GitHub Team or GitHub Enterprise Cloud plans.</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#overview-of-larger-runners"><div><span>Overview of larger runners</span></div></a></li>
+<li><a href="#machine-sizes-for-larger-runners"><div><span>Machine sizes for larger runners</span></div></a></li>
+<li><a href="#about-runner-groups"><div><span>About runner groups</span></div></a></li>
+<li><a href="#architectural-overview-of-larger-runners"><div><span>Architectural overview of larger runners</span></div></a></li>
+<li><a href="#autoscaling-larger-runners"><div><span>Autoscaling larger runners</span></div></a></li>
+<li><a href="#assigning-static-ip-addresses-to-larger-runners"><div><span>Assigning static IP addresses to larger runners</span></div></a></li>
+<li><a href="#networking-for-larger-runners"><div><span>Networking for larger runners</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#overview-of-larger-runners">Overview of larger runners</a></h2>
+<p>Customers on GitHub Team and GitHub Enterprise Cloud plans can choose from a range of managed virtual machines that have more resources than the <a href="/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources">standard GitHub-hosted runners</a>. These machines are referred to as "larger runner." They offer the following advanced features:</p>
+<ul>
+<li>More RAM, CPU, and disk space</li>
+<li>Static IP addresses</li>
+<li>Azure private networking</li>
+<li>The ability to group runners</li>
+<li>Autoscaling to support concurrent workflows</li>
+<li>GPU-powered runners</li>
+</ul>
+<p>These larger runners are hosted by GitHub and have the runner application and other tools preinstalled.</p>
+<p>GitHub offers larger runners with macOS, Ubuntu, or Windows operating systems, and different features and sizes are available depending on which operating system you use. For more information, see <a href="#additional-features-for-larger-runners">Additional features for larger runners</a>.</p>
+<h3><a href="#about-ubuntu-and-windows-larger-runners">About Ubuntu and Windows larger runners</a></h3>
+<p>Larger runners with Ubuntu or Windows operating systems are configured in your organization or enterprise. When you add a larger runner, you are defining a type of machine from a selection of available hardware specifications and operating system images. GitHub will then create multiple instances of this runner that scale up and down to match the job demands of your organization, based on the autoscaling limits you define. For more information, see <a href="/en/actions/using-github-hosted-runners/managing-larger-runners">Managing larger runners</a>.</p>
+<p>Ubuntu and Windows larger runners offer autoscaling capabilities and the ability to assign the runners static IP addresses from a specific range. They can also be managed using runner groups, which enables you to control access to the larger runners. For more information, see <a href="#additional-features-for-larger-runners">Additional features for larger runners</a>.</p>
+<h3><a href="#about-macos-larger-runners">About macOS larger runners</a></h3>
+<p>Larger runners with a macOS operating system are used by updating the YAML workflow label to the desired runner image. To run your workflows on a macOS larger runner, update the <code>runs-on</code> key to use one of the GitHub-defined macOS larger runner labels. No additional configuration is required. For more information, see <a href="/en/actions/using-github-hosted-runners/running-jobs-on-larger-runners?platform=mac">Running jobs on larger runners</a>.</p>
+<p>The following machines sizes are available for macOS larger runners.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Runner Size</th>
+<th>Architecture</th>
+<th>Processor (CPU)</th>
+<th>Memory (RAM)</th>
+<th>Storage (SSD)</th>
+<th>Workflow label</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Large</td>
+<td>Intel</td>
+<td>12</td>
+<td>30 GB</td>
+<td>14 GB</td>
+<td>
+<code>macos-latest-large</code>, <code>macos-13-large</code>, <code>macos-14-large</code> [latest], <code>macos-15-large</code>
+</td>
+</tr>
+<tr>
+<td>XLarge</td>
+<td>arm64 (M1)</td>
+<td>6 (+ 8 GPU hardware acceleration)</td>
+<td>14 GB</td>
+<td>14 GB</td>
+<td>
+<code>macos-latest-xlarge</code>, <code>macos-13-xlarge</code> , <code>macos-14-xlarge</code> [latest], <code>macos-15-xlarge</code>
+</td>
+</tr>
+</tbody>
+</table>
+<h4><a href="#limitations-for-macos-larger-runners">Limitations for macOS larger runners</a></h4>
+<ul>
+<li>All actions provided by GitHub are compatible with arm64 GitHub-hosted runners. However, community actions may not be compatible with arm64 and need to be manually installed at runtime.</li>
+<li>Nested-virtualization and Metal Performance Shaders (MPS) are not supported due to the limitation of Apple's Virtualization Framework.</li>
+<li>Networking capabilities such as Azure private networking and assigning static IPs are not currently available for macOS larger runners.</li>
+<li>The arm64 macOS runners do not have a static UUID/UDID assigned to them because Apple does not support this feature. However, Intel MacOS runners are assigned a static UDID, specifically <code>4203018E-580F-C1B5-9525-B745CECA79EB</code>. If you are building and signing on the same host you plan to test the build on, you can sign with a <a href="https://developer.apple.com/help/account/manage-profiles/create-a-development-provisioning-profile/">development provisioning profile</a>. If you do require a static UDID, you can use Intel runners and add their UDID to your Apple Developer account.</li>
+</ul>
+<h3><a href="#additional-features-for-larger-runners">Additional features for larger runners</a></h3>
+<p>Compared to standard GitHub-hosted runners, larger runners have additional features, and their availability varies depending on the larger runner's operating system.</p>
+<div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th></th>
+<th>Ubuntu</th>
+<th>Windows</th>
+<th>macOS</th>
+</tr></thead>
+<tbody>
+<tr>
+<th>Static IP addresses</th>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Azure private networking</th>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Autoscaling</th>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Runner groups</th>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>These features can enhance your CI/CD pipelines in the following ways.</p>
+<ul>
+<li>Assigning larger runners static IP addresses from a specific range enables you to use this range to configure a firewall allowlist. For more information, see <a href="#networking-for-larger-runners">Networking for larger runners</a>.</li>
+<li>Autoscaling enables larger runners to scale up to a maximum limit set by you, so your workflows can run concurrently. For more information, see <a href="#autoscaling-larger-runners">Autoscaling larger runners</a>.</li>
+<li>Runner groups allow you to control access to larger runners for your organizations, repositories, and workflows. For more information, see <a href="/en/actions/using-github-hosted-runners/controlling-access-to-larger-runners">Controlling access to larger runners</a>.</li>
+</ul>
+<h3><a href="#runner-images">Runner images</a></h3>
+<p>Larger runners run on virtual machines (VMs), and GitHub installs a virtual hard disk (VHD) on this machine during the VM creation process. You can choose from different VM images to install on your runners.</p>
+<p><strong>GitHub-owned images:</strong> These images are maintained by GitHub and are available for Linux x64, Windows x64, and macOS (x64 and arm) runners. For more information on these images and a full list of included tools for each runner operating system, see the <a href="https://github.com/actions/runner-images">GitHub Actions Runner Images</a> repository.</p>
+<p><strong>Partner Images:</strong> Partner images are not managed by GitHub and are pulled from the Azure Marketplace. See below for resources on where to find more information and to report issues for partner images.</p>
+<ul>
+<li>
+<a href="https://azuremarketplace.microsoft.com/en-us/marketplace/apps/microsoftwindowsdesktop.windows-11?tab=Overview">Base Windows 11 desktop image</a>.</li>
+<li><a href="https://azuremarketplace.microsoft.com/en-us/marketplace/apps/nvidia.ngc_azure_17_11">NVIDIA GPU-Optimized VMI</a></li>
+<li>
+<a href="https://azuremarketplace.microsoft.com/en-us/marketplace/apps/microsoft-dsvm.dsvm-win-2019?tab=overview">Data Science Virtual Machine - Windows 2019</a>.</li>
+<li>arm64 images: <a href="https://github.com/actions/partner-runner-images"><code>actions/partner-runner-images</code> repository</a>.</li>
+</ul>
+<h3><a href="#understanding-billing">Understanding billing</a></h3>
+<div>
+<p>
+Larger runners are not eligible for the use of included minutes on private repositories. For both private and public repositories, when larger runners are in use, they will always be billed at the per-minute rate.</p>
+</div>
+<p>Compared to standard GitHub-hosted runners, larger runners are billed differently. Larger runners are only billed at the per-minute rate for the amount of time workflows are executed on them. There is no cost associated with creating a larger runner that is not being used by a workflow. For more information, see <a href="/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions#per-minute-rates">About billing for GitHub Actions</a>.</p>
+<h2><a href="#machine-sizes-for-larger-runners">Machine sizes for larger runners</a></h2>
+<p>You can choose from several specifications for larger runners.</p>
+<h3><a href="#specifications-for-general-larger-runners">Specifications for general larger runners</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>CPU</th>
+<th>Memory (RAM)</th>
+<th>Storage (SSD)</th>
+<th>Architecture</th>
+<th>Operating system (OS)</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>6</td>
+<td>14 GB</td>
+<td>14 GB</td>
+<td>arm64</td>
+<td>macOS</td>
+</tr>
+<tr>
+<td>12</td>
+<td>30 GB</td>
+<td>14 GB</td>
+<td>x64</td>
+<td>macOS</td>
+</tr>
+<tr>
+<td>2</td>
+<td>8 GB</td>
+<td>75 GB</td>
+<td>x64, arm64</td>
+<td>Ubuntu</td>
+</tr>
+<tr>
+<td>4</td>
+<td>16 GB</td>
+<td>150 GB</td>
+<td>x64, arm64</td>
+<td>Ubuntu, Windows</td>
+</tr>
+<tr>
+<td>8</td>
+<td>32 GB</td>
+<td>300 GB</td>
+<td>x64, arm64</td>
+<td>Ubuntu, Windows</td>
+</tr>
+<tr>
+<td>16</td>
+<td>64 GB</td>
+<td>600 GB</td>
+<td>x64, arm64</td>
+<td>Ubuntu, Windows</td>
+</tr>
+<tr>
+<td>32</td>
+<td>128 GB</td>
+<td>1200 GB</td>
+<td>x64, arm64</td>
+<td>Ubuntu, Windows</td>
+</tr>
+<tr>
+<td>64</td>
+<td>208 GB</td>
+<td>2040 GB</td>
+<td>arm64</td>
+<td>Ubuntu, Windows</td>
+</tr>
+<tr>
+<td>64</td>
+<td>256 GB</td>
+<td>2040 GB</td>
+<td>x64</td>
+<td>Ubuntu, Windows</td>
+</tr>
+<tr>
+<td>96</td>
+<td>384 GB</td>
+<td>2040 GB</td>
+<td>x64</td>
+<td>Ubuntu, Windows</td>
+</tr>
+</tbody>
+</table>
+<div>
+<p> The 4-vCPU Windows runner only works with the Windows Server 2025 or the Base Windows 11 Desktop image.</p>
+</div>
+<h3><a href="#specifications-for-gpu-larger-runners">Specifications for GPU larger runners</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>CPU</th>
+<th>GPU</th>
+<th>GPU card</th>
+<th>Memory (RAM)</th>
+<th>GPU memory (VRAM)</th>
+<th>Storage (SSD)</th>
+<th>Operating system (OS)</th>
+</tr></thead>
+<tbody><tr>
+<td>4</td>
+<td>1</td>
+<td>Tesla T4</td>
+<td>28 GB</td>
+<td>16 GB</td>
+<td>176 GB</td>
+<td>Ubuntu, Windows</td>
+</tr></tbody>
+</table>
+<h2><a href="#about-runner-groups">About runner groups</a></h2>
+<div>
+<p>
+Only larger runners with Linux or Windows operating systems can be assigned to runner groups.</p>
+</div>
+<p>Runner groups enable administrators to control access to runners at the organization and enterprise levels. With runner groups, you can collect sets of runners and create a security boundary around them. You can then decide which organizations or repositories are permitted to run jobs on those sets of machines. During the larger runner deployment process, the runner can be added to an existing group, otherwise it will join a default group. You can create a group by following the steps in <a href="/en/actions/using-github-hosted-runners/controlling-access-to-larger-runners">Controlling access to larger runners</a>.</p>
+<h2><a href="#architectural-overview-of-larger-runners">Architectural overview of larger runners</a></h2>
+<div>
+<p>
+This architecture diagram only applies to larger runners with Linux or Windows operating systems.</p>
+</div>
+<p>Larger runners are managed at the organization level, where they are arranged into groups that can contain multiple instances of the runner. They can also be created at the enterprise level and shared with organizations in the hierarchy. Once you've created a group, you can then add a runner to the group and update your workflows to target either the group name or the label assigned to the larger runner. You can also control which repositories are permitted to send jobs to the group for processing. For more information about groups, see <a href="/en/actions/using-github-hosted-runners/controlling-access-to-larger-runners">Controlling access to larger runners</a>.</p>
+<p>In the following diagram, a class of hosted runner named <code>ubuntu-20.04-16core</code> has been defined with customized hardware and operating system configuration.</p>
+<p><picture><source><img src="/assets/cb-127441/images/help/actions/hosted-runner.png" alt="Diagram showing a larger runner being used by a workflow because of the runner's label."></source></picture></p>
+<ol>
+<li>Instances of this runner are automatically created and added to a group called <code>grp-ubuntu-20.04-16core</code>.</li>
+<li>The runners have been assigned the label <code>ubuntu-20.04-16core</code>.</li>
+<li>Workflow jobs use the <code>ubuntu-20.04-16core</code> label in their <code>runs-on</code> key to indicate the type of runner they need to execute the job.</li>
+<li>GitHub Actions checks the runner group to see if your repository is authorized to send jobs to the runner.</li>
+<li>The job runs on the next available instance of the <code>ubuntu-20.04-16core</code> runner.</li>
+</ol>
+<h2><a href="#autoscaling-larger-runners">Autoscaling larger runners</a></h2>
+<div>
+<p>
+Autoscaling is only available for larger runners with Linux or Windows operating systems.</p>
+</div>
+<p>Larger runners can automatically scale to suit your needs. You can provision machines to run a specified maximum number of jobs when jobs are submitted for processing. Each machine only handles one job at a time, so these settings effectively determine the number of jobs that can be run concurrently.</p>
+<p>You can configure the maximum job concurrency, which allows you to control your costs by setting the maximum parallel number of jobs that can be run using this set. A higher value here can help avoid workflows being blocked due to parallelism. For more information on how to set limits, see <a href="/en/actions/using-github-hosted-runners/managing-larger-runners#configuring-autoscaling-for-larger-runners">Managing larger runners</a>. For more information on the maximum auto-scaling limits for GitHub-hosted runners, see <a href="/en/actions/learn-github-actions/usage-limits-billing-and-administration#usage-limits">Usage limits, billing, and administration</a>.</p>
+<h2><a href="#assigning-static-ip-addresses-to-larger-runners">Assigning static IP addresses to larger runners</a></h2>
+<p>You can assign static IP addresses only to larger runners that use Linux or Windows operating systems.</p>
+<p>Static IP addresses assigned are all usable and are not in CIDR notation.</p>
+<p>Private networking for GitHub-hosted runners does not support static IP addresses for larger runners. For more information about private networking for GitHub-hosted runners, see <a href="/en/enterprise-cloud@latest/admin/configuration/configuring-private-networking-for-hosted-compute-products/about-azure-private-networking-for-github-hosted-runners-in-your-enterprise">About Azure private networking for GitHub-hosted runners in your enterprise</a>.</p>
+<h2><a href="#networking-for-larger-runners">Networking for larger runners</a></h2>
+<p>By default, larger runners receive a dynamic IP address that changes for each job run. Optionally, GitHub Enterprise Cloud customers can configure their larger runners to receive static IP addresses from GitHub's IP address pool. For more information, see <a href="/en/authentication/keeping-your-account-and-data-secure/about-githubs-ip-addresses">About GitHub's IP addresses</a>.</p>
+<p>When enabled, instances of the larger runner will receive IP addresses from specific ranges that are unique to the runner, allowing you to use the ranges to configure a firewall allowlist. You can use up to 10 larger runners with static IP address ranges in total across all your larger runners. For more information, see <a href="/en/actions/using-github-hosted-runners/managing-larger-runners#networking-for-larger-runners">Managing larger runners</a>.</p>
+<p>If you would like to use more than 10 larger runners with static IP address ranges, please contact us through the <a href="https://support.github.com">GitHub Support portal</a>.</p>
+<div>
+<p>
+If runners are unused for more than 30 days, their IP address ranges are automatically removed and cannot be recovered.</p>
+</div>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

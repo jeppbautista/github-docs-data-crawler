@@ -1,0 +1,122 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Build Copilot Extensions" href="/en/copilot/building-copilot-extensions">Build Copilot Extensions</a><span>/</span>
+</li>
+<li><a title="Manage Extension availability" href="/en/copilot/building-copilot-extensions/managing-the-availability-of-your-copilot-extension">Manage Extension availability</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Managing the availability of your Copilot Extension</h1></div></div>
+<div><div><p>After you build your Copilot Extension, you can change it's visibility or publish it on the GitHub Marketplace.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#changing-the-visibility-of-your-copilot-extension"><div><span>Changing the visibility of your Copilot Extension</span></div></a></li>
+<li><a href="#listing-your-copilot-extension-on-the-github-marketplace"><div><span>Listing your Copilot Extension on the GitHub Marketplace</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>When you build a Copilot Extension, you have two options for the visibility of your GitHub App:</p>
+<ul>
+<li>
+<strong>Public:</strong> Any user or organization account with the link to your app's installation page can install it. Making your app public automatically creates a public installation page, but does not list the app on the GitHub Marketplace.</li>
+<li>
+<strong>Private:</strong> Any user, organization, or enterprise can create an extension.  Any user or organization, and any organization in an enterprise can install an enterprise-created extension. Private extensions are not available to all users outside your organization or enterprise based on the level at which it was created.</li>
+</ul>
+<p>If you make your app public, you can choose to publish it on the GitHub Marketplace.</p>
+<h2><a href="#changing-the-visibility-of-your-copilot-extension">Changing the visibility of your Copilot Extension</a></h2>
+<ol>
+<li>In the upper-right corner of GitHub, select your profile photo, then click </li>
+<li>Under "Organizations", next to the name of your organization, click <strong>Settings</strong>.</li>
+<li>At the bottom of the sidebar, select <strong>GitHub Apps</strong>.</li>
+<li>In the "GitHub Apps" section, next to the name of your Copilot Extension, click <strong>Edit</strong>.</li>
+<li>In the sidebar, click <strong>Advanced</strong>. At the bottom of the "Danger Zone" section, you will see one of two options:
+<ul>
+<li>
+<strong>Make public:</strong> If you see the <strong>Make public</strong> option, your GitHub App is currently private, and can only be installed by the organization or user that created the app. You can click <strong>Make public</strong> to allow any other account with the link to your app's installation page to install your Copilot extension. Leave the settings unchanged to keep your app private.</li>
+<li>
+<strong>Make private:</strong> If you see the <strong>Make private</strong> option, your GitHub App is currently public, and can be installed by any account with the link to your app's installation page. You can click <strong>Make private</strong> to only allow installations by the organization or user that created the app, or organizations that are part of the enterprise that created the extension. Leave the settings unchanged to keep your app public.</li>
+</ul>
+</li>
+<li>Optionally, if your GitHub App is public, you can share the link to the installation page for your Copilot Extension. In the sidebar, click <strong>Public page</strong> in the sidebar, then copy the link for your listing.</li>
+</ol>
+<div>
+<p> You can set a published marketplace extension to private, and it will remain accessible on the GitHub Marketplace. However, it won't be accessible from the direct installation page.</p>
+</div>
+<h2><a href="#listing-your-copilot-extension-on-the-github-marketplace">Listing your Copilot Extension on the GitHub Marketplace</a></h2>
+<p>To list your Copilot Extension on the GitHub Marketplace, you must meet the following requirements:</p>
+<ul>
+<li>You must publish your app from an organization that is a verified publisher on the GitHub Marketplace.
+<ul>
+<li>If your organization is not yet verified, see <a href="/en/apps/github-marketplace/github-marketplace-overview/applying-for-publisher-verification-for-your-organization">Applying for publisher verification for your organization</a>.</li>
+<li>If you need to transfer ownership of your app from your personal account to your organization account, see <a href="/en/apps/maintaining-github-apps/transferring-ownership-of-a-github-app">Transferring ownership of a GitHub App</a>.</li>
+</ul>
+</li>
+<li>Your app must meet the requirements for all Copilot Extension listings on the GitHub Marketplace. See <a href="/en/apps/github-marketplace/creating-apps-for-github-marketplace/requirements-for-listing-an-app#requirements-for-github-copilot-extensions">Requirements for listing an app</a>.</li>
+</ul>
+<p>App managers cannot create, edit, or publish extensions on the GitHub Marketplace. To manage a listing, you should be an organization owner for the publishing organization.</p>
+<div>
+<p> Paid plans are not supported for Copilot Extensions during public preview. Any requests to publish with a paid plan attached will not be approved.</p>
+</div>
+<ol>
+<li>
+<p>In the upper-right corner of GitHub, select your profile photo, then click </p>
+</li>
+<li>
+<p>Under "Organizations", next to the name of your organization, click <strong>Settings</strong>.</p>
+</li>
+<li>
+<p>At the bottom of the sidebar, select <strong>GitHub Apps</strong>.</p>
+</li>
+<li>
+<p>Select the app you'd like to publish to the GitHub Marketplace.</p>
+</li>
+<li>
+<p>On the app settings landing page, scroll down to the Marketplace section, then click <strong>List in Marketplace</strong>. The Marketplace section is only visible if your app is public.</p>
+</li>
+<li>
+<p>In the "Listing name" text box, type a name for your listing. This name is displayed on the GitHub Marketplace page and in search results, and can be changed later. GitHub recommends using any of the following naming conventions:</p>
+<ul>
+<li>
+<p><code>YOUR-PRODUCT-NAME</code> (example: "Copilot"): We recommend this convention if your extension stays within the scope of a single product and there are no other well-known products with the same name.</p>
+</li>
+<li>
+<p><code>YOUR-COMPANY-NAME</code> (example "GitHub"): We recommend this convention if your extension spans multiple products.</p>
+</li>
+<li>
+<p><code>YOUR-COMPANY-PRODUCT-NAME</code> (example: "GitHub Copilot"): We recommend this convention if your extension stays within the scope of one product, but there are other well-known products with the same name.</p>
+</li>
+</ul>
+<div>
+<p> The listing name is not the same as your GitHub App's name or your Copilot Extension's slug. Changing the listing name will not affect the app name or slug.</p>
+</div>
+</li>
+<li>
+<p>In the "Primary category" section, select the dropdown menu, then click a category. You can change your selection or add a secondary category later.</p>
+</li>
+<li>
+<p>To create a draft listing for your Copilot Extension, click <strong>Save and add more details</strong>.</p>
+</li>
+<li>
+<p>After you create a new draft listing, you'll see a view where you can manage your listing. Before you can submit your listing for review, you need to:</p>
+<ul>
+<li>Fill out each of the required sections</li>
+<li>Verify the organization account that owns the GitHub App</li>
+<li>Accept the GitHub Marketplace Developer Agreement</li>
+</ul>
+</li>
+<li>
+<p>To submit your listing, click <strong>Submit for review</strong>. After your listing is reviewed, an onboarding expert will let you know if your submission was approved or denied.</p>
+</li>
+</ol>
+<div>
+<p> GitHub reviews all submissions to ensure they meet our standards for quality, performance, reliability, and security. GitHub may deny submissions at its own discretion, and will provide reasons for denials. You are welcome to address any issues and resubmit your extension for review. You may also go through the <a href="/en/site-policy/acceptable-use-policies/github-appeal-and-reinstatement">GitHub Appeal and Reinstatement Process</a>.</p>
+</div>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

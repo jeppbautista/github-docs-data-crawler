@@ -1,0 +1,66 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Dependabot" href="/en/code-security/dependabot">Dependabot</a><span>/</span>
+</li>
+<li>
+<a title="Dependabot ecosystems" href="/en/code-security/dependabot/ecosystems-supported-by-dependabot">Dependabot ecosystems</a><span>/</span>
+</li>
+<li><a title="Optimize Java packages" href="/en/code-security/dependabot/ecosystems-supported-by-dependabot/optimizing-java-packages-dependabot">Optimize Java packages</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Optimizing Java packages for Dependabot updates</h1></div></div>
+<div><div><p>By including metadata in your <code>pom.xml</code> file, you can enhance the information available to users in Dependabot pull requests to update your Java packages.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#including-the-metadata-dependabot-needs-in-pomxml-files"><div><span>Including the metadata Dependabot needs in pom.xml files</span></div></a></li>
+<li><a href="#impact-of-omitting-project-metadata-from-pomxml-files"><div><span>Impact of omitting project metadata from pom.xml files</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>Dependabot uses the information defined in <code>pom.xml</code> files to create pull requests to update Java dependencies for the Gradle and Maven ecosystems. When you include the project metadata that Dependabot expects, pull requests contain links to the release notes for the suggested package update and a link where users can report any issues. This information means that users can update their packages with confidence after reviewing all the release information.</p>
+<h2><a href="#including-the-metadata-dependabot-needs-in-pomxml-files">Including the metadata Dependabot needs in pom.xml files</a></h2>
+<p>Dependabot uses the URLs for the project, the source code management system, and the issue management system to build the summary for update pull requests.</p>
+<ul>
+<li>
+<code>url</code> the home page for the project, see <a href="https://maven.apache.org/pom.html#More_Project_Information">More Project Information</a> in the POM reference</li>
+<li>
+<code>scm</code> the URL of the source code management system used by the project, see <a href="https://maven.apache.org/pom.html#scm">SCM</a> in the POM Reference</li>
+<li>
+<code>issueManagement</code> the URL of the issue management system used by the project, see <a href="https://maven.apache.org/pom.html#issue-management">Issue Management</a> in the POM Reference</li>
+</ul>
+<h3><a href="#example-for-a-project-hosted-on-github">Example for a project hosted on GitHub</a></h3>
+<pre><code><span>&lt;<span>project</span>&gt;</span>
+  <span>&lt;<span>url</span>&gt;</span>https://github.com/OWNER/REPOSITORY<span>&lt;/<span>url</span>&gt;</span>
+  <span>&lt;<span>scm</span>&gt;</span>
+    <span>&lt;<span>url</span>&gt;</span>https://github.com/OWNER/REPOSITORY<span>&lt;/<span>url</span>&gt;</span>
+  <span>&lt;/<span>scm</span>&gt;</span>
+  <span>&lt;<span>issueManagement</span>&gt;</span>
+    <span>&lt;<span>url</span>&gt;</span>https://github.com/OWNER/REPOSITORY/issues<span>&lt;/<span>url</span>&gt;</span>
+  <span>&lt;/<span>issueManagement</span>&gt;</span>
+<span>&lt;/<span>project</span>&gt;</span>
+</code></pre>
+<p>Replace <code>OWNER</code> and <code>REPOSITORY</code> with the detailed for your project.</p>
+<h2><a href="#impact-of-omitting-project-metadata-from-pomxml-files">Impact of omitting project metadata from pom.xml files</a></h2>
+<p>If you forget to include the URLs that Dependabot checks for, then pull requests to update Java packages are still created. However, the information available to users in the pull request summary will be limited.</p>
+<ul>
+<li>
+<strong>Project repository or Source code management URL undefined:</strong> no links to release notes in Dependabot pull requests</li>
+<li>
+<strong>Issue management URL undefined:</strong> no link to the issues page for reporting problems.</li>
+</ul>
+<p>Adding this information helps Dependabot provide better, more accurate updates for your project, complete with helpful links to release notes and issue trackers.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="https://maven.apache.org/scm/maven-scm-plugin/">Maven SCM Plugin</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

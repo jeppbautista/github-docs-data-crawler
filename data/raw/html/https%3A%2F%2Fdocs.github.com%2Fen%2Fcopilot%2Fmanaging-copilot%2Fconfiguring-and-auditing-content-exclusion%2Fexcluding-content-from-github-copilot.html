@@ -1,0 +1,482 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Manage Copilot" href="/en/copilot/managing-copilot">Manage Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Configure content exclusion" href="/en/copilot/managing-copilot/configuring-and-auditing-content-exclusion">Configure content exclusion</a><span>/</span>
+</li>
+<li><a title="Exclude content from Copilot" href="/en/copilot/managing-copilot/configuring-and-auditing-content-exclusion/excluding-content-from-github-copilot">Exclude content from Copilot</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Excluding content from GitHub Copilot</h1></div></div>
+<div><div><p>You can prevent Copilot from accessing certain content.</p></div></div>
+<div><div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Repository administrators and organization owners can manage content exclusion settings. People with the "Maintain" role for a repository can view, but not edit, content exclusion settings for that repository.</p></div></div>
+<div><div><p>Organizations with a Copilot Business or Copilot Enterprise plan.</p></div></div>
+</div></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-content-exclusions-for-copilot"><div><span>About content exclusions for Copilot</span></div></a></li>
+<li><a href="#configuring-content-exclusions-for-your-repository"><div><span>Configuring content exclusions for your repository</span></div></a></li>
+<li><a href="#configuring-content-exclusions-for-your-organization"><div><span>Configuring content exclusions for your organization</span></div></a></li>
+<li><a href="#testing-changes-to-content-exclusions"><div><span>Testing changes to content exclusions</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-content-exclusions-for-copilot">About content exclusions for Copilot</a></h2>
+<p>You can use content exclusions to configure Copilot to ignore certain files. When you exclude content from Copilot:</p>
+<ul>
+<li>Code completion will not be available in the affected files.</li>
+<li>The content in affected files will not inform code completion suggestions in other files.</li>
+<li>The content in affected files will not inform GitHub Copilot Chat's responses.</li>
+<li>Affected files will not be reviewed in a Copilot code review.</li>
+</ul>
+<h3><a href="#who-can-configure-content-exclusion">Who can configure content exclusion</a></h3>
+<p>Repository administrators and organization owners can configure content exclusion.</p>
+<ul>
+<li>
+<strong>Repository administrators</strong> can exclude content for their own repositories. This affects any Copilot users in the enterprise working within those specific repositories.</li>
+<li>
+<strong>Organization owners</strong> can exclude content for users assigned a Copilot seat through their organization.</li>
+</ul>
+<h3><a href="#availability-of-content-exclusions">Availability of content exclusions</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Tool</th>
+<th>Code completion support</th>
+<th>Copilot Chat support</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Visual Studio</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Visual Studio Code</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>JetBrains IDEs</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Vim/Neovim</td>
+<td></td>
+<td>Not applicable</td>
+</tr>
+<tr>
+<td>Xcode</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Eclipse</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Azure Data Studio</td>
+<td></td>
+<td>Not applicable</td>
+</tr>
+<tr>
+<td>The GitHub website</td>
+<td>Not applicable</td>
+<td></td>
+</tr>
+<tr>
+<td>GitHub Mobile</td>
+<td>Not applicable</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Content exclusions also apply to Copilot code review on the GitHub website.</p>
+<div>
+<p>
+Content exclusion is in public preview on the GitHub website and in GitHub Mobile and is subject to change.</p>
+</div>
+<h3><a href="#limitations-of-content-exclusions">Limitations of content exclusions</a></h3>
+<p>It's possible that Copilot may use semantic information from an excluded file if the information is provided by the IDE indirectly. Examples of such content include type information and hover-over definitions for symbols used in code, as well as general project properties such as build configuration information.</p>
+<p>Currently, content exclusions do not apply to symbolic links (symlinks).</p>
+<h3><a href="#data-sent-to-github">Data sent to GitHub</a></h3>
+<p>After you configure content exclusion, the client (for example, the Copilot extension for VS Code) sends the current repository URL to the GitHub server so that the server can return the correct policy to the client. These URLs are not logged anywhere.</p>
+<h2><a href="#configuring-content-exclusions-for-your-repository">Configuring content exclusions for your repository</a></h2>
+<p>You can use your repository settings to specify content in your repository that GitHub Copilot should ignore.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click <strong>Settings</strong>.</p>
+<div><picture><source><img src="/assets/cb-28260/images/help/repository/repo-actions-settings.png" alt='Screenshot of a repository header showing the tabs. The "Settings" tab is highlighted by a dark orange outline.' width="720" height="71"></source></picture></div>
+</li>
+<li>
+<p>In the "Code &amp; automation" section of the sidebar, click </p>
+<p>If your repository inherits any exclusions from its parent organization, you'll see  a gray box at the top of the page containing details of these exclusions. You cannot edit these settings.</p>
+</li>
+<li>
+<p>In the box following "Paths to exclude in this repository," enter the paths to files from which Copilot should be excluded.</p>
+<p>Use the format: <code>- "/PATH/TO/DIRECTORY/OR/FILE"</code>, with each path on a separate line. You can add comments by starting a line with <code>#</code>.</p>
+<div>
+<p> You can use fnmatch pattern matching notation to specify file paths. Patterns are case insensitive. See <a href="https://ruby-doc.org/core-2.5.1/File.html#method-c-fnmatch">File</a> in the ruby-doc.org documentation.</p>
+</div>
+</li>
+</ol>
+<h3><a href="#example-of-paths-specified-in-the-repository-settings">Example of paths specified in the repository settings</a></h3>
+<div>
+<div><header><span>YAML</span><div>
+<button>Beside</button><button>Inline</button>
+</div>
+<pre># Ignore the `/src/some-dir/kernel.rs` file in this repository.
+- "/src/some-dir/kernel.rs"
+
+# Ignore files called `secrets.json` anywhere in this repository.
+- "secrets.json"
+
+# Ignore all files whose names begin with `secret` anywhere in this repository.
+- "secret*"
+
+# Ignore files whose names end with `.cfg` anywhere in this repository.
+- "*.cfg"
+
+# Ignore all files in or below the `/scripts` directory of this repository.
+- "/scripts/**"
+</pre></header></div>
+<div>
+<div>
+<div><pre><code><span>-</span> <span>"/src/some-dir/kernel.rs"</span></code></pre></div>
+<div><p>Ignore the <code>/src/some-dir/kernel.rs</code> file in this repository.</p></div>
+</div>
+<div>
+<div><pre><code><span>-</span> <span>"secrets.json"</span></code></pre></div>
+<div><p>Ignore files called <code>secrets.json</code> anywhere in this repository.</p></div>
+</div>
+<div>
+<div><pre><code><span>-</span> <span>"secret*"</span></code></pre></div>
+<div><p>Ignore all files whose names begin with <code>secret</code> anywhere in this repository.</p></div>
+</div>
+<div>
+<div><pre><code><span>-</span> <span>"*.cfg"</span></code></pre></div>
+<div><p>Ignore files whose names end with <code>.cfg</code> anywhere in this repository.</p></div>
+</div>
+<div>
+<div><pre><code><span>-</span> <span>"/scripts/**"</span></code></pre></div>
+<div><p>Ignore all files in or below the <code>/scripts</code> directory of this repository.</p></div>
+</div>
+</div>
+<div><pre><code><span># Ignore the `/src/some-dir/kernel.rs` file in this repository.</span>
+<span>-</span> <span>"/src/some-dir/kernel.rs"</span>
+
+<span># Ignore files called `secrets.json` anywhere in this repository.</span>
+<span>-</span> <span>"secrets.json"</span>
+
+<span># Ignore all files whose names begin with `secret` anywhere in this repository.</span>
+<span>-</span> <span>"secret*"</span>
+
+<span># Ignore files whose names end with `.cfg` anywhere in this repository.</span>
+<span>-</span> <span>"*.cfg"</span>
+
+<span># Ignore all files in or below the `/scripts` directory of this repository.</span>
+<span>-</span> <span>"/scripts/**"</span>
+</code></pre></div>
+</div>
+<h2><a href="#configuring-content-exclusions-for-your-organization">Configuring content exclusions for your organization</a></h2>
+<p>You can use your organization settings to specify files that GitHub Copilot should ignore. The files can be within a Git repository or anywhere on the file system that is not under Git control.</p>
+<ol>
+<li>
+<p>In the upper-right corner of GitHub, select your profile photo, then click </p>
+</li>
+<li>
+<p>Next to the organization, click <strong>Settings</strong>.</p>
+</li>
+<li>
+<p>In the left sidebar, click <strong>Content exclusion</strong>.</p>
+</li>
+<li>
+<p>In the box following "Repositories and paths to exclude," enter the details of files from which Copilot should be excluded.</p>
+<p>To exclude files located anywhere (within a Git repository or elsewhere), enter <code>"*":</code> followed by the path to the file, or files, you want to exclude. If you want to specify multiple file path patterns, list each pattern on a separate line.</p>
+<p>To exclude files in a Git repository from Copilot, enter a reference to the repository on one line, followed by paths to locations within the repository, with each path on a separate line. Use the following format, replacing <code>REPOSITORY-REFERENCE</code> with a reference to the repository that contains the files you'd like to exclude:</p>
+<pre><code><span>REPOSITORY-REFERENCE:</span>
+  <span>-</span> <span>"/PATH/TO/DIRECTORY/OR/FILE"</span>
+  <span>-</span> <span>"/PATH/TO/DIRECTORY/OR/FILE"</span>
+  <span>-</span> <span>...</span>
+</code></pre>
+<p>Repositories can be referenced using various protocols. You can use any of the following syntaxes for <code>REPOSITORY-REFERENCE</code> and Copilot will match them regardless of how the repository was cloned locally:</p>
+<pre><code>http[s]://host.xz[:port]/path/to/repo.git/
+
+git://host.xz[:port]/path/to/repo.git/
+
+[user@]host.xz:path/to/repo.git/
+
+ssh://[user@]host.xz[:port]/path/to/repo.git/
+</code></pre>
+<p>The <code>user@</code> and <code>:port</code> parts of the <code>REPOSITORY-REFERENCE</code> are ignored in the calculation of which paths to ignore for a repository.</p>
+<p>For Azure DevOps, you can use the new (dev.azure.com) or old (visualstudio.com) host format when specifying <code>REPOSITORY-REFERENCE</code>, and Copilot will match them regardless of which host was used to clone the repository locally.</p>
+<div>
+<p> You can use fnmatch pattern matching notation to specify file paths. Patterns are case insensitive. See <a href="https://ruby-doc.org/core-2.5.1/File.html#method-c-fnmatch">File</a> in the ruby-doc.org documentation.</p>
+</div>
+</li>
+</ol>
+<h3><a href="#example-of-repositories-and-paths-in-organization-settings">Example of repositories and paths in organization settings</a></h3>
+<div>
+<div><header><span>YAML</span><div>
+<button>Beside</button><button>Inline</button>
+</div>
+<pre># Ignore all `.env` files from all file system roots (Git and non-Git).
+# For example, this excludes `REPOSITORY-PATH/.env` and also `/.env`.
+# This could also have been written on a single line as:
+#
+# "*": ["**/.env"]
+"*":
+  - "**/.env"
+
+# In the `octo-repo` repository in this organization:
+octo-repo:
+  # Ignore the `/src/some-dir/kernel.rs` file.
+  - "/src/some-dir/kernel.rs"
+
+# In the `primer/react` repository on GitHub:
+https://github.com/primer/react.git:
+  # Ignore files called `secrets.json` anywhere in this repository.
+  - "secrets.json"
+  # Ignore files called `temp.rb` in or below the `/src` directory.
+  - "/src/**/temp.rb"
+
+# In the `copilot` repository of any GitHub organization:
+git@github.com:*/copilot:
+  # Ignore any files in or below the `/__tests__` directory.
+  - "/__tests__/**"
+  # Ignore any files in the `/scripts` directory.
+  - "/scripts/*"
+
+# In the `gitlab-org/gitlab-runner` repository on GitLab:
+git@gitlab.com:gitlab-org/gitlab-runner.git:
+  # Ignore the `/main_test.go` file.
+  - "/main_test.go"
+  # Ignore any files with names beginning with `server` or `session` anywhere in this repository.
+  - "{server,session}*"
+  # Ignore any files with names ending with `.md` or `.mk` anywhere in this repository.
+  - "*.m[dk]"
+  # Ignore files directly within directories such as `packages` or `packaged` anywhere in this repository.
+  - "**/package?/*"
+  # Ignore files in or below any `security` directories, anywhere in this repository.
+  - "**/security/**"
+</pre></header></div>
+<div>
+<div>
+<div><pre><code><span>"*"</span><span>:</span>
+  <span>-</span> <span>"**/.env"</span></code></pre></div>
+<div>
+<p>Ignore all <code>.env</code> files from all file system roots (Git and non-Git).
+For example, this excludes <code>REPOSITORY-PATH/.env</code> and also <code>/.env</code>.
+This could also have been written on a single line as:</p>
+<p>"*": ["**/.env"]</p>
+</div>
+</div>
+<div>
+<div><pre><code><span>octo-repo:</span></code></pre></div>
+<div><p>In the <code>octo-repo</code> repository in this organization:</p></div>
+</div>
+<div>
+<div><pre><code>  <span>-</span> <span>"/src/some-dir/kernel.rs"</span></code></pre></div>
+<div><p>Ignore the <code>/src/some-dir/kernel.rs</code> file.</p></div>
+</div>
+<div>
+<div><pre><code><span>https://github.com/primer/react.git:</span></code></pre></div>
+<div><p>In the <code>primer/react</code> repository on GitHub:</p></div>
+</div>
+<div>
+<div><pre><code>  <span>-</span> <span>"secrets.json"</span></code></pre></div>
+<div><p>Ignore files called <code>secrets.json</code> anywhere in this repository.</p></div>
+</div>
+<div>
+<div><pre><code>  <span>-</span> <span>"/src/**/temp.rb"</span></code></pre></div>
+<div><p>Ignore files called <code>temp.rb</code> in or below the <code>/src</code> directory.</p></div>
+</div>
+<div>
+<div><pre><code><span>git@github.com:*/copilot:</span></code></pre></div>
+<div><p>In the <code>copilot</code> repository of any GitHub organization:</p></div>
+</div>
+<div>
+<div><pre><code>  <span>-</span> <span>"/__tests__/**"</span></code></pre></div>
+<div><p>Ignore any files in or below the <code>/__tests__</code> directory.</p></div>
+</div>
+<div>
+<div><pre><code>  <span>-</span> <span>"/scripts/*"</span></code></pre></div>
+<div><p>Ignore any files in the <code>/scripts</code> directory.</p></div>
+</div>
+<div>
+<div><pre><code><span>git@gitlab.com:gitlab-org/gitlab-runner.git:</span></code></pre></div>
+<div><p>In the <code>gitlab-org/gitlab-runner</code> repository on GitLab:</p></div>
+</div>
+<div>
+<div><pre><code>  <span>-</span> <span>"/main_test.go"</span></code></pre></div>
+<div><p>Ignore the <code>/main_test.go</code> file.</p></div>
+</div>
+<div>
+<div><pre><code>  <span>-</span> <span>"{server,session}*"</span></code></pre></div>
+<div><p>Ignore any files with names beginning with <code>server</code> or <code>session</code> anywhere in this repository.</p></div>
+</div>
+<div>
+<div><pre><code>  <span>-</span> <span>"*.m[dk]"</span></code></pre></div>
+<div><p>Ignore any files with names ending with <code>.md</code> or <code>.mk</code> anywhere in this repository.</p></div>
+</div>
+<div>
+<div><pre><code>  <span>-</span> <span>"**/package?/*"</span></code></pre></div>
+<div><p>Ignore files directly within directories such as <code>packages</code> or <code>packaged</code> anywhere in this repository.</p></div>
+</div>
+<div>
+<div><pre><code>  <span>-</span> <span>"**/security/**"</span></code></pre></div>
+<div><p>Ignore files in or below any <code>security</code> directories, anywhere in this repository.</p></div>
+</div>
+</div>
+<div><pre><code><span># Ignore all `.env` files from all file system roots (Git and non-Git).</span>
+<span># For example, this excludes `REPOSITORY-PATH/.env` and also `/.env`.</span>
+<span># This could also have been written on a single line as:</span>
+<span>#</span>
+<span># "*": ["**/.env"]</span>
+<span>"*"</span><span>:</span>
+  <span>-</span> <span>"**/.env"</span>
+
+<span># In the `octo-repo` repository in this organization:</span>
+<span>octo-repo:</span>
+  <span># Ignore the `/src/some-dir/kernel.rs` file.</span>
+  <span>-</span> <span>"/src/some-dir/kernel.rs"</span>
+
+<span># In the `primer/react` repository on GitHub:</span>
+<span>https://github.com/primer/react.git:</span>
+  <span># Ignore files called `secrets.json` anywhere in this repository.</span>
+  <span>-</span> <span>"secrets.json"</span>
+  <span># Ignore files called `temp.rb` in or below the `/src` directory.</span>
+  <span>-</span> <span>"/src/**/temp.rb"</span>
+
+<span># In the `copilot` repository of any GitHub organization:</span>
+<span>git@github.com:*/copilot:</span>
+  <span># Ignore any files in or below the `/__tests__` directory.</span>
+  <span>-</span> <span>"/__tests__/**"</span>
+  <span># Ignore any files in the `/scripts` directory.</span>
+  <span>-</span> <span>"/scripts/*"</span>
+
+<span># In the `gitlab-org/gitlab-runner` repository on GitLab:</span>
+<span>git@gitlab.com:gitlab-org/gitlab-runner.git:</span>
+  <span># Ignore the `/main_test.go` file.</span>
+  <span>-</span> <span>"/main_test.go"</span>
+  <span># Ignore any files with names beginning with `server` or `session` anywhere in this repository.</span>
+  <span>-</span> <span>"{server,session}*"</span>
+  <span># Ignore any files with names ending with `.md` or `.mk` anywhere in this repository.</span>
+  <span>-</span> <span>"*.m[dk]"</span>
+  <span># Ignore files directly within directories such as `packages` or `packaged` anywhere in this repository.</span>
+  <span>-</span> <span>"**/package?/*"</span>
+  <span># Ignore files in or below any `security` directories, anywhere in this repository.</span>
+  <span>-</span> <span>"**/security/**"</span>
+</code></pre></div>
+</div>
+<h2><a href="#testing-changes-to-content-exclusions">Testing changes to content exclusions</a></h2>
+<p>You can use your IDE to confirm that your changes to content exclusions are working as expected.</p>
+<h3><a href="#propagate-content-exclusion-changes-to-your-ide">Propagate content exclusion changes to your IDE</a></h3>
+<p>After you add or change content exclusions, it can take up to 30 minutes to take effect in IDEs where the settings are already loaded. If you don't want to wait, you can manually reload the content exclusion settings using the following instructions.</p>
+<ul>
+<li>
+<strong>For JetBrains IDEs and Visual Studio</strong>, reload the content exclusion settings by closing and reopening the application.</li>
+<li>
+<strong>For Visual Studio Code</strong>, use the following steps to reload the content exclusion settings:
+<ol>
+<li>Access the Command Palette. For example, by pressing <kbd>Shift</kbd>+<kbd>Command</kbd>+<kbd>P</kbd> (Mac) / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> (Windows/Linux).</li>
+<li>Type: <code>reload</code>.</li>
+<li>Select <strong>Developer: Reload Window</strong>.</li>
+</ol>
+</li>
+<li>
+<strong>For Vim/Neovim</strong>, content exclusions are automatically fetched from GitHub each time you open a file.</li>
+</ul>
+<h3><a href="#test-your-content-exclusions">Test your content exclusions</a></h3>
+<p>There are a few different ways to test your content exclusions, depending on which IDE you're using.</p>
+<ol>
+<li>Open a file that you expect to be affected by your content exclusions.</li>
+<li>Use one or more of the following techniques to test if content is being excluded:
+<ul>
+<li>
+<strong>In JetBrains IDEs, Visual Studio, and Visual Studio Code</strong>, check the Copilot icon in the status bar. If a Copilot content exclusion applies to the file, the Copilot icon will have a diagonal line through it. Hover over the icon to see whether an organization or the parent repository disabled Copilot for the file.</li>
+<li>
+<strong>In Vim/Neovim</strong>, begin typing in the file. If GitHub Copilot no longer provides inline suggestions as you type, the file is excluded.</li>
+<li>You can also test content exclusions in Copilot Chat. Open the Copilot Chat window, and ask Copilot Chat a question about the excluded file. If your content is excluded successfully, Copilot will be unable to answer your question, and will explain that some files were excluded from the conversation due to content exclusion rules.</li>
+</ul>
+</li>
+</ol>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/managing-access-to-github-copilot-in-your-organization/reviewing-changes-to-content-exclusions-for-github-copilot">Reviewing changes to content exclusions for GitHub Copilot</a></li>
+<li>
+<a href="https://learn.microsoft.com/en-us/visualstudio/ide/visual-studio-github-copilot-admin?view=vs-2022#configure-content-exclusion">Configuring content exclusion for Visual Studio</a> in the Microsoft Learn documentation</li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

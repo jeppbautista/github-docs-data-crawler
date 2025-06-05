@@ -1,0 +1,150 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Troubleshooting" href="/en/codespaces/troubleshooting">Troubleshooting</a><span>/</span>
+</li>
+<li><a title="Codespaces clients" href="/en/codespaces/troubleshooting/troubleshooting-github-codespaces-clients">Codespaces clients</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Troubleshooting GitHub Codespaces clients</h1></div></div>
+<div>
+<div><p>This article provides troubleshooting information for issues you may encounter with the client you use for GitHub Codespaces.</p></div>
+<div>
+<h2>Tool navigation</h2>
+<nav><ul>
+<li><a href="?tool=vscode"><span>Visual Studio Code</span></a></li>
+<li><a href="?tool=webui"><span>Web browser</span></a></li>
+</ul></nav>
+</div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#troubleshooting-the-visual-studio-code-web-client"><div><span>Troubleshooting the Visual Studio Code web client</span></div></a></li>
+<li><a href="#vs-code-troubleshooting"><div><span>VS Code troubleshooting</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<h2><a href="#troubleshooting-the-visual-studio-code-web-client">Troubleshooting the Visual Studio Code web client</a></h2>
+<p>If you encounter issues using GitHub Codespaces in a browser that is not Chromium-based, try switching to a Chromium-based browser, such as Google Chrome or Microsoft Edge. Alternatively, check for known issues with your browser in the <a href="https://github.com/microsoft/vscode/issues?q=is%3Aissue+is%3Aopen"><code>microsoft/vscode</code></a> repository by searching for issues labeled with the name of your browser, such as <a href="https://github.com/microsoft/vscode/issues?q=is%3Aissue+is%3Aopen+label%3Afirefox"><code>firefox</code></a> or <a href="https://github.com/Microsoft/vscode/issues?q=is%3Aopen+is%3Aissue+label%3Asafari"><code>safari</code></a>.</p>
+<p>If you encounter issues using GitHub Codespaces in a Chromium-based browser, you can check if you're experiencing another known issue with VS Code in the <a href="https://github.com/microsoft/vscode/issues?q=is%3Aissue+is%3Aopen"><code>microsoft/vscode</code></a> repository.</p>
+<h3><a href="#differences-from-working-in-vs-code-locally">Differences from working in VS Code locally</a></h3>
+<p>When you open a codespace in your browser, using the VS Code web client, you will notice some differences from working in a local workspace in the VS Code desktop application. For example, some key bindings will be different or missing, and some extensions may behave differently. For a summary, see: <a href="https://code.visualstudio.com/docs/remote/codespaces#_known-limitations-and-adaptations">Known limitations and adaptions</a> in the VS Code docs.</p>
+<p>You can check for known issues and log new issues with the VS Code experience in the <a href="https://github.com/microsoft/vscode/issues?q=is%3Aissue+is%3Aopen+codespaces"><code>microsoft/vscode</code></a> repository.</p>
+<h3><a href="#visual-studio-code-insiders">Visual Studio Code Insiders</a></h3>
+<p>Visual Studio Code Insiders is the most frequent release of VS Code. It has all the latest features and bug fixes, but may also occasionally contain new issues that result in a broken build.</p>
+<p>If you are using an Insiders build and notice broken behavior, we recommend switching to Visual Studio Code Stable and trying again.</p>
+<p>Click <strong>Switch to Stable Version...</strong>. If the VS Code web client doesn't load, or <code>?vscodeChannel=stable</code> to your codespace URL and loading the codespace at that URL.</p>
+<p>If the problem isn't fixed in Visual Studio Code Stable, check for known issues and, if required, log a new issue with the VS Code experience, in the <a href="https://github.com/microsoft/vscode/issues?q=is%3Aissue+is%3Aopen+codespaces"><code>microsoft/vscode</code></a> repository.</p>
+<h3><a href="#troubleshooting-the-simple-browser">Troubleshooting the Simple Browser</a></h3>
+<p>When you have started a web application in a codespace, you can preview the running application in the Simple Browser embedded in VS Code. In some projects, the application automatically opens in a Simple Browser tab in the editor when the application starts. This happens if, in the <code>devcontainer.json</code> configuration file for the codespace, the <code>onAutoForward</code> property of the port the application runs on is set to <code>openPreview</code>.</p>
+<pre><code><span>"portsAttributes"</span><span>:</span> <span>{</span>
+  <span>"3000"</span><span>:</span> <span>{</span>
+    <span>"label"</span><span>:</span> <span>"Application"</span><span>,</span>
+    <span>"onAutoForward"</span><span>:</span> <span>"openPreview"</span>
+  <span>}</span>
+<span>}</span>
+</code></pre>
+<p>If the Simple Browser tab does not open automatically, you can open the Simple Browser manually to view the application.</p>
+<ol>
+<li>
+<p>In VS Code, click the <strong>Ports</strong> tab.</p>
+</li>
+<li>
+<p>Right-click the port, then click <strong>Preview in Editor</strong>.</p>
+<div><picture><source><img src="/assets/cb-58212/images/help/codespaces/preview-in-editor-vscode.png" alt='Screenshot of the pop-up menu in the VS Code Ports tab. The menu entry "Preview in Editor" is highlighted with a dark orange outline.' width="720" height="352"></source></picture></div>
+</li>
+</ol>
+<h4><a href="#the-simple-browser-tab-does-not-open-automatically">The simple browser tab does not open automatically</a></h4>
+<p>If the <code>devcontainer.json</code> configuration file specifies <code>"onAutoForward": "openPreview"</code> for a port, but the Simple Browser does not open automatically when an application starts, check that the application has started on the port specified in the configuration. The application might start on a different port if the intended port is busy.</p>
+<p>To implement the port configuration specified in <code>devcontainer.json</code>, GitHub Codespaces writes the configuration to VS Code's <code>settings.json</code> file when a codespace is created. You can check that the configuration has been correctly written to <code>settings.json</code> in your codespace.</p>
+<ol>
+<li>
+<p>In the terminal in your codespace, enter the following command.</p>
+<div>
+<header><span>Bash</span><pre>cat ~/.vscode-remote/data/Machine/settings.json
+</pre></header><pre><code><span>cat</span> ~/.vscode-remote/data/Machine/settings.json
+</code></pre>
+</div>
+</li>
+<li>
+<p>Verify that the <code>settings.json</code> file contains lines like the following.</p>
+<pre><code> <span>"remote.portsAttributes"</span><span>:</span> <span>{</span>
+     <span>"3000"</span><span>:</span> <span>{</span>
+         <span>"label"</span><span>:</span> <span>"Application"</span><span>,</span>
+         <span>"onAutoForward"</span><span>:</span> <span>"openPreview"</span>
+     <span>}</span>
+ <span>}</span>
+</code></pre>
+</li>
+</ol>
+<p>If the <code>settings.json</code> file doesn't contain these settings, check whether you have dotfiles enabled, and whether any configuration in your dotfiles is overwriting the <code>settings.json</code> file. For more information, see <a href="/en/codespaces/setting-your-user-preferences/personalizing-github-codespaces-for-your-account#dotfiles">Personalizing GitHub Codespaces for your account</a>.</p>
+<h4><a href="#the-application-does-not-load">The application does not load</a></h4>
+<p>Occasionally, you may find that the Simple Browser tab opens, but displays an error page icon or a blank page instead of your running application. This can happen if the web application you are loading includes a content security policy (CSP) that restricts the domains in which the site's pages may be embedded. For more information, see <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors">CSP: frame-ancestors</a> on the mdn website.</p>
+<p>You may be able to change your application's <code>frame-ancestors</code> security policy locally to make the application display in the Simple Browser. Alternatively, if a <code>frame-ancestors</code> policy is causing the problem, you should be able to view the application by opening it in a regular browser tab rather than the simple browser. To do this, click the <strong>Ports</strong> tab in VS Code, right-click the port, and click <strong>Open in Browser</strong>.</p>
+</div>
+<div>
+<h2><a href="#vs-code-troubleshooting">VS Code troubleshooting</a></h2>
+<p>When you open a codespace in the VS Code desktop application, you may notice a few differences compared with working in a local workspace, but the experience should be similar.</p>
+<p>If you encounter problems, you can check for known issues and log new issues with the VS Code experience in the <a href="https://github.com/microsoft/vscode/issues?q=is%3Aissue+is%3Aopen+codespaces"><code>microsoft/vscode</code></a> repository.</p>
+<h3><a href="#visual-studio-code-insiders-1">Visual Studio Code Insiders</a></h3>
+<p>Visual Studio Code Insiders is the most frequent release of VS Code. It has all the latest features and bug fixes, but may also occasionally contain new issues that result in a broken build.</p>
+<p>If you are using an Insiders build and notice broken behavior, we recommend switching to Visual Studio Code Stable and trying again.</p>
+<p>To switch to Visual Studio Code Stable, close the Visual Studio Code Insiders application, open the Visual Studio Code Stable application, and re-open your codespace.</p>
+<p>If the problem isn't fixed in Visual Studio Code Stable, check for known issues and, if required, log a new issue with the VS Code experience, in the <a href="https://github.com/microsoft/vscode/issues?q=is%3Aissue+is%3Aopen+codespaces"><code>microsoft/vscode</code></a> repository.</p>
+<h3><a href="#troubleshooting-the-simple-browser-1">Troubleshooting the Simple Browser</a></h3>
+<p>When you have started a web application in a codespace, you can preview the running application in the Simple Browser embedded in VS Code. In some projects, the application automatically opens in a Simple Browser tab in the editor when the application starts. This happens if, in the <code>devcontainer.json</code> configuration file for the codespace, the <code>onAutoForward</code> property of the port the application runs on is set to <code>openPreview</code>.</p>
+<pre><code><span>"portsAttributes"</span><span>:</span> <span>{</span>
+  <span>"3000"</span><span>:</span> <span>{</span>
+    <span>"label"</span><span>:</span> <span>"Application"</span><span>,</span>
+    <span>"onAutoForward"</span><span>:</span> <span>"openPreview"</span>
+  <span>}</span>
+<span>}</span>
+</code></pre>
+<p>If the Simple Browser tab does not open automatically, you can open the Simple Browser manually to view the application.</p>
+<ol>
+<li>
+<p>In VS Code, click the <strong>Ports</strong> tab.</p>
+</li>
+<li>
+<p>Right-click the port, then click <strong>Preview in Editor</strong>.</p>
+<div><picture><source><img src="/assets/cb-58212/images/help/codespaces/preview-in-editor-vscode.png" alt='Screenshot of the pop-up menu in the VS Code Ports tab. The menu entry "Preview in Editor" is highlighted with a dark orange outline.'></source></picture></div>
+</li>
+</ol>
+<h4><a href="#the-simple-browser-tab-does-not-open-automatically-1">The simple browser tab does not open automatically</a></h4>
+<p>If the <code>devcontainer.json</code> configuration file specifies <code>"onAutoForward": "openPreview"</code> for a port, but the Simple Browser does not open automatically when an application starts, check that the application has started on the port specified in the configuration. The application might start on a different port if the intended port is busy.</p>
+<p>To implement the port configuration specified in <code>devcontainer.json</code>, GitHub Codespaces writes the configuration to VS Code's <code>settings.json</code> file when a codespace is created. You can check that the configuration has been correctly written to <code>settings.json</code> in your codespace.</p>
+<ol>
+<li>
+<p>In the terminal in your codespace, enter the following command.</p>
+<div>
+<header><span>Bash</span><pre>cat ~/.vscode-remote/data/Machine/settings.json
+</pre></header><pre><code><span>cat</span> ~/.vscode-remote/data/Machine/settings.json
+</code></pre>
+</div>
+</li>
+<li>
+<p>Verify that the <code>settings.json</code> file contains lines like the following.</p>
+<pre><code> <span>"remote.portsAttributes"</span><span>:</span> <span>{</span>
+     <span>"3000"</span><span>:</span> <span>{</span>
+         <span>"label"</span><span>:</span> <span>"Application"</span><span>,</span>
+         <span>"onAutoForward"</span><span>:</span> <span>"openPreview"</span>
+     <span>}</span>
+ <span>}</span>
+</code></pre>
+</li>
+</ol>
+<p>If the <code>settings.json</code> file doesn't contain these settings, check whether you have dotfiles enabled, and whether any configuration in your dotfiles is overwriting the <code>settings.json</code> file. For more information, see <a href="/en/codespaces/setting-your-user-preferences/personalizing-github-codespaces-for-your-account#dotfiles">Personalizing GitHub Codespaces for your account</a>.</p>
+<h4><a href="#the-application-does-not-load-1">The application does not load</a></h4>
+<p>Occasionally, you may find that the Simple Browser tab opens, but displays an error page icon or a blank page instead of your running application. This can happen if the web application you are loading includes a content security policy (CSP) that restricts the domains in which the site's pages may be embedded. For more information, see <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors">CSP: frame-ancestors</a> on the mdn website.</p>
+<p>You may be able to change your application's <code>frame-ancestors</code> security policy locally to make the application display in the Simple Browser. Alternatively, if a <code>frame-ancestors</code> policy is causing the problem, you should be able to view the application by opening it in a regular browser tab rather than the simple browser. To do this, click the <strong>Ports</strong> tab in VS Code, right-click the port, and click <strong>Open in Browser</strong>.</p>
+</div>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

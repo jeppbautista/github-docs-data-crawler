@@ -1,0 +1,940 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Use GitHub Copilot" href="/en/copilot/using-github-copilot">Use GitHub Copilot</a><span>/</span>
+</li>
+<li><a title="Get code suggestions" href="/en/copilot/using-github-copilot/getting-code-suggestions-in-your-ide-with-github-copilot">Get code suggestions</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Getting code suggestions in your IDE with GitHub Copilot</h1></div></div>
+<div>
+<div><p>Use GitHub Copilot to get code suggestions in your editor.</p></div>
+<div>
+<h2>Tool navigation</h2>
+<nav><ul>
+<li><a href="?tool=azure_data_studio"><span>Azure Data Studio</span></a></li>
+<li><a href="?tool=eclipse"><span>Eclipse</span></a></li>
+<li><a href="?tool=jetbrains"><span>JetBrains IDEs</span></a></li>
+<li><a href="?tool=vscode"><span>Visual Studio Code</span></a></li>
+<li>
+<button><span><span><span>More<span> Tool items</span></span></span></span></button><ul>
+<li><a href="?tool=vimneovim"><div><span><span>Vim/Neovim</span></span></div></a></li>
+<li><a href="?tool=visualstudio"><div><span><span>Visual Studio</span></span></div></a></li>
+<li><a href="?tool=xcode"><div><span><span>Xcode</span></span></div></a></li>
+</ul>
+</li>
+</ul></nav>
+</div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-github-copilot-and-jetbrains-ides"><div><span>About GitHub Copilot and JetBrains IDEs</span></div></a></li>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#getting-code-suggestions"><div><span>Getting code suggestions</span></div></a></li>
+<li><a href="#showing-alternative-suggestions"><div><span>Showing alternative suggestions</span></div></a></li>
+<li><a href="#showing-multiple-suggestions-in-a-new-tab"><div><span>Showing multiple suggestions in a new tab</span></div></a></li>
+<li><a href="#accepting-partial-suggestions"><div><span>Accepting partial suggestions</span></div></a></li>
+<li><a href="#about-github-copilot-and-visual-studio"><div><span>About GitHub Copilot and Visual Studio</span></div></a></li>
+<li><a href="#prerequisites-1"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#getting-code-suggestions-1"><div><span>Getting code suggestions</span></div></a></li>
+<li><a href="#showing-alternative-suggestions-1"><div><span>Showing alternative suggestions</span></div></a></li>
+<li><a href="#getting-comment-suggestions"><div><span>Getting comment suggestions</span></div></a></li>
+<li><a href="#about-next-edit-suggestions"><div><span>About next edit suggestions</span></div></a></li>
+<li><a href="#about-github-copilot-and-visual-studio-code"><div><span>About GitHub Copilot and Visual Studio Code</span></div></a></li>
+<li><a href="#prerequisites-2"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#getting-code-suggestions-2"><div><span>Getting code suggestions</span></div></a></li>
+<li><a href="#showing-alternative-suggestions-2"><div><span>Showing alternative suggestions</span></div></a></li>
+<li><a href="#showing-multiple-suggestions-in-a-new-tab-1"><div><span>Showing multiple suggestions in a new tab</span></div></a></li>
+<li><a href="#accepting-partial-suggestions-1"><div><span>Accepting partial suggestions</span></div></a></li>
+<li><a href="#about-next-edit-suggestions-1"><div><span>About next edit suggestions</span></div></a></li>
+<li><a href="#changing-the-ai-model"><div><span>Changing the AI model</span></div></a></li>
+<li><a href="#about-github-copilot-and-vimneovim"><div><span>About GitHub Copilot and Vim/Neovim</span></div></a></li>
+<li><a href="#prerequisites-3"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#learning-to-use-github-copilot-in-vimneovim"><div><span>Learning to use GitHub Copilot in Vim/Neovim</span></div></a></li>
+<li><a href="#about-github-copilot-and-azure-data-studio"><div><span>About GitHub Copilot and Azure Data Studio</span></div></a></li>
+<li><a href="#prerequisites-4"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#getting-code-suggestions-3"><div><span>Getting code suggestions</span></div></a></li>
+<li><a href="#showing-alternative-suggestions-3"><div><span>Showing alternative suggestions</span></div></a></li>
+<li><a href="#accepting-partial-suggestions-2"><div><span>Accepting partial suggestions</span></div></a></li>
+<li><a href="#about-github-copilot-in-xcode"><div><span>About GitHub Copilot in Xcode</span></div></a></li>
+<li><a href="#prerequisites-5"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#getting-code-suggestions-4"><div><span>Getting code suggestions</span></div></a></li>
+<li><a href="#about-github-copilot-and-eclipse"><div><span>About GitHub Copilot and Eclipse</span></div></a></li>
+<li><a href="#prerequisites-6"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#getting-code-suggestions-5"><div><span>Getting code suggestions</span></div></a></li>
+<li><a href="#manually-triggering-code-completion"><div><span>Manually triggering code completion</span></div></a></li>
+<li><a href="#accepting-partial-suggestions-3"><div><span>Accepting partial suggestions</span></div></a></li>
+<li><a href="#next-steps"><div><span>Next steps</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+    <a href="https://github.com/copilot?ref_cta=Copilot+free&amp;ref_loc=getting+started+with+github+copilot&amp;ref_page=docs">
+        <span>Get started for free</span> </a>
+    <div>
+    <a href="vscode://GitHub.Copilot-Chat">
+        <span>Open in Visual Studio Code</span> </a>
+    </div>
+</div>
+<div>
+<h2><a href="#about-github-copilot-and-jetbrains-ides">About GitHub Copilot and JetBrains IDEs</a></h2>
+<p>This guide demonstrates how to get coding suggestions from GitHub Copilot in a JetBrains IDE. To see instructions for other popular coding environments, use the tool switcher at the top of the page.</p>
+<p>The examples in this guide use Java, however other languages will work similarly. GitHub Copilot provides suggestions for numerous languages and a wide variety of frameworks, but works especially well for Python, JavaScript, TypeScript, Ruby, Go, C# and C++. GitHub Copilot can also assist in query generation for databases, generating suggestions for APIs and frameworks, and can help with infrastructure as code development.</p>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<ul>
+<li>
+<p><strong>Access to Copilot</strong>. To use GitHub Copilot in JetBrains, you need either limited access through Copilot Free or a paid Copilot plan for full access. For information about how to get access to Copilot, see <a href="/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot">What is GitHub Copilot?</a>.</p>
+</li>
+<li>
+<p><strong>Compatible JetBrains IDE</strong>. To use GitHub Copilot in JetBrains, you must have a compatible JetBrains IDE installed. GitHub Copilot is compatible with the following IDEs:</p>
+<ul>
+<li>IntelliJ IDEA (Ultimate, Community, Educational)</li>
+<li>Android Studio</li>
+<li>AppCode</li>
+<li>CLion</li>
+<li>Code With Me Guest</li>
+<li>DataGrip</li>
+<li>DataSpell</li>
+<li>GoLand</li>
+<li>JetBrains Client</li>
+<li>MPS</li>
+<li>PhpStorm</li>
+<li>PyCharm (Professional, Community, Educational)</li>
+<li>Rider</li>
+<li>RubyMine</li>
+<li>RustRover</li>
+<li>WebStorm</li>
+<li>Writerside</li>
+</ul>
+<p>See the <a href="https://www.jetbrains.com/products/">JetBrains IDEs</a> tool finder to download.</p>
+</li>
+<li>
+<p><strong>GitHub Copilot plugin</strong>. See the <a href="https://plugins.jetbrains.com/plugin/17718-github-copilot">GitHub Copilot plugin</a> in the JetBrains Marketplace. For installation instructions, see <a href="/en/copilot/configuring-github-copilot/installing-the-github-copilot-extension-in-your-environment">Installing the GitHub Copilot extension in your environment</a>.</p>
+</li>
+<li>
+<p><strong>Log in to GitHub in your JetBrains IDE</strong>. For authentication instructions, see <a href="/en/copilot/configuring-github-copilot/installing-the-github-copilot-extension-in-your-environment?tool=jetbrains#installing-the-github-copilot-plugin-in-your-jetbrains-ide">Installing the GitHub Copilot extension in your environment</a>.</p>
+</li>
+</ul>
+<h2><a href="#getting-code-suggestions">Getting code suggestions</a></h2>
+<p>GitHub Copilot offers coding suggestions as you type. For example, in a Java file, create a class by typing <code>class Test</code>.</p>
+<p>GitHub Copilot will automatically suggest a class body in grayed text. To accept the suggestion, press <kbd>Tab</kbd>.</p>
+<p>You can also describe something you want to do using natural language within a comment, and Copilot will suggest the code to accomplish your goal. For example, type this comment in a Java file:</p>
+<div>
+<header><span>Java</span><pre>// find all images without alternate text
+// and give them a red border
+void process () {
+</pre></header><pre><code><span>// find all images without alternate text</span>
+<span>// and give them a red border</span>
+<span>void</span> <span>process</span> <span>()</span> {
+</code></pre>
+</div>
+<p>GitHub Copilot will automatically suggest code. To accept the suggestion, press <kbd>Tab</kbd>.</p>
+<p>GitHub Copilot will attempt to match the context and style of your code. You can always edit the suggested code.</p>
+<div>
+<p>
+If you receive limited or no suggestions from Copilot, you may have duplication detection enabled. For more information about duplication detection, see <a href="/en/copilot/configuring-github-copilot/configuring-your-personal-github-copilot-settings-on-githubcom#enabling-or-disabling-suggestions-matching-public-code">Managing Copilot policies as an individual subscriber</a>.</p>
+</div>
+<h2><a href="#showing-alternative-suggestions">Showing alternative suggestions</a></h2>
+<p>For any given input, GitHub Copilot may offer multiple suggestions. You can select which suggestion to use, or reject all suggestions.</p>
+<p>For example, type the following line in a Java file, and press <kbd>Enter</kbd>:</p>
+<div>
+<header><span>Java</span><pre>private int calculateDaysBetweenDates(Date date1,
+</pre></header><pre><code><span>private</span> <span>int</span> <span>calculateDaysBetweenDates</span><span>(Date date1,
+</span></code></pre>
+</div>
+<p>GitHub Copilot will show you a suggestion.</p>
+<p>Now hover over the suggestion to show the GitHub Copilot control for choosing suggestions. To display next or previous suggestions, click the forward or back arrow button in the control.</p>
+<p>You can also use keyboard shortcuts to show alternative suggestions:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>OS</th>
+<th>See next suggestion</th>
+<th>See previous suggestion</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>macOS</td>
+<td>
+<kbd>Option</kbd>+<kbd>]</kbd>
+</td>
+<td>
+<kbd>Option</kbd>+<kbd>[</kbd>
+</td>
+</tr>
+<tr>
+<td>Windows or Linux</td>
+<td>
+<kbd>Alt</kbd>+<kbd>]</kbd>
+</td>
+<td>
+<kbd>Alt</kbd>+<kbd>[</kbd>
+</td>
+</tr>
+</tbody>
+</table>
+<p>To accept a suggestion, click "Accept" in the Copilot command palette, or press <kbd>Tab</kbd>. To reject all suggestions, press <kbd>Esc</kbd>.</p>
+<h2><a href="#showing-multiple-suggestions-in-a-new-tab">Showing multiple suggestions in a new tab</a></h2>
+<p>If you don't want to use any of the initial suggestions GitHub Copilot offers, you can show multiple suggestions in a new tab.</p>
+<p>For example, type the following line in a Java file:</p>
+<div>
+<header><span>Java</span><pre>private int calculateDaysBetweenDates(Date date1,
+</pre></header><pre><code><span>private</span> <span>int</span> <span>calculateDaysBetweenDates</span><span>(Date date1,
+</span></code></pre>
+</div>
+<p>GitHub Copilot will show you a suggestion.</p>
+<p>To open a new tab with multiple additional suggestions, use the following keyboard shortcut, then click <strong>Open GitHub Copilot</strong>:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>OS</th>
+<th>Open multiple suggestions</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>macOS</td>
+<td>
+<kbd>Command</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd>
+</td>
+</tr>
+<tr>
+<td>Windows or Linux</td>
+<td>
+<kbd>Ctrl</kbd>+<kbd>Enter</kbd>
+</td>
+</tr>
+</tbody>
+</table>
+<p>To accept a suggestion, below the suggestion, click <strong>Accept suggestion NUMBER</strong>. To reject all suggestions, close the tab.</p>
+<h2><a href="#accepting-partial-suggestions">Accepting partial suggestions</a></h2>
+<p>If you don't want to accept an entire suggestion from GitHub Copilot, you can accept the next word or the next line of a suggestion.</p>
+<p>For example, type the following line in a Java file:</p>
+<div>
+<header><span>Java</span><pre>private int calculateDaysBetweenDates(Date date1,
+</pre></header><pre><code><span>private</span> <span>int</span> <span>calculateDaysBetweenDates</span><span>(Date date1,
+</span></code></pre>
+</div>
+<p>GitHub Copilot will show a suggestion in grayed text. The exact suggestion may vary.</p>
+<p>Now hover over the suggestion to show the GitHub Copilot control for choosing suggestions. To accept only the next word of the suggestion, click <strong>Accept Word</strong> in the control.</p>
+<p>Alternatively, you can use a keyboard shortcut to accept the next word of a suggestion:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>OS</th>
+<th>Accept Next Word</th>
+<th>Accept Next Line</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>macOS</td>
+<td>
+<kbd>Command</kbd>+<kbd>→</kbd>
+</td>
+<td>
+<kbd>Command</kbd>+<kbd>Control</kbd>+<kbd>→</kbd>
+</td>
+</tr>
+<tr>
+<td>Windows or Linux</td>
+<td>
+<kbd>Control</kbd>+<kbd>→</kbd>
+</td>
+<td>
+<kbd>Control</kbd>+<kbd>Alt</kbd>+<kbd>→</kbd>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If you want to accept the next line of a suggestion, you will need to set a custom keyboard shortcut for the command <code>editor.action.inlineSuggest.acceptNextLine</code>. For more information on setting custom keyboard shortcuts, see <a href="/en/copilot/configuring-github-copilot/configuring-github-copilot-in-your-environment">Configuring GitHub Copilot in your environment</a>.</p>
+</div>
+<div>
+<h2><a href="#about-github-copilot-and-visual-studio">About GitHub Copilot and Visual Studio</a></h2>
+<p>This guide demonstrates how to get coding suggestions from GitHub Copilot in Visual Studio for Windows. To see instructions for other popular coding environments, use the tool switcher at the top of the page.</p>
+<p>The examples in this guide use C#, however other languages will work similarly. GitHub Copilot provides suggestions for numerous languages and a wide variety of frameworks, but works especially well for Python, JavaScript, TypeScript, Ruby, Go, C# and C++. GitHub Copilot can also assist in query generation for databases, generating suggestions for APIs and frameworks, and can help with infrastructure as code development.</p>
+<h2><a href="#prerequisites-1">Prerequisites</a></h2>
+<ul>
+<li>
+<p><strong>Access to Copilot</strong>. To use GitHub Copilot in GitHub Copilot in Visual Studio, you need either limited access through Copilot Free or a paid Copilot plan for full access. For information about how to get access to Copilot, see <a href="/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot">What is GitHub Copilot?</a>.</p>
+</li>
+<li>
+<p><strong>Compatible version of Visual Studio</strong>. To use GitHub Copilot in Visual Studio, you must have version 2022 17.8 or later of Visual Studio for Windows installed. For more information, see <a href="https://learn.microsoft.com/en-us/visualstudio/install/install-visual-studio">Install Visual Studio</a> in the Microsoft documentation.</p>
+</li>
+<li>
+<p><strong>GitHub Copilot extension for Visual Studio</strong>. For instructions on how to install the Copilot extension, see <a href="https://learn.microsoft.com/visualstudio/ide/visual-studio-github-copilot-install-and-states">Install GitHub Copilot in Visual Studio</a> in the Microsoft documentation.</p>
+</li>
+<li>
+<p><strong>Add your GitHub account to Visual Studio</strong>. See <a href="https://learn.microsoft.com/en-us/visualstudio/ide/work-with-github-accounts">Add your GitHub accounts to your Visual Studio keychain</a> in the Microsoft documentation.</p>
+</li>
+</ul>
+<h2><a href="#getting-code-suggestions-1">Getting code suggestions</a></h2>
+<p>GitHub Copilot offers coding suggestions as you type. For example, type this function
+signature in a C# file:</p>
+<div>
+<header><span>C#</span><pre>int CalculateDaysBetweenDates(
+</pre></header><pre><code><span><span>int</span> <span>CalculateDaysBetweenDates</span>(</span></code></pre>
+</div>
+<p>GitHub Copilot will automatically suggest an entire function body in grayed text. To accept the suggestion, press <kbd>Tab</kbd>.</p>
+<p>You can also describe something you want to do using natural language within a comment, and Copilot will suggest the code to accomplish your goal. For example, type this comment in the C# file:</p>
+<div>
+<header><span>C#</span><pre>using System.Xml.Linq;
+
+var doc = XDocument.Load("index.xhml");
+
+// find all images
+</pre></header><pre><code><span>using</span> System.Xml.Linq;
+
+<span>var</span> doc = XDocument.Load(<span>"index.xhml"</span>);
+
+<span>// find all images</span>
+</code></pre>
+</div>
+<p>GitHub Copilot will suggest an implementation of the function. To accept the suggestion, press <kbd>Tab</kbd>.</p>
+<div>
+<p>
+If you receive limited or no suggestions from Copilot, you may have duplication detection enabled. For more information about duplication detection, see <a href="/en/copilot/configuring-github-copilot/configuring-your-personal-github-copilot-settings-on-githubcom#enabling-or-disabling-suggestions-matching-public-code">Managing Copilot policies as an individual subscriber</a>.</p>
+</div>
+<h2><a href="#showing-alternative-suggestions-1">Showing alternative suggestions</a></h2>
+<p>For any given input, GitHub Copilot may offer multiple suggestions. You can select which suggestion to use, or reject all suggestions.</p>
+<p>For example, type this function signature in a C# file:</p>
+<div>
+<header><span>C#</span><pre>int CalculateDaysBetweenDates(
+</pre></header><pre><code><span><span>int</span> <span>CalculateDaysBetweenDates</span>(</span></code></pre>
+</div>
+<p>GitHub Copilot will show you a suggestion.</p>
+<p>Now hover over the suggestion to show the GitHub Copilot control for choosing suggestions. To display next or previous suggestions, click the forward or back arrow button in the control.</p>
+<p>Alternatively, you can show alternate suggestions by pressing <kbd>Alt</kbd>+<kbd>.</kbd> (or <kbd>Alt</kbd>+<kbd>,</kbd>) on your keyboard.</p>
+<p>To accept a suggestion, click "Accept" in the Copilot command palette, or press <kbd>Tab</kbd>. To reject all suggestions, press <kbd>Esc</kbd>.</p>
+<h2><a href="#getting-comment-suggestions">Getting comment suggestions</a></h2>
+<div>
+<ul>
+<li>Comment suggestions are currently in public preview and are subject to change.</li>
+<li>Comment suggestions are available in Visual Studio 17.14 Preview 2 and later.</li>
+</ul>
+</div>
+<p>GitHub Copilot can suggest comments for your code, by analyzing the code you write and generating comments that describe what the code does. For Copilot Free users, comment suggestions count towards your monthly Copilot Chat usage, not your code suggestions usage.</p>
+<p>Comment suggestions are available in the following languages:</p>
+<ul>
+<li>C#</li>
+<li>C++</li>
+</ul>
+<h3><a href="#enabling-comment-suggestions">Enabling comment suggestions</a></h3>
+<p>To enable comment suggestions, you need to configure the comment style in Visual Studio.</p>
+<h4><a href="#for-c">For C++</a></h4>
+<ol>
+<li>In Visual Studio, in the <strong>Tools</strong> menu, click <strong>Options</strong>.</li>
+<li>In the left-side panel, click <strong>Text Editor</strong>.</li>
+<li>Click <strong>C++</strong>, then <strong>Code Style</strong>, then <strong>General</strong>.</li>
+<li>Under "Comments", select <strong>Xml Doc Comments</strong> from the dropdown.</li>
+<li>Select <strong>Insert existing comment style at the start of new lines when writing comments</strong> and <strong>Continue single line comments.</strong>
+</li>
+</ol>
+<h4><a href="#for-c-1">For C#</a></h4>
+<ol>
+<li>In Visual Studio, in the <strong>Tools</strong> menu, click <strong>Options</strong>.</li>
+<li>In the left-side panel, click <strong>Text Editor</strong>.</li>
+<li>Click <strong>C#</strong>, then <strong>Advanced</strong>.</li>
+<li>Under "Comments", select <strong>Generate XML documentation comments for ///</strong>, <strong>Insert // at the start of new lines when writing // comments</strong>, and <strong>Insert * at the start of new lines when writing /* */ comments.</strong>
+</li>
+</ol>
+<h3><a href="#using-comment-suggestions">Using comment suggestions</a></h3>
+<p>To initiate comment suggestions, type the standard comment initiator for the language you are writing in (for example, <code>///</code>), before the code you want to comment, and wait for the suggestion to appear.</p>
+<p>To accept the suggestion, press <kbd>Tab</kbd>. To modify the suggestion, press <kbd>Alt</kbd>+<kbd>/</kbd>. To reject the suggestion, press <kbd>Esc</kbd>.</p>
+<h2><a href="#about-next-edit-suggestions">About next edit suggestions</a></h2>
+<p>Inline suggestions autocomplete code, but many development tasks involve editing existing code. Next edit suggestions assists with edits both at the cursor and in other relevant parts of the code, helping maintain consistency and streamline changes.</p>
+<p>Next edit suggestions predicts where and what edits may be needed based on ongoing changes. Suggestions may span a single symbol, an entire line, or multiple lines, depending on the scope of the potential change.</p>
+<p>To enable next edit suggestions, see <a href="/en/copilot/managing-copilot/configure-personal-settings/configuring-github-copilot-in-your-environment#enabling-next-edit-suggestions">Configuring GitHub Copilot in your environment</a>.</p>
+<h3><a href="#navigating-and-accepting-suggestions">Navigating and accepting suggestions</a></h3>
+<p>You can navigate suggested code changes using <kbd>Tab</kbd>, making it easier to find the next relevant edit without manually searching through files or references. Press <kbd>Tab</kbd> again to accept a suggestion.</p>
+<p>An arrow in the gutter indicates an available edit suggestion. Click the arrow to access the edit suggestion menu, which provides keyboard shortcuts. If an edit suggestion is outside the current editor view, the arrow will point up or down to indicate where the next suggestion is.</p>
+</div>
+<div>
+<h2><a href="#about-github-copilot-and-visual-studio-code">About GitHub Copilot and Visual Studio Code</a></h2>
+<p>This guide demonstrates how to get coding suggestions from GitHub Copilot in Visual Studio Code. To see instructions for other popular coding environments, use the tool switcher at the top of the page.</p>
+<p>Copilot in VS Code provides two kinds of suggestions:</p>
+<ul>
+<li>
+<strong>Code completion</strong>. Copilot offers coding suggestions as you type. You can also describe something you want to do using natural language within a comment, and Copilot will suggest the code to accomplish your goal.</li>
+<li>
+<strong>Next edit suggestions (public preview)</strong>. Based on the edits you are making, Copilot will predict the location of the next edit you are likely to make and suggest a completion for it.</li>
+</ul>
+<p>The examples in this guide use JavaScript, however other languages will work similarly. GitHub Copilot provides suggestions for numerous languages and a wide variety of frameworks, but works especially well for Python, JavaScript, TypeScript, Ruby, Go, C# and C++. GitHub Copilot can also assist in query generation for databases, generating suggestions for APIs and frameworks, and can help with infrastructure as code development.</p>
+<h2><a href="#prerequisites-2">Prerequisites</a></h2>
+<ul>
+<li>
+<p><strong>Access to Copilot</strong>. To use GitHub Copilot in Visual Studio Code, you need either limited access through Copilot Free or a paid Copilot plan for full access. For information about how to get access to Copilot, see <a href="/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot">What is GitHub Copilot?</a>.</p>
+</li>
+<li>
+<p><strong>Sign in to GitHub in Visual Studio Code</strong>. See <a href="https://code.visualstudio.com/docs/copilot/setup">Set up GitHub Copilot in Visual Studio Code</a> in the VS Code documentation..</p>
+</li>
+<li>
+<p><strong>Visual Studio Code</strong>. To use GitHub Copilot in Visual Studio Code, you must have Visual Studio Code installed. For more information, see the <a href="https://code.visualstudio.com/Download">Visual Studio Code download page</a>.</p>
+</li>
+<li>
+<p><strong>Copilot in Visual Studio Code</strong>. When you set up GitHub Copilot in Visual Studio Code for the first time, the required extensions are installed automatically. You don't need to download or install them manually. For detailed instructions, see <a href="https://code.visualstudio.com/docs/copilot/setup">Set up GitHub Copilot in Visual Studio Code</a> in the Visual Studio Code documentation.</p>
+</li>
+</ul>
+<h2><a href="#getting-code-suggestions-2">Getting code suggestions</a></h2>
+<p>GitHub Copilot offers coding suggestions as you type. For example, type this function header in a JavaScript file:</p>
+<div>
+<header><span>JavaScript</span><pre>function calculateDaysBetweenDates(begin, end) {
+</pre></header><pre><code><span>function</span> <span>calculateDaysBetweenDates</span>(<span>begin, end</span>) {
+</code></pre>
+</div>
+<p>GitHub Copilot will automatically suggest the rest of the function. To accept the suggestion, press <kbd>Tab</kbd>.</p>
+<p>You can also describe something you want to do using natural language within a comment, and Copilot will suggest the code to accomplish your goal. For example, type this comment in a JavaScript file:</p>
+<div>
+<header><span>JavaScript</span><pre>// write a function to
+// find all images without alternate text
+// and give them a red border
+</pre></header><pre><code><span>// write a function to</span>
+<span>// find all images without alternate text</span>
+<span>// and give them a red border</span>
+</code></pre>
+</div>
+<p>GitHub Copilot will automatically suggest code. To accept the suggestion, press <kbd>Tab</kbd>.</p>
+<div>
+<p>
+If you receive limited or no suggestions from Copilot, you may have duplication detection enabled. For more information about duplication detection, see <a href="/en/copilot/configuring-github-copilot/configuring-your-personal-github-copilot-settings-on-githubcom#enabling-or-disabling-suggestions-matching-public-code">Managing Copilot policies as an individual subscriber</a>.</p>
+</div>
+<h2><a href="#showing-alternative-suggestions-2">Showing alternative suggestions</a></h2>
+<p>For any given input, GitHub Copilot may offer multiple suggestions. You can select which suggestion to use, or reject all suggestions.</p>
+<p>For example, type this function header in a JavaScript file, and press <kbd>Enter</kbd>:</p>
+<div>
+<header><span>JavaScript</span><pre>function calculateDaysBetweenDates(begin, end) {
+</pre></header><pre><code><span>function</span> <span>calculateDaysBetweenDates</span>(<span>begin, end</span>) {
+</code></pre>
+</div>
+<p>GitHub Copilot will show you a suggestion.</p>
+<p>Now hover over the suggestion to show the GitHub Copilot control for choosing suggestions. To display next or previous suggestions, click the forward or back arrow button in the control.</p>
+<p>You can also use keyboard shortcuts to show alternative suggestions:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>OS</th>
+<th>See next suggestion</th>
+<th>See previous suggestion</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>macOS</td>
+<td>
+<kbd>Option (⌥) or Alt</kbd>+<kbd>]</kbd>
+</td>
+<td>
+<kbd>Option (⌥) or Alt</kbd>+<kbd>[</kbd>
+</td>
+</tr>
+<tr>
+<td>Windows or Linux</td>
+<td>
+<kbd>Alt</kbd>+<kbd>]</kbd>
+</td>
+<td>
+<kbd>Alt</kbd>+<kbd>[</kbd>
+</td>
+</tr>
+</tbody>
+</table>
+<p>To accept a suggestion, click "Accept" in the Copilot command palette, or press <kbd>Tab</kbd>. To reject all suggestions, press <kbd>Esc</kbd>.</p>
+<h2><a href="#showing-multiple-suggestions-in-a-new-tab-1">Showing multiple suggestions in a new tab</a></h2>
+<p>If you don't want to use any of the initial suggestions GitHub Copilot offers, you can show multiple suggestions in a new tab.</p>
+<p>For example, type this function header in a JavaScript file, and press <kbd>Enter</kbd>:</p>
+<div>
+<header><span>JavaScript</span><pre>function calculateDaysBetweenDates(begin, end) {
+</pre></header><pre><code><span>function</span> <span>calculateDaysBetweenDates</span>(<span>begin, end</span>) {
+</code></pre>
+</div>
+<p>GitHub Copilot will show you a suggestion. Now press <kbd>Ctrl</kbd>+<kbd>Enter</kbd> to open a new tab with multiple additional options.</p>
+<p>To accept a suggestion, below the suggestion, click <strong>Accept suggestion NUMBER</strong>. To reject all suggestions, close the tab.</p>
+<h2><a href="#accepting-partial-suggestions-1">Accepting partial suggestions</a></h2>
+<p>If you don't want to accept an entire suggestion from GitHub Copilot, you can accept the next word or the next line of a suggestion.</p>
+<p>For example, type this function header in a JavaScript file, and press <kbd>Enter</kbd>:</p>
+<div>
+<header><span>JavaScript</span><pre>function calculateDaysBetweenDates(begin, end) {
+</pre></header><pre><code><span>function</span> <span>calculateDaysBetweenDates</span>(<span>begin, end</span>) {
+</code></pre>
+</div>
+<p>GitHub Copilot will automatically suggest an entire function body in grayed text. The exact suggestion may vary.</p>
+<p>Now hover over the suggestion to show the GitHub Copilot control for choosing suggestions. To accept only the next word of the suggestion, click <strong>Accept Word</strong> in the control.</p>
+<p>Alternatively, you can use a keyboard shortcut to accept the next word of a suggestion:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>OS</th>
+<th>Accept Next Word</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>macOS</td>
+<td>
+<kbd>Command</kbd>+<kbd>→</kbd>
+</td>
+</tr>
+<tr>
+<td>Windows or Linux</td>
+<td>
+<kbd>Control</kbd>+<kbd>→</kbd>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If you want to accept the next line of a suggestion, you will need to set a custom keyboard shortcut for the command <code>editor.action.inlineSuggest.acceptNextLine</code>. For more information on setting custom keyboard shortcuts, see <a href="/en/copilot/configuring-github-copilot/configuring-github-copilot-in-your-environment">Configuring GitHub Copilot in your environment</a>.</p>
+<h2><a href="#about-next-edit-suggestions-1">About next edit suggestions</a></h2>
+<p>Inline suggestions autocomplete code, but many development tasks involve editing existing code. Next edit suggestions assists with edits both at the cursor and in other relevant parts of the code, helping maintain consistency and streamline changes.</p>
+<p>Next edit suggestions predicts where and what edits may be needed based on ongoing changes. Suggestions may span a single symbol, an entire line, or multiple lines, depending on the scope of the potential change.</p>
+<p>To enable next edit suggestions, see <a href="/en/copilot/managing-copilot/configure-personal-settings/configuring-github-copilot-in-your-environment#enabling-next-edit-suggestions">Configuring GitHub Copilot in your environment</a>.</p>
+<h3><a href="#navigating-and-accepting-suggestions-1">Navigating and accepting suggestions</a></h3>
+<p>You can navigate suggested code changes using <kbd>Tab</kbd>, making it easier to find the next relevant edit without manually searching through files or references. Press <kbd>Tab</kbd> again to accept a suggestion.</p>
+<p>An arrow in the gutter indicates an available edit suggestion. Hover over the arrow to access the edit suggestion menu, which provides keyboard shortcuts and settings options. If an edit suggestion is outside the current editor view, the arrow will point up or down to indicate where the next suggestion is.</p>
+<p><picture><source><img src="/assets/cb-39261/images/help/copilot/vsc-advanced-code-completion-menu.png" alt="Screenshot of the gutter menu in Visual Studio Code. The arrow is outlined in dark orange." width="515" height="224"></source></picture></p>
+<p>For more details and examples, see <a href="https://code.visualstudio.com/docs/copilot/ai-powered-suggestions">Code completions with GitHub Copilot in VS Code</a> in the Visual Studio Code documentation.</p>
+<h2><a href="#changing-the-ai-model">Changing the AI model</a></h2>
+<p>You can change the large language model that's used to generate code completion suggestions. For more information, see <a href="/en/copilot/using-github-copilot/ai-models/changing-the-ai-model-for-copilot-code-completion">Changing the AI model for Copilot code completion</a>.</p>
+</div>
+<div>
+<h2><a href="#about-github-copilot-and-vimneovim">About GitHub Copilot and Vim/Neovim</a></h2>
+<p>This guide demonstrates how to get coding suggestions from GitHub Copilot in Vim/Neovim. To see instructions for other popular coding environments, use the tool switcher at the top of the page.</p>
+<h2><a href="#prerequisites-3">Prerequisites</a></h2>
+<ul>
+<li>
+<p><strong>Access to Copilot</strong>. To use GitHub Copilot in Vim/Neovim, you need either limited access through Copilot Free or a paid Copilot plan for full access. For information about how to get access to Copilot, see <a href="/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot">What is GitHub Copilot?</a>.</p>
+</li>
+<li>
+<p><strong>Compatible version of Vim/Neovim</strong>. To use GitHub Copilot in Vim/Neovim you must have Vim version 9.0.0185 / Neovim version 0.6 or above and Node.js version 18 or above installed. For more information, see the <a href="https://vimhelp.org/">Vim</a> / <a href="https://neovim.io/doc/">Neovim documentation</a> and the <a href="https://nodejs.org/en/">Node.js website</a>.</p>
+</li>
+<li>
+<p><strong>GitHub Copilot extension for Vim/Neovim</strong>. To use GitHub Copilot in Vim/Neovim, you must install the GitHub Copilot plugin. For more information, see <a href="/en/copilot/configuring-github-copilot/installing-the-github-copilot-extension-in-your-environment">Installing the GitHub Copilot extension in your environment</a>.</p>
+</li>
+</ul>
+<h2><a href="#learning-to-use-github-copilot-in-vimneovim">Learning to use GitHub Copilot in Vim/Neovim</a></h2>
+<p>GitHub Copilot provides suggestions inline as you type in Vim/Neovim. To accept a suggestion, press the <kbd>tab</kbd> key.</p>
+<p>For more information and guidance on using GitHub Copilot in Vim/Neovim run the following command to view the plugin documentation:</p>
+<div>
+<header><span>Shell</span><pre>:help copilot
+</pre></header><pre><code>:help copilot
+</code></pre>
+</div>
+</div>
+<div>
+<h2><a href="#about-github-copilot-and-azure-data-studio">About GitHub Copilot and Azure Data Studio</a></h2>
+<p>This guide demonstrates how to get coding suggestions from GitHub Copilot in Azure Data Studio. To see instructions for other popular coding environments, use the tool switcher at the top of the page.</p>
+<h2><a href="#prerequisites-4">Prerequisites</a></h2>
+<ul>
+<li>
+<p><strong>Access to Copilot</strong>. To use GitHub Copilot in Azure Data Studio, you need either limited access through Copilot Free or a paid Copilot plan for full access. For information about how to get access to Copilot, see <a href="/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot">What is GitHub Copilot?</a>.</p>
+</li>
+<li>
+<p><strong>Compatible version of Azure Data Studio</strong>. To use GitHub Copilot in Azure Data Studio, you must have Azure Data Studio version 1.44.0 or later installed. For more information, see the <a href="https://docs.microsoft.com/sql/azure-data-studio/download-azure-data-studio">Azure Data Studio download page</a> in the Azure Data Studio documentation.</p>
+</li>
+<li>
+<p><strong>GitHub Copilot extension for Azure Data Studio</strong>. To use GitHub Copilot in Azure Data Studio, you must install the GitHub Copilot extension. For more information, see <a href="/en/copilot/configuring-github-copilot/installing-the-github-copilot-extension-in-your-environment">Installing the GitHub Copilot extension in your environment</a>.</p>
+</li>
+</ul>
+<h2><a href="#getting-code-suggestions-3">Getting code suggestions</a></h2>
+<p>GitHub Copilot can provide you with inline suggestions as you create SQL databases in Azure Data Studio. For example, if you're writing a query that joins two tables, Copilot may suggest the join condition from columns in the open editor, other files in the workspace, and common syntax patterns.</p>
+<p>In a SQL file, type the following query:</p>
+<div>
+<header><span>SQL</span><pre>SELECT [UserId], [Red], [Orange], [Yellow], [Green], [Blue], [Purple], [Rainbow]
+FROM [Tag].[Scoreboard]
+INNER JOIN
+</pre></header><pre><code><span>SELECT</span> [UserId], [Red], [Orange], [Yellow], [Green], [Blue], [Purple], [Rainbow]
+<span>FROM</span> [Tag].[Scoreboard]
+<span>INNER</span> <span>JOIN</span>
+</code></pre>
+</div>
+<p>GitHub Copilot will automatically suggest a join condition in grayed text. The exact suggestion may vary. To accept the suggestion, press <kbd>Tab</kbd>.</p>
+<p>You can also describe something you want to do using natural language within a comment, and Copilot will suggest the code to accomplish your goal. For example, type this comment in a SQL file:</p>
+<div>
+<header><span>SQL</span><pre>SELECT TokenColor, COUNT(UserID) AS UserCount
+FROM Tag.Users
+GROUP BY TokenColor
+-- pivot that query on tokencolor for Purple, Blue, Green, Yellow, Orange, Red
+-- and rename the columns to match the colors
+SELECT [Purple], [Blue], [Green], [Yellow], [Orange], [Red]
+</pre></header><pre><code><span>SELECT</span> TokenColor, <span>COUNT</span>(UserID) <span>AS</span> UserCount
+<span>FROM</span> Tag.Users
+<span>GROUP</span> <span>BY</span> TokenColor
+<span>-- pivot that query on tokencolor for Purple, Blue, Green, Yellow, Orange, Red</span>
+<span>-- and rename the columns to match the colors</span>
+<span>SELECT</span> [Purple], [Blue], [Green], [Yellow], [Orange], [Red]
+</code></pre>
+</div>
+<p>GitHub Copilot will automatically suggest code. To accept the suggestion, press <kbd>Tab</kbd>.</p>
+<div>
+<p>
+If you receive limited or no suggestions from Copilot, you may have duplication detection enabled. For more information on duplication detection, see <a href="/en/copilot/configuring-github-copilot/configuring-your-personal-github-copilot-settings-on-githubcom#enabling-or-disabling-suggestions-matching-public-code">Managing Copilot policies as an individual subscriber</a>.</p>
+</div>
+<h2><a href="#showing-alternative-suggestions-3">Showing alternative suggestions</a></h2>
+<p>For some suggestions, GitHub Copilot may provide multiple alternatives. You can select which suggestion you want to use, or reject all suggestions.</p>
+<p>For example, type this query in a SQL file:</p>
+<div>
+<header><span>SQL</span><pre>SELECT [UserId], [Red], [Orange], [Yellow], [Green], [Blue], [Purple], [Rainbow]
+FROM [Tag].[Scoreboard]
+INNER JOIN
+</pre></header><pre><code><span>SELECT</span> [UserId], [Red], [Orange], [Yellow], [Green], [Blue], [Purple], [Rainbow]
+<span>FROM</span> [Tag].[Scoreboard]
+<span>INNER</span> <span>JOIN</span>
+</code></pre>
+</div>
+<p>GitHub Copilot will show you a suggestion.</p>
+<p>Now hover over the suggestion to show the GitHub Copilot control for choosing suggestions. To display next or previous suggestions, click the forward or back arrow button in the control.</p>
+<p>You can also use keyboard shortcuts to show alternative suggestions:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>OS</th>
+<th>See next suggestion</th>
+<th>See previous suggestion</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>macOS</td>
+<td>
+<kbd>Option</kbd>+<kbd>[</kbd>
+</td>
+<td>
+<kbd>Option</kbd>+<kbd>]</kbd>
+</td>
+</tr>
+<tr>
+<td>Windows or Linux</td>
+<td>
+<kbd>Alt</kbd>+<kbd>[</kbd>
+</td>
+<td>
+<kbd>Alt</kbd>+<kbd>]</kbd>
+</td>
+</tr>
+</tbody>
+</table>
+<p>To accept a suggestion, click "Accept" in the Copilot control, or press <kbd>Tab</kbd>. To reject all suggestions, press <kbd>Esc</kbd>.</p>
+<h2><a href="#accepting-partial-suggestions-2">Accepting partial suggestions</a></h2>
+<p>If you don't want to accept an entire suggestion from GitHub Copilot, you can accept the next word or the next line of a suggestion.</p>
+<p>For example, type this query in a SQL file:</p>
+<div>
+<header><span>SQL</span><pre>SELECT [UserId], [Red], [Orange], [Yellow], [Green], [Blue], [Purple], [Rainbow]
+FROM [Tag].[Scoreboard]
+INNER JOIN
+</pre></header><pre><code><span>SELECT</span> [UserId], [Red], [Orange], [Yellow], [Green], [Blue], [Purple], [Rainbow]
+<span>FROM</span> [Tag].[Scoreboard]
+<span>INNER</span> <span>JOIN</span>
+</code></pre>
+</div>
+<p>GitHub Copilot will show you a suggestion in grayed text. The exact suggestion may vary.</p>
+<p>Now hover over the suggestion to show the GitHub Copilot control for choosing suggestions. To accept only the next word of the suggestion, click <strong>Accept Word</strong> in the control.</p>
+<p>Alternatively, you can use a keyboard shortcut to accept the next word of a suggestion:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>OS</th>
+<th>Accept Next Word</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>macOS</td>
+<td>
+<kbd>Command</kbd>+<kbd>→</kbd>
+</td>
+</tr>
+<tr>
+<td>Windows or Linux</td>
+<td>
+<kbd>Control</kbd>+<kbd>→</kbd>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If you want to accept the next line of the suggestion, you will need to set a custom keyboard shortcut for the command <code>editor.action.inlineSuggest.acceptNextLine</code>. For more information on setting custom keyboard shortcuts, see <a href="https://learn.microsoft.com/en-us/azure-data-studio/keyboard-shortcuts">Keyboard shortcuts in Azure Data Studio</a> in the Microsoft documentation.</p>
+</div>
+<div>
+<h2><a href="#about-github-copilot-in-xcode">About GitHub Copilot in Xcode</a></h2>
+<p>This guide demonstrates how to get coding suggestions from GitHub Copilot in Xcode. To see instructions for other popular coding environments, use the tool switcher at the top of the page.</p>
+<h2><a href="#prerequisites-5">Prerequisites</a></h2>
+<ul>
+<li>
+<p><strong>Access to Copilot</strong>. To use GitHub Copilot in Xcode, you need either limited access through Copilot Free or a paid Copilot plan for full access. For information about how to get access to Copilot, see <a href="/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot">What is GitHub Copilot?</a>.</p>
+</li>
+<li>
+<p><strong>GitHub Copilot extension for Xcode</strong>. To use GitHub Copilot for Xcode, you must install the GitHub Copilot for Xcode extension. See <a href="/en/copilot/configuring-github-copilot/installing-the-github-copilot-extension-in-your-environment">Installing the GitHub Copilot extension in your environment</a>.</p>
+</li>
+</ul>
+<h2><a href="#getting-code-suggestions-4">Getting code suggestions</a></h2>
+<p>GitHub Copilot offers coding suggestions as you type. For example, type this function
+signature in a Swift file:</p>
+<div>
+<header><span>Swift</span><pre>func calculateDaysBetweenDates(
+</pre></header><pre><code><span>func</span> <span>calculateDaysBetweenDates</span>(
+</code></pre>
+</div>
+<p>GitHub Copilot will automatically suggest an entire function body in grayed text. To accept the first line of a suggestion, press <kbd>Tab</kbd>. To view the full suggestion, hold <kbd>Option</kbd>, and to accept the full suggestion, press <kbd>Option</kbd>+<kbd>Tab</kbd>.</p>
+<h3><a href="#improving-code-suggestions">Improving code suggestions</a></h3>
+<p>If you encounter issues with code suggestions, such as conflicting or missing suggestions, you can try the following:</p>
+<ul>
+<li>
+<strong>Disable Xcode's native predictive text completion:</strong> To avoid receiving two sets of code suggestions, you can disable Xcode's native predictive text completion. You can find this setting in the Xcode settings in the "Editing" tab under "Text Editing".</li>
+<li>
+<strong>Check for duplication detection in Copilot:</strong> If you receive limited or no suggestions from Copilot, you may have duplication detection enabled. For more information on duplication detection, see <a href="/en/copilot/configuring-github-copilot/configuring-your-personal-github-copilot-settings-on-githubcom#enabling-or-disabling-suggestions-matching-public-code">Managing Copilot policies as an individual subscriber</a>.</li>
+<li>
+<strong>Check for updates and restart Xcode:</strong> Ensure you have the latest version of Copilot for Xcode in the extension application and restart Xcode.</li>
+</ul>
+<p>You can also open an issue in the <a href="https://github.com/github/CopilotForXcode">Copilot for Xcode repository</a>.</p>
+</div>
+<div>
+<h2><a href="#about-github-copilot-and-eclipse">About GitHub Copilot and Eclipse</a></h2>
+<p>This guide demonstrates how to get coding suggestions from GitHub Copilot in Eclipse. To see instructions for other popular coding environments, use the tool switcher at the top of the page.</p>
+<h2><a href="#prerequisites-6">Prerequisites</a></h2>
+<ul>
+<li>
+<p><strong>Access to Copilot</strong>. To use GitHub Copilot in Eclipse, you need either limited access through Copilot Free or a paid Copilot plan for full access. For information about how to get access to Copilot, see <a href="/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot">What is GitHub Copilot?</a>.</p>
+</li>
+<li>
+<p><strong>GitHub Copilot extension for Eclipse</strong>.To use GitHub Copilot in Eclipse, you must install the GitHub Copilot extension. See <a href="/en/copilot/configuring-github-copilot/installing-the-github-copilot-extension-in-your-environment?tool=eclipse">Installing the GitHub Copilot extension in your environment</a>.</p>
+</li>
+</ul>
+<h2><a href="#getting-code-suggestions-5">Getting code suggestions</a></h2>
+<p>GitHub Copilot offers coding suggestions as you type. For example, type this function header in a Java file:</p>
+<div>
+<header><span>Java</span><pre>public int getDiff(int a, int b)
+</pre></header><pre><code><span>public</span> <span>int</span> <span>getDiff</span><span>(<span>int</span> a, <span>int</span> b)</span>
+</code></pre>
+</div>
+<p>GitHub Copilot will automatically suggest the rest of the function. To accept the suggestion, press <kbd>Tab</kbd>.
+To discard the suggestion, press <kbd>Esc</kbd>.</p>
+<p>You can also describe something you want to do using natural language within a comment, and Copilot will suggest the code to accomplish your goal. For example, type this comment in a Java file:</p>
+<div>
+<header><span>Java</span><pre>/*
+ * Return the difference between two different integers.
+ */
+</pre></header><pre><code><span>/*
+ * Return the difference between two different integers.
+ */</span>
+</code></pre>
+</div>
+<p>GitHub Copilot will automatically suggest code.</p>
+<div>
+<p>
+If you receive limited or no suggestions from Copilot, you may have duplication detection enabled. For more information about duplication detection, see <a href="/en/copilot/configuring-github-copilot/configuring-your-personal-github-copilot-settings-on-githubcom#enabling-or-disabling-suggestions-matching-public-code">Managing Copilot policies as an individual subscriber</a>.</p>
+</div>
+<h2><a href="#manually-triggering-code-completion">Manually triggering code completion</a></h2>
+<p>You can also use keyboard shortcuts to trigger code completion.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>OS</th>
+<th>Trigger code completion</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>macOS</td>
+<td>
+<kbd>Option</kbd>+<kbd>Command</kbd>+<kbd>/</kbd>
+</td>
+</tr>
+<tr>
+<td>Windows or Linux</td>
+<td>
+<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>/</kbd>
+</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#accepting-partial-suggestions-3">Accepting partial suggestions</a></h2>
+<p>If you don't want to accept an entire suggestion from Copilot, you can accept the next word of a suggestion.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>OS</th>
+<th>Accept next word</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>macOS</td>
+<td>
+<kbd>Command</kbd>+<kbd>→</kbd>
+</td>
+</tr>
+<tr>
+<td>Windows or Linux</td>
+<td>
+<kbd>Ctrl</kbd>+<kbd>→</kbd>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><a href="#next-steps">Next steps</a></h2>
+<ul>
+<li>
+<strong>Learn how to write effective prompts</strong> - See <a href="/en/copilot/using-github-copilot/prompt-engineering-for-github-copilot">Prompt engineering for Copilot Chat</a>.</li>
+<li>
+<strong>Configure Copilot in your editor</strong> - You can enable or disable GitHub Copilot from within your editor, and create your own preferred keyboard shortcuts for Copilot. See <a href="/en/copilot/configuring-github-copilot/configuring-github-copilot-in-your-environment">Configuring GitHub Copilot in your environment</a>.</li>
+<li>
+<strong>Get started with GitHub Copilot Chat</strong> - Learn how to ask Copilot for information and assistance, using GitHub Copilot Chat. See <a href="/en/copilot/github-copilot-chat/using-github-copilot-chat-in-your-ide">Asking GitHub Copilot questions in your IDE</a>.</li>
+<li>
+<strong>Troubleshoot issues</strong> - Learn more about how to troubleshoot common issues with GitHub Copilot. See <a href="/en/copilot/troubleshooting-github-copilot">Troubleshooting GitHub Copilot</a>.</li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

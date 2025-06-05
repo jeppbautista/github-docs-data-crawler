@@ -1,0 +1,232 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Get started" href="/en/get-started">Get started</a><span>/</span>
+</li>
+<li>
+<a title="Git basics" href="/en/get-started/git-basics">Git basics</a><span>/</span>
+</li>
+<li><a title="Manage remote repositories" href="/en/get-started/git-basics/managing-remote-repositories">Manage remote repositories</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Managing remote repositories</h1></div></div>
+<div>
+<div><p>Learn to work with your local repositories on your computer and remote repositories hosted on GitHub.</p></div>
+<div>
+<h2>Platform navigation</h2>
+<nav><ul>
+<li><a href="?platform=mac"><span>Mac</span></a></li>
+<li><a href="?platform=windows"><span>Windows</span></a></li>
+<li><a href="?platform=linux"><span>Linux</span></a></li>
+</ul></nav>
+</div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#adding-a-remote-repository"><div><span>Adding a remote repository</span></div></a></li>
+<li><a href="#changing-a-remote-repositorys-url"><div><span>Changing a remote repository's URL</span></div></a></li>
+<li><a href="#renaming-a-remote-repository"><div><span>Renaming a remote repository</span></div></a></li>
+<li><a href="#removing-a-remote-repository"><div><span>Removing a remote repository</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#adding-a-remote-repository">Adding a remote repository</a></h2>
+<p>To add a new remote, use the <code>git remote add</code> command on the terminal, in the directory your repository is stored at.</p>
+<p>The <code>git remote add</code> command takes two arguments:</p>
+<ul>
+<li>A remote name, for example, <code>origin</code>
+</li>
+<li>A remote URL, for example, <code>https://github.com/OWNER/REPOSITORY.git</code>
+</li>
+</ul>
+<p>For example:</p>
+<pre><code><span>$ </span><span>git remote add origin https://github.com/OWNER/REPOSITORY.git</span>
+<span># </span><span>Set a new remote</span>
+<span>
+$ </span><span>git remote -v</span>
+<span># </span><span>Verify new remote</span>
+<span>&gt; </span><span>origin  https://github.com/OWNER/REPOSITORY.git (fetch)</span>
+<span>&gt; </span><span>origin  https://github.com/OWNER/REPOSITORY.git (push)</span>
+</code></pre>
+<p>For more information on which URL to use, see <a href="/en/get-started/git-basics/about-remote-repositories">About remote repositories</a>.</p>
+<h3><a href="#troubleshooting-remote-origin-already-exists">Troubleshooting: Remote origin already exists</a></h3>
+<p>This error means you've tried to add a remote with a name that already exists in your local repository.</p>
+<pre><code><span>$ </span><span>git remote add origin https://github.com/octocat/Spoon-Knife.git</span>
+<span>&gt; </span><span>fatal: remote origin already exists.</span>
+</code></pre>
+<p>To fix this, you can:</p>
+<ul>
+<li>Use a different name for the new remote.</li>
+<li>Rename the existing remote repository before you add the new remote. For more information, see <a href="#renaming-a-remote-repository">Renaming a remote repository</a> below.</li>
+<li>Delete the existing remote repository before you add the new remote. For more information, see <a href="#removing-a-remote-repository">Removing a remote repository</a> below.</li>
+</ul>
+<h2><a href="#changing-a-remote-repositorys-url">Changing a remote repository's URL</a></h2>
+<p>The <code>git remote set-url</code> command changes an existing remote repository URL.</p>
+<div>
+<p>
+For information on the difference between HTTPS and SSH URLs, see <a href="/en/get-started/git-basics/about-remote-repositories">About remote repositories</a>.</p>
+</div>
+<p>The <code>git remote set-url</code> command takes two arguments:</p>
+<ul>
+<li>
+<p>An existing remote name. For example, <code>origin</code> or <code>upstream</code> are two common choices.</p>
+</li>
+<li>
+<p>A new URL for the remote. For example:</p>
+<ul>
+<li>If you're updating to use HTTPS, your URL might look like:</li>
+</ul>
+<pre><code>https://github.com/OWNER/REPOSITORY.git
+</code></pre>
+<ul>
+<li>If you're updating to use SSH, your URL might look like:</li>
+</ul>
+<pre><code>git@github.com:OWNER/REPOSITORY.git
+</code></pre>
+</li>
+</ul>
+<h3><a href="#switching-remote-urls-from-ssh-to-https">Switching remote URLs from SSH to HTTPS</a></h3>
+<ol>
+<li>
+<p>Open <span>Terminal</span><span>Terminal</span><span>Git Bash</span>.</p>
+</li>
+<li>
+<p>Change the current working directory to your local project.</p>
+</li>
+<li>
+<p>List your existing remotes in order to get the name of the remote you want to change.</p>
+<pre><code><span>$ </span><span>git remote -v</span>
+<span>&gt; </span><span>origin  git@github.com:OWNER/REPOSITORY.git (fetch)</span>
+<span>&gt; </span><span>origin  git@github.com:OWNER/REPOSITORY.git (push)</span>
+</code></pre>
+</li>
+<li>
+<p>Change your remote's URL from SSH to HTTPS with the <code>git remote set-url</code> command.</p>
+<pre><code>git remote set-url origin https://github.com/OWNER/REPOSITORY.git
+</code></pre>
+</li>
+<li>
+<p>Verify that the remote URL has changed.</p>
+<pre><code><span>$ </span><span>git remote -v</span>
+<span># </span><span>Verify new remote URL</span>
+<span>&gt; </span><span>origin  https://github.com/OWNER/REPOSITORY.git (fetch)</span>
+<span>&gt; </span><span>origin  https://github.com/OWNER/REPOSITORY.git (push)</span>
+</code></pre>
+</li>
+</ol>
+<p>The next time you <code>git fetch</code>, <code>git pull</code>, or <code>git push</code> to the remote repository, you'll be asked for your GitHub username and password. When Git prompts you for your password, enter your personal access token. Alternatively, you can use a credential helper like <a href="https://github.com/GitCredentialManager/git-credential-manager/blob/main/README.md">Git Credential Manager</a>. Password-based authentication for Git has been removed in favor of more secure authentication methods. For more information, see <a href="/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token">Managing your personal access tokens</a>.</p>
+<p>You can <a href="/en/get-started/git-basics/caching-your-github-credentials-in-git">use a credential helper</a> so Git will remember your GitHub username and personal access token every time it talks to GitHub.</p>
+<h3><a href="#switching-remote-urls-from-https-to-ssh">Switching remote URLs from HTTPS to SSH</a></h3>
+<ol>
+<li>
+<p>Open <span>Terminal</span><span>Terminal</span><span>Git Bash</span>.</p>
+</li>
+<li>
+<p>Change the current working directory to your local project.</p>
+</li>
+<li>
+<p>List your existing remotes in order to get the name of the remote you want to change.</p>
+<pre><code><span>$ </span><span>git remote -v</span>
+<span>&gt; </span><span>origin  https://github.com/OWNER/REPOSITORY.git (fetch)</span>
+<span>&gt; </span><span>origin  https://github.com/OWNER/REPOSITORY.git (push)</span>
+</code></pre>
+</li>
+<li>
+<p>Change your remote's URL from HTTPS to SSH with the <code>git remote set-url</code> command.</p>
+<pre><code>git remote set-url origin git@github.com:OWNER/REPOSITORY.git
+</code></pre>
+</li>
+<li>
+<p>Verify that the remote URL has changed.</p>
+<pre><code><span>$ </span><span>git remote -v</span>
+<span># </span><span>Verify new remote URL</span>
+<span>&gt; </span><span>origin  git@github.com:OWNER/REPOSITORY.git (fetch)</span>
+<span>&gt; </span><span>origin  git@github.com:OWNER/REPOSITORY.git (push)</span>
+</code></pre>
+</li>
+</ol>
+<h3><a href="#troubleshooting-no-such-remote-name">Troubleshooting: No such remote '[name]'</a></h3>
+<p>This error means that the remote you tried to change doesn't exist:</p>
+<pre><code><span>$ </span><span>git remote set-url sofake https://github.com/octocat/Spoon-Knife</span>
+<span>&gt; </span><span>fatal: No such remote <span>'sofake'</span></span>
+</code></pre>
+<p>Check that you've correctly typed the remote name.</p>
+<h2><a href="#renaming-a-remote-repository">Renaming a remote repository</a></h2>
+<p>Use the <code>git remote rename</code> command to rename an existing remote.</p>
+<p>The <code>git remote rename</code> command takes two arguments:</p>
+<ul>
+<li>An existing remote name, for example, <code>origin</code>
+</li>
+<li>A new name for the remote, for example, <code>destination</code>
+</li>
+</ul>
+<h3><a href="#example-of-renaming-a-remote-repository">Example of renaming a remote repository</a></h3>
+<p>These examples assume you're <a href="/en/get-started/git-basics/about-remote-repositories#cloning-with-https-urls">cloning using HTTPS</a>, which is recommended.</p>
+<pre><code><span>$ </span><span>git remote -v</span>
+<span># </span><span>View existing remotes</span>
+<span>&gt; </span><span>origin  https://github.com/OWNER/REPOSITORY.git (fetch)</span>
+<span>&gt; </span><span>origin  https://github.com/OWNER/REPOSITORY.git (push)</span>
+<span>
+$ </span><span>git remote rename origin destination</span>
+<span># </span><span>Change remote name from <span>'origin'</span> to <span>'destination'</span></span>
+<span>
+$ </span><span>git remote -v</span>
+<span># </span><span>Verify remote<span>'s new name</span></span>
+<span>&gt; </span><span><span>destination  https://github.com/OWNER/REPOSITORY.git (fetch)</span></span>
+<span>&gt; </span><span><span>destination  https://github.com/OWNER/REPOSITORY.git (push)</span></span>
+</code></pre>
+<h3><a href="#troubleshooting-could-not-rename-config-section-remoteold-name-to-remotenew-name">Troubleshooting: Could not rename config section 'remote.[old name]' to 'remote.[new name]'</a></h3>
+<p>This error means that the old remote name you typed doesn't exist.</p>
+<p>You can check which remotes currently exist with the <code>git remote -v</code> command:</p>
+<pre><code><span>$ </span><span>git remote -v</span>
+<span># </span><span>View existing remotes</span>
+<span>&gt; </span><span>origin  https://github.com/OWNER/REPOSITORY.git (fetch)</span>
+<span>&gt; </span><span>origin  https://github.com/OWNER/REPOSITORY.git (push)</span>
+</code></pre>
+<h3><a href="#troubleshooting-remote-new-name-already-exists">Troubleshooting: Remote [new name] already exists</a></h3>
+<p>This error means that the remote name you want to use already exists. To solve this, either use a different remote name, or rename the original remote.</p>
+<h2><a href="#removing-a-remote-repository">Removing a remote repository</a></h2>
+<p>Use the <code>git remote rm</code> command to remove a remote URL from your repository.</p>
+<p>The <code>git remote rm</code> command takes one argument:</p>
+<ul>
+<li>A remote name, for example, <code>destination</code>
+</li>
+</ul>
+<p>Removing the remote URL from your repository only unlinks the local and remote repositories. It does not delete the remote repository.</p>
+<h3><a href="#example-of-removing-a-remote-repository">Example of removing a remote repository</a></h3>
+<p>These examples assume you're <a href="/en/get-started/git-basics/about-remote-repositories#cloning-with-https-urls">cloning using HTTPS</a>, which is recommended.</p>
+<pre><code><span>$ </span><span>git remote -v</span>
+<span># </span><span>View current remotes</span>
+<span>&gt; </span><span>origin  https://github.com/OWNER/REPOSITORY.git (fetch)</span>
+<span>&gt; </span><span>origin  https://github.com/OWNER/REPOSITORY.git (push)</span>
+<span>&gt; </span><span>destination  https://github.com/FORKER/REPOSITORY.git (fetch)</span>
+<span>&gt; </span><span>destination  https://github.com/FORKER/REPOSITORY.git (push)</span>
+<span>
+$ </span><span>git remote <span>rm</span> destination</span>
+<span># </span><span>Remove remote</span>
+<span>$ </span><span>git remote -v</span>
+<span># </span><span>Verify it<span>'s gone</span></span>
+<span>&gt; </span><span><span>origin  https://github.com/OWNER/REPOSITORY.git (fetch)</span></span>
+<span>&gt; </span><span><span>origin  https://github.com/OWNER/REPOSITORY.git (push)</span></span>
+</code></pre>
+<div>
+<p>
+<code>git remote rm</code> does not delete the remote repository from the server. It simply removes the remote and its references from your local repository.</p>
+</div>
+<h3><a href="#troubleshooting-could-not-remove-config-section-remotename">Troubleshooting: Could not remove config section 'remote.[name]'</a></h3>
+<p>This error means that the remote you tried to delete doesn't exist:</p>
+<pre><code><span>$ </span><span>git remote <span>rm</span> sofake</span>
+<span>&gt; </span><span>error: Could not remove config section <span>'remote.sofake'</span></span>
+</code></pre>
+<p>Check that you've correctly typed the remote name.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes">"Working with Remotes" from the <em>Pro Git</em> book</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

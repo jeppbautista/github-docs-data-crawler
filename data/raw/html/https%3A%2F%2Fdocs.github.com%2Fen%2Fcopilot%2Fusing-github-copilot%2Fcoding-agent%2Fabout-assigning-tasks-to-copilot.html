@@ -1,0 +1,134 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Use GitHub Copilot" href="/en/copilot/using-github-copilot">Use GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Coding agent" href="/en/copilot/using-github-copilot/coding-agent">Coding agent</a><span>/</span>
+</li>
+<li><a title="About assigning tasks to Copilot" href="/en/copilot/using-github-copilot/coding-agent/about-assigning-tasks-to-copilot">About assigning tasks to Copilot</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>About assigning tasks to Copilot</h1></div></div>
+<div>
+<div><p>You can assign GitHub issues to Copilot, or ask Copilot to create a pull request.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Copilot coding agent is available with the GitHub Copilot Pro+ and GitHub Copilot Enterprise plans in repositories where it is enabled.<br><a href="https://github.com/features/copilot/plans?ref_cta=Copilot+plans+signup&amp;ref_loc=about+assigning+issues+to+copilot&amp;ref_page=docs"><span>Sign up for Copilot</span> </a></p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#overview-of-copilot-coding-agent"><div><span>Overview of Copilot coding agent</span></div></a></li>
+<li><a href="#copilot-coding-agent-usage-costs"><div><span>Copilot coding agent usage costs</span></div></a></li>
+<li><a href="#risks-and-mitigations"><div><span>Risks and mitigations</span></div></a></li>
+<li><a href="#limitations-of-copilot-coding-agent"><div><span>Limitations of Copilot coding agent</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<p> Copilot coding agent is in public preview and subject to change.</p>
+</div>
+<h2><a href="#overview-of-copilot-coding-agent">Overview of Copilot coding agent</a></h2>
+<p>With Copilot coding agent, GitHub Copilot can work independently in the background to complete tasks, just like a human developer.</p>
+<p>Copilot can:</p>
+<ul>
+<li>Fix bugs</li>
+<li>Implement incremental new features</li>
+<li>Improve test coverage</li>
+<li>Update documentation</li>
+<li>Address technical debt</li>
+</ul>
+<p>To delegate development tasks to Copilot, you can:</p>
+<ul>
+<li>Assign an issue to Copilot</li>
+<li>Use GitHub Copilot Chat to ask Copilot to create a pull request</li>
+</ul>
+<p>Copilot will evaluate the task it has been assigned based on the prompt you give it—whether that's from the issue description or a chat message. Then Copilot will make the required changes and open a pull request. When Copilot finishes, it will request a review from you, and you can leave pull request comments to ask Copilot to iterate.</p>
+<p>While working on a coding task, Copilot has access to its own ephemeral development environment, powered by GitHub Actions, where it can explore your code, make changes, execute automated tests and linters and more.</p>
+<h3><a href="#streamlining-software-development-with-copilot-coding-agent">Streamlining software development with Copilot coding agent</a></h3>
+<p>Assigning tasks to Copilot can enhance your software development workflow.</p>
+<p>For example, you can assign Copilot to straightforward issues on your backlog. This allows you to spend less time on these and more time on more complex or interesting work, or work that requires a high degree of creative thinking. Copilot can work on "nice to have" issues that improve the quality of your codebase or product, but often remain on the backlog while you focus on more urgent work.</p>
+<p>Having Copilot as an additional coding resource also allows you to start tasks that you might not have otherwise due to lack of resources. For example, you might delegate Copilot tasks to refactor code or add more logging, then immediately assign these to Copilot.</p>
+<p>Copilot can start a task, which you then pick up and continue working on yourself. By assigning the initial work to Copilot, you free up time that you would otherwise have spent doing repetitive tasks, such as setting up the scaffolding for a new project.</p>
+<h3><a href="#making-copilot-coding-agent-available">Making Copilot coding agent available</a></h3>
+<p>Before you can assign tasks to Copilot, it must be enabled. See <a href="/en/copilot/using-github-copilot/coding-agent/enabling-copilot-coding-agent">Enabling Copilot coding agent</a>.</p>
+<h2><a href="#copilot-coding-agent-usage-costs">Copilot coding agent usage costs</a></h2>
+<div>
+<p> Starting June 4th, 2025, Copilot coding agent will use one premium request per model request the agent makes. This is a preview feature and may be changed in the future.</p>
+</div>
+<p>Copilot coding agent uses GitHub Actions minutes and Copilot premium requests.</p>
+<p>Within your monthly usage allowance for GitHub Actions and premium requests, you can ask Copilot to work on coding tasks without incurring any additional costs.</p>
+<p>For more information, see <a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-copilot/about-billing-for-github-copilot#allowance-usage-for-copilot-coding-agent">About billing for GitHub Copilot</a>.</p>
+<h2><a href="#risks-and-mitigations">Risks and mitigations</a></h2>
+<p>Copilot coding agent is an autonomous agent that has access to your code and can push changes to your repository. This entails certain risks. Where possible, GitHub has applied appropriate mitigations.</p>
+<h3><a href="#risk-copilot-can-push-code-changes-to-your-repository">Risk: Copilot can push code changes to your repository</a></h3>
+<p>To mitigate this risk, GitHub:</p>
+<ul>
+<li>
+<strong>Limits who can assign tasks to Copilot.</strong> Only users with write access to the repository can trigger Copilot to work. Comments from users without write access are never presented to the agent.</li>
+<li>
+<strong>Limits the permissions in access tokens used by Copilot.</strong> Pushes are only allowed to branches beginning with <code>copilot/</code>. Copilot cannot push to the <code>main</code> or <code>master</code> branches.</li>
+<li>
+<strong>Limits Copilot's credentials.</strong> Copilot can only perform simple push operations. It cannot directly run <code>git push</code> or other Git commands.</li>
+<li>
+<strong>Restricts GitHub Actions workflow runs.</strong> Workflows are not triggered until Copilot's code is reviewed and a user with write access to the repo clicks the <strong>Approve and run workflows</strong> button. See <a href="/en/copilot/using-github-copilot/coding-agent/using-copilot-to-work-on-an-issue#allowing-github-actions-workflows-to-run-when-copilot-pushes-changes">Using Copilot to work on an issue</a>.</li>
+<li>
+<strong>Prevents the user who asked Copilot to create a pull request from approving it.</strong> This maintains the expected controls in the "Required approvals" rule and branch protection. See <a href="/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets">Available rules for rulesets</a>.</li>
+</ul>
+<h3><a href="#risk-copilot-has-access-to-sensitive-information">Risk: Copilot has access to sensitive information</a></h3>
+<p>Copilot has access to code and other sensitive information, and could leak it, either accidentally or due to malicious user input. To mitigate this risk, GitHub:</p>
+<ul>
+<li>
+<strong>Restricts Copilot's access to the internet.</strong> See <a href="/en/copilot/customizing-copilot/customizing-or-disabling-the-firewall-for-copilot-coding-agent">Customizing or disabling the firewall for Copilot coding agent</a>.</li>
+</ul>
+<h3><a href="#risk-prompt-injection-vulnerabilities">Risk: Prompt injection vulnerabilities</a></h3>
+<p>Users can include hidden messages in issues assigned to Copilot or comments left for Copilot as a form of <a href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/">prompt injection</a>. To mitigate this risk, GitHub:</p>
+<ul>
+<li>
+<strong>Filters hidden characters before passing user input to Copilot</strong>: For example, text entered as an HTML comment in an issue or pull request comment is not passed to Copilot.</li>
+</ul>
+<h2><a href="#limitations-of-copilot-coding-agent">Limitations of Copilot coding agent</a></h2>
+<p>Copilot coding agent has certain limitations in its software development workflow and compatibility with other features.</p>
+<h3><a href="#limitations-in-copilots-software-development-workflow">Limitations in Copilot's software development workflow</a></h3>
+<ul>
+<li>
+<strong>Copilot can only make changes in the same repository where it is creating its pull request</strong>. When Copilot is assigned an issue, it can only make changes in the repository where that issue is located. In addition, Copilot cannot make changes across multiple repositories in one run.</li>
+<li>
+<strong>Copilot can only access context in the same repository as the assigned issue</strong>. By default, an integration with the Copilot MCP server provides Copilot access to one repository at a time. You can, however, configure broader access. See <a href="/en/enterprise-cloud@latest/copilot/customizing-copilot/extending-copilot-coding-agent-with-mcp">Extending Copilot coding agent with the Model Context Protocol (MCP)</a>.</li>
+<li>
+<strong>Copilot can only open one pull request at a time</strong>. Copilot will open exactly one pull request to address each task it is assigned.</li>
+<li>
+<strong>Copilot cannot work on an existing pull request that it didn't create</strong>. If you would like Copilot to provide feedback on an existing pull request, you can add it as a reviewer. See <a href="/en/copilot/using-github-copilot/code-review/using-copilot-code-review">Using GitHub Copilot code review</a>.</li>
+<li>
+<strong>Copilot will always start its changes from the repository's default branch</strong>. Copilot cannot branch off from any other branch—for example, a feature branch or a release branch.</li>
+</ul>
+<h3><a href="#limitations-in-copilots-compatibility-with-other-features">Limitations in Copilot's compatibility with other features</a></h3>
+<ul>
+<li>
+<strong>Copilot does not sign its commits</strong>. If you have the "Require signed commits" rule or branch protection enabled, you must rewrite the commit history in order to merge Copilot's pull requests. See <a href="/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets#require-signed-commits">Available rules for rulesets</a>.</li>
+<li>
+<strong>Copilot does not work with self-hosted GitHub Actions runners</strong>. Copilot has access to its own development environment, running in GitHub Actions, and must use GitHub-hosted runners. See <a href="/en/copilot/customizing-copilot/customizing-the-development-environment-for-copilot-coding-agent#upgrading-to-larger-github-hosted-github-actions-runners">Customizing the development environment for Copilot coding agent</a>.</li>
+<li>
+<strong>Copilot doesn't account for content exclusions</strong>. Content exclusions allow administrators to configure Copilot to ignore certain files. When using Copilot coding agent, Copilot will not ignore these files, and will be able to see and update them. See <a href="/en/copilot/managing-copilot/configuring-and-auditing-content-exclusion/excluding-content-from-github-copilot">Excluding content from GitHub Copilot</a>.</li>
+<li>
+<strong>Copilot coding agent is not available in GitHub Enterprise Cloud with data residency</strong>. The agent is only available in GitHub.com.</li>
+</ul>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/copilot/using-github-copilot/coding-agent">Coding agent</a></li>
+<li><a href="/en/copilot/responsible-use-of-github-copilot-features/responsible-use-of-copilot-coding-agent-on-githubcom">Responsible use of Copilot coding agent on GitHub.com</a></li>
+<li><a href="/en/copilot/customizing-copilot/customizing-the-development-environment-for-copilot-coding-agent">Customizing the development environment for Copilot coding agent</a></li>
+<li><a href="/en/copilot/customizing-copilot/customizing-or-disabling-the-firewall-for-copilot-coding-agent">Customizing or disabling the firewall for Copilot coding agent</a></li>
+<li><a href="/en/copilot/customizing-copilot/extending-copilot-coding-agent-with-mcp">Extending Copilot coding agent with the Model Context Protocol (MCP)</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

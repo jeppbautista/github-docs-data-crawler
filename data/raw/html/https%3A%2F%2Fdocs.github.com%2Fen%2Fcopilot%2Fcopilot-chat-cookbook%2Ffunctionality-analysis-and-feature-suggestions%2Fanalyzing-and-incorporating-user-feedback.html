@@ -1,0 +1,122 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Copilot Chat Cookbook" href="/en/copilot/copilot-chat-cookbook">Copilot Chat Cookbook</a><span>/</span>
+</li>
+<li>
+<a title="Functionality analysis and feature suggestions" href="/en/copilot/copilot-chat-cookbook/functionality-analysis-and-feature-suggestions">Functionality analysis and feature suggestions</a><span>/</span>
+</li>
+<li><a title="Incorporate feedback" href="/en/copilot/copilot-chat-cookbook/functionality-analysis-and-feature-suggestions/analyzing-and-incorporating-user-feedback">Incorporate feedback</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Analyzing and incorporating user feedback</h1></div></div>
+<div><div><p>Copilot Chat can enhance the process of incorporating user feedback into your project.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#analyzing-user-feedback"><div><span>Analyzing user feedback</span></div></a></li>
+<li><a href="#generating-feature-specifications"><div><span>Generating feature specifications</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>Gathering and incorporating user feedback is crucial for product development, but it can be a challenging process. Developers and product teams often struggle to effectively analyze user feedback, prioritize it, and implement changes based on that feedback without disrupting existing workflows or introducing new issues.</p>
+<h2><a href="#analyzing-user-feedback">Analyzing user feedback</a></h2>
+<p>User feedback can be overwhelming and it may be difficult to identify what you should respond to.</p>
+<h3><a href="#example-scenario">Example scenario</a></h3>
+<p>Imagine you are a maintainer of a popular open source repository. Because the community is very invested in your project, they often open issues to provide feedback. They also frequently interact with open issues. You want to respond to this feedback, but you aren't sure where to start.</p>
+<h3><a href="#example-prompt">Example prompt</a></h3>
+<p>This example assumes that you use labels to track issues related to user feedback in your repository.</p>
+<p>Navigate to the <strong>Issues</strong> tab in your repository, then type:</p>
+<p><code>Find the issues with the feedback label that have the most reactions, and categorize them based on sentiment.</code></p>
+<div>
+<p> To try out this prompt, you can go to the <a href="https://github.com/microsoft/vscode/issues"><code>microsoft/vscode</code></a> repository, which uses labels to track feature requests, and type: <code>Find the issues with the feature-request label that have the most reactions, and categorize them based on sentiment.</code></p>
+</div>
+<h3><a href="#example-response">Example response</a></h3>
+<div>
+<p> The following response is an example. Copilot Chat responses are non-deterministic, so you may get a different response from the one shown here.</p>
+</div>
+<p>Copilot lists the issues with the most reactions, and provides a sentiment analysis for each issue. You can use this list to make more informed decisions when you are prioritizing your work.</p>
+<p>For example:</p>
+<pre><code>1. [Feedback] CLI error messages are difficult to understand
+  * Issue URL: #321
+  * Reactions: 543
+  * Sentiment: Negative
+
+1. [Feedback] Add API to enable third party integration
+  * Issue URL: #210
+  * Reactions: 482
+  * Sentiment: Positive
+
+1. [Feedback] Shortcut for --with-token CLI option
+  * Issue URL: #426
+  * Reactions: 187
+  * Sentiment: Neutral to slightly positive
+</code></pre>
+<h2><a href="#generating-feature-specifications">Generating feature specifications</a></h2>
+<p>Feature specifications provide a plan for development and are useful for communication and alignment prior to implementing a new feature.</p>
+<h3><a href="#example-scenario-1">Example scenario</a></h3>
+<p>In this scenario, you've chosen a piece of user feedback to address. Someone requested a shortcut to an existing CLI option. Now you want to create a plan for how you'll implement this.</p>
+<h3><a href="#example-prompt-1">Example prompt</a></h3>
+<p>This example assumes you are asking about an issue in the same repository where you are using Copilot Chat.</p>
+<p><code>Write a feature specification for Issue #426.</code></p>
+<h3><a href="#example-response-1">Example response</a></h3>
+<div>
+<p> The following response is an example. Copilot Chat responses are non-deterministic, so you may get a different response from the one shown here.</p>
+</div>
+<p>Copilot generates a feature specification, similar to the following.</p>
+<pre><code># Feature Specification for Issue #426: Shortcut for --with-token CLI option
+
+## Description:
+Currently, the --with-token option is used to to pass in a token to commands. Typing --with-token each time is cumbersome. This feature proposes a new flag -wt as a shortcut to quickly specify the --with-token option when running various commands.
+
+## Problem:
+Typing --with-token repeatedly is time-consuming and inconvenient for users who frequently use this option.
+
+## Solution:
+Introduce a new flag -wt that serves as a shortcut for the --with-token option.
+
+## Feature Details:
+
+### 1. Flag Introduction:
+-wt will be introduced as a shorthand for --with-token.
+Usage: &lt;command&gt; -wt &lt;token&gt;
+
+### 2. Commands Affected:
+All commands that currently support the --with-token option.
+
+### 3. Backward Compatibility:
+- The existing --with-token option will continue to work as before.
+- No existing functionality will be removed or altered.
+
+### 4. Documentation:
+- Update documentation to include the new -wt flag.
+- Provide examples and usage scenarios for the new flag.
+
+### 5. Testing:
+- Ensure thorough testing of the -wt flag across various commands.
+- Test cases should include:
+  - Valid and invalid tokens.
+  - Interaction with other options.
+  - Ensuring no regression in current --with-token functionality.
+
+## Benefits:
+- Improved user experience by reducing the amount of typing required.
+- Streamlined command execution for users who frequently use the --with-token option.
+
+## Potential Risks:
+Minimal risk as this feature is an addition and does not alter existing functionality.
+</code></pre>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/copilot/using-github-copilot/prompt-engineering-for-github-copilot">Prompt engineering for Copilot Chat</a></li>
+<li><a href="/en/copilot/using-github-copilot/best-practices-for-using-github-copilot">Best practices for using GitHub Copilot</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

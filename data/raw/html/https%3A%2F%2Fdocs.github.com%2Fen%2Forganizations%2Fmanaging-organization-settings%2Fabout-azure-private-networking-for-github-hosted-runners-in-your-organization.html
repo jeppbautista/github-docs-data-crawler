@@ -1,0 +1,171 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Organizations" href="/en/organizations">Organizations</a><span>/</span>
+</li>
+<li>
+<a title="Manage organization settings" href="/en/organizations/managing-organization-settings">Manage organization settings</a><span>/</span>
+</li>
+<li><a title="About Azure private networking" href="/en/organizations/managing-organization-settings/about-azure-private-networking-for-github-hosted-runners-in-your-organization">About Azure private networking</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>About Azure private networking for GitHub-hosted runners in your organization</h1></div></div>
+<div>
+<div><p>You can create a private network configuration for your organization to use GitHub-hosted runners in your Azure Virtual Network(s) (VNET).</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Organization owners with the GitHub Team plan can configure Azure private networking for GitHub-hosted runners at the organization level.</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-azure-private-networking-for-github-hosted-runners"><div><span>About Azure private networking for GitHub-hosted runners</span></div></a></li>
+<li><a href="#about-using-larger-runners-with-azure-vnet"><div><span>About using larger runners with Azure VNET</span></div></a></li>
+<li><a href="#about-network-communication"><div><span>About network communication</span></div></a></li>
+<li><a href="#about-supported-regions"><div><span>About supported regions</span></div></a></li>
+<li><a href="#about-the-github-actions-service-permissions"><div><span>About the GitHub Actions service permissions</span></div></a></li>
+<li><a href="#using-your-vnets-network-policies"><div><span>Using your VNET's network policies</span></div></a></li>
+<li><a href="#using-github-hosted-runners-with-an-azure-vnet"><div><span>Using GitHub-hosted runners with an Azure VNET</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-azure-private-networking-for-github-hosted-runners">About Azure private networking for GitHub-hosted runners</a></h2>
+<p>You can use GitHub-hosted runners in an Azure VNET. This enables you to use GitHub-managed infrastructure for CI/CD while providing you with full control over the networking policies of your runners. For more information about Azure VNET, see <a href="https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview">What is Azure Virtual Network?</a> in the Azure documentation.</p>
+<p>You can connect multiple VNET subnets to GitHub and manage private resource access for your runners via runner groups. For more information about runner groups, see <a href="/en/actions/using-github-hosted-runners/about-larger-runners/controlling-access-to-larger-runners">Controlling access to larger runners</a>.</p>
+<p>Using GitHub-hosted runners within Azure VNET allows you to perform the following actions.</p>
+<ul>
+<li>Privately connect a runner to resources inside an Azure VNET without opening internet ports, including on-premises resources accessible from the Azure VNET.</li>
+<li>Restrict what GitHub-hosted runners can access or connect to with full control over outbound network policies.</li>
+<li>Monitor network logs for GitHub-hosted runners and view all connectivity to and from a runner.</li>
+</ul>
+<h2><a href="#about-using-larger-runners-with-azure-vnet">About using larger runners with Azure VNET</a></h2>
+<p>2-64 vCPU Ubuntu and Windows runners are supported with Azure VNET. For more information on these runner types, see <a href="/en/actions/using-github-hosted-runners/about-larger-runners/about-larger-runners#about-ubuntu-and-windows-larger-runners">About larger runners</a>.</p>
+<p>Private networking for GitHub-hosted runners does not support static IP addresses for larger runners. You must use dynamic IP addresses, which is the default configuration for larger runners. For more information about networking for larger runners, see <a href="/en/actions/using-github-hosted-runners/about-larger-runners/about-larger-runners#networking-for-larger-runners">About larger runners</a>.</p>
+<h2><a href="#about-network-communication">About network communication</a></h2>
+<p>To facilitate communication between GitHub networks and your VNET, a GitHub-hosted runner's network interface card (NIC) deploys into your Azure VNET.</p>
+<p>Because the NIC lives within your VNET, GitHub cannot block inbound connections. By default, Azure virtual machines will accept inbound connections from the same VNET. For more information, see <a href="https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview#allowvnetinbound"><code>AllowVNetInBound</code></a> on Microsoft Learn. It is recommended to explicitly block all inbound connections to the runners. GitHub will never require inbound connections to these machines.</p>
+<p>A NIC enables an Azure virtual machine (VM) to communicate with internet, Azure, and on-premises resources. This way, all communication is kept private within the network boundaries, and networking policies applied to the VNET also apply to the runner. For more information on how to manage a network interface, see <a href="https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-network-interface?tabs=azure-portal#change-network-interface-settings">Change network interface settings</a> on Microsoft Learn.</p>
+<div>
+<p> Multiple NICs may appear for a single job in your subscription because the GitHub Actions service over-provisions resources to run jobs. Once a runner is idle, the GitHub Actions service automatically de-provisions the resource and removes the corresponding NIC.</p>
+</div>
+<p><picture><source><img src="/assets/cb-289537/images/help/actions/actions-vnet-injected-larger-runners-architecture.png" alt="Diagram of network communication between GitHub and your private networks. Each step is numbered and corresponds to a step listed below the diagram." width="720" height="612"></source></picture></p>
+<ol>
+<li>A GitHub Actions workflow is triggered.</li>
+<li>The GitHub Actions service creates a runner.</li>
+<li>The runner service deploys the GitHub-hosted runner's network interface card (NIC) into your Azure VNET.</li>
+<li>The runner agent picks up the workflow job. The GitHub Actions service queues the job.</li>
+<li>The runner sends logs back to the GitHub Actions service.</li>
+<li>The NIC accesses on-premise resources.</li>
+</ol>
+<h2><a href="#about-supported-regions">About supported regions</a></h2>
+<p>The GitHub Actions service supports a subset of all the regions that Azure provides. To facilitate communication between the GitHub Actions service and your subnet, your subnet must be in one of the supported regions.</p>
+<div>
+<p> If you use data residency on GHE.com, the supported regions are different. See <a href="/en/enterprise-cloud@latest/admin/data-residency/network-details-for-ghecom#supported-regions-for-azure-private-networking">Network details for GHE.com</a>.</p>
+</div>
+<p>The following regions are supported on GitHub.com.</p>
+<ul>
+<li><code>AustraliaEast</code></li>
+<li><code>BrazilSouth</code></li>
+<li><code>CanadaCentral</code></li>
+<li><code>CanadaEast</code></li>
+<li><code>CentralUs</code></li>
+<li><code>EastAsia</code></li>
+<li><code>EastUs</code></li>
+<li><code>EastUs2</code></li>
+<li><code>FranceCentral</code></li>
+<li><code>GermanyWestCentral</code></li>
+<li><code>JapanEast</code></li>
+<li><code>KoreaCentral</code></li>
+<li><code>NorthCentralUs</code></li>
+<li><code>NorthEurope</code></li>
+<li><code>NorwayEast</code></li>
+<li><code>SouthCentralUs</code></li>
+<li><code>SoutheastAsia</code></li>
+<li><code>SouthIndia</code></li>
+<li><code>SwedenCentral</code></li>
+<li><code>SwitzerlandNorth</code></li>
+<li><code>UkSouth</code></li>
+<li><code>WestUs</code></li>
+<li><code>WestUs2</code></li>
+<li><code>WestUs3</code></li>
+</ul>
+<p>Azure private networking supports GPU runners in the following regions.</p>
+<ul>
+<li><code>EastUs</code></li>
+<li><code>NorthCentralUs</code></li>
+<li><code>SouthCentralUs</code></li>
+<li><code>WestUs</code></li>
+</ul>
+<p>Azure private networking supports arm64 runners in the following regions.</p>
+<ul>
+<li><code>CentralUs</code></li>
+<li><code>EastUs</code></li>
+<li><code>EastUs2</code></li>
+<li><code>NorthCentralUs</code></li>
+<li><code>SouthCentralUs</code></li>
+<li><code>WestUs</code></li>
+<li><code>WestUs2</code></li>
+<li><code>WestUs3</code></li>
+</ul>
+<p>If your desired region is not supported, please submit a request for new region availability in <a href="https://resources.github.com/private-networking-for-github-hosted-runners-with-azure-virtual-networks/">this GitHub form</a>. You may also use global virtual network peering to connect virtual networks across Azure regions. For more information, see <a href="https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview">Virtual network peering</a> in the Azure documentation.</p>
+<h2><a href="#about-the-github-actions-service-permissions">About the GitHub Actions service permissions</a></h2>
+<p>In order to successfully deploy a NIC and join a NIC to a subnet, the GitHub Actions service maintains the following Azure role-based access control (RBAC) permissions in your Azure subscription. For more information about fine-grained access management of Azure resources, see <a href="https://learn.microsoft.com/en-us/azure/role-based-access-control/">Azure RBAC</a> in the Azure documentation.</p>
+<ul>
+<li><code>GitHub.Network/operations/read</code></li>
+<li><code>GitHub.Network/networkSettings/read</code></li>
+<li><code>GitHub.Network/networkSettings/write</code></li>
+<li><code>GitHub.Network/networkSettings/delete</code></li>
+<li><code>GitHub.Network/RegisteredSubscriptions/read</code></li>
+<li><code>Microsoft.Network/locations/operations/read</code></li>
+<li><code>Microsoft.Network/locations/operationResults/read</code></li>
+<li><code>Microsoft.Network/locations/usages/read</code></li>
+<li><code>Microsoft.Network/networkInterfaces/read</code></li>
+<li><code>Microsoft.Network/networkInterfaces/write</code></li>
+<li><code>Microsoft.Network/networkInterfaces/delete</code></li>
+<li><code>Microsoft.Network/networkInterfaces/join/action</code></li>
+<li><code>Microsoft.Network/networkSecurityGroups/join/action</code></li>
+<li><code>Microsoft.Network/networkSecurityGroups/read</code></li>
+<li><code>Microsoft.Network/publicIpAddresses/read</code></li>
+<li><code>Microsoft.Network/publicIpAddresses/write</code></li>
+<li><code>Microsoft.Network/publicIPAddresses/join/action</code></li>
+<li><code>Microsoft.Network/routeTables/join/action</code></li>
+<li><code>Microsoft.Network/virtualNetworks/read</code></li>
+<li><code>Microsoft.Network/virtualNetworks/subnets/join/action</code></li>
+<li><code>Microsoft.Network/virtualNetworks/subnets/read</code></li>
+<li><code>Microsoft.Network/virtualNetworks/subnets/write</code></li>
+<li><code>Microsoft.Network/virtualNetworks/subnets/serviceAssociationLinks/delete</code></li>
+<li><code>Microsoft.Network/virtualNetworks/subnets/serviceAssociationLinks/read</code></li>
+<li><code>Microsoft.Network/virtualNetworks/subnets/serviceAssociationLinks/write</code></li>
+<li><code>Microsoft.Network/virtualNetworks/subnets/serviceAssociationLinks/details/read</code></li>
+<li><code>Microsoft.Network/virtualNetworks/subnets/serviceAssociationLinks/validate/action</code></li>
+<li><code>Microsoft.Resources/subscriptions/resourceGroups/read</code></li>
+<li><code>Microsoft.Resources/subscriptions/resourcegroups/deployments/read</code></li>
+<li><code>Microsoft.Resources/subscriptions/resourcegroups/deployments/write</code></li>
+<li><code>Microsoft.Resources/subscriptions/resourcegroups/deployments/operations/read</code></li>
+<li><code>Microsoft.Resources/deployments/read</code></li>
+<li><code>Microsoft.Resources/deployments/write</code></li>
+<li><code>Microsoft.Resources/deployments/operationStatuses/read</code></li>
+</ul>
+<p>The following permissions will be present on two enterprise applications in your Azure tenant. You will see the enterprise applications your Azure tenant after configuring Azure private networking.</p>
+<ul>
+<li>
+<code>GitHub CPS Network Service</code> id: <code>85c49807-809d-4249-86e7-192762525474</code>
+</li>
+<li>
+<code>GitHub Actions API</code> id: <code>4435c199-c3da-46b9-a61d-76de3f2c9f82</code>
+</li>
+</ul>
+<h2><a href="#using-your-vnets-network-policies">Using your VNET's network policies</a></h2>
+<p>Because the GitHub-hosted runner's NIC is deployed into your Azure VNET, networking policies applied to the VNET also apply to the runner.</p>
+<p>For example, if your VNET is configured with an Azure ExpressRoute to provide access to on-premises resources (e.g. Artifactory) or connected to a VPN tunnel to provide access to other cloud-based resources, those access policies also apply to your runners. Additionally, any outbound rules applied to your VNET's network security group (NSG) also apply, giving you the ability to control outbound access for your runners.</p>
+<p>If you have enabled any network logs monitoring for your VNET, you can also monitor network traffic for your runners.</p>
+<p>GitHub-hosted runners use whatever outbound control your network is using. If your network relies on Azure's default outbound access, the IPs are not predictable and cannot be added to the GitHub IP allow list. For recommendations on using a stable outbound IP, see <a href="https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/default-outbound-access">Default outbound access</a> in the Azure documentation.</p>
+<h2><a href="#using-github-hosted-runners-with-an-azure-vnet">Using GitHub-hosted runners with an Azure VNET</a></h2>
+<p>To use GitHub-hosted runners with an Azure VNET, you will need to configure your Azure resources and then create a networking configuration in GitHub.</p>
+<p>For procedures to configure Azure private networking at the organization level, see <a href="/en/organizations/managing-organization-settings/configuring-private-networking-for-github-hosted-runners-in-your-organization">Configuring private networking for GitHub-hosted runners in your organization</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

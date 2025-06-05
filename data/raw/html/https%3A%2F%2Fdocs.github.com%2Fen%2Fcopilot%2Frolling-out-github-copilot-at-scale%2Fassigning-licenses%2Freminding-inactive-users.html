@@ -1,0 +1,323 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Roll out Copilot at scale" href="/en/copilot/rolling-out-github-copilot-at-scale">Roll out Copilot at scale</a><span>/</span>
+</li>
+<li>
+<a title="Assigning licenses" href="/en/copilot/rolling-out-github-copilot-at-scale/assigning-licenses">Assigning licenses</a><span>/</span>
+</li>
+<li><a title="Remind inactive users" href="/en/copilot/rolling-out-github-copilot-at-scale/assigning-licenses/reminding-inactive-users">Remind inactive users</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Reminding inactive users to use their GitHub Copilot license</h1></div></div>
+<div><div><p>Use the GitHub API to identify inactive users and help them get started.</p></div></div>
+<div><div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Organization owners and billing managers</p></div></div>
+<div><div><p>GitHub Copilot Business or GitHub Copilot Enterprise</p></div></div>
+</div></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#writing-the-reminder-message"><div><span>Writing the reminder message</span></div></a></li>
+<li><a href="#automating-the-reminder-with-github-actions"><div><span>Automating the reminder with GitHub Actions</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>When you're rolling out GitHub Copilot in a business, it's important to keep track of which users are using their Copilot license, so you can respond effectively by reassigning unused licenses or helping people to get started with Copilot.</p>
+<p>You can use the <a href="/en/rest/copilot/copilot-user-management#list-all-copilot-seat-assignments-for-an-organization">List all Copilot seat assignments for an organization</a> API endpoint to find the last activity date for each user who is assigned a license in an organization. Then, you can respond automatically by filtering for users who haven't used their license for a certain amount of time and sending a reminder to those users.</p>
+<h2><a href="#writing-the-reminder-message">Writing the reminder message</a></h2>
+<p>Your reminder to inactive users should help users to get past common adoption blockers for Copilot. We recommend identifying specific blockers for your company by running surveys or interviewing developers.</p>
+<p>For example, the message could include information and links to help users:</p>
+<ul>
+<li>Install Copilot in their environment.</li>
+<li>Set up Copilot to work with your company's proxy or firewall.</li>
+<li>Get the most out of Copilot in their day-to-day work.</li>
+</ul>
+<p>You should also clearly communicate any further action you will take if the license continues to go unused, such as revoking the user's license.</p>
+<h3><a href="#example-reminder">Example reminder</a></h3>
+<p>In the next section, we'll use this message in an automation that creates an issue assigned to each inactive user.</p>
+<blockquote>
+<p>We noticed you haven't used your assigned license for GitHub Copilot in 30 days. Here are some resources that might help you get started:</p>
+<ul>
+<li>If you haven't yet set up Copilot in your environment, see <a href="/en/copilot/setting-up-github-copilot/setting-up-github-copilot-for-yourself">Setting up GitHub Copilot for yourself</a> or <a href="/en/copilot/troubleshooting-github-copilot/troubleshooting-common-issues-with-github-copilot">Troubleshooting common issues with GitHub Copilot</a>.</li>
+<li>For best practices and advice on getting started, see <a href="/en/copilot/using-github-copilot/best-practices-for-using-github-copilot">Best practices for using GitHub Copilot</a> or <a href="/en/copilot/using-github-copilot/prompt-engineering-for-github-copilot">Prompt engineering for Copilot Chat</a>.</li>
+<li>For examples related to specific tasks, see <a href="/en/copilot/example-prompts-for-github-copilot-chat">Copilot Chat Cookbook</a>.</li>
+</ul>
+<p>If you no longer need access to Copilot, please let us know in this issue. If your license remains inactive for a further 30 days, we'll revoke it to free up access for another user.</p>
+</blockquote>
+<h4><a href="#example-reminder-in-markdown">Example reminder in Markdown</a></h4>
+<div>
+<header><span>Markdown</span><pre>We noticed you haven't used your assigned license for GitHub Copilot in 30 days. Here are some resources that might help you get started:
+
+* If you haven't yet set up Copilot in your environment, see [Setting up GitHub Copilot for yourself](https://docs.github.com/en/copilot/setting-up-github-copilot/setting-up-github-copilot-for-yourself) or [Troubleshooting common issues with GitHub Copilot](https://docs.github.com/en/copilot/troubleshooting-github-copilot/troubleshooting-common-issues-with-github-copilot).
+* For best practices and advice on getting started, see [Best practices for using GitHub Copilot](https://docs.github.com/en/copilot/using-github-copilot/best-practices-for-using-github-copilot) or [Prompt engineering for GitHub Copilot](https://docs.github.com/en/copilot/using-github-copilot/prompt-engineering-for-github-copilot).
+* For examples related to specific tasks, see [Copilot Chat Cookbook](https://docs.github.com/en/copilot/example-prompts-for-github-copilot-chat).
+
+If you no longer need access to Copilot, please let us know in this issue. If your license remains inactive for a further 30 days, we'll revoke it to free up access for another user.
+</pre></header><pre><code>We noticed you haven't used your assigned license for GitHub Copilot in 30 days. Here are some resources that might help you get started:
+
+<span>*</span> If you haven't yet set up Copilot in your environment, see [<span>Setting up GitHub Copilot for yourself</span>](<span>https://docs.github.com/en/copilot/setting-up-github-copilot/setting-up-github-copilot-for-yourself</span>) or [<span>Troubleshooting common issues with GitHub Copilot</span>](<span>https://docs.github.com/en/copilot/troubleshooting-github-copilot/troubleshooting-common-issues-with-github-copilot</span>).
+<span>*</span> For best practices and advice on getting started, see [<span>Best practices for using GitHub Copilot</span>](<span>https://docs.github.com/en/copilot/using-github-copilot/best-practices-for-using-github-copilot</span>) or [<span>Prompt engineering for GitHub Copilot</span>](<span>https://docs.github.com/en/copilot/using-github-copilot/prompt-engineering-for-github-copilot</span>).
+<span>*</span> For examples related to specific tasks, see [<span>Copilot Chat Cookbook</span>](<span>https://docs.github.com/en/copilot/example-prompts-for-github-copilot-chat</span>).
+
+If you no longer need access to Copilot, please let us know in this issue. If your license remains inactive for a further 30 days, we'll revoke it to free up access for another user.
+</code></pre>
+</div>
+<h2><a href="#automating-the-reminder-with-github-actions">Automating the reminder with GitHub Actions</a></h2>
+<p>The following example workflow uses the API to identify users in an organization who haven't used their license for 30 days or haven't used it at all since the seat was assigned, then creates an issue assigned to each user. This is a simple example that you can adapt to meet your needs.</p>
+<p>To use this workflow:</p>
+<ol>
+<li>
+<p>Create a label in the repository where reminder issues will be created. Call the label <code>copilot-reminder</code>. We'll use this label to check whether a reminder issue is already open for each inactive user.</p>
+<p>To create a label, see <a href="/en/issues/using-labels-and-milestones-to-track-work/managing-labels#creating-a-label">Managing labels</a>.</p>
+</li>
+<li>
+<p>Save your reminder message, such as the one provided in <a href="#example-reminder-in-markdown">Example reminder in Markdown</a>, as an GitHub Actions variable in your repository or organization. Call the variable <code>COPILOT_REMINDER_MESSAGE</code>.</p>
+<p>To create a variable, see <a href="/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#creating-configuration-variables-for-a-repository">Store information in variables</a>.</p>
+</li>
+<li>
+<p>Create a personal access token with permission to call the <a href="/en/rest/copilot/copilot-user-management#list-all-copilot-seat-assignments-for-an-organization">List all Copilot seat assignments for an organization</a> API endpoint. For example, create a fine-grained token with the following details:</p>
+<ul>
+<li>
+<strong>Resource owner</strong>: The organization where you're looking for inactive users.</li>
+<li>
+<strong>Organization permissions</strong>: GitHub Copilot Business (read-only).</li>
+</ul>
+<p>To create a token, see <a href="/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token">Managing your personal access tokens</a>.</p>
+</li>
+<li>
+<p>Save the access token as a GitHub Actions secret in your repository or organization. Call the secret <code>COPILOT_LICENSE_READ</code>.</p>
+<p>To create a secret, see <a href="/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository">Using secrets in GitHub Actions</a>.</p>
+</li>
+<li>
+<p>Using the example below, create the workflow in the repository where you want the reminder issues to be created.</p>
+<p>If you're new to GitHub Actions, see <a href="/en/actions/writing-workflows/quickstart">Quickstart for GitHub Actions</a>.</p>
+</li>
+<li>
+<p>If you want to create the issues in a repository other than the one in which the workflow is located, replace <code>${{ github.repository }}</code> in the <code>gh</code> commands with the name of the repository where you want the reminder issues to be created. For example: <code>octo-org/octo-repo</code>.</p>
+</li>
+</ol>
+<h3><a href="#example-workflow">Example workflow</a></h3>
+<div>
+<p> This example assumes you assign licenses through an organization. If you use a dedicated enterprise account for Copilot Business, you will need to use different API endpoints. See <a href="/en/enterprise-cloud@latest/admin/copilot-business-only/setting-up-a-dedicated-enterprise-for-copilot-business-personal-accounts#automate-license-management">Setting up a dedicated enterprise for Copilot Business (personal accounts)</a>.</p>
+</div>
+<div>
+<div><header><span>YAML</span><div>
+<button>Beside</button><button>Inline</button>
+</div>
+<pre># Name your workflow
+name: Remind inactive users about GitHub Copilot license
+
+on:
+  # Run on demand (enables `Run workflow` button on the Actions tab to easily trigger a run manually)
+  workflow_dispatch:
+  # Run the workflow every day at 8am UTC
+  schedule:
+    - cron: '0 8 * * *'
+
+jobs:
+  context-log:
+    runs-on: ubuntu-latest
+
+    # Modify the default permissions granted to GITHUB_TOKEN
+    permissions:
+      contents: read
+      issues: write
+
+    steps:
+      - name: Check last GitHub Copilot activity
+        id: check-last-activity
+        run: |
+          # List all GitHub Copilot seat assignments for an organization
+          RESPONSE=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            -H "Authorization: Bearer ${{ secrets.COPILOT_LICENSE_READ }}" \
+            /orgs/${{ github.repository_owner }}/copilot/billing/seats)
+          echo "Raw Response from gh api:"
+          echo "$RESPONSE"
+
+          # Parse and check each user's `last_activity_at` and `created_at`
+          echo "$RESPONSE" | jq -c '.seats[]' | while read -r seat; do
+            LOGIN=$(echo "$seat" | jq -r '.assignee.login')
+            LAST_ACTIVITY=$(echo "$seat" | jq -r '.last_activity_at')
+            CREATED_AT=$(echo "$seat" | jq -r '.created_at')
+
+            # List all open issues with label `copilot-reminder`
+            EXISTING_ISSUES=$(gh issue list --repo ${{ github.repository }} --assignee $LOGIN --label 'copilot-reminder' --json id)
+
+            # Get last activity date and convert dates to seconds since epoch for comparison
+            if [ "$LAST_ACTIVITY" = "null" ]; then
+              LAST_ACTIVITY_DATE=$(date -d "$CREATED_AT" +%s)
+            else
+              LAST_ACTIVITY_DATE=$(date -d "$LAST_ACTIVITY" +%s)
+            fi
+            THIRTY_DAYS_AGO=$(date -d "30 days ago" +%s)
+
+            # Create issues for inactive users who don't have an existing open issue
+            if [ "$LAST_ACTIVITY_DATE" -lt "$THIRTY_DAYS_AGO" ] &amp;&amp; [ "$EXISTING_ISSUES" = "[]" ]; then
+              echo "User $LOGIN has not been active in the last 30 days. Last activity: $LAST_ACTIVITY"
+
+              NEW_ISSUE_URL="$(gh issue create --title "Reminder about your GitHub Copilot license" --body "${{ vars.COPILOT_REMINDER_MESSAGE }}" --repo ${{ github.repository }} --assignee $LOGIN --label 'copilot-reminder')"
+            else
+              echo "User $LOGIN is active or already has an assigned reminder issue. Last activity: $LAST_ACTIVITY"
+            fi
+          done
+
+        # Set the GH_TOKEN, required for the 'gh issue' commands
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+</pre></header></div>
+<div>
+<div>
+<div><pre><code><span>name:</span> <span>Remind</span> <span>inactive</span> <span>users</span> <span>about</span> <span>GitHub</span> <span>Copilot</span> <span>license</span>
+<span>on:</span></code></pre></div>
+<div><p>Name your workflow</p></div>
+</div>
+<div>
+<div><pre><code>  <span>workflow_dispatch:</span></code></pre></div>
+<div><p>Run on demand (enables <code>Run workflow</code> button on the Actions tab to easily trigger a run manually)</p></div>
+</div>
+<div>
+<div><pre><code>  <span>schedule:</span>
+    <span>-</span> <span>cron:</span> <span>'0 8 * * *'</span>
+<span>jobs:</span>
+  <span>context-log:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span></code></pre></div>
+<div><p>Run the workflow every day at 8am UTC</p></div>
+</div>
+<div>
+<div><pre><code>    <span>permissions:</span>
+      <span>contents:</span> <span>read</span>
+      <span>issues:</span> <span>write</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>Check</span> <span>last</span> <span>GitHub</span> <span>Copilot</span> <span>activity</span>
+        <span>id:</span> <span>check-last-activity</span>
+        <span>run:</span> <span>|</span></code></pre></div>
+<div><p>Modify the default permissions granted to GITHUB_TOKEN</p></div>
+</div>
+<div>
+<div><pre><code>          <span>RESPONSE=$(gh</span> <span>api</span> <span>\</span>
+            <span>-H</span> <span>"Accept: application/vnd.github+json"</span> <span>\</span>
+            <span>-H</span> <span>"X-GitHub-Api-Version: 2022-11-28"</span> <span>\</span>
+            <span>-H</span> <span>"Authorization: Bearer $<span>{{ secrets.COPILOT_LICENSE_READ }}</span>"</span> <span>\</span>
+            <span>/orgs/${{</span> <span>github.repository_owner</span> <span>}}/copilot/billing/seats)</span>
+          <span>echo</span> <span>"Raw Response from gh api:"</span>
+          <span>echo</span> <span>"$RESPONSE"</span></code></pre></div>
+<div><p>List all GitHub Copilot seat assignments for an organization</p></div>
+</div>
+<div>
+<div><pre><code>          <span>echo</span> <span>"$RESPONSE"</span> <span>|</span> <span>jq</span> <span>-c</span> <span>'.seats[]'</span> <span>|</span> <span>while</span> <span>read</span> <span>-r</span> <span>seat;</span> <span>do</span>
+            <span>LOGIN=$(echo</span> <span>"$seat"</span> <span>|</span> <span>jq</span> <span>-r</span> <span>'.assignee.login'</span><span>)</span>
+            <span>LAST_ACTIVITY=$(echo</span> <span>"$seat"</span> <span>|</span> <span>jq</span> <span>-r</span> <span>'.last_activity_at'</span><span>)</span>
+            <span>CREATED_AT=$(echo</span> <span>"$seat"</span> <span>|</span> <span>jq</span> <span>-r</span> <span>'.created_at'</span><span>)</span></code></pre></div>
+<div><p>Parse and check each user's <code>last_activity_at</code> and <code>created_at</code></p></div>
+</div>
+<div>
+<div><pre><code>            <span>EXISTING_ISSUES=$(gh</span> <span>issue</span> <span>list</span> <span>--repo</span> <span>${{</span> <span>github.repository</span> <span>}}</span> <span>--assignee</span> <span>$LOGIN</span> <span>--label</span> <span>'copilot-reminder'</span> <span>--json</span> <span>id)</span></code></pre></div>
+<div><p>List all open issues with label <code>copilot-reminder</code></p></div>
+</div>
+<div>
+<div><pre><code>            <span>if</span> [ <span>"$LAST_ACTIVITY"</span> <span>=</span> <span>"null"</span> ]<span>;</span> <span>then</span>
+              <span>LAST_ACTIVITY_DATE=$(date</span> <span>-d</span> <span>"$CREATED_AT"</span> <span>+%s)</span>
+            <span>else</span>
+              <span>LAST_ACTIVITY_DATE=$(date</span> <span>-d</span> <span>"$LAST_ACTIVITY"</span> <span>+%s)</span>
+            <span>fi</span>
+            <span>THIRTY_DAYS_AGO=$(date</span> <span>-d</span> <span>"30 days ago"</span> <span>+%s)</span></code></pre></div>
+<div><p>Get last activity date and convert dates to seconds since epoch for comparison</p></div>
+</div>
+<div>
+<div><pre><code>            <span>if</span> [ <span>"$LAST_ACTIVITY_DATE"</span> <span>-lt</span> <span>"$THIRTY_DAYS_AGO"</span> ] <span>&amp;&amp;</span> [ <span>"$EXISTING_ISSUES"</span> <span>=</span> <span>"[]"</span> ]<span>;</span> <span>then</span>
+              <span>echo</span> <span>"User $LOGIN has not been active in the last 30 days. Last activity: $LAST_ACTIVITY"</span>
+              <span>NEW_ISSUE_URL="$(gh</span> <span>issue</span> <span>create</span> <span>--title</span> <span>"Reminder about your GitHub Copilot license"</span> <span>--body</span> <span>"$<span>{{ vars.COPILOT_REMINDER_MESSAGE }}</span>"</span> <span>--repo</span> <span>${{</span> <span>github.repository</span> <span>}}</span> <span>--assignee</span> <span>$LOGIN</span> <span>--label</span> <span>'copilot-reminder'</span><span>)"</span>
+            <span>else</span>
+              <span>echo</span> <span>"User $LOGIN is active or already has an assigned reminder issue. Last activity: $LAST_ACTIVITY"</span>
+            <span>fi</span>
+          <span>done</span></code></pre></div>
+<div><p>Create issues for inactive users who don't have an existing open issue</p></div>
+</div>
+<div>
+<div><pre><code>        <span>env:</span>
+          <span>GH_TOKEN:</span> <span>${{</span> <span>secrets.GITHUB_TOKEN</span> <span>}}</span></code></pre></div>
+<div><p>Set the GH_TOKEN, required for the 'gh issue' commands</p></div>
+</div>
+</div>
+<div><pre><code><span># Name your workflow</span>
+<span>name:</span> <span>Remind</span> <span>inactive</span> <span>users</span> <span>about</span> <span>GitHub</span> <span>Copilot</span> <span>license</span>
+
+<span>on:</span>
+  <span># Run on demand (enables `Run workflow` button on the Actions tab to easily trigger a run manually)</span>
+  <span>workflow_dispatch:</span>
+  <span># Run the workflow every day at 8am UTC</span>
+  <span>schedule:</span>
+    <span>-</span> <span>cron:</span> <span>'0 8 * * *'</span>
+
+<span>jobs:</span>
+  <span>context-log:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+
+    <span># Modify the default permissions granted to GITHUB_TOKEN</span>
+    <span>permissions:</span>
+      <span>contents:</span> <span>read</span>
+      <span>issues:</span> <span>write</span>
+
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>Check</span> <span>last</span> <span>GitHub</span> <span>Copilot</span> <span>activity</span>
+        <span>id:</span> <span>check-last-activity</span>
+        <span>run:</span> <span>|
+          # List all GitHub Copilot seat assignments for an organization
+          RESPONSE=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            -H "Authorization: Bearer ${{ secrets.COPILOT_LICENSE_READ }}" \
+            /orgs/${{ github.repository_owner }}/copilot/billing/seats)
+          echo "Raw Response from gh api:"
+          echo "$RESPONSE"
+</span>
+          <span># Parse and check each user's `last_activity_at` and `created_at`</span>
+          <span>echo</span> <span>"$RESPONSE"</span> <span>|</span> <span>jq</span> <span>-c</span> <span>'.seats[]'</span> <span>|</span> <span>while</span> <span>read</span> <span>-r</span> <span>seat;</span> <span>do</span>
+            <span>LOGIN=$(echo</span> <span>"$seat"</span> <span>|</span> <span>jq</span> <span>-r</span> <span>'.assignee.login'</span><span>)</span>
+            <span>LAST_ACTIVITY=$(echo</span> <span>"$seat"</span> <span>|</span> <span>jq</span> <span>-r</span> <span>'.last_activity_at'</span><span>)</span>
+            <span>CREATED_AT=$(echo</span> <span>"$seat"</span> <span>|</span> <span>jq</span> <span>-r</span> <span>'.created_at'</span><span>)</span>
+
+            <span># List all open issues with label `copilot-reminder`</span>
+            <span>EXISTING_ISSUES=$(gh</span> <span>issue</span> <span>list</span> <span>--repo</span> <span>${{</span> <span>github.repository</span> <span>}}</span> <span>--assignee</span> <span>$LOGIN</span> <span>--label</span> <span>'copilot-reminder'</span> <span>--json</span> <span>id)</span>
+
+            <span># Get last activity date and convert dates to seconds since epoch for comparison</span>
+            <span>if</span> [ <span>"$LAST_ACTIVITY"</span> <span>=</span> <span>"null"</span> ]<span>;</span> <span>then</span>
+              <span>LAST_ACTIVITY_DATE=$(date</span> <span>-d</span> <span>"$CREATED_AT"</span> <span>+%s)</span>
+            <span>else</span>
+              <span>LAST_ACTIVITY_DATE=$(date</span> <span>-d</span> <span>"$LAST_ACTIVITY"</span> <span>+%s)</span>
+            <span>fi</span>
+            <span>THIRTY_DAYS_AGO=$(date</span> <span>-d</span> <span>"30 days ago"</span> <span>+%s)</span>
+
+            <span># Create issues for inactive users who don't have an existing open issue</span>
+            <span>if</span> [ <span>"$LAST_ACTIVITY_DATE"</span> <span>-lt</span> <span>"$THIRTY_DAYS_AGO"</span> ] <span>&amp;&amp;</span> [ <span>"$EXISTING_ISSUES"</span> <span>=</span> <span>"[]"</span> ]<span>;</span> <span>then</span>
+              <span>echo</span> <span>"User $LOGIN has not been active in the last 30 days. Last activity: $LAST_ACTIVITY"</span>
+
+              <span>NEW_ISSUE_URL="$(gh</span> <span>issue</span> <span>create</span> <span>--title</span> <span>"Reminder about your GitHub Copilot license"</span> <span>--body</span> <span>"$<span>{{ vars.COPILOT_REMINDER_MESSAGE }}</span>"</span> <span>--repo</span> <span>${{</span> <span>github.repository</span> <span>}}</span> <span>--assignee</span> <span>$LOGIN</span> <span>--label</span> <span>'copilot-reminder'</span><span>)"</span>
+            <span>else</span>
+              <span>echo</span> <span>"User $LOGIN is active or already has an assigned reminder issue. Last activity: $LAST_ACTIVITY"</span>
+            <span>fi</span>
+          <span>done</span>
+
+        <span># Set the GH_TOKEN, required for the 'gh issue' commands</span>
+        <span>env:</span>
+          <span>GH_TOKEN:</span> <span>${{</span> <span>secrets.GITHUB_TOKEN</span> <span>}}</span>
+</code></pre></div>
+</div>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/copilot/rolling-out-github-copilot-at-scale/driving-copilot-adoption-in-your-company">Driving Copilot adoption in your company</a></li>
+<li><a href="/en/copilot/rolling-out-github-copilot-at-scale/analyzing-usage-over-time-with-the-copilot-metrics-api">Analyzing usage over time with the Copilot metrics API</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

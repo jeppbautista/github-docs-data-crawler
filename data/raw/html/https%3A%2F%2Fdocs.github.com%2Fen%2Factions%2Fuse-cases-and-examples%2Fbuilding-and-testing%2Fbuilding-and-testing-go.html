@@ -1,0 +1,285 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Use cases and examples" href="/en/actions/use-cases-and-examples">Use cases and examples</a><span>/</span>
+</li>
+<li>
+<a title="Build and test" href="/en/actions/use-cases-and-examples/building-and-testing">Build and test</a><span>/</span>
+</li>
+<li><a title="Build &amp; test Go" href="/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-go">Build &amp; test Go</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Building and testing Go</h1></div></div>
+<div><div><p>You can create a continuous integration (CI) workflow to build and test your Go project.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#using-a-go-workflow-template"><div><span>Using a Go workflow template</span></div></a></li>
+<li><a href="#specifying-a-go-version"><div><span>Specifying a Go version</span></div></a></li>
+<li><a href="#installing-dependencies"><div><span>Installing dependencies</span></div></a></li>
+<li><a href="#building-and-testing-your-code"><div><span>Building and testing your code</span></div></a></li>
+<li><a href="#packaging-workflow-data-as-artifacts"><div><span>Packaging workflow data as artifacts</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>This guide shows you how to build, test, and publish a Go package.</p>
+<p>GitHub-hosted runners have a tools cache with preinstalled software, which includes the dependencies for Go. For a full list of up-to-date software and the preinstalled versions of Go, see <a href="/en/actions/using-github-hosted-runners/about-github-hosted-runners#preinstalled-software">Using GitHub-hosted runners</a>.</p>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<p>You should already be familiar with YAML syntax and how it's used with GitHub Actions. For more information, see <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions">Workflow syntax for GitHub Actions</a>.</p>
+<p>We recommend that you have a basic understanding of the Go language. For more information, see <a href="https://golang.org/doc/tutorial/getting-started">Getting started with Go</a>.</p>
+<h2><a href="#using-a-go-workflow-template">Using a Go workflow template</a></h2>
+<p>To get started quickly, add a workflow template to the <code>.github/workflows</code> directory of your repository.</p>
+<p>GitHub provides a Go workflow template that should work for most Go projects. The subsequent sections of this guide give examples of how you can customize this workflow template.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click </p>
+<div><picture><source><img src="/assets/cb-12958/images/help/repository/actions-tab-global-nav-update.png" alt='Screenshot of the tabs for the "github/docs" repository. The "Actions" tab is highlighted with an orange outline.' width="1242" height="186"></source></picture></div>
+</li>
+<li>
+<p>If you already have a workflow in your repository, click <strong>New workflow</strong>.</p>
+</li>
+<li>
+<p>The "Choose a workflow" page shows a selection of recommended workflow templates. Search for "go".</p>
+</li>
+<li>
+<p>Filter the selection of workflows by clicking <strong>Continuous integration</strong>.</p>
+</li>
+<li>
+<p>On the "Go - by GitHub Actions" workflow, click <strong>Configure</strong>.</p>
+<div><picture><source><img src="/assets/cb-101514/images/help/actions/starter-workflow-go.png" alt='Screenshot of the "Choose a workflow" page. The "Configure" button on the "Go" workflow is highlighted with an orange outline.' width="1440" height="636"></source></picture></div>
+</li>
+<li>
+<p>Edit the workflow as required. For example, change the version of Go.</p>
+</li>
+<li>
+<p>Click <strong>Commit changes</strong>.</p>
+<p>The <code>go.yml</code> workflow file is added to the <code>.github/workflows</code> directory of your repository.</p>
+</li>
+</ol>
+<h2><a href="#specifying-a-go-version">Specifying a Go version</a></h2>
+<p>The easiest way to specify a Go version is by using the <code>setup-go</code> action provided by GitHub. For more information see, the <a href="https://github.com/actions/setup-go/"><code>setup-go</code> action</a>.</p>
+<p>To use a preinstalled version of Go on a GitHub-hosted runner, pass the relevant version to the <code>go-version</code> property of the <code>setup-go</code> action. This action finds a specific version of Go from the tools cache on each runner, and adds the necessary binaries to <code>PATH</code>. These changes will persist for the remainder of the job.</p>
+<p>The <code>setup-go</code> action is the recommended way of using Go with GitHub Actions, because it helps ensure consistent behavior across different runners and different versions of Go. If you are using a self-hosted runner, you must install Go and add it to <code>PATH</code>.</p>
+<h3><a href="#using-multiple-versions-of-go">Using multiple versions of Go</a></h3>
+<div>
+<header><span>YAML</span><pre>name: Go
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go-version: [ '1.19', '1.20', '1.21.x' ]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go ${{ matrix.go-version }}
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go-version }}
+      # You can test your matrix by printing the current Go version
+      - name: Display Go version
+        run: go version
+</pre></header><pre><code><span>name:</span> <span>Go</span>
+
+<span>on:</span> [<span>push</span>]
+
+<span>jobs:</span>
+  <span>build:</span>
+
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>strategy:</span>
+      <span>matrix:</span>
+        <span>go-version:</span> [ <span>'1.19'</span>, <span>'1.20'</span>, <span>'1.21.x'</span> ]
+
+    <span>steps:</span>
+      <span>-</span> <span>uses:</span> <span>actions/checkout@v4</span>
+      <span>-</span> <span>name:</span> <span>Setup</span> <span>Go</span> <span>${{</span> <span>matrix.go-version</span> <span>}}</span>
+        <span>uses:</span> <span>actions/setup-go@v5</span>
+        <span>with:</span>
+          <span>go-version:</span> <span>${{</span> <span>matrix.go-version</span> <span>}}</span>
+      <span># You can test your matrix by printing the current Go version</span>
+      <span>-</span> <span>name:</span> <span>Display</span> <span>Go</span> <span>version</span>
+        <span>run:</span> <span>go</span> <span>version</span>
+</code></pre>
+</div>
+<h3><a href="#using-a-specific-go-version">Using a specific Go version</a></h3>
+<p>You can configure your job to use a specific version of Go, such as <code>1.20.8</code>. Alternatively, you can use semantic version syntax to get the latest minor release. This example uses the latest patch release of Go 1.21:</p>
+<div>
+<header><span>YAML</span><pre>      - name: Setup Go 1.21.x
+        uses: actions/setup-go@v5
+        with:
+          # Semantic version range syntax or exact version of Go
+          go-version: '1.21.x'
+</pre></header><pre><code>      <span>-</span> <span>name:</span> <span>Setup</span> <span>Go</span> <span>1.21</span><span>.x</span>
+        <span>uses:</span> <span>actions/setup-go@v5</span>
+        <span>with:</span>
+          <span># Semantic version range syntax or exact version of Go</span>
+          <span>go-version:</span> <span>'1.21.x'</span>
+</code></pre>
+</div>
+<h2><a href="#installing-dependencies">Installing dependencies</a></h2>
+<p>You can use <code>go get</code> to install dependencies:</p>
+<div>
+<header><span>YAML</span><pre>    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21.x'
+      - name: Install dependencies
+        run: |
+          go get .
+          go get example.com/octo-examplemodule
+          go get example.com/octo-examplemodule@v1.3.4
+</pre></header><pre><code>    <span>steps:</span>
+      <span>-</span> <span>uses:</span> <span>actions/checkout@v4</span>
+      <span>-</span> <span>name:</span> <span>Setup</span> <span>Go</span>
+        <span>uses:</span> <span>actions/setup-go@v5</span>
+        <span>with:</span>
+          <span>go-version:</span> <span>'1.21.x'</span>
+      <span>-</span> <span>name:</span> <span>Install</span> <span>dependencies</span>
+        <span>run:</span> <span>|
+          go get .
+          go get example.com/octo-examplemodule
+          go get example.com/octo-examplemodule@v1.3.4
+</span></code></pre>
+</div>
+<h3><a href="#caching-dependencies">Caching dependencies</a></h3>
+<p>You can cache and restore dependencies using the <a href="https://github.com/actions/setup-go"><code>setup-go</code> action</a>. By default, caching is enabled when using the <code>setup-go</code> action.</p>
+<p>The <code>setup-go</code> action searches for the dependency file, <code>go.sum</code>, in the repository root and uses the hash of the dependency file as a part of the cache key.</p>
+<p>You can use the <code>cache-dependency-path</code> parameter for cases when multiple dependency files are used, or when they are located in different subdirectories.</p>
+<div>
+<header><span>YAML</span><pre>      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.17'
+          cache-dependency-path: subdir/go.sum
+</pre></header><pre><code>      <span>-</span> <span>name:</span> <span>Setup</span> <span>Go</span>
+        <span>uses:</span> <span>actions/setup-go@v5</span>
+        <span>with:</span>
+          <span>go-version:</span> <span>'1.17'</span>
+          <span>cache-dependency-path:</span> <span>subdir/go.sum</span>
+</code></pre>
+</div>
+<p>If you have a custom requirement or need finer controls for caching, you can use the <a href="https://github.com/marketplace/actions/cache"><code>cache</code> action</a>. For more information, see <a href="/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows">Caching dependencies to speed up workflows</a>.</p>
+<h2><a href="#building-and-testing-your-code">Building and testing your code</a></h2>
+<p>You can use the same commands that you use locally to build and test your code. This example workflow demonstrates how to use <code>go build</code> and <code>go test</code> in a job:</p>
+<div>
+<header><span>YAML</span><pre>name: Go
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21.x'
+      - name: Install dependencies
+        run: go get .
+      - name: Build
+        run: go build -v ./...
+      - name: Test with the Go CLI
+        run: go test
+</pre></header><pre><code><span>name:</span> <span>Go</span>
+<span>on:</span> [<span>push</span>]
+
+<span>jobs:</span>
+  <span>build:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+
+    <span>steps:</span>
+      <span>-</span> <span>uses:</span> <span>actions/checkout@v4</span>
+      <span>-</span> <span>name:</span> <span>Setup</span> <span>Go</span>
+        <span>uses:</span> <span>actions/setup-go@v5</span>
+        <span>with:</span>
+          <span>go-version:</span> <span>'1.21.x'</span>
+      <span>-</span> <span>name:</span> <span>Install</span> <span>dependencies</span>
+        <span>run:</span> <span>go</span> <span>get</span> <span>.</span>
+      <span>-</span> <span>name:</span> <span>Build</span>
+        <span>run:</span> <span>go</span> <span>build</span> <span>-v</span> <span>./...</span>
+      <span>-</span> <span>name:</span> <span>Test</span> <span>with</span> <span>the</span> <span>Go</span> <span>CLI</span>
+        <span>run:</span> <span>go</span> <span>test</span>
+</code></pre>
+</div>
+<h2><a href="#packaging-workflow-data-as-artifacts">Packaging workflow data as artifacts</a></h2>
+<p>After a workflow completes, you can upload the resulting artifacts for analysis. For example, you may need to save log files, core dumps, test results, or screenshots. The following example demonstrates how you can use the <code>upload-artifact</code> action to upload test results.</p>
+<p>For more information, see <a href="/en/actions/using-workflows/storing-workflow-data-as-artifacts">Storing and sharing data from a workflow</a>.</p>
+<div>
+<header><span>YAML</span><pre>name: Upload Go test results
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go-version: [ '1.19', '1.20', '1.21.x' ]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go-version }}
+      - name: Install dependencies
+        run: go get .
+      - name: Test with Go
+        run: go test -json &gt; TestResults-${{ matrix.go-version }}.json
+      - name: Upload Go test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: Go-results-${{ matrix.go-version }}
+          path: TestResults-${{ matrix.go-version }}.json
+</pre></header><pre><code><span>name:</span> <span>Upload</span> <span>Go</span> <span>test</span> <span>results</span>
+
+<span>on:</span> [<span>push</span>]
+
+<span>jobs:</span>
+  <span>build:</span>
+
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>strategy:</span>
+      <span>matrix:</span>
+        <span>go-version:</span> [ <span>'1.19'</span>, <span>'1.20'</span>, <span>'1.21.x'</span> ]
+
+    <span>steps:</span>
+      <span>-</span> <span>uses:</span> <span>actions/checkout@v4</span>
+      <span>-</span> <span>name:</span> <span>Setup</span> <span>Go</span>
+        <span>uses:</span> <span>actions/setup-go@v5</span>
+        <span>with:</span>
+          <span>go-version:</span> <span>${{</span> <span>matrix.go-version</span> <span>}}</span>
+      <span>-</span> <span>name:</span> <span>Install</span> <span>dependencies</span>
+        <span>run:</span> <span>go</span> <span>get</span> <span>.</span>
+      <span>-</span> <span>name:</span> <span>Test</span> <span>with</span> <span>Go</span>
+        <span>run:</span> <span>go</span> <span>test</span> <span>-json</span> <span>&gt;</span> <span>TestResults-${{</span> <span>matrix.go-version</span> <span>}}.json</span>
+      <span>-</span> <span>name:</span> <span>Upload</span> <span>Go</span> <span>test</span> <span>results</span>
+        <span>uses:</span> <span>actions/upload-artifact@v4</span>
+        <span>with:</span>
+          <span>name:</span> <span>Go-results-${{</span> <span>matrix.go-version</span> <span>}}</span>
+          <span>path:</span> <span>TestResults-${{</span> <span>matrix.go-version</span> <span>}}.json</span>
+</code></pre>
+</div>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

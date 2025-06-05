@@ -1,0 +1,210 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Use cases and examples" href="/en/actions/use-cases-and-examples">Use cases and examples</a><span>/</span>
+</li>
+<li>
+<a title="Deployment" href="/en/actions/use-cases-and-examples/deploying">Deployment</a><span>/</span>
+</li>
+<li><a title="Deploying to Azure Kubernetes Service" href="/en/actions/use-cases-and-examples/deploying/deploying-to-azure-kubernetes-service">Deploying to Azure Kubernetes Service</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Deploying to Azure Kubernetes Service</h1></div></div>
+<div><div><p>You can deploy your project to Azure Kubernetes Service (AKS) as part of your continuous deployment (CD) workflows.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#creating-the-workflow"><div><span>Creating the workflow</span></div></a></li>
+<li><a href="#additional-resources"><div><span>Additional resources</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>This guide explains how to use GitHub Actions to build and deploy a project to <a href="https://azure.microsoft.com/services/kubernetes-service/">Azure Kubernetes Service</a>.</p>
+<div>
+<p>
+If your GitHub Actions workflows need to access resources from a cloud provider that supports OpenID Connect (OIDC), you can configure your workflows to authenticate directly to the cloud provider. This will let you stop storing these credentials as long-lived secrets and provide other security benefits. For more information, see <a href="/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect">About security hardening with OpenID Connect</a>. and <a href="/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-azure">Configuring OpenID Connect in Azure</a>.</p>
+</div>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<p>Before creating your GitHub Actions workflow, you will first need to complete the following setup steps:</p>
+<ol>
+<li>
+<p>Create a target AKS cluster and an Azure Container Registry (ACR). For more information, see <a href="https://docs.microsoft.com/azure/aks/kubernetes-walkthrough-portal">Quickstart: Deploy an AKS cluster by using the Azure portal - Azure Kubernetes Service</a> and <a href="https://docs.microsoft.com/azure/container-registry/container-registry-get-started-portal">Quickstart - Create registry in portal - Azure Container Registry</a> in the Azure documentation.</p>
+</li>
+<li>
+<p>Create a secret called <code>AZURE_CREDENTIALS</code> to store your Azure credentials. For more information about how to find this information and structure the secret, see <a href="https://github.com/Azure/login#configure-a-service-principal-with-a-secret">the <code>Azure/login</code> action documentation</a>.</p>
+</li>
+</ol>
+<h2><a href="#creating-the-workflow">Creating the workflow</a></h2>
+<p>Once you've completed the prerequisites, you can proceed with creating the workflow.</p>
+<p>The following example workflow demonstrates how to build and deploy a project to Azure Kubernetes Service when code is pushed to your repository.</p>
+<p>Under the workflow <code>env</code> key, change the following values:</p>
+<ul>
+<li>
+<code>AZURE_CONTAINER_REGISTRY</code> to the name of your container registry</li>
+<li>
+<code>PROJECT_NAME</code> to the name of your project</li>
+<li>
+<code>RESOURCE_GROUP</code> to the resource group containing your AKS cluster</li>
+<li>
+<code>CLUSTER_NAME</code> to the name of your AKS cluster</li>
+</ul>
+<p>This workflow uses the <code>helm</code> render engine for the <a href="https://github.com/Azure/k8s-bake"><code>azure/k8s-bake</code> action</a>. If you will use the <code>helm</code> render engine, change the value of <code>CHART_PATH</code> to the path to your helm file. Change <code>CHART_OVERRIDE_PATH</code> to an array of override file paths. If you use a different render engine, update the input parameters sent to the <code>azure/k8s-bake</code> action.</p>
+<div>
+<header><span>YAML</span><pre># This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# GitHub recommends pinning actions to a commit SHA.
+# To get a newer version, you will need to update the SHA.
+# You can also reference a tag or branch, but the action may change without warning.
+
+name: Build and deploy to Azure Kubernetes Service
+
+env:
+  AZURE_CONTAINER_REGISTRY: MY_REGISTRY_NAME # set this to the name of your container registry
+  PROJECT_NAME: MY_PROJECT_NAME              # set this to your project's name
+  RESOURCE_GROUP: MY_RESOURCE_GROUP          # set this to the resource group containing your AKS cluster
+  CLUSTER_NAME: MY_CLUSTER_NAME              # set this to the name of your AKS cluster
+  REGISTRY_URL: MY_REGISTRY_URL              # set this to the URL of your registry
+  # If you bake using helm:
+  CHART_PATH: MY_HELM_FILE                   # set this to the path to your helm file
+  CHART_OVERRIDE_PATH: MY_OVERRIDE_FILES     # set this to an array of override file paths
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Azure Login
+      uses: azure/login@14a755a4e2fd6dff25794233def4f2cf3f866955
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Build image on ACR
+      uses: azure/CLI@61bb69d64d613b52663984bf12d6bac8fd7b3cc8
+      with:
+        azcliversion: 2.29.1
+        inlineScript: |
+          az configure --defaults acr=${{ env.AZURE_CONTAINER_REGISTRY }}
+          az acr build -t -t ${{ env.REGISTRY_URL }}/${{ env.PROJECT_NAME }}:${{ github.sha }}
+
+    - name: Gets K8s context
+      uses: azure/aks-set-context@94ccc775c1997a3fcfbfbce3c459fec87e0ab188
+      with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          resource-group: ${{ env.RESOURCE_GROUP }}
+          cluster-name: ${{ env.CLUSTER_NAME }}
+      id: login
+
+    - name: Configure deployment
+      uses: azure/k8s-bake@61041e8c2f75c1f01186c8f05fb8b24e1fc507d8
+      with:
+        renderEngine: 'helm'
+        helmChart: ${{ env.CHART_PATH }}
+        overrideFiles: ${{ env.CHART_OVERRIDE_PATH }}
+        overrides: |
+          replicas:2
+        helm-version: 'latest'
+      id: bake
+
+    - name: Deploys application
+      uses: Azure/k8s-deploy@dd4bbd13a5abd2fc9ca8bdcb8aee152bb718fa78
+      with:
+        manifests: ${{ steps.bake.outputs.manifestsBundle }}
+        images: |
+          ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.PROJECT_NAME }}:${{ github.sha }}
+        imagepullsecrets: |
+          ${{ env.PROJECT_NAME }}
+</pre></header><pre><code><span># This workflow uses actions that are not certified by GitHub.</span>
+<span># They are provided by a third-party and are governed by</span>
+<span># separate terms of service, privacy policy, and support</span>
+<span># documentation.</span>
+
+<span># GitHub recommends pinning actions to a commit SHA.</span>
+<span># To get a newer version, you will need to update the SHA.</span>
+<span># You can also reference a tag or branch, but the action may change without warning.</span>
+
+<span>name:</span> <span>Build</span> <span>and</span> <span>deploy</span> <span>to</span> <span>Azure</span> <span>Kubernetes</span> <span>Service</span>
+
+<span>env:</span>
+  <span>AZURE_CONTAINER_REGISTRY:</span> <span>MY_REGISTRY_NAME</span> <span># set this to the name of your container registry</span>
+  <span>PROJECT_NAME:</span> <span>MY_PROJECT_NAME</span>              <span># set this to your project's name</span>
+  <span>RESOURCE_GROUP:</span> <span>MY_RESOURCE_GROUP</span>          <span># set this to the resource group containing your AKS cluster</span>
+  <span>CLUSTER_NAME:</span> <span>MY_CLUSTER_NAME</span>              <span># set this to the name of your AKS cluster</span>
+  <span>REGISTRY_URL:</span> <span>MY_REGISTRY_URL</span>              <span># set this to the URL of your registry</span>
+  <span># If you bake using helm:</span>
+  <span>CHART_PATH:</span> <span>MY_HELM_FILE</span>                   <span># set this to the path to your helm file</span>
+  <span>CHART_OVERRIDE_PATH:</span> <span>MY_OVERRIDE_FILES</span>     <span># set this to an array of override file paths</span>
+
+<span>on:</span> [<span>push</span>]
+
+<span>jobs:</span>
+  <span>build:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>steps:</span>
+    <span>-</span> <span>uses:</span> <span>actions/checkout@v4</span>
+
+    <span>-</span> <span>name:</span> <span>Azure</span> <span>Login</span>
+      <span>uses:</span> <span>azure/login@14a755a4e2fd6dff25794233def4f2cf3f866955</span>
+      <span>with:</span>
+        <span>creds:</span> <span>${{</span> <span>secrets.AZURE_CREDENTIALS</span> <span>}}</span>
+
+    <span>-</span> <span>name:</span> <span>Build</span> <span>image</span> <span>on</span> <span>ACR</span>
+      <span>uses:</span> <span>azure/CLI@61bb69d64d613b52663984bf12d6bac8fd7b3cc8</span>
+      <span>with:</span>
+        <span>azcliversion:</span> <span>2.29</span><span>.1</span>
+        <span>inlineScript:</span> <span>|
+          az configure --defaults acr=${{ env.AZURE_CONTAINER_REGISTRY }}
+          az acr build -t -t ${{ env.REGISTRY_URL }}/${{ env.PROJECT_NAME }}:${{ github.sha }}
+</span>
+    <span>-</span> <span>name:</span> <span>Gets</span> <span>K8s</span> <span>context</span>
+      <span>uses:</span> <span>azure/aks-set-context@94ccc775c1997a3fcfbfbce3c459fec87e0ab188</span>
+      <span>with:</span>
+          <span>creds:</span> <span>${{</span> <span>secrets.AZURE_CREDENTIALS</span> <span>}}</span>
+          <span>resource-group:</span> <span>${{</span> <span>env.RESOURCE_GROUP</span> <span>}}</span>
+          <span>cluster-name:</span> <span>${{</span> <span>env.CLUSTER_NAME</span> <span>}}</span>
+      <span>id:</span> <span>login</span>
+
+    <span>-</span> <span>name:</span> <span>Configure</span> <span>deployment</span>
+      <span>uses:</span> <span>azure/k8s-bake@61041e8c2f75c1f01186c8f05fb8b24e1fc507d8</span>
+      <span>with:</span>
+        <span>renderEngine:</span> <span>'helm'</span>
+        <span>helmChart:</span> <span>${{</span> <span>env.CHART_PATH</span> <span>}}</span>
+        <span>overrideFiles:</span> <span>${{</span> <span>env.CHART_OVERRIDE_PATH</span> <span>}}</span>
+        <span>overrides:</span> <span>|
+          replicas:2
+</span>        <span>helm-version:</span> <span>'latest'</span>
+      <span>id:</span> <span>bake</span>
+
+    <span>-</span> <span>name:</span> <span>Deploys</span> <span>application</span>
+      <span>uses:</span> <span>Azure/k8s-deploy@dd4bbd13a5abd2fc9ca8bdcb8aee152bb718fa78</span>
+      <span>with:</span>
+        <span>manifests:</span> <span>${{</span> <span>steps.bake.outputs.manifestsBundle</span> <span>}}</span>
+        <span>images:</span> <span>|
+          ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.PROJECT_NAME }}:${{ github.sha }}
+</span>        <span>imagepullsecrets:</span> <span>|
+          ${{ env.PROJECT_NAME }}
+</span></code></pre>
+</div>
+<h2><a href="#additional-resources">Additional resources</a></h2>
+<p>The following resources may also be useful:</p>
+<ul>
+<li>For the original workflow template, see <a href="https://github.com/actions/starter-workflows/blob/main/deployments/azure-kubernetes-service.yml"><code>azure-kubernetes-service.yml</code></a> in the GitHub Actions <code>starter-workflows</code> repository.</li>
+<li>The actions used to in this workflow are the official Azure <a href="https://github.com/Azure/login"><code>Azure/login</code></a>,<a href="https://github.com/Azure/aks-set-context"><code>Azure/aks-set-context</code></a>, <a href="https://github.com/Azure/CLI"><code>Azure/CLI</code></a>, <a href="https://github.com/Azure/k8s-bake"><code>Azure/k8s-bake</code></a>, and <a href="https://github.com/Azure/k8s-deploy"><code>Azure/k8s-deploy</code></a>actions.</li>
+<li>For more examples of GitHub Action workflows that deploy to Azure, see the <a href="https://github.com/Azure/actions-workflow-samples">actions-workflow-samples</a> repository.</li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

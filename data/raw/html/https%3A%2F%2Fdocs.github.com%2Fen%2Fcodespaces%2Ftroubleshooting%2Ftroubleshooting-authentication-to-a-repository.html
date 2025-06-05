@@ -1,0 +1,63 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Troubleshooting" href="/en/codespaces/troubleshooting">Troubleshooting</a><span>/</span>
+</li>
+<li><a title="Authenticating to repositories" href="/en/codespaces/troubleshooting/troubleshooting-authentication-to-a-repository">Authenticating to repositories</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Troubleshooting authentication to a repository</h1></div></div>
+<div><div><p>Learn how to troubleshoot common authentication issues when you clone, push to, or pull from a repository in a codespace.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#authenticating-to-the-repository-you-created-the-codespace-from"><div><span>Authenticating to the repository you created the codespace from</span></div></a></li>
+<li><a href="#authenticating-to-repositories-that-you-didnt-create-the-codespace-from"><div><span>Authenticating to repositories that you didn't create the codespace from</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>When you create a codespace for a repository, you can generally use <code>git pull</code> and <code>git push</code> to pull and push changes to that repository without any additional authentication. However, occasionally you may see authentication errors when trying to run these operations.</p>
+<p>You may also get errors if you are trying to interact with a repository other than the one from which you created the codespace.</p>
+<h2><a href="#authenticating-to-the-repository-you-created-the-codespace-from">Authenticating to the repository you created the codespace from</a></h2>
+<p>If you're trying to push to or pull from the repository from which you created the codespace, but authentication is failing, you may see an error like <code>git@github.com: Permission denied (publickey)</code> or <code>Host key verification failed</code>.</p>
+<p>You may see these errors if you use a dotfiles repository with GitHub Codespaces, and you have configured Git to use a protocol other than HTTPS for transferring data to the remote repository. For example, you may have configured Git to use SSH by including lines like the following in a config file in your dotfiles.</p>
+<pre><code>[url "git@github.com:"]
+  insteadOf = https://github.com/
+</code></pre>
+<p>GitHub Codespaces uses the HTTPS protocol by default, and authenticates with a <code>GITHUB_TOKEN</code> configured with read and write access to the repository from which you created the codespace. We recommend you use the default HTTPS and <code>GITHUB_TOKEN</code> in your codespace. The permissions of the <code>GITHUB_TOKEN</code> are usually limited to just one repository, following the security principle of least privilege. SSH authentication does not have fine-grained repository permissions, so an accidental exposure of your SSH key could give someone access to all your repositories.</p>
+<p>To use the default HTTPS, remove the conflicting configuration from your dotfiles. If your dotfiles repository contains an installation script in a recognized file such as <code>install.sh</code>, you can use logic like the following to exclude the configuration in codespaces.</p>
+<pre><code>if [ -z "$CODESPACES" ]; then
+  git config --global url."git@github.com".insteadOf "https://github.com"
+fi
+</code></pre>
+<p>If you're working in a codespace created from a repository you trust, and you need to use SSH, ensure that your codespace is set up to authenticate with an SSH key that is linked to your GitHub account. For more information, see <a href="/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">Generating a new SSH key and adding it to the ssh-agent</a>.</p>
+<h2><a href="#authenticating-to-repositories-that-you-didnt-create-the-codespace-from">Authenticating to repositories that you didn't create the codespace from</a></h2>
+<p>The <code>GITHUB_TOKEN</code> in a codespace is configured with read and write access to the repository from which you created the codespace. By default, the token does not have access to other repositories. You may find you cannot clone a repository, or you cannot push to a repository you have cloned.</p>
+<p>We do not recommend manually updating the value of the <code>GITHUB_TOKEN</code> in a codespace. If your project requires access to other repositories, you can give codespaces access to these repositories by listing additional permissions in your dev container configuration. This will allow users to authorize the additional permissions when they create a codespace. However, it will not change the permissions of an existing codespace. For more information, see <a href="/en/codespaces/managing-your-codespaces/managing-repository-access-for-your-codespaces">Managing access to other repositories within your codespace</a>.</p>
+<p>If you need access to another repository in an existing codespace, or if the permissions you need are specific to you and don't apply to other contributors, you can create a personal access token with access to the repository and add the token to your codespace. We recommend you limit the token's access by using a fine-grained personal access token, selecting only the repositories to which you need access, and giving the required access to the <strong>Contents</strong> permission only. For more information, see <a href="/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token">Managing your personal access tokens</a>.</p>
+<p>You can then add the token as an environment variable in a codespace, or as a secret for GitHub Codespaces. If you create a secret, you should only allow certain trusted repositories to access the secret. When you add a new secret, you will be prompted to reload your existing codespace to pull in the new secret. For more information, see <a href="/en/codespaces/managing-your-codespaces/managing-your-account-specific-secrets-for-github-codespaces">Managing your account-specific secrets for GitHub Codespaces</a>.</p>
+<p>To use the token to authenticate in your codespace, you have the following options.</p>
+<ul>
+<li>
+<p>When you create the environment variable or secret, you can use the name <code>GH_TOKEN</code>. The <code>GH_TOKEN</code> variable is used by default in GitHub CLI operations, so you can clone the repository using the command <code>gh repo clone OWNER/REPO</code>.</p>
+<p>However, if you then try to push to the repository using <code>git push</code>, Git's credential helper will try to use the existing <code>GITHUB_TOKEN</code> to authenticate, and authentication will fail. You can override the helper, but this may introduce friction when you try to interact with the original repository from which you created the codespace.</p>
+</li>
+<li>
+<p>You can clone the repository with a URL that includes the access token. Replace <code>YOUR-VARIABLE</code> with the name of the environment variable or secret you created.</p>
+<pre><code>git clone https://USERNAME:$YOUR-VARIABLE@github.com/OWNER/REPO`
+</code></pre>
+<p>This will store the access token for the specific repository, so you will be able to push to and pull from the repository without overriding the existing credential helper.</p>
+<div>
+<p>
+If you clone in this way, the token will be visible in your Git configuration. You should only use this method when working in a codespace created from a repository you trust, and you should limit the scope of the access token as much as possible.</p>
+</div>
+</li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

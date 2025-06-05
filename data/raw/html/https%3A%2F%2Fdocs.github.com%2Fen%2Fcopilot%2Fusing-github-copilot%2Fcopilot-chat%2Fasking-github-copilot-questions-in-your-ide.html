@@ -1,0 +1,683 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Use GitHub Copilot" href="/en/copilot/using-github-copilot">Use GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Copilot Chat" href="/en/copilot/using-github-copilot/copilot-chat">Copilot Chat</a><span>/</span>
+</li>
+<li><a title="Chat in IDE" href="/en/copilot/using-github-copilot/copilot-chat/asking-github-copilot-questions-in-your-ide">Chat in IDE</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Asking GitHub Copilot questions in your IDE</h1></div></div>
+<div>
+<div><p>Use Copilot Chat in your editor to give you code suggestions, explain code, generate unit tests, and suggest code fixes.</p></div>
+<div>
+<h2>Tool navigation</h2>
+<nav><ul>
+<li><a href="?tool=eclipse"><span>Eclipse</span></a></li>
+<li><a href="?tool=jetbrains"><span>JetBrains IDEs</span></a></li>
+<li><a href="?tool=visualstudio"><span>Visual Studio</span></a></li>
+<li><a href="?tool=vscode"><span>Visual Studio Code</span></a></li>
+<li><a href="?tool=xcode"><span>Xcode</span></a></li>
+</ul></nav>
+</div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#submitting-prompts"><div><span>Submitting prompts</span></div></a></li>
+<li><a href="#using-keywords-in-your-prompt"><div><span>Using keywords in your prompt</span></div></a></li>
+<li><a href="#using-github-skills-for-copilot"><div><span>Using GitHub skills for Copilot</span></div></a></li>
+<li><a href="#ai-models-for-copilot-chat"><div><span>AI models for Copilot Chat</span></div></a></li>
+<li><a href="#additional-ways-to-access-copilot-chat"><div><span>Additional ways to access Copilot Chat</span></div></a></li>
+<li><a href="#copilot-edits"><div><span>Copilot Edits</span></div></a></li>
+<li><a href="#using-images-in-copilot-chat"><div><span>Using images in Copilot Chat</span></div></a></li>
+<li><a href="#sharing-feedback"><div><span>Sharing feedback</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+<li><a href="#prerequisites-1"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#submitting-prompts-1"><div><span>Submitting prompts</span></div></a></li>
+<li><a href="#using-keywords-in-your-prompt-1"><div><span>Using keywords in your prompt</span></div></a></li>
+<li><a href="#using-github-skills-for-copilot-preview"><div><span>Using GitHub skills for Copilot (preview)</span></div></a></li>
+<li><a href="#ai-models-for-copilot-chat-1"><div><span>AI models for Copilot Chat</span></div></a></li>
+<li><a href="#additional-ways-to-access-copilot-chat-1"><div><span>Additional ways to access Copilot Chat</span></div></a></li>
+<li><a href="#copilot-edits-1"><div><span>Copilot Edits</span></div></a></li>
+<li><a href="#using-images-in-copilot-chat-1"><div><span>Using images in Copilot Chat</span></div></a></li>
+<li><a href="#sharing-feedback-1"><div><span>Sharing feedback</span></div></a></li>
+<li><a href="#further-reading-1"><div><span>Further reading</span></div></a></li>
+<li><a href="#prerequisites-2"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#submitting-prompts-2"><div><span>Submitting prompts</span></div></a></li>
+<li><a href="#using-keywords-in-your-prompt-2"><div><span>Using keywords in your prompt</span></div></a></li>
+<li><a href="#using-github-skills-for-copilot-1"><div><span>Using GitHub skills for Copilot</span></div></a></li>
+<li><a href="#ai-models-for-copilot-chat-2"><div><span>AI models for Copilot Chat</span></div></a></li>
+<li><a href="#additional-ways-to-access-copilot-chat-2"><div><span>Additional ways to access Copilot Chat</span></div></a></li>
+<li><a href="#copilot-edits-2"><div><span>Copilot Edits</span></div></a></li>
+<li><a href="#sharing-feedback-2"><div><span>Sharing feedback</span></div></a></li>
+<li><a href="#further-reading-2"><div><span>Further reading</span></div></a></li>
+<li><a href="#prerequisites-3"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#submitting-prompts-3"><div><span>Submitting prompts</span></div></a></li>
+<li><a href="#ai-models-for-copilot-chat-3"><div><span>AI models for Copilot Chat</span></div></a></li>
+<li><a href="#using-keywords-in-your-prompt-3"><div><span>Using keywords in your prompt</span></div></a></li>
+<li><a href="#copilot-agent-mode"><div><span>Copilot agent mode</span></div></a></li>
+<li><a href="#file-references-1"><div><span>File references</span></div></a></li>
+<li><a href="#chat-management"><div><span>Chat management</span></div></a></li>
+<li><a href="#sharing-feedback-3"><div><span>Sharing feedback</span></div></a></li>
+<li><a href="#further-reading-3"><div><span>Further reading</span></div></a></li>
+<li><a href="#prerequisites-4"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#submitting-prompts-4"><div><span>Submitting prompts</span></div></a></li>
+<li><a href="#using-keywords-in-your-prompt-4"><div><span>Using keywords in your prompt</span></div></a></li>
+<li><a href="#ai-models-for-copilot-chat-4"><div><span>AI models for Copilot Chat</span></div></a></li>
+<li><a href="#copilot-agent-mode-1"><div><span>Copilot agent mode</span></div></a></li>
+<li><a href="#further-reading-4"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<ul>
+<li>
+<strong>Access to GitHub Copilot</strong>. See <a href="/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot">What is GitHub Copilot?</a>.</li>
+<li>
+<strong>Latest version of Visual Studio Code</strong>. See the <a href="https://code.visualstudio.com/Download">Visual Studio Code download page</a>.</li>
+<li>
+<strong>Sign in to GitHub in Visual Studio Code</strong>. If you experience authentication issues, see <a href="/en/copilot/troubleshooting-github-copilot/troubleshooting-issues-with-github-copilot-chat#troubleshooting-authentication-issues-in-your-editor">Troubleshooting issues with GitHub Copilot Chat</a>.</li>
+</ul>
+<p>If you have access to GitHub Copilot via your organization, you won't be able to use GitHub Copilot Chat if your organization owner has disabled chat. See <a href="/en/copilot/managing-github-copilot-in-your-organization/managing-policies-and-features-for-copilot-in-your-organization">Managing policies for Copilot in your organization</a>.</p>
+<h2><a href="#submitting-prompts">Submitting prompts</a></h2>
+<p>You can ask Copilot Chat to give you code suggestions, explain code, generate unit tests, and suggest code fixes.</p>
+<ol>
+<li>
+<p>To open the chat view, click the <strong>Command Center</strong> is selected.</p>
+<div><picture><source><img src="/assets/cb-72745/images/help/copilot/vsc-copilot-chat-icon.png" alt="Screenshot of the 'Copilot Chat' button, highlighted with a dark orange outline."></source></picture></div>
+</li>
+<li>
+<p>Enter a prompt in the prompt box, or click one of the suggested prompts. For an introduction to the kinds of prompts you can use, see <a href="/en/copilot/using-github-copilot/guides-on-using-github-copilot/getting-started-with-prompts-for-copilot-chat">Getting started with prompts for Copilot Chat</a>.</p>
+</li>
+<li>
+<p>Evaluate Copilot's response, and make a follow-up request if needed.</p>
+<p>The response may contain text, code blocks, buttons, images, URIs, and file trees. The response often includes interactive elements. For example, the response may include a menu to insert a code block, or a button to invoke a Visual Studio Code command.</p>
+<p>To see the files that Copilot Chat used to generate the response, select the <strong>Used <em>n</em> references</strong> dropdown at the top of the response. The references may include a link to a custom instructions file for your repository. This file contains additional information that is automatically added to all of your chat questions to improve the quality of the responses. For more information, see <a href="/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot">Adding repository custom instructions for GitHub Copilot</a>.</p>
+</li>
+</ol>
+<h2><a href="#using-keywords-in-your-prompt">Using keywords in your prompt</a></h2>
+<p>You can use special keywords to help Copilot understand your prompt. For examples, see <a href="/en/copilot/using-github-copilot/guides-on-using-github-copilot/getting-started-with-prompts-for-copilot-chat">Getting started with prompts for Copilot Chat</a>.</p>
+<h3><a href="#chat-participants">Chat participants</a></h3>
+<p>Chat participants are like domain experts who have a specialty that they can help you with.</p>
+<p>Copilot Chat can infer relevant chat participants based on your natural language prompt, improving discovery of advanced capabilities without you having to explicitly specify the participant you want to use in your prompt.</p>
+<div>
+<p> Automatic inference for chat participants is currently in public preview and is subject to change.</p>
+</div>
+<p>Alternatively, you can manually specify a chat participant to scope your prompt to a specific domain. To do this, type <code>@</code> in the chat prompt box, followed by a chat participant name.</p>
+<p>For a list of available chat participants, type <code>@</code> in the chat prompt box. See also <a href="/en/copilot/using-github-copilot/github-copilot-chat-cheat-sheet?tool=vscode#chat-participants">GitHub Copilot Chat cheat sheet</a> or <a href="https://code.visualstudio.com/docs/copilot/copilot-chat#_chat-participants">Chat participants</a> in the Visual Studio Code documentation.</p>
+<h3><a href="#copilot-extensions-chat-participants">Copilot Extensions chat participants</a></h3>
+<p>You can also install Copilot Extensions that provide chat participants. You can install these extensions from <a href="https://github.com/marketplace?type=apps&amp;copilot_app=true">GitHub Marketplace</a> and from <a href="https://marketplace.visualstudio.com/search?target=VSCode&amp;category=Chat&amp;sortBy=Installs">Visual Studio Code Marketplace</a>. For information about extensions from GitHub Marketplace that provide chat participants, see <a href="/en/copilot/github-copilot-chat/github-copilot-extensions/about-github-copilot-extensions">Using extensions to integrate external tools with Copilot Chat</a>.</p>
+<h3><a href="#slash-commands">Slash commands</a></h3>
+<p>Use slash commands to avoid writing complex prompts for common scenarios. To use a slash command, type <code>/</code> in the chat prompt box, followed by a command.</p>
+<p>To see all available slash commands, type <code>/</code> in the chat prompt box. See also <a href="/en/copilot/using-github-copilot/github-copilot-chat-cheat-sheet?tool=vscode#slash-commands">GitHub Copilot Chat cheat sheet</a> or <a href="https://code.visualstudio.com/docs/copilot/copilot-chat#_slash-commands">Slash commands</a> in the Visual Studio Code documentation.</p>
+<h3><a href="#chat-variables">Chat variables</a></h3>
+<p>Use chat variables to include specific context in your prompt. To use a chat variable, type <code>#</code> in the chat prompt box, followed by a chat variable.</p>
+<p>To see all available chat variables, type <code>#</code> in the chat prompt box. See also <a href="/en/copilot/using-github-copilot/github-copilot-chat-cheat-sheet?tool=vscode#chat-variables">GitHub Copilot Chat cheat sheet</a> or <a href="https://code.visualstudio.com/docs/copilot/copilot-chat#_chat-variables">Chat variables</a> in the Visual Studio Code documentation.</p>
+<h2><a href="#using-github-skills-for-copilot">Using GitHub skills for Copilot</a></h2>
+<p>Copilot's GitHub-specific skills expand the type of information Copilot can provide. To access these skills in Copilot Chat, include <code>@github</code> in your question.</p>
+<p>When you add <code>@github</code> to a question, Copilot dynamically selects an appropriate skill, based on the content of your question. You can also explicitly ask Copilot Chat to use a particular skill. You can do this in two ways:</p>
+<ul>
+<li>Use natural language to ask Copilot Chat to use a skill. For example, <code>@github Search the web to find the latest GPT model from OpenAI.</code>
+</li>
+<li>To specifically invoke a web search you can include the <code>#web</code> variable in your question. For example, <code>@github #web What is the latest LTS of Node.js?</code>
+</li>
+</ul>
+<p>You can generate a list of currently available skills by asking Copilot: <code>@github What skills are available?</code></p>
+<h2><a href="#ai-models-for-copilot-chat">AI models for Copilot Chat</a></h2>
+<p>You can change the large language model that Copilot uses to generate responses to chat prompts, including premium models with advanced capabilities. You may find that different models perform better, or provide more useful responses, depending on the type of questions you ask. For more information see <a href="/en/copilot/using-github-copilot/ai-models/changing-the-ai-model-for-copilot-chat">Changing the AI model for Copilot Chat</a>.</p>
+<h2><a href="#additional-ways-to-access-copilot-chat">Additional ways to access Copilot Chat</a></h2>
+<p>In addition to submitting prompts through the chat view, you can submit prompts in other ways:</p>
+<ul>
+<li>
+<strong>Quick chat:</strong> To open the quick chat dropdown, enter <kbd>⇧</kbd>+<kbd>⌥</kbd>+<kbd>⌘</kbd>+<kbd>L</kbd> (Mac) / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>L</kbd> (Windows/Linux).</li>
+<li>
+<strong>Inline:</strong> To start an inline chat directly in the editor or integrated terminal, enter <kbd>Command</kbd>+<kbd>i</kbd> (Mac) / <kbd>Ctrl</kbd>+<kbd>i</kbd> (Windows/Linux).</li>
+<li>
+<strong>Smart actions:</strong> To submit prompts via the context menu, right click in your editor, select <strong>Copilot</strong> in the menu that appears, then select one of the actions. Smart actions can also be accessed via the sparkle icon that sometimes appears when you select a line of code.</li>
+</ul>
+<p>See <a href="https://code.visualstudio.com/docs/copilot/copilot-chat#_inline-chat">inline chat</a>, <a href="https://code.visualstudio.com/docs/copilot/copilot-chat#_quick-chat">quick chat</a>, and <a href="https://code.visualstudio.com/docs/copilot/copilot-chat#_chat-smart-actions">chat smart actions</a> in the Visual Studio Code documentation for more details.</p>
+<h2><a href="#copilot-edits">Copilot Edits</a></h2>
+<p>Use Copilot Edits to make changes across multiple files directly from a single Copilot Chat prompt. Copilot Edits has the following modes:</p>
+<ul>
+<li>
+<a href="#edit-mode">Edit mode</a> lets Copilot make controlled edits to multiple files.</li>
+<li>
+<a href="#agent-mode">Agent mode</a> lets Copilot autonomously accomplish a set task.</li>
+</ul>
+<h3><a href="#edit-mode">Edit mode</a></h3>
+<p>Use edit mode when you want more granular control over the edits that Copilot proposes. In edit mode, you choose which files Copilot can make changes to, provide context to Copilot with each iteration, and decide whether or not to accept the suggested edits after each turn.</p>
+<p>Edit mode is best suited to use cases where:</p>
+<ul>
+<li>You want to make a quick, specific update to a defined set of files.</li>
+<li>You want full control over the number of LLM requests Copilot uses.</li>
+</ul>
+<h4><a href="#using-edit-mode">Using edit mode</a></h4>
+<ol>
+<li>
+<p>To start an edit session, select <strong>Open Chat</strong> from the Copilot Chat menu.</p>
+</li>
+<li>
+<p>At the bottom of the chat panel, select <strong>Edit</strong> from the mode dropdown.</p>
+<div><picture><source><img src="/assets/cb-44012/images/help/copilot/chat-mode-vscode.png" alt='Screenshot of the Copilot Chat mode dropdown. The "Edit" option is outlined in dark orange.' width="400" height="200"></source></picture></div>
+</li>
+<li>
+<p>Optionally, add relevant files to the <em>working set</em> to indicate to GitHub Copilot which files you want to work on.</p>
+</li>
+<li>
+<p>Submit a prompt. In response to your prompt, Copilot Edits determines which files in your <em>working set</em> to change and adds a short description of the change.</p>
+</li>
+<li>
+<p>Review the changes and <strong>Apply</strong> or <strong>Discard</strong> the edits for each file.</p>
+</li>
+</ol>
+<p>For more detailed instructions, see <a href="https://code.visualstudio.com/docs/copilot/copilot-edits">Copilot Edits</a> in the Visual Studio Code documentation.</p>
+<h3><a href="#agent-mode">Agent mode</a></h3>
+<p>Use agent mode when you have a specific task in mind and want to enable Copilot to autonomously edit your code. In agent mode, Copilot determines which files to make changes to, offers code changes and terminal commands to complete the task, and iterates to remediate issues until the original task is complete.</p>
+<p>Agent mode is best suited to use cases where:</p>
+<ul>
+<li>Your task is complex, and involves multiple steps, iterations, and error handling.</li>
+<li>You want Copilot to determine the necessary steps to take to complete the task.</li>
+<li>The task requires Copilot to integrate with external applications, such as an MCP server.</li>
+</ul>
+<h4><a href="#using-agent-mode">Using agent mode</a></h4>
+<ol>
+<li>To start an edit session, select <strong>Open Chat</strong> from the Copilot Chat menu.</li>
+<li>At the bottom of the chat panel, select <strong>Agent</strong> from the mode dropdown.</li>
+<li>Submit a prompt. In response to your prompt, Copilot streams the edits in the editor, updates the working set, and if necessary, suggests terminal commands to run.</li>
+<li>Review the changes. If Copilot suggested terminal commands, confirm whether or not Copilot can run them. In response, Copilot iterates and performs additional actions to complete the task in your original prompt.</li>
+</ol>
+<p>You can also directly <a href="vscode://GitHub.Copilot-Chat/chat?mode=agent">open agent mode in VS Code</a>. </p>
+<p>For more information, see <a href="https://aka.ms/vscode-copilot-agent">Copilot Edits</a> in the Visual Studio Code documentation.</p>
+<p>When you use Copilot agent mode, Copilot may make multiple premium requests to complete a single task. This includes both user-initiated prompts and follow-up actions Copilot takes on your behalf. The total premium requests used will depend on the complexity of the task, the number of steps involved, and the model selected. See <a href="/en/copilot/managing-copilot/managing-copilot-as-an-individual-subscriber/monitoring-usage-and-entitlements/avoiding-unexpected-copilot-costs">About premium requests</a>.</p>
+<h2><a href="#using-images-in-copilot-chat">Using images in Copilot Chat</a></h2>
+<div>
+<ul>
+<li>Attaching images to chat prompts is currently in public preview and is subject to change.</li>
+<li>If you're using a Copilot Business plan, the organization that provides your plan must enable the <strong>Editor preview features</strong> setting. See <a href="/en/enterprise-cloud@latest/copilot/managing-copilot/managing-github-copilot-in-your-organization/managing-policies-for-copilot-in-your-organization#enabling-copilot-features-in-your-organization">Managing policies for Copilot in your organization</a>.</li>
+</ul>
+</div>
+<p>You can attach images to your chat prompts and then ask Copilot about the images. For example, you can attach:</p>
+<ul>
+<li>A screenshot of a code snippet and ask Copilot to explain the code.</li>
+<li>A mockup of the user interface for an application and ask Copilot to generate the code.</li>
+<li>A flowchart and ask Copilot to describe the processes shown in the image.</li>
+<li>A screenshot of a web page and ask Copilot to generate HTML for a similar page.</li>
+</ul>
+<div>
+<p>
+The following types of image file are supported: JPEG (<code>.jpg</code>, <code>.jpeg</code>), PNG (<code>.png</code>), GIF (<code>.gif</code>), or WEBP (<code>.webp</code>).</p>
+</div>
+<h3><a href="#attaching-images-to-your-chat-prompt">Attaching images to your chat prompt</a></h3>
+<ol>
+<li>
+<p>If you see the AI model picker at the bottom right of the chat view, select one of the models that supports adding images to prompts:</p>
+<ul>
+<li>GPT-4.1 (the default that's used if you don't see a model picker)</li>
+<li>GPT-4o</li>
+<li>Claude 3.5 Sonnet</li>
+<li>Claude 3.7 Sonnet</li>
+<li>Gemini 2.0 Flash</li>
+<li>Gemini 2.5 Pro</li>
+</ul>
+<div><picture><source><img src="/assets/cb-4047/images/help/copilot/vsc-chat-model-picker.png" alt="Screenshot of Copilot Chat with the model picker highlighted with a dark orange outline." width="498" height="88"></source></picture></div>
+</li>
+<li>
+<p>Do one of the following:</p>
+<ul>
+<li>Copy an image and paste it into the chat view.</li>
+<li>Drag and drop one or more image file from your operating system's file explorer—or from the Explorer in VS Code—into the chat view.</li>
+<li>Right-click an image file in the VS Code Explorer and click <strong>Copilot</strong> then <strong>Add File to Chat</strong>.</li>
+</ul>
+</li>
+<li>
+<p>Type your prompt into the chat view to accompany the image. For example, <code>explain this diagram</code>, <code>describe each of these images in detail</code>, <code>what does this error message mean</code>.</p>
+</li>
+</ol>
+<h2><a href="#sharing-feedback">Sharing feedback</a></h2>
+<p>To indicate whether a response was helpful, use the thumbs up and thumbs down icons that appear next to the response.</p>
+<p>To leave feedback about the GitHub Copilot Chat extension, open an issue in the <a href="https://github.com/microsoft/vscode-copilot-release/issues">microsoft/vscode-copilot-release</a> repository.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/copilot/using-github-copilot/prompt-engineering-for-github-copilot">Prompt engineering for Copilot Chat</a></li>
+<li>
+<a href="https://code.visualstudio.com/docs/copilot/copilot-chat">Using Copilot Chat in VS Code</a> and <a href="https://code.visualstudio.com/docs/copilot/getting-started-chat">Getting started with GitHub Copilot Chat in VS Code</a> in the Visual Studio Code documentation</li>
+<li><a href="/en/copilot/github-copilot-enterprise/copilot-chat-in-github/using-github-copilot-chat-in-githubcom">Asking GitHub Copilot questions in GitHub</a></li>
+<li><a href="/en/copilot/github-copilot-chat/about-github-copilot-chat">Responsible use of GitHub Copilot Chat in your IDE</a></li>
+<li><a href="/en/site-policy/github-terms/github-terms-for-additional-products-and-features#github-copilot">GitHub Terms for Additional Products and Features</a></li>
+<li><a href="https://copilot.github.trust.page">GitHub Copilot Trust Center</a></li>
+<li><a href="https://github.com/features/copilot#faq">GitHub Copilot FAQ</a></li>
+</ul>
+</div>
+<div>
+<h2><a href="#prerequisites-1">Prerequisites</a></h2>
+<ul>
+<li>
+<p><strong>Access to GitHub Copilot</strong>. See <a href="/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot">What is GitHub Copilot?</a>.</p>
+</li>
+<li>
+<p><strong>Visual Studio 2022 version 17.8 or later</strong>. See <a href="https://learn.microsoft.com/visualstudio/install/install-visual-studio">Install Visual Studio</a> in the Visual Studio documentation.</p>
+</li>
+<li>
+<p><em>For Visual Studio 17.8 and 17.9:</em></p>
+<ul>
+<li>
+<strong>GitHub Copilot extension</strong>. See <a href="https://learn.microsoft.com/visualstudio/ide/visual-studio-github-copilot-install-and-states">Install GitHub Copilot in Visual Studio</a> in the Visual Studio documentation.</li>
+<li>
+<strong>GitHub Copilot Chat extension</strong>. See <a href="https://learn.microsoft.com/visualstudio/ide/visual-studio-github-copilot-install-and-states">Install GitHub Copilot in Visual Studio</a> in the Visual Studio documentation.</li>
+</ul>
+<p><em>Visual Studio 17.10 and later have the GitHub Copilot and GitHub Copilot Chat extensions built in. You don't need to install them separately.</em></p>
+</li>
+<li>
+<p><strong>Sign in to GitHub in Visual Studio</strong>. If you experience authentication issues, see <a href="/en/copilot/troubleshooting-github-copilot/troubleshooting-issues-with-github-copilot-chat#troubleshooting-authentication-issues-in-your-editor">Troubleshooting issues with GitHub Copilot Chat</a>.</p>
+</li>
+</ul>
+<p>If you have access to GitHub Copilot via your organization, you won't be able to use GitHub Copilot Chat if your organization owner has disabled chat. See <a href="/en/copilot/managing-github-copilot-in-your-organization/managing-policies-and-features-for-copilot-in-your-organization">Managing policies for Copilot in your organization</a>.</p>
+<h2><a href="#submitting-prompts-1">Submitting prompts</a></h2>
+<p>You can ask Copilot Chat to give you code suggestions, explain code, generate unit tests, and suggest code fixes.</p>
+<ol>
+<li>
+<p>In the Visual Studio menu bar, click <strong>View</strong>, then click <strong>GitHub Copilot Chat</strong>.</p>
+</li>
+<li>
+<p>In the Copilot Chat window, enter a prompt, then press <strong>Enter</strong>. For example prompts, see <a href="/en/copilot/using-github-copilot/guides-on-using-github-copilot/getting-started-with-prompts-for-copilot-chat">Getting started with prompts for Copilot Chat</a>.</p>
+</li>
+<li>
+<p>Evaluate Copilot's response, and submit a follow up prompt if needed.</p>
+<p>The response often includes interactive elements. For example, the response may include buttons to copy, insert, or preview the result of a code block.</p>
+<p>To see the files that Copilot Chat used to generate the response, click the <strong>References</strong> link below the response. The references may include a link to a custom instructions file for your repository. This file contains additional information that is automatically added to all of your chat questions to improve the quality of the responses. For more information, see <a href="/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot">Adding repository custom instructions for GitHub Copilot</a>.</p>
+</li>
+</ol>
+<h2><a href="#using-keywords-in-your-prompt-1">Using keywords in your prompt</a></h2>
+<p>You can use special keywords to help Copilot understand your prompt.</p>
+<h3><a href="#extending-copilot-chat">Extending Copilot Chat</a></h3>
+<p>GitHub Copilot Extensions integrate the power of external tools into Copilot Chat, helping you reduce context switching and receive responses with domain-specific context. You can install Copilot Extensions from the GitHub Marketplace or build private ones within your organization, then type <code>@</code> in a chat window to see a list of your available extensions. To use an extension, select the extension from the list or type the full slug name, then type your prompt.</p>
+<p>To learn more, see <a href="/en/copilot/using-github-copilot/using-extensions-to-integrate-external-tools-with-copilot-chat">Using extensions to integrate external tools with Copilot Chat</a>.</p>
+<h3><a href="#slash-commands-1">Slash commands</a></h3>
+<p>Use slash commands to avoid writing complex prompts for common scenarios. To use a slash command, type <code>/</code> in the chat prompt box, followed by a command.</p>
+<p>To see all available slash commands, type <code>/</code> in the chat prompt box. See also <a href="/en/copilot/using-github-copilot/github-copilot-chat-cheat-sheet?tool=vscode#slash-commands">GitHub Copilot Chat cheat sheet</a> or <a href="https://learn.microsoft.com/visualstudio/ide/copilot-chat-context#slash-commands">Slash commands</a> in the Visual Studio documentation.</p>
+<h3><a href="#references">References</a></h3>
+<p>By default, Copilot Chat will reference the file that you have open or the code that you have selected. You can also use <code>#</code> followed by a file name, file name and line numbers, or <code>solution</code> to reference a specific file, lines, or solution.</p>
+<p>See also <a href="/en/copilot/using-github-copilot/github-copilot-chat-cheat-sheet?tool=visualstudio#references">GitHub Copilot Chat cheat sheet</a> or <a href="https://learn.microsoft.com/visualstudio/ide/copilot-chat-context#reference">Reference</a> in the Visual Studio documentation.</p>
+<h2><a href="#using-github-skills-for-copilot-preview">Using GitHub skills for Copilot (preview)</a></h2>
+<div>
+<p>
+The <code>@github</code> chat participant is currently in preview, and only available in <a href="https://visualstudio.microsoft.com/vs/preview/">Visual Studio 2022 Preview 2</a> onwards.</p>
+</div>
+<p>Copilot's GitHub-specific skills expand the type of information Copilot can provide. To access these skills in Copilot Chat in Visual Studio, include <code>@github</code> in your question.</p>
+<p>When you add <code>@github</code> to a question, Copilot dynamically selects an appropriate skill, based on the content of your question. You can also explicitly ask Copilot Chat to use a particular skill. For example, <code>@github Search the web to find the latest GPT4 model from OpenAI.</code></p>
+<p>You can generate a list of currently available skills by asking Copilot: <code>@github What skills are available?</code></p>
+<h2><a href="#ai-models-for-copilot-chat-1">AI models for Copilot Chat</a></h2>
+<p>You can change the large language model that Copilot uses to generate responses to chat prompts, including premium models with advanced capabilities. You may find that different models perform better, or provide more useful responses, depending on the type of questions you ask. For more information see <a href="/en/copilot/using-github-copilot/ai-models/changing-the-ai-model-for-copilot-chat">Changing the AI model for Copilot Chat</a>.</p>
+<h2><a href="#additional-ways-to-access-copilot-chat-1">Additional ways to access Copilot Chat</a></h2>
+<p>In addition to submitting prompts through the chat window, you can submit prompts inline. To start an inline chat, right click in your editor window and select <strong>Ask Copilot</strong>.</p>
+<p>See <a href="https://learn.microsoft.com/visualstudio/ide/visual-studio-github-copilot-chat#ask-questions-in-the-inline-chat-view">Ask questions in the inline chat view</a> in the Visual Studio documentation for more details.</p>
+<h2><a href="#copilot-edits-1">Copilot Edits</a></h2>
+<div>
+<ul>
+<li>This feature is currently in public preview and subject to change.</li>
+<li>Available in Visual Studio 17.14 and later.</li>
+</ul>
+</div>
+<p>Copilot Edits lets you make changes across multiple files from a single Copilot Chat prompt</p>
+<p>Use agent mode when you have a specific task in mind and want to enable Copilot to autonomously edit your code. In agent mode, Copilot determines which files to make changes to, offers code changes and terminal commands to complete the task, and iterates to remediate issues until the original task is complete.</p>
+<h3><a href="#using-agent-mode-1">Using agent mode</a></h3>
+<ol>
+<li>In the Visual Studio menu bar, click <strong>View</strong>, then click <strong>GitHub Copilot Chat</strong>.</li>
+<li>At the bottom of the chat panel, select <strong>Agent</strong> from the mode dropdown.</li>
+<li>Submit a prompt. In response to your prompt, Copilot streams the edits in the editor, updates the working set, and if necessary, suggests terminal commands to run.</li>
+<li>Review the changes. If Copilot suggested terminal commands, confirm whether or not Copilot can run them. In response, Copilot iterates and performs additional actions to complete the task in your original prompt.</li>
+</ol>
+<p>When you use agent mode, Copilot may make multiple premium requests to complete a single task. This includes both user-initiated prompts and follow-up actions Copilot takes on your behalf. The total premium requests used will depend on the complexity of the task, the number of steps involved, and the model selected. See <a href="/en/copilot/managing-copilot/managing-copilot-as-an-individual-subscriber/monitoring-usage-and-entitlements/avoiding-unexpected-copilot-costs">About premium requests</a>.</p>
+<h2><a href="#using-images-in-copilot-chat-1">Using images in Copilot Chat</a></h2>
+<div>
+<ul>
+<li>Attaching images to chat prompts is currently in public preview and is subject to change.</li>
+<li>If you're using a Copilot Business plan, the organization that provides your plan must enable the <strong>Editor preview features</strong> setting. See <a href="/en/enterprise-cloud@latest/copilot/managing-copilot/managing-github-copilot-in-your-organization/managing-policies-for-copilot-in-your-organization#enabling-copilot-features-in-your-organization">Managing policies for Copilot in your organization</a>.</li>
+</ul>
+</div>
+<p>You can attach images to your chat prompts and then ask Copilot about the images. For example, you can attach:</p>
+<ul>
+<li>A screenshot of a code snippet and ask Copilot to explain the code.</li>
+<li>A mockup of the user interface for an application and ask Copilot to generate the code.</li>
+<li>A flowchart and ask Copilot to describe the processes shown in the image.</li>
+<li>A screenshot of a web page and ask Copilot to generate HTML for a similar page.</li>
+</ul>
+<div>
+<p>
+The following types of image file are supported: JPEG (<code>.jpg</code>, <code>.jpeg</code>), PNG (<code>.png</code>), GIF (<code>.gif</code>), or WEBP (<code>.webp</code>).</p>
+</div>
+<h3><a href="#attaching-images-to-your-chat-prompt-1">Attaching images to your chat prompt</a></h3>
+<ol>
+<li>
+<p>If you see the AI model picker at the bottom right of the chat view, select one of the models that supports adding images to prompts:</p>
+<ul>
+<li>GPT-4.1 (the default that's used if you don't see a model picker)</li>
+<li>GPT-4o</li>
+<li>Claude 3.5 Sonnet</li>
+<li>Claude 3.7 Sonnet</li>
+<li>Gemini 2.0 Flash</li>
+<li>Gemini 2.5 Pro</li>
+</ul>
+</li>
+<li>
+<p>Do one of the following:</p>
+<ul>
+<li>Copy an image and paste it into the chat view.</li>
+<li>Click the paperclip icon at the bottom right of the chat view, click <strong>Upload Image</strong>, browse to the image file you want to attach, select it and click <strong>Open</strong>.</li>
+</ul>
+<p>You can add multiple images if required.</p>
+</li>
+<li>
+<p>Type your prompt into the chat view to accompany the image. For example, <code>explain this image</code>, or <code>describe each of these images in detail</code>.</p>
+</li>
+</ol>
+<h2><a href="#sharing-feedback-1">Sharing feedback</a></h2>
+<p>To share feedback about Copilot Chat, you can use the <strong>Send feedback</strong> button in Visual Studio. For more information on providing feedback for Visual Studio, see the <a href="https://learn.microsoft.com/en-us/visualstudio/ide/how-to-report-a-problem-with-visual-studio?view=vs-2022">Visual Studio Feedback</a> documentation.</p>
+<ol>
+<li>
+<p>In the top right corner of the Visual Studio window, click the <strong>Send feedback</strong> button.</p>
+<div><picture><source><img src="/assets/cb-76215/images/help/copilot/vs-share-feedback-button.png" alt="Screenshot of the share feedback button in Visual Studio."></source></picture></div>
+</li>
+<li>
+<p>Choose the option that best describes your feedback.</p>
+<ul>
+<li>To report a bug, click <strong>Report a problem</strong>.</li>
+<li>To request a feature, click <strong>Suggest a feature</strong>.</li>
+</ul>
+</li>
+</ol>
+<h2><a href="#further-reading-1">Further reading</a></h2>
+<ul>
+<li><a href="/en/copilot/using-github-copilot/prompt-engineering-for-github-copilot">Prompt engineering for Copilot Chat</a></li>
+<li><a href="https://learn.microsoft.com/visualstudio/ide/visual-studio-github-copilot-chat?view=vs-2022#use-copilot-chat-in-visual-studio">Using GitHub Copilot Chat in Visual Studio in the Microsoft Learn documentation</a></li>
+<li><a href="https://learn.microsoft.com/en-us/visualstudio/ide/copilot-chat-context?view=vs-2022">Tips to improve GitHub Copilot Chat results in the Microsoft Learn documentation</a></li>
+<li><a href="/en/copilot/github-copilot-enterprise/copilot-chat-in-github/using-github-copilot-chat-in-githubcom">Asking GitHub Copilot questions in GitHub</a></li>
+<li><a href="/en/copilot/github-copilot-chat/about-github-copilot-chat">Responsible use of GitHub Copilot Chat in your IDE</a></li>
+<li><a href="/en/site-policy/github-terms/github-terms-for-additional-products-and-features#github-copilot">GitHub Terms for Additional Products and Features</a></li>
+<li><a href="https://copilot.github.trust.page">GitHub Copilot Trust Center</a></li>
+<li><a href="https://github.com/features/copilot#faq">GitHub Copilot FAQ</a></li>
+</ul>
+</div>
+<div>
+<h2><a href="#prerequisites-2">Prerequisites</a></h2>
+<ul>
+<li>
+<p><strong>Access to GitHub Copilot</strong>. See <a href="/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot">What is GitHub Copilot?</a>.</p>
+</li>
+<li>
+<p><strong>A compatible JetBrains IDE</strong>. GitHub Copilot is compatible with the following IDEs:</p>
+<ul>
+<li>IntelliJ IDEA (Ultimate, Community, Educational)</li>
+<li>Android Studio</li>
+<li>AppCode</li>
+<li>CLion</li>
+<li>Code With Me Guest</li>
+<li>DataGrip</li>
+<li>DataSpell</li>
+<li>GoLand</li>
+<li>JetBrains Client</li>
+<li>MPS</li>
+<li>PhpStorm</li>
+<li>PyCharm (Professional, Community, Educational)</li>
+<li>Rider</li>
+<li>RubyMine</li>
+<li>RustRover</li>
+<li>WebStorm</li>
+<li>Writerside</li>
+</ul>
+<p>See the <a href="https://www.jetbrains.com/products/">JetBrains IDEs</a> tool finder to download.</p>
+</li>
+<li>
+<p><strong>GitHub Copilot plugin</strong>. See the <a href="https://plugins.jetbrains.com/plugin/17718-github-copilot">GitHub Copilot plugin</a> in the JetBrains Marketplace. For installation instructions, see <a href="/en/copilot/configuring-github-copilot/installing-the-github-copilot-extension-in-your-environment">Installing the GitHub Copilot extension in your environment</a>.</p>
+</li>
+<li>
+<p><strong>Log in to GitHub in your JetBrains IDE</strong>. For authentication instructions, see <a href="/en/copilot/configuring-github-copilot/installing-the-github-copilot-extension-in-your-environment?tool=jetbrains#installing-the-github-copilot-plugin-in-your-jetbrains-ide">Installing the GitHub Copilot extension in your environment</a>.</p>
+</li>
+</ul>
+<p>If you have access to GitHub Copilot via your organization, you won't be able to use GitHub Copilot Chat if your organization owner has disabled chat. See <a href="/en/copilot/managing-github-copilot-in-your-organization/managing-policies-and-features-for-copilot-in-your-organization">Managing policies for Copilot in your organization</a>.</p>
+<h2><a href="#submitting-prompts-2">Submitting prompts</a></h2>
+<p>You can ask Copilot Chat to give you code suggestions, explain code, generate unit tests, and suggest code fixes.</p>
+<ol>
+<li>
+<p>Open the Copilot Chat window by clicking the <strong>GitHub Copilot Chat</strong> icon at the right side of the JetBrains IDE window.</p>
+<div><picture><source><img src="/assets/cb-37277/images/help/copilot/jetbrains-copilot-chat-icon.png" alt="Screenshot of the GitHub Copilot Chat icon in the Activity Bar."></source></picture></div>
+</li>
+<li>
+<p>Enter a prompt in the prompt box. For example prompts, see <a href="/en/copilot/using-github-copilot/guides-on-using-github-copilot/getting-started-with-prompts-for-copilot-chat">Getting started with prompts for Copilot Chat</a>.</p>
+</li>
+<li>
+<p>Evaluate Copilot's response, and submit a follow up prompt if needed.</p>
+<p>The response often includes interactive elements. For example, the response may include buttons to copy or insert a code block.</p>
+<p>To see the files that Copilot Chat used to generate the response, select the <strong>References</strong> dropdown below the response.</p>
+</li>
+</ol>
+<h2><a href="#using-keywords-in-your-prompt-2">Using keywords in your prompt</a></h2>
+<p>You can use special keywords to help Copilot understand your prompt.</p>
+<h3><a href="#chat-participants-1">Chat participants</a></h3>
+<p>Chat participants are like domain experts who have a specialty that they can help you with. You can use a chat participant to scope your prompt to a specific domain. To do this, type <code>@</code> in the chat prompt box, followed by a chat participant name.</p>
+<p>For a list of available chat participants, type <code>@</code> in the chat prompt box. See also <a href="/en/copilot/using-github-copilot/github-copilot-chat-cheat-sheet?tool=jetbrains#chat-participants-1">GitHub Copilot Chat cheat sheet</a>.</p>
+<h3><a href="#extending-copilot-chat-1">Extending Copilot Chat</a></h3>
+<p>GitHub Copilot Extensions integrate the power of external tools into Copilot Chat, helping you reduce context switching and receive responses with domain-specific context. You can install Copilot Extensions from the GitHub Marketplace or build private ones within your organization, then type <code>@</code> in a chat window to see a list of your available extensions. To use an extension, select the extension from the list or type the full slug name, then type your prompt.</p>
+<p>To learn more, see <a href="/en/copilot/using-github-copilot/using-extensions-to-integrate-external-tools-with-copilot-chat">Using extensions to integrate external tools with Copilot Chat</a>.</p>
+<h3><a href="#slash-commands-2">Slash commands</a></h3>
+<p>Use slash commands to avoid writing complex prompts for common scenarios. To use a slash command, type <code>/</code> in the chat prompt box, followed by a command.</p>
+<p>To see all available slash commands, type <code>/</code> in the chat prompt box. See also <a href="/en/copilot/using-github-copilot/github-copilot-chat-cheat-sheet?tool=jetbrains#slash-commands-2">GitHub Copilot Chat cheat sheet</a>.</p>
+<h3><a href="#file-references">File references</a></h3>
+<p>By default, Copilot Chat will reference the file that you have open or the code that you have selected. You can also tell Copilot Chat which files to reference by dragging a file into the chat prompt box. Alternatively, you can right click on a file, select <strong>GitHub Copilot</strong>, then select <strong>Reference File in Chat</strong>.</p>
+<h2><a href="#using-github-skills-for-copilot-1">Using GitHub skills for Copilot</a></h2>
+<p>Copilot's GitHub-specific skills expand the type of information Copilot can provide. To access these skills in Copilot Chat, include <code>@github</code> in your question.</p>
+<p>When you add <code>@github</code> to a question, Copilot dynamically selects an appropriate skill, based on the content of your question. You can also explicitly ask Copilot Chat to use a particular skill. You can do this in two ways:</p>
+<ul>
+<li>Use natural language to ask Copilot Chat to use a skill. For example, <code>@github Search the web to find the latest GPT model from OpenAI.</code>
+</li>
+<li>To specifically invoke a web search you can include the <code>#web</code> variable in your question. For example, <code>@github #web What is the latest LTS of Node.js?</code>
+</li>
+</ul>
+<p>You can generate a list of currently available skills by asking Copilot: <code>@github What skills are available?</code></p>
+<h2><a href="#ai-models-for-copilot-chat-2">AI models for Copilot Chat</a></h2>
+<p>You can change the large language model that Copilot uses to generate responses to chat prompts, including premium models with advanced capabilities. You may find that different models perform better, or provide more useful responses, depending on the type of questions you ask. For more information see <a href="/en/copilot/using-github-copilot/ai-models/changing-the-ai-model-for-copilot-chat">Changing the AI model for Copilot Chat</a>.</p>
+<h2><a href="#additional-ways-to-access-copilot-chat-2">Additional ways to access Copilot Chat</a></h2>
+<ul>
+<li>
+<strong>Built-in requests</strong>. In addition to submitting prompts through the chat window, you can submit built-in requests by right clicking in a file, selecting <strong>GitHub Copilot</strong>, then selecting one of the options.</li>
+<li>
+<strong>Inline</strong>. You can submit a chat prompt inline, and scope it to a highlighted code block or your current file.
+<ul>
+<li>To start an inline chat, right click on a code block or anywhere in your current file, hover over <strong>GitHub Copilot</strong>, then select <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>I</kbd>.</li>
+</ul>
+</li>
+</ul>
+<h2><a href="#copilot-edits-2">Copilot Edits</a></h2>
+<p>Use Copilot Edits to make changes across multiple files directly from a single Copilot Chat prompt. Copilot Edits has the following modes:</p>
+<ul>
+<li>
+<a href="#edit-mode-1">Edit mode</a> lets Copilot make controlled edits to multiple files.</li>
+<li>
+<a href="#agent-mode-1">Agent mode</a> lets Copilot autonomously accomplish a set task.</li>
+</ul>
+<h3><a href="#edit-mode-1">Edit mode</a></h3>
+<p>Use edit mode when you want more granular control over the edits that Copilot proposes. In edit mode, you choose which files Copilot can make changes to, provide context to Copilot with each iteration, and decide whether or not to accept the suggested edits after each turn.</p>
+<p>Edit mode is best suited to use cases where:</p>
+<ul>
+<li>You want to make a quick, specific update to a defined set of files.</li>
+<li>You want full control over the number of LLM requests Copilot uses.</li>
+</ul>
+<h4><a href="#using-edit-mode-1">Using edit mode</a></h4>
+<ol>
+<li>To start an edit session, click <strong>Open GitHub Copilot Chat</strong>.</li>
+<li>At the top of the chat panel, click <strong>Copilot Edits</strong>.</li>
+<li>Add relevant files to the <em>working set</em> to indicate to GitHub Copilot which files you want to work on. You can add all open files by clicking <strong>Add all open files</strong> or individually search for single files.</li>
+<li>Submit a prompt. In response to your prompt, Copilot Edits determines which files in your <em>working set</em> to change and adds a short description of the change.</li>
+<li>Review the changes and <strong>Accept</strong> or <strong>Discard</strong> the edits for each file.</li>
+</ol>
+<h3><a href="#agent-mode-1">Agent mode</a></h3>
+<p>Use agent mode when you have a specific task in mind and want to enable Copilot to autonomously edit your code. In agent mode, Copilot determines which files to make changes to, offers code changes and terminal commands to complete the task, and iterates to remediate issues until the original task is complete.</p>
+<p>Agent mode is best suited to use cases where:</p>
+<ul>
+<li>Your task is complex, and involves multiple steps, iterations, and error handling.</li>
+<li>You want Copilot to determine the necessary steps to take to complete the task.</li>
+<li>The task requires Copilot to integrate with external applications, such as an MCP server.</li>
+</ul>
+<h4><a href="#using-agent-mode-2">Using agent mode</a></h4>
+<ol>
+<li>To start an edit session using agent mode, click <strong>Open GitHub Copilot Chat</strong>.</li>
+<li>At the top of the chat panel, click the <strong>Agent</strong> tab.</li>
+<li>Submit a prompt. In response to your prompt, Copilot streams the edits in the editor, updates the working set, and if necessary, suggests terminal commands to run.</li>
+<li>Review the changes. If Copilot suggested terminal commands, confirm whether or not Copilot can run them. In response, Copilot iterates and performs additional actions to complete the task in your original prompt.</li>
+</ol>
+<p>When you use Copilot agent mode, Copilot may make multiple premium requests to complete a single task. This includes both user-initiated prompts and follow-up actions Copilot takes on your behalf. The total premium requests used will depend on the complexity of the task, the number of steps involved, and the model selected. See <a href="/en/copilot/managing-copilot/managing-copilot-as-an-individual-subscriber/monitoring-usage-and-entitlements/avoiding-unexpected-copilot-costs">About premium requests</a>.</p>
+<h2><a href="#sharing-feedback-2">Sharing feedback</a></h2>
+<p>To share feedback about Copilot Chat, you can use the <strong>share feedback</strong> link in JetBrains.</p>
+<ol>
+<li>
+<p>At the right side of the JetBrains IDE window, click the <strong>Copilot Chat</strong> icon to open the Copilot Chat window.</p>
+<div><picture><source><img src="/assets/cb-37277/images/help/copilot/jetbrains-copilot-chat-icon.png" alt="Screenshot of the Copilot Chat icon in the Activity Bar."></source></picture></div>
+</li>
+<li>
+<p>At the top of the Copilot Chat window, click the <strong>share feedback</strong> link.</p>
+<div><picture><source><img src="/assets/cb-130879/images/help/copilot/jetbrains-share-feedback.png" alt="Screenshot of the share feedback link in the Copilot Chat window."></source></picture></div>
+</li>
+</ol>
+<h2><a href="#further-reading-2">Further reading</a></h2>
+<ul>
+<li><a href="/en/copilot/using-github-copilot/prompt-engineering-for-github-copilot">Prompt engineering for Copilot Chat</a></li>
+<li><a href="/en/copilot/github-copilot-enterprise/copilot-chat-in-github/using-github-copilot-chat-in-githubcom">Asking GitHub Copilot questions in GitHub</a></li>
+<li><a href="/en/copilot/github-copilot-chat/about-github-copilot-chat">Responsible use of GitHub Copilot Chat in your IDE</a></li>
+<li><a href="/en/site-policy/github-terms/github-copilot-pre-release-terms">GitHub Pre-release License Terms</a></li>
+<li><a href="/en/site-policy/github-terms/github-terms-for-additional-products-and-features#github-copilot">GitHub Terms for Additional Products and Features</a></li>
+<li><a href="https://copilot.github.trust.page">GitHub Copilot Trust Center</a></li>
+<li><a href="https://github.com/features/copilot#faq">GitHub Copilot FAQ</a></li>
+</ul>
+</div>
+<div>
+<h2><a href="#prerequisites-3">Prerequisites</a></h2>
+<p>To use GitHub Copilot for Xcode, you must install the GitHub Copilot for Xcode extension. See <a href="/en/copilot/configuring-github-copilot/installing-the-github-copilot-extension-in-your-environment">Installing the GitHub Copilot extension in your environment</a>.</p>
+<p>If you have access to GitHub Copilot via your organization, you won't be able to use GitHub Copilot Chat if your organization owner has disabled chat. See <a href="/en/copilot/managing-github-copilot-in-your-organization/managing-policies-and-features-for-copilot-in-your-organization">Managing policies for Copilot in your organization</a>.</p>
+<h2><a href="#submitting-prompts-3">Submitting prompts</a></h2>
+<p>You can ask Copilot Chat to give you code suggestions, explain code, generate unit tests, and suggest code fixes.</p>
+<ol>
+<li>
+<p>To open the chat view, click <strong>Editor</strong> in the menu bar, then click <strong>Open Chat</strong>. Copilot Chat opens in a new window.</p>
+</li>
+<li>
+<p>Enter a prompt in the prompt box. For example prompts, see <a href="/en/copilot/using-github-copilot/guides-on-using-github-copilot/getting-started-with-prompts-for-copilot-chat">Getting started with prompts for Copilot Chat</a>.</p>
+</li>
+<li>
+<p>Evaluate Copilot's response, and submit a follow up prompt if needed.</p>
+<p>The response often includes interactive elements. For example, the response may include buttons to copy or insert a code block.</p>
+</li>
+</ol>
+<h2><a href="#ai-models-for-copilot-chat-3">AI models for Copilot Chat</a></h2>
+<p>You can change the large language model that Copilot uses to generate responses to chat prompts, including premium models with advanced capabilities. You may find that different models perform better, or provide more useful responses, depending on the type of questions you ask. For more information see <a href="/en/copilot/using-github-copilot/ai-models/changing-the-ai-model-for-copilot-chat">Changing the AI model for Copilot Chat</a>.</p>
+<h2><a href="#using-keywords-in-your-prompt-3">Using keywords in your prompt</a></h2>
+<p>You can use special keywords to help Copilot understand your prompt.</p>
+<h3><a href="#slash-commands-3">Slash commands</a></h3>
+<p>Use slash commands to avoid writing complex prompts for common scenarios. To use a slash command, type <code>/</code> in the chat prompt box, followed by a command.</p>
+<p>To see all available slash commands, type <code>/</code> in the chat prompt box. For more information, see <a href="/en/copilot/using-github-copilot/github-copilot-chat-cheat-sheet?tool=xcode#slash-commands">GitHub Copilot Chat cheat sheet</a>.</p>
+<h2><a href="#copilot-agent-mode">Copilot agent mode</a></h2>
+<p>Use agent mode when you have a specific task in mind and want to enable Copilot to autonomously edit your code. In agent mode, Copilot determines which files to make changes to, offers code changes and terminal commands to complete the task, and iterates to remediate issues until the original task is complete.</p>
+<p>Agent mode is best suited to use cases where:</p>
+<ul>
+<li>Your task is complex, and involves multiple steps, iterations, and error handling.</li>
+<li>You want Copilot to determine the necessary steps to take to complete the task.</li>
+<li>The task requires Copilot to integrate with external applications, such as an MCP server.</li>
+</ul>
+<h3><a href="#using-agent-mode-3">Using agent mode</a></h3>
+<ol>
+<li>To open the chat view, click <strong>Open Chat</strong>.</li>
+<li>At the bottom of the chat panel, select <strong>Agent</strong> from the mode dropdown.</li>
+<li>Optionally, add relevant files to the <em>working set</em> view to indicate to Copilot which files you want to work on.</li>
+<li>Submit a prompt. In response to your prompt, Copilot streams the edits in the editor, updates the working set, and if necessary, suggests terminal commands to run.</li>
+<li>Review the changes. If Copilot suggested terminal commands, confirm whether or not Copilot can run them. In response, Copilot iterates and performs additional actions to complete the task in your original prompt.</li>
+</ol>
+<p>When you use Copilot agent mode, Copilot may make multiple premium requests to complete a single task. This includes both user-initiated prompts and follow-up actions Copilot takes on your behalf. The total premium requests used will depend on the complexity of the task, the number of steps involved, and the model selected. See <a href="/en/copilot/managing-copilot/managing-copilot-as-an-individual-subscriber/monitoring-usage-and-entitlements/avoiding-unexpected-copilot-costs">About premium requests</a>.</p>
+<h2><a href="#file-references-1">File references</a></h2>
+<p>By default, Copilot Chat will reference the file that you have open or the code that you have selected. To attach a specific file as reference, click </p>
+<h2><a href="#chat-management">Chat management</a></h2>
+<p>You can open a conversation thread for each Xcode IDE to keep discussions organized across different contexts. You can also revisit previous conversations and reference past suggestions through the chat history.</p>
+<h2><a href="#sharing-feedback-3">Sharing feedback</a></h2>
+<p>To indicate whether a response was helpful, use </p>
+<h2><a href="#further-reading-3">Further reading</a></h2>
+<ul>
+<li><a href="/en/copilot/using-github-copilot/prompt-engineering-for-github-copilot">Prompt engineering for Copilot Chat</a></li>
+<li><a href="/en/copilot/github-copilot-enterprise/copilot-chat-in-github/using-github-copilot-chat-in-githubcom">Asking GitHub Copilot questions in GitHub</a></li>
+<li><a href="/en/copilot/github-copilot-chat/about-github-copilot-chat">Responsible use of GitHub Copilot Chat in your IDE</a></li>
+<li><a href="/en/site-policy/github-terms/github-copilot-pre-release-terms">GitHub Pre-release License Terms</a></li>
+<li><a href="/en/site-policy/github-terms/github-terms-for-additional-products-and-features#github-copilot">GitHub Terms for Additional Products and Features</a></li>
+<li><a href="https://copilot.github.trust.page">GitHub Copilot Trust Center</a></li>
+<li><a href="https://github.com/features/copilot#faq">GitHub Copilot FAQ</a></li>
+</ul>
+</div>
+<div>
+<h2><a href="#prerequisites-4">Prerequisites</a></h2>
+<ul>
+<li>
+<strong>Access to Copilot</strong>. To use GitHub Copilot in Eclipse, you must have an active GitHub Copilot subscription. For information about how to get access to Copilot, see <a href="/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot">What is GitHub Copilot?</a>.</li>
+<li>
+<strong>Compatible version of Eclipse</strong>. To use the GitHub Copilot extension, you must have Eclipse version 2024-09 or above. See the <a href="https://www.eclipse.org/downloads/packages/">Eclipse download page</a>.</li>
+<li>
+<strong>Latest version of the GitHub Copilot extension</strong>. Download this from the <a href="https://aka.ms/copiloteclipse">Eclipse Marketplace</a>. For more information, see <a href="/en/copilot/managing-copilot/configure-personal-settings/installing-the-github-copilot-extension-in-your-environment?tool=eclipse">Installing the GitHub Copilot extension in your environment</a>.</li>
+<li>
+<strong>Sign in to GitHub from Eclipse</strong>.</li>
+</ul>
+<p>If you have access to GitHub Copilot via your organization, you won't be able to use GitHub Copilot Chat if your organization owner has disabled chat. See <a href="/en/copilot/managing-github-copilot-in-your-organization/managing-policies-and-features-for-copilot-in-your-organization">Managing policies for Copilot in your organization</a>.</p>
+<h2><a href="#submitting-prompts-4">Submitting prompts</a></h2>
+<p>You can ask Copilot Chat to give you code suggestions, explain code, generate unit tests, and suggest code fixes.</p>
+<ol>
+<li>
+<p>To open the Copilot Chat panel, click the Copilot icon (<strong>Open Chat</strong>.</p>
+</li>
+<li>
+<p>Enter a prompt in the prompt box, then press <kbd>Enter</kbd>.</p>
+<p>For an introduction to the kinds of prompts you can use, see <a href="/en/copilot/using-github-copilot/guides-on-using-github-copilot/getting-started-with-prompts-for-copilot-chat">Getting started with prompts for Copilot Chat</a>.</p>
+</li>
+<li>
+<p>Evaluate Copilot's response, and make a follow up request if needed.</p>
+</li>
+</ol>
+<h2><a href="#using-keywords-in-your-prompt-4">Using keywords in your prompt</a></h2>
+<p>You can use special keywords to help Copilot understand your prompt. For examples, see <a href="/en/copilot/using-github-copilot/guides-on-using-github-copilot/getting-started-with-prompts-for-copilot-chat">Getting started with prompts for Copilot Chat</a>.</p>
+<h3><a href="#slash-commands-4">Slash commands</a></h3>
+<p>Use slash commands to avoid writing complex prompts for common scenarios. To use a slash command, type <code>/</code> in the chat prompt box, followed by a command. For example, use <code>/explain</code> to ask Copilot to explain the code in the file currently displayed in the editor.</p>
+<p>To see all available slash commands, type <code>/</code> in the chat prompt box.</p>
+<h2><a href="#ai-models-for-copilot-chat-4">AI models for Copilot Chat</a></h2>
+<p>You can change the large language model that Copilot uses to generate responses to chat prompts, including premium models with advanced capabilities. You may find that different models perform better, or provide more useful responses, depending on the type of questions you ask. For more information see <a href="/en/copilot/using-github-copilot/ai-models/changing-the-ai-model-for-copilot-chat">Changing the AI model for Copilot Chat</a>.</p>
+<h2><a href="#copilot-agent-mode-1">Copilot agent mode</a></h2>
+<p>Use agent mode when you have a specific task in mind and want to enable Copilot to autonomously edit your code. In agent mode, Copilot determines which files to make changes to, offers code changes and terminal commands to complete the task, and iterates to remediate issues until the original task is complete.</p>
+<p>Agent mode is best suited to use cases where:</p>
+<ul>
+<li>Your task is complex, and involves multiple steps, iterations, and error handling.</li>
+<li>You want Copilot to determine the necessary steps to take to complete the task.</li>
+<li>The task requires Copilot to integrate with external applications, such as an MCP server.</li>
+</ul>
+<h3><a href="#using-agent-mode-4">Using agent mode</a></h3>
+<ol>
+<li>To open the Copilot Chat panel, click the Copilot icon (<strong>Open Chat</strong>.</li>
+<li>At the bottom of the chat panel, select <strong>Agent</strong> from the mode dropdown.</li>
+<li>Submit a prompt. In response to your prompt, Copilot streams the edits in the editor, updates the working set, and if necessary, suggests terminal commands to run.</li>
+<li>Review the changes. If Copilot suggested terminal commands, confirm whether or not Copilot can run them. In response, Copilot iterates and performs additional actions to complete the task in your original prompt.</li>
+</ol>
+<p>When you use Copilot agent mode, Copilot may make multiple premium requests to complete a single task. This includes both user-initiated prompts and follow-up actions Copilot takes on your behalf. The total premium requests used will depend on the complexity of the task, the number of steps involved, and the model selected. See <a href="/en/copilot/managing-copilot/managing-copilot-as-an-individual-subscriber/monitoring-usage-and-entitlements/avoiding-unexpected-copilot-costs">About premium requests</a>.</p>
+<h2><a href="#further-reading-4">Further reading</a></h2>
+<ul>
+<li><a href="/en/copilot/using-github-copilot/prompt-engineering-for-github-copilot">Prompt engineering for Copilot Chat</a></li>
+<li><a href="/en/copilot/github-copilot-enterprise/copilot-chat-in-github/using-github-copilot-chat-in-githubcom">Asking GitHub Copilot questions in GitHub</a></li>
+<li><a href="/en/copilot/github-copilot-chat/about-github-copilot-chat">Responsible use of GitHub Copilot Chat in your IDE</a></li>
+<li><a href="/en/site-policy/github-terms/github-terms-for-additional-products-and-features#github-copilot">GitHub Terms for Additional Products and Features</a></li>
+<li><a href="https://copilot.github.trust.page">GitHub Copilot Trust Center</a></li>
+<li><a href="https://github.com/features/copilot#faq">GitHub Copilot FAQ</a></li>
+</ul>
+</div>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

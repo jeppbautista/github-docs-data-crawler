@@ -1,0 +1,125 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Share automations" href="/en/actions/sharing-automations">Share automations</a><span>/</span>
+</li>
+<li><a title="Avoid duplication" href="/en/actions/sharing-automations/avoiding-duplication">Avoid duplication</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Avoiding duplication</h1></div></div>
+<div><div><p>You can use reusable workflows or composite actions to avoid duplicating the content of workflows.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-reusable-workflows-and-composite-actions"><div><span>About reusable workflows and composite actions</span></div></a></li>
+<li><a href="#comparison-of-reusable-workflows-and-composite-actions"><div><span>Comparison of reusable workflows and composite actions</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-reusable-workflows-and-composite-actions">About reusable workflows and composite actions</a></h2>
+<p>Reusable workflows and composite actions are two ways to avoid duplicating the content of workflows.</p>
+<p><strong>Reusable workflows</strong> allow you to reuse an entire workflow, including all of its jobs and steps. This is particularly useful when you have a complete CI/CD process that you want to use across multiple repositories. Reusable workflows can be centrally maintained, in one location, but used in many repositories across your organization.</p>
+<p><strong>Composite actions</strong> allow you to combine multiple steps into a single action. You can then run this bundle of steps as a single step within a workflow. This is useful if you have a sequence of steps that will be used in more than one workflow. Composite actions allow you refactor long YAML workflow files into much smaller files and avoid copying and pasting between workflow files.</p>
+<p>Reusable workflows and composite actions solve similar problems, but have a few important differences. Most of the time you can use either solution. But some of the time, you’ll need to use one or the other, as described later in this article.</p>
+<p>For details of how to create and use reusable workflows and composite actions, see <a href="/en/actions/using-workflows/reusing-workflows">Reusing workflows</a> and <a href="/en/actions/creating-actions/creating-a-composite-action">Creating a composite action</a>.</p>
+<h2><a href="#comparison-of-reusable-workflows-and-composite-actions">Comparison of reusable workflows and composite actions</a></h2>
+<ul>
+<li>
+<strong>Workflow jobs</strong> - Composite actions contain a series of steps, that are run as a single step within the caller workflow. Unlike reusable workflows, they cannot contain jobs.</li>
+<li>
+<strong>Logging</strong> - When a composite action runs, the log will show just the step in the caller workflow that ran the composite action, not the individual steps within the composite action. With reusable workflows, every job and step is logged separately.</li>
+<li>
+<strong>Specifying runners</strong> - Reusable workflows contain one or more jobs. As with all workflow jobs, the jobs in a reusable workflow specify the type of machine on which the job will run. Therefore, if the steps must be run on a type of machine that might be different from the machine chosen for the calling workflow job, then you should use a reusable workflow, not a composite action.</li>
+<li>
+<strong>Passing output to steps</strong> - A composite action is run as a step within a workflow job, and you can have multiple steps before or after the step that runs the composite action. Reusable workflows are called directly within a job, and not from within a job step. You can't add steps to a job after calling a reusable workflow, so you can't use <code>GITHUB_ENV</code> to pass values to subsequent job steps in the caller workflow.</li>
+</ul>
+<h3><a href="#key-differences-between-reusable-workflows-and-composite-actions">Key differences between reusable workflows and composite actions</a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Reusable workflows</th>
+<th>Composite actions</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>A YAML file, very similar to any standard workflow file</td>
+<td>An action containing a bundle of workflow steps</td>
+</tr>
+<tr>
+<td>Each reusable workflow is a single file in the <code>.github/workflows</code> directory of a repository</td>
+<td>Each composite action is a separate repository, or a directory, containing an <code>action.yml</code> file and, optionally, other files</td>
+</tr>
+<tr>
+<td>Called by referencing a specific YAML file</td>
+<td>Called by referencing a repository or directory in which the action is defined</td>
+</tr>
+<tr>
+<td>Called directly within a job, not from a step</td>
+<td>Run as a step within a job</td>
+</tr>
+<tr>
+<td>Can contain multiple jobs</td>
+<td>Does not contain jobs</td>
+</tr>
+<tr>
+<td>Each step is logged in real-time</td>
+<td>Logged as one step even if it contains multiple steps</td>
+</tr>
+<tr>
+<td>Can connect a maximum of four levels of workflows</td>
+<td>Can be nested to have up to 10 composite actions in one workflow</td>
+</tr>
+<tr>
+<td>Can use secrets</td>
+<td>Cannot use secrets</td>
+</tr>
+</tbody>
+</table>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

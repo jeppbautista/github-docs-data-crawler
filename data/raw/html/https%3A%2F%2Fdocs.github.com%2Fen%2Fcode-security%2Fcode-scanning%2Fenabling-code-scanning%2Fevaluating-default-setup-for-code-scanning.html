@@ -1,0 +1,46 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Code scanning" href="/en/code-security/code-scanning">Code scanning</a><span>/</span>
+</li>
+<li>
+<a title="Enable code scanning" href="/en/code-security/code-scanning/enabling-code-scanning">Enable code scanning</a><span>/</span>
+</li>
+<li><a title="Evaluate code scanning" href="/en/code-security/code-scanning/enabling-code-scanning/evaluating-default-setup-for-code-scanning">Evaluate code scanning</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Evaluating default setup for code scanning</h1></div></div>
+<div>
+<div><p>Learn how to assess how code scanning is working for you, and how you can customize your setup to best meet your needs.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Repository owners, organization owners, security managers, and users with the <strong>admin</strong> role</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#customizing-code-scanning"><div><span>Customizing code scanning</span></div></a></li>
+<li><a href="#evaluating-code-scanning-with-the-tool-status-page"><div><span>Evaluating code scanning with the tool status page</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>When you first start using code scanning, you'll likely use default setup. This guide describes how to evaluate how default setup for code scanning is working for you, and what steps to take if something isn't working as you expect. This guide also describes how you can customize code scanning if you find that you have a specific use case that your new configuration doesn't fit.</p>
+<h2><a href="#customizing-code-scanning">Customizing code scanning</a></h2>
+<p>When you first configure default setup, or after an initial analysis of your code, you can edit which languages default setup will analyze and the query suite run during analysis. The <code>default</code> query suite contains a set of queries that are carefully designed to look for the most relevant security issues, while minimizing false positive results. However, you can use the <code>security-extended</code> suite to run additional queries, which have slightly lower precision. For more information on the available query suites, see <a href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/codeql-query-suites">CodeQL query suites</a>.</p>
+<p>For more information about customizing default setup, see <a href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/editing-your-configuration-of-default-setup">Editing your configuration of default setup</a>.</p>
+<h3><a href="#using-advanced-setup">Using advanced setup</a></h3>
+<p>If you've found that you still need more granular control over code scanning, you can use advanced setup. Advanced setup requires significantly more effort to configure, customize, and maintain, so we recommend enabling default setup first. For more information about advanced setup, see <a href="/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/configuring-advanced-setup-for-code-scanning">Configuring advanced setup for code scanning</a> and <a href="/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning">Customizing your advanced setup for code scanning</a>.</p>
+<h2><a href="#evaluating-code-scanning-with-the-tool-status-page">Evaluating code scanning with the tool status page</a></h2>
+<p>The tool status page shows useful information about all of your code scanning tools. You can use it to investigate whether individual tools are working for a repository, when files in the repository were first scanned and most recently scanned, and when upcoming scans are scheduled. It's also a useful starting point for debugging issues.</p>
+<p>Using the tool status page, you can download the list of rules that code scanning is checking against, in CSV format. For integrated tools like CodeQL, you can also see more detailed information, including a percentage of files scanned and specific error messages.</p>
+<p>If you find that default setup doesn't scan all your files, you may need to customize code scanning. For more information, see <a href="#customizing-code-scanning">Customizing code scanning</a> in this article. Alternatively, or if something else isn't working as you expect, you may find our dedicated troubleshooting documentation useful. For more information, see <a href="/en/code-security/code-scanning/troubleshooting-code-scanning">Troubleshooting code scanning</a>.</p>
+<p>For more detailed information about the tool status page, see <a href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/about-the-tool-status-page#viewing-the-tool-status-page-for-a-repository">About the tool status page for code scanning</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

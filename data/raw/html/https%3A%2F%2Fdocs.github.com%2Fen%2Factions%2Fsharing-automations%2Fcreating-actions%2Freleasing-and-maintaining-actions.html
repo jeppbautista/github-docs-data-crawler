@@ -1,0 +1,112 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Share automations" href="/en/actions/sharing-automations">Share automations</a><span>/</span>
+</li>
+<li>
+<a title="Create actions" href="/en/actions/sharing-automations/creating-actions">Create actions</a><span>/</span>
+</li>
+<li><a title="Release and maintain actions" href="/en/actions/sharing-automations/creating-actions/releasing-and-maintaining-actions">Release and maintain actions</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Releasing and maintaining actions</h1></div></div>
+<div><div><p>You can leverage automation and open source best practices to release and maintain actions.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#developing-and-releasing-actions"><div><span>Developing and releasing actions</span></div></a></li>
+<li><a href="#working-with-the-community"><div><span>Working with the community</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>After you create an action, you'll want to continue releasing new features while working with community contributions. This tutorial describes an example process you can follow to release and maintain actions in open source. The example:</p>
+<ul>
+<li>Leverages GitHub Actions for continuous integration, dependency updates, release management, and task automation.</li>
+<li>Provides confidence through automated tests and build badges.</li>
+<li>Indicates how the action can be used, ideally as part of a broader workflow.</li>
+<li>Signal what type of community contributions you welcome. (For example, issues, pull requests, or vulnerability reports.)</li>
+</ul>
+<p>For an applied example of this process, see <a href="https://github.com/actions/javascript-action">actions/javascript-action</a>.</p>
+<h2><a href="#developing-and-releasing-actions">Developing and releasing actions</a></h2>
+<p>In this section, we discuss an example process for developing and releasing actions and show how to use GitHub Actions to automate the process.</p>
+<h3><a href="#about-javascript-actions">About JavaScript actions</a></h3>
+<p>JavaScript actions are Node.js repositories with metadata. However, JavaScript actions have additional properties compared to traditional Node.js projects:</p>
+<ul>
+<li>
+<p>Dependent packages are committed alongside the code, typically in a compiled and minified form. This means that automated builds and secure community contributions are important.</p>
+</li>
+<li>
+<p>Tagged releases can be published directly to GitHub Marketplace and consumed by workflows across GitHub.</p>
+</li>
+<li>
+<p>Many actions make use of GitHub's APIs and third party APIs, so we encourage robust end-to-end testing.</p>
+</li>
+</ul>
+<h3><a href="#setting-up-github-actions-workflows">Setting up GitHub Actions workflows</a></h3>
+<p>To support the developer process in the next section, add two GitHub Actions workflows to your repository:</p>
+<ol>
+<li>Add a workflow that triggers when a commit is pushed to a feature branch or to <code>main</code> or when a pull request is created. Configure the workflow to run your unit and integration tests. For an example, see <a href="https://github.com/actions/javascript-action/blob/main/.github/workflows/ci.yml">this workflow</a>.</li>
+<li>Add a workflow that triggers when a release is published or edited. Configure the workflow to ensure semantic tags are in place. You can use an action like <a href="https://github.com/JasonEtco/build-and-tag-action">JasonEtco/build-and-tag-action</a> to compile and bundle the JavaScript and metadata file and force push semantic major, minor, and patch tags. For more information about semantic tags, see <a href="https://docs.npmjs.com/about-semantic-versioning">About semantic versioning</a>.</li>
+</ol>
+<h3><a href="#example-developer-process">Example developer process</a></h3>
+<p>Here is an example process that you can follow to automatically run tests, create a release and publish to GitHub Marketplace, and publish your action.</p>
+<ol>
+<li>
+<p>Do feature work in branches per GitHub flow. For more information, see <a href="/en/get-started/using-github/github-flow">GitHub flow</a>.</p>
+<ul>
+<li>Whenever a commit is pushed to the feature branch, your testing workflow will automatically run the tests.</li>
+</ul>
+</li>
+<li>
+<p>Create pull requests to the <code>main</code> branch to initiate discussion and review, merging when ready.</p>
+<ul>
+<li>
+<p>When a pull request is opened, either from a branch or a fork, your testing workflow will again run the tests, this time with the merge commit.</p>
+</li>
+<li>
+<p><strong>Note:</strong> for security reasons, workflows triggered by <code>pull_request</code> from forks have restricted <code>GITHUB_TOKEN</code> permissions and do not have access to secrets. If your tests or other workflows triggered upon pull request require access to secrets, consider using a different event like a <a href="/en/actions/using-workflows/events-that-trigger-workflows#manual-events">manual trigger</a> or a <a href="/en/actions/using-workflows/events-that-trigger-workflows#pull_request_target"><code>pull_request_target</code></a>. For more information, see <a href="/en/actions/using-workflows/events-that-trigger-workflows#pull-request-events-for-forked-repositories">Events that trigger workflows</a>.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Create a semantically tagged release.  You may also publish to GitHub Marketplace with a simple checkbox.  For more information, see <a href="/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository#creating-a-release">Managing releases in a repository</a> and <a href="/en/actions/creating-actions/publishing-actions-in-github-marketplace#publishing-an-action">Publishing actions in GitHub Marketplace</a>.</p>
+<ul>
+<li>
+<p>When a release is published or edited, your release workflow will automatically take care of compilation and adjusting tags.</p>
+</li>
+<li>
+<p>We recommend creating releases using semantically versioned tags – for example, <code>v1.1.3</code> – and keeping major (<code>v1</code>) and minor (<code>v1.1</code>) tags current to the latest appropriate commit. For more information, see <a href="/en/actions/creating-actions/about-custom-actions#using-release-management-for-actions">About custom actions</a> and <a href="https://docs.npmjs.com/about-semantic-versioning">About semantic versioning</a>.</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3><a href="#results">Results</a></h3>
+<p>Unlike some other automated release management strategies, this process intentionally does not commit dependencies to the <code>main</code> branch, only to the tagged release commits. By doing so, you encourage users of your action to reference named tags or <code>sha</code>s, and you help ensure the security of third party pull requests by doing the build yourself during a release.</p>
+<p>Using semantic releases means that the users of your actions can pin their workflows to a version and know that they might continue to receive the latest stable, non-breaking features, depending on their comfort level.</p>
+<h2><a href="#working-with-the-community">Working with the community</a></h2>
+<p>GitHub provides tools and guides to help you work with the open source community. Here are a few tools we recommend setting up for healthy bidirectional communication. By providing the following signals to the community, you encourage others to use, modify, and contribute to your action:</p>
+<ul>
+<li>Maintain a <code>README</code> with plenty of usage examples and guidance. For more information, see <a href="/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes">About READMEs</a>.</li>
+<li>Include a workflow status badge in your <code>README</code> file. For more information, see <a href="/en/actions/monitoring-and-troubleshooting-workflows/adding-a-workflow-status-badge">Adding a workflow status badge</a>. Also visit <a href="https://shields.io/">shields.io</a> to learn about other badges that you can add.</li>
+<li>Add community health files like <code>CODE_OF_CONDUCT</code>, <code>CONTRIBUTING</code>, and <code>SECURITY</code>. For more information, see <a href="/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file#supported-file-types">Creating a default community health file</a>.</li>
+<li>Keep issues current by utilizing actions like <a href="https://github.com/actions/stale">actions/stale</a>.</li>
+<li>Use GitHub's security features to communicate about vulnerabilities and how to fix them. For more information, see <a href="/en/actions/security-guides/using-githubs-security-features-to-secure-your-use-of-github-actions#protecting-actions-youve-created">Using GitHub's security features to secure your use of GitHub Actions</a>.</li>
+</ul>
+<h2><a href="#further-reading">Further reading</a></h2>
+<p>Examples where similar patterns are employed include:</p>
+<ul>
+<li><a href="https://github.com/github/super-linter">github/super-linter</a></li>
+<li><a href="https://github.com/octokit/request-action">octokit/request-action</a></li>
+<li><a href="https://github.com/actions/javascript-action">actions/javascript-action</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,104 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Manage Copilot" href="/en/copilot/managing-copilot">Manage Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Configure personal settings" href="/en/copilot/managing-copilot/configure-personal-settings">Configure personal settings</a><span>/</span>
+</li>
+<li><a title="Configure in the CLI" href="/en/copilot/managing-copilot/configure-personal-settings/configuring-github-copilot-in-the-cli">Configure in the CLI</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Configuring GitHub Copilot in the CLI</h1></div></div>
+<div><div><p>Learn how to configure settings and set up aliases for Copilot in the CLI.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#setting-up-aliases"><div><span>Setting up aliases</span></div></a></li>
+<li><a href="#changing-the-default-execution-confirmation"><div><span>Changing the default execution confirmation</span></div></a></li>
+<li><a href="#changing-usage-analytics"><div><span>Changing usage analytics</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#setting-up-aliases">Setting up aliases</a></h2>
+<p>You can create aliases for Copilot in the CLI to reduce keystrokes, and to allow Copilot in the CLI to execute commands on your behalf.</p>
+<p>To allow Copilot in the CLI to execute commands, you must run the following commands to create the aliases (as opposed to creating an alias like you would for another shell command).</p>
+<p>After executing the following commands to create the aliases, you can run <code>ghcs</code> and <code>ghce</code> instead of <code>gh copilot suggest</code> and <code>gh copilot explain</code>.</p>
+<h3><a href="#bash">Bash</a></h3>
+<div>
+<header><span>Shell</span><pre>echo 'eval "$(gh copilot alias -- bash)"' &gt;&gt; ~/.bashrc
+</pre></header><pre><code>echo 'eval "$(gh copilot alias -- bash)"' &gt;&gt; ~/.bashrc
+</code></pre>
+</div>
+<h3><a href="#powershell">PowerShell</a></h3>
+<div>
+<header><span>Shell</span><pre>$GH_COPILOT_PROFILE = Join-Path -Path $(Split-Path -Path $PROFILE -Parent) -ChildPath "gh-copilot.ps1"
+gh copilot alias -- pwsh | Out-File ( New-Item -Path $GH_COPILOT_PROFILE -Force )
+echo ". `"$GH_COPILOT_PROFILE`"" &gt;&gt; $PROFILE
+</pre></header><pre><code><span>$</span><span>GH_COPILOT_PROFILE = Join-Path -Path $(Split-Path -Path <span>$PROFILE</span> -Parent) -ChildPath <span>"gh-copilot.ps1"</span></span>
+gh copilot alias -- pwsh | Out-File ( New-Item -Path $GH_COPILOT_PROFILE -Force )
+echo ". `"$GH_COPILOT_PROFILE`"" &gt;&gt; $PROFILE
+</code></pre>
+</div>
+<h3><a href="#zsh">Zsh</a></h3>
+<div>
+<header><span>Shell</span><pre>echo 'eval "$(gh copilot alias -- zsh)"' &gt;&gt; ~/.zshrc
+</pre></header><pre><code>echo 'eval "$(gh copilot alias -- zsh)"' &gt;&gt; ~/.zshrc
+</code></pre>
+</div>
+<h2><a href="#changing-the-default-execution-confirmation">Changing the default execution confirmation</a></h2>
+<p>When you use the <code>ghcs</code> alias and you select <strong>Execute command</strong>, Copilot in the CLI will ask for confirmation before executing the command. You can change the default confirmation.</p>
+<ol>
+<li>
+<p>Execute the following command:</p>
+<div>
+<header><span>Shell</span><pre>gh copilot config
+</pre></header><pre><code>gh copilot config
+</code></pre>
+</div>
+</li>
+<li>
+<p>Select <strong>Default value for confirming command execution</strong>.</p>
+</li>
+<li>
+<p>Choose the desired default.</p>
+</li>
+</ol>
+<h2><a href="#changing-usage-analytics">Changing usage analytics</a></h2>
+<p>Unless you opt out, Copilot in the CLI will send a payload in the format below to the analytics system. This data helps improve the product. GitHub does not look at the data of specific individuals or at specific queries.</p>
+<pre><code><span>{</span>
+  <span>"platform"</span><span>:</span> <span>"darwin"</span><span>,</span>
+  <span>"architecture"</span><span>:</span> <span>"arm64"</span><span>,</span>
+  <span>"version"</span><span>:</span> <span>"0.3.0-beta"</span><span>,</span>
+  <span>"custom_event"</span><span>:</span> <span>"true"</span><span>,</span>
+  <span>"event_parent_command"</span><span>:</span> <span>"explain"</span><span>,</span>
+  <span>"event_name"</span><span>:</span> <span>"Explain"</span><span>,</span>
+  <span>"sha"</span><span>:</span> <span>"089a53215fc4383179869f7f6132ce9d6e58754a"</span><span>,</span>
+  <span>"thread_id"</span><span>:</span> <span>"e61d0d08-f6ba-465b-81cf-c30fd9127d70"</span>
+<span>}</span>
+</code></pre>
+<p>To opt in or out of data collection:</p>
+<ol>
+<li>
+<p>Execute the following command:</p>
+<div>
+<header><span>Shell</span><pre>gh copilot config
+</pre></header><pre><code>gh copilot config
+</code></pre>
+</div>
+</li>
+<li>
+<p>Select <strong>Optional Usage Analytics</strong>.</p>
+</li>
+<li>
+<p>Choose the desired default.</p>
+</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

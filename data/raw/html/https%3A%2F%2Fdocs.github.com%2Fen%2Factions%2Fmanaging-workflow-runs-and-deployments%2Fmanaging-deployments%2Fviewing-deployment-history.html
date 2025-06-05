@@ -1,0 +1,75 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Manage workflows and deployments" href="/en/actions/managing-workflow-runs-and-deployments">Manage workflows and deployments</a><span>/</span>
+</li>
+<li>
+<a title="Manage deployments" href="/en/actions/managing-workflow-runs-and-deployments/managing-deployments">Manage deployments</a><span>/</span>
+</li>
+<li><a title="Deployment history" href="/en/actions/managing-workflow-runs-and-deployments/managing-deployments/viewing-deployment-history">Deployment history</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Viewing deployment history</h1></div></div>
+<div><div><p>View current and previous deployments for your repository.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-deployment-history"><div><span>About deployment history</span></div></a></li>
+<li><a href="#viewing-your-repositorys-deployment-history"><div><span>Viewing your repository's deployment history</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-deployment-history">About deployment history</a></h2>
+<p>You can deliver deployments through GitHub Actions and environments or with the REST API and third party apps. For more information about using environments to deploy with GitHub Actions, see <a href="/en/actions/deployment/targeting-different-environments/managing-environments-for-deployment">Managing environments for deployment</a>. For more information about deployments with the REST API, see <a href="/en/rest/repos#deployments">REST API endpoints for repositories</a>.</p>
+<p>On the deployments page of your repository, you can view the following aspects of your deployments.</p>
+<ul>
+<li>Currently active deployments across various environments</li>
+<li>Deployments filtered by environment</li>
+<li>Your repository's full deployment history</li>
+<li>Associated commits that triggered the deployment</li>
+<li>Connected GitHub Actions workflow logs</li>
+<li>The deployment URL (if one exists)</li>
+<li>The source pull request and branch related to each deployment</li>
+<li>Deployment statuses. For more information about deployment statuses, see <a href="/en/rest/deployments/deployments#about-deployments">REST API endpoints for deployments</a>.</li>
+</ul>
+<p>By default, the deployments page shows currently active deployments from select environments and a timeline of the latest deployments for all environments.</p>
+<h2><a href="#viewing-your-repositorys-deployment-history">Viewing your repository's deployment history</a></h2>
+<ol>
+<li>In the right-hand sidebar of the home page of your repository, click <strong>Deployments</strong>.</li>
+<li>Once you are on the "Deployments" page, you can view the following information about your deployment history.
+<ul>
+<li>
+<strong>To view recent deployments for a specific environment</strong>, in the "Environments" section of the left sidebar, click an environment.</li>
+<li>
+<strong>To pin an environment to the top of the deployment history list</strong>, repository administrators can click </li>
+<li>
+<strong>To view the commit that triggered a deployment</strong>, in the deployment history list, click the commit message for the deployment you want to view.
+<div>
+<p>Deployments from commits that originate from a fork outside of the repository will not show links to the source pull request and branch related to each deployment. For more information about forks, see <a href="/en/pull-requests/collaborating-with-pull-requests/working-with-forks/about-forks">About forks</a>.</p>
+</div>
+</li>
+<li>
+<strong>To view the URL for a deployment</strong>, to the right of the commit message in the deployment history list, click </li>
+<li>
+<strong>To navigate to the workflow run logs associated with a deployment</strong>, to the right of the commit message in the deployment history list, click <strong>View logs</strong>.</li>
+</ul>
+</li>
+<li>Optionally, to filter the deployment history list, create a filter.
+<ol>
+<li>Click on the </li>
+<li>Click </li>
+<li>Choose a qualifier you would like to filter the deployment history by.</li>
+<li>Depending on the qualifier you chose, fill out information in the "Operator" and "Value" columns.</li>
+<li>Optionally, click </li>
+<li>Click <strong>Apply</strong>.</li>
+</ol>
+</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

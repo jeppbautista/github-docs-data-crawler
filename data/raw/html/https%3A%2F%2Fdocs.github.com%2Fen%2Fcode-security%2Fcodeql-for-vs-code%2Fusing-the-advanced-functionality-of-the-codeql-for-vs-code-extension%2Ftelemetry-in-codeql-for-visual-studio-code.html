@@ -1,0 +1,99 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="CodeQL for VS Code" href="/en/code-security/codeql-for-vs-code">CodeQL for VS Code</a><span>/</span>
+</li>
+<li>
+<a title="Advanced functionality" href="/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension">Advanced functionality</a><span>/</span>
+</li>
+<li><a title="Telemetry" href="/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension/telemetry-in-codeql-for-visual-studio-code">Telemetry</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Telemetry in CodeQL for Visual Studio Code</h1></div></div>
+<div><div><p>If VS Code telemetry is enabled, GitHub will collect usage data and metrics for the purposes of helping the core developers to improve the CodeQL extension for VS Code.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#why-we-collect-data"><div><span>Why we collect data</span></div></a></li>
+<li><a href="#what-data-is-collected"><div><span>What data is collected</span></div></a></li>
+<li><a href="#how-long-data-is-retained"><div><span>How long data is retained</span></div></a></li>
+<li><a href="#access-to-the-data"><div><span>Access to the data</span></div></a></li>
+<li><a href="#what-data-is-not-collected"><div><span>What data is not collected</span></div></a></li>
+<li><a href="#disabling-telemetry-reporting"><div><span>Disabling telemetry reporting</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>This data will not be shared with any parties outside of GitHub. IP addresses and installation IDs will be retained for a maximum of 30 days. Anonymous data will be retained for a maximum of 180 days.</p>
+<div>
+<p>
+Telemetry collection in CodeQL for Visual Studio Code follows the VS Code telemetry settings. When telemetry collection is disabled, no data will be sent to GitHub servers.</p>
+</div>
+<h2><a href="#why-we-collect-data">Why we collect data</a></h2>
+<p>GitHub collects aggregated, anonymous usage data and metrics to help us improve CodeQL for VS Code. IP addresses and installation IDs are collected only to ensure that anonymous data is not duplicated during aggregation.</p>
+<h2><a href="#what-data-is-collected">What data is collected</a></h2>
+<p>If telemetry is enabled, GitHub collects the following information related to the usage of the extension. The data collected are:</p>
+<ul>
+<li>
+<p>The identifiers of any CodeQL-related VS Code commands that are run. For each command, these are: the timestamp, time taken, and whether or not the command completed successfully.</p>
+</li>
+<li>
+<p>Interactions with UI elements, including buttons, links, and other inputs. Interacts that are not recorded are: link targets, text inputs, mouse movement, and mouse hovering.</p>
+</li>
+<li>
+<p>Occurrence of exceptions and errors. All sensitive information such as file paths and non-static exception message content are removed before uploading.</p>
+</li>
+<li>
+<p>The VS Code extension version.</p>
+</li>
+<li>
+<p>Randomly generated GUID that uniquely identifies a CodeQL extension installation. This is discarded before aggregation.</p>
+</li>
+<li>
+<p>IP address of the client sending the telemetry data. This is discarded before aggregation.</p>
+</li>
+<li>
+<p>Whether any CodeQL for VS Code extension settings are configured. For more information about customizing settings, see <a href="/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension/customizing-settings">Customizing settings</a>.</p>
+</li>
+</ul>
+<h2><a href="#how-long-data-is-retained">How long data is retained</a></h2>
+<p>IP addresses and GUIDs will be retained for a maximum of 30 days. Anonymous, aggregated data that includes command identifiers, run times, and timestamps will be retained for a maximum of 180 days.</p>
+<h2><a href="#access-to-the-data">Access to the data</a></h2>
+<p>IP addresses and GUIDs will only be available to the core developers of CodeQL. Aggregated data will be available to GitHub employees.</p>
+<h2><a href="#what-data-is-not-collected">What data is not collected</a></h2>
+<p>We only collect the minimal amount of data we need to answer the questions about how our users are experiencing this product. To that end, we do not collect the following information:</p>
+<ul>
+<li>
+<p>GitHub user ID</p>
+</li>
+<li>
+<p>CodeQL database names or contents</p>
+</li>
+<li>
+<p>Contents of CodeQL queries</p>
+</li>
+<li>
+<p>File system paths</p>
+</li>
+<li>
+<p>User-input text</p>
+</li>
+<li>
+<p>Mouse interactions, such as movement or hovers</p>
+</li>
+</ul>
+<h2><a href="#disabling-telemetry-reporting">Disabling telemetry reporting</a></h2>
+<p>You can disable telemetry collection by setting the global <code>telemetry.telemetryLevel</code> setting to <code>off</code>. For more information, see the <a href="https://code.visualstudio.com/docs/configure/telemetry">Visual Studio Code Telemetry page</a> in the Visual Studio Code documentation.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub General Privacy Statement</a></li>
+<li><a href="/en/site-policy/github-terms/github-terms-of-service">GitHub Terms of Service</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

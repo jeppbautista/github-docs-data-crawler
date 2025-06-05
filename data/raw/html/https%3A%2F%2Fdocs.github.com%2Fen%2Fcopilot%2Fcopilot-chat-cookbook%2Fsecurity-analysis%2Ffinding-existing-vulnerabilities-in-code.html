@@ -1,0 +1,61 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Copilot Chat Cookbook" href="/en/copilot/copilot-chat-cookbook">Copilot Chat Cookbook</a><span>/</span>
+</li>
+<li>
+<a title="Security analysis" href="/en/copilot/copilot-chat-cookbook/security-analysis">Security analysis</a><span>/</span>
+</li>
+<li><a title="Find vulnerabilities" href="/en/copilot/copilot-chat-cookbook/security-analysis/finding-existing-vulnerabilities-in-code">Find vulnerabilities</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Finding existing vulnerabilities in code</h1></div></div>
+<div><div><p>Copilot Chat can help find common vulnerabilities in your code and suggest fixes.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#example-scenario"><div><span>Example scenario</span></div></a></li>
+<li><a href="#example-prompt"><div><span>Example prompt</span></div></a></li>
+<li><a href="#example-response"><div><span>Example response</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>While they may be considered "common knowledge" by many developers, the vast majority of newly introduced security weaknesses are due to vulnerabilities like cross-site scripting (XSS), SQL injection, and cross-site request forgery (CSRF). These vulnerabilities can be mitigated by following secure coding practices, such as using parameterized queries, input validation, and avoiding hard-coded sensitive data. GitHub Copilot can help detect and resolve these issues.</p>
+<div>
+<p> While Copilot Chat can help find some common security vulnerabilities and help you fix them, you should not rely on Copilot for a comprehensive security analysis. Using code scanning will more thoroughly ensure your code is secure. For more information on setting up code scanning, see <a href="/en/code-security/code-scanning/enabling-code-scanning/configuring-default-setup-for-code-scanning">Configuring default setup for code scanning</a>.</p>
+</div>
+<h2><a href="#example-scenario">Example scenario</a></h2>
+<p>The JavaScript code below has a potential XSS vulnerability that could be exploited if the <code>name</code> parameter is not properly sanitized before being displayed on the page.</p>
+<pre><code><span>function</span> <span>displayName</span>(<span>name</span>) {
+  <span>const</span> nameElement = <span>document</span>.<span>getElementById</span>(<span>'name-display'</span>);
+  nameElement.<span>innerHTML</span> = <span>`Showing results for "<span>${name}</span>"`</span>
+}
+</code></pre>
+<h2><a href="#example-prompt">Example prompt</a></h2>
+<p>You can ask Copilot Chat to analyze code for common security vulnerabilities and provide explanations and fixes for the issues it finds.</p>
+<p><code>Analyze this code for potential security vulnerabilities and suggest fixes.</code></p>
+<h2><a href="#example-response">Example response</a></h2>
+<div>
+<p> The following response is an example. Copilot Chat responses are non-deterministic, so you may get a different response from the one shown here.</p>
+</div>
+<p>Copilot responds with an explanation of the vulnerability, and suggested changes to the code to fix it.</p>
+<pre><code><span>function</span> <span>displayName</span>(<span>name</span>) {
+  <span>const</span> nameElement = <span>document</span>.<span>getElementById</span>(<span>'name-display'</span>);
+  nameElement.<span>textContent</span> = <span>`Showing results for "<span>${name}</span>"`</span>;
+}
+</code></pre>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/copilot/using-github-copilot/prompt-engineering-for-github-copilot">Prompt engineering for Copilot Chat</a></li>
+<li><a href="/en/copilot/using-github-copilot/best-practices-for-using-github-copilot">Best practices for using GitHub Copilot</a></li>
+<li><a href="/en/code-security/code-scanning/introduction-to-code-scanning/about-code-scanning">About code scanning</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

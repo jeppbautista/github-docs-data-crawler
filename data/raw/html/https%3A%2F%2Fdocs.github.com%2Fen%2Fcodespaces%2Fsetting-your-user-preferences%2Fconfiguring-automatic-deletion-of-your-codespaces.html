@@ -1,0 +1,152 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Setting your user preferences" href="/en/codespaces/setting-your-user-preferences">Setting your user preferences</a><span>/</span>
+</li>
+<li><a title="Configure automatic deletion" href="/en/codespaces/setting-your-user-preferences/configuring-automatic-deletion-of-your-codespaces">Configure automatic deletion</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Configuring automatic deletion of your codespaces</h1></div></div>
+<div>
+<div><p>Inactive codespaces are automatically deleted. You can choose how long your stopped codespaces are retained, up to a maximum of 30 days.</p></div>
+<div>
+<h2>Tool navigation</h2>
+<nav><ul>
+<li><a href="?tool=cli"><span>GitHub CLI</span></a></li>
+<li><a href="?tool=vscode"><span>Visual Studio Code</span></a></li>
+<li><a href="?tool=webui"><span>Web browser</span></a></li>
+</ul></nav>
+</div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#setting-a-default-retention-period-for-your-codespaces"><div><span>Setting a default retention period for your codespaces</span></div></a></li>
+<li><a href="#checking-the-remaining-time-until-autodeletion"><div><span>Checking the remaining time until autodeletion</span></div></a></li>
+<li><a href="#avoiding-automatic-deletion-of-codespaces"><div><span>Avoiding automatic deletion of codespaces</span></div></a></li>
+<li><a href="#setting-a-retention-period-for-a-codespace"><div><span>Setting a retention period for a codespace</span></div></a></li>
+<li><a href="#setting-the-retention-period"><div><span>Setting the retention period</span></div></a></li>
+<li><a href="#checking-whether-codespaces-will-be-autodeleted-soon"><div><span>Checking whether codespaces will be autodeleted soon</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>By default, GitHub Codespaces are automatically deleted after they have been stopped and have remained inactive for 30 days.</p>
+<p>However, because GitHub Codespaces incurs storage charges, you may prefer to reduce the retention period by changing your default period in your personal settings for GitHub Codespaces. For more information about storage charges, see <a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/about-billing-for-github-codespaces#codespaces-pricing">About billing for GitHub Codespaces</a>.</p>
+<div>
+<p>
+Whether or not you have set a personal codespace retention period, it's a good idea to get into the habit of deleting codespaces that you no longer need. See <a href="/en/codespaces/developing-in-a-codespace/deleting-a-codespace">Deleting a codespace</a>.</p>
+</div>
+<p>Automatic deletion happens irrespective of whether a codespace contains unpushed changes. To prevent automatic deletion of a codespace, just open the codespace again. The retention period is reset every time you connect to a codespace, and the retention countdown restarts when the codespace is stopped.</p>
+<p>If a repository belongs to an organization, the organization owner may have set a retention period for the whole organization. If this period is less than the default retention period in your personal settings then the organization retention period will apply to codespaces you create for this repository. See <a href="/en/codespaces/managing-codespaces-for-your-organization/restricting-the-retention-period-for-codespaces">Restricting the retention period for codespaces</a>.</p>
+<p>Each codespace has its own retention period. You may, therefore, have codespaces with different retention periods. For example, if:</p>
+<ul>
+<li>You created a codespace, changed your default retention period, then created another codespace.</li>
+<li>You created a codespace using GitHub CLI and specified a different retention period.</li>
+<li>You created a codespace for an organization-owned repository that has a retention period configured in the organization settings. The ownership of the codespaces you create is shown on the <a href="https://github.com/settings/codespaces">Your codespaces</a> page.</li>
+</ul>
+<div>
+<p>
+The retention period is specified in days. A day represents a 24-hour period, beginning at the time of day when you stop a codespace.</p>
+</div>
+<div>
+<h2><a href="#setting-a-default-retention-period-for-your-codespaces">Setting a default retention period for your codespaces</a></h2>
+<ol>
+<li>
+<p>In the upper-right corner of any page on GitHub, click your profile photo, then click </p>
+</li>
+<li>
+<p>In the "Code, planning, and automation" section of the sidebar, click </p>
+</li>
+<li>
+<p>Under "Default retention period", enter the number of days for which you want your codespaces to be retained, by default, after they have been stopped.</p>
+<div><picture><source><img src="/assets/cb-16014/images/help/codespaces/setting-default-retention.png" alt='Screenshot of the "Default retention period" setting, currently set to 1 day. Next to the number of days is the "Save" button.' width="862" height="194"></source></picture></div>
+<p>You can set your default retention period between <code>0</code> and <code>30</code> days.</p>
+<div>
+<p>
+Setting the period to <code>0</code> will result in your codespaces being immediately deleted when you stop them, or when they timeout due to inactivity. See <a href="/en/codespaces/setting-your-user-preferences/setting-your-timeout-period-for-github-codespaces">Setting your timeout period for GitHub Codespaces</a>.</p>
+</div>
+</li>
+<li>
+<p>Click <strong>Save</strong>.</p>
+</li>
+</ol>
+<p>When you create a codespace using GitHub CLI you can override this default. If you create a codespace in an organization that specifies a shorter retention period, the organization-level value overrides your personal setting.</p>
+<p>If you set a retention period of more than a day, you'll be sent an email notification one day prior to its deletion.</p>
+<h2><a href="#checking-the-remaining-time-until-autodeletion">Checking the remaining time until autodeletion</a></h2>
+<p>You can check whether a codespace is due to be automatically deleted soon.</p>
+<p>When an inactive codespace is approaching the end of its retention period, this is indicated in your list of codespaces on GitHub at <a href="https://github.com/codespaces">https://github.com/codespaces</a>.</p>
+<p><picture><source><img src="/assets/cb-48557/images/help/codespaces/retention-deletion-message.png" alt='Screenshot of a list of three codespaces. The third of these is labeled "Expiring in 4 days" which is highlighted with a dark orange outline.' width="1440" height="386"></source></picture></p>
+<h2><a href="#avoiding-automatic-deletion-of-codespaces">Avoiding automatic deletion of codespaces</a></h2>
+<p>You may have a codespace that you want to keep for longer than the retention period defined in your personal settings. You can do this by using the "Keep codespace" option. When you select this option, your codespace will be retained indefinitely, until you delete it manually.</p>
+<div>
+<p>
+The "Keep codespace" option is not available for organization-owned codespaces affected by an organization retention policy.</p>
+</div>
+<p>Codespaces incur storage costs, or consume your included storage allowance if the codespace is owned by your personal GitHub account. You should therefore be aware of the cost implications of storing codespaces indefinitely. See <a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/about-billing-for-github-codespaces#about-billing-for-storage-usage">About billing for GitHub Codespaces</a>.</p>
+<ol>
+<li>
+<p>In the top-left corner of GitHub, select <a href="https://github.com/codespaces">github.com/codespaces</a>.</p>
+</li>
+<li>
+<p>To the right of the codespace you want to exempt from automatic deletion, click </p>
+<div><picture><source><img src="/assets/cb-103196/images/help/codespaces/keep-codespace.png" alt='Screenshot of the dropdown menu for an active codespace. The "Keep codespace" option has a tooltip saying "Expires 10 days after shutdown."' width="1440" height="544"></source></picture></div>
+</li>
+</ol>
+<p>Codespaces that you have exempted from automatic deletion are indicated in your list of codespaces with the bookmark icon (</p>
+<p><picture><source><img src="/assets/cb-15854/images/help/codespaces/keep-codespace-bookmarked.png" alt="Screenshot of a section of the codespaces list, showing a codespace labeled with the bookmark icon." width="375" height="163"></source></picture></p>
+</div>
+<div>
+<h2><a href="#setting-a-retention-period-for-a-codespace">Setting a retention period for a codespace</a></h2>
+<p>If you have installed GitHub CLI, you can use it to work with GitHub Codespaces. For installation instructions for GitHub CLI, see the <a href="https://github.com/cli/cli#installation">GitHub CLI repository</a>.</p>
+<p>To set the codespace retention period when you create a codespace, use the <code>--retention-period</code> flag with the <code>codespace create</code> subcommand. Specify the period in days. The period must be between 0 and 30 days.</p>
+<pre><code>gh codespace create --retention-period DAYS
+</code></pre>
+<p>If you don't specify a retention period when you create a codespace, then either your default retention period, or an organization retention period, will be used, depending on which is lower. For information about setting your default retention period, click the "Web browser" tab on this page.</p>
+<div>
+<p>
+To learn more about GitHub CLI, see <a href="/en/github-cli/github-cli/about-github-cli">About GitHub CLI</a>.</p>
+</div>
+</div>
+<div>
+<h2><a href="#setting-the-retention-period">Setting the retention period</a></h2>
+<p>You can set your default retention period in your web browser, on GitHub. Alternatively, if you use GitHub CLI to create a codespace you can set a retention period for that particular codespace. For more information, click the appropriate tab above.</p>
+<h2><a href="#checking-whether-codespaces-will-be-autodeleted-soon">Checking whether codespaces will be autodeleted soon</a></h2>
+<p>You can check, in the Visual Studio Code desktop application, whether a codespace is due to be automatically deleted soon.</p>
+<ol>
+<li>
+<p>In VS Code, in the Activity Bar, click the Remote Explorer icon.</p>
+<div><picture><source><img src="/assets/cb-48473/images/help/codespaces/click-remote-explorer-icon-vscode.png" alt='Screenshot of the Activity Bar. The icon for the "Remote Explorer" side bar (a rectangle overlaid by a circle) is highlighted with an orange outline.'></source></picture></div>
+<div>
+<p>
+If the Remote Explorer is not displayed in the Activity Bar:</p>
+<ol>
+<li>Access the Command Palette. For example, by pressing <kbd>Shift</kbd>+<kbd>Command</kbd>+<kbd>P</kbd> (Mac) / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> (Windows/Linux).</li>
+<li>Type: <code>details</code>.</li>
+<li>Click <strong>Codespaces: Details</strong>.</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Choose <strong>GitHub Codespaces</strong> from the dropdown menu at the top right of the Remote Explorer, if it is not already selected.</p>
+</li>
+<li>
+<p>Under "GITHUB CODESPACES," position the mouse pointer over the codespace that you're interested in. A pop-up box is displayed showing you information about the codespace.</p>
+<p>If the codespace is nearing the end of its retention period, a line is included telling when this period is due to expire.</p>
+<div><picture><source><img src="/assets/cb-74200/images/help/codespaces/vscode-deleting-in-5-days.png" alt='Screenshot of the "Remote Explorer" side bar. In the right-click menu for a codespace, "Expiring in 19 days" is highlighted with an orange outline.'></source></picture></div>
+</li>
+</ol>
+</div>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/codespaces/customizing-your-codespace">Customizing your codespace</a></li>
+<li><a href="/en/codespaces/managing-your-codespaces">Managing your codespaces</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

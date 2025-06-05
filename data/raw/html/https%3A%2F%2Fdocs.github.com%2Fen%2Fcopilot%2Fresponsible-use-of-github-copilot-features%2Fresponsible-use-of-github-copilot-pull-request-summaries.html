@@ -1,0 +1,76 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Responsible use" href="/en/copilot/responsible-use-of-github-copilot-features">Responsible use</a><span>/</span>
+</li>
+<li><a title="Pull request summaries" href="/en/copilot/responsible-use-of-github-copilot-features/responsible-use-of-github-copilot-pull-request-summaries">Pull request summaries</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Responsible use of GitHub Copilot pull request summaries</h1></div></div>
+<div><div><p>Learn how to use Copilot pull request summaries responsibly by understanding its purposes, capabilities, and limitations.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-copilot-pull-request-summaries"><div><span>About Copilot pull request summaries</span></div></a></li>
+<li><a href="#use-case-for-pull-request-summaries"><div><span>Use case for pull request summaries</span></div></a></li>
+<li><a href="#improving-performance-of-pull-request-summaries"><div><span>Improving performance of pull request summaries</span></div></a></li>
+<li><a href="#limitations-of-pull-request-summaries"><div><span>Limitations of pull request summaries</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-copilot-pull-request-summaries">About Copilot pull request summaries</a></h2>
+<p>Copilot pull request summaries is an AI-powered feature that allows you to create a summary of the changes that were made in a pull request, which files they impact, and what a reviewer should focus on when they conduct their review.</p>
+<p>When a user requests a summary, Copilot scans through the pull request and provides an overview of the changes made in prose, as well as a bulleted list of changes with the files that they impact.</p>
+<p>The only supported language for Copilot pull request summaries is English.</p>
+<p>Copilot pull request summaries uses a simple-prompt flow leveraging the Copilot API, with no additional trained models. This utilizes the generic large language model.</p>
+<h3><a href="#response-generation">Response generation</a></h3>
+<p>The current process uses a large language model to initiate the auto-complete process and generate the pull request summary.</p>
+<h4><a href="#pipeline-approach">Pipeline approach</a></h4>
+<p>When a user requests a summary, a workflow is triggered. The workflow uses the code diffs to build a prompt call, which requests Copilot to generate a summary of the pull request. The summary request initiates a pipeline process which includes raw diffs from summarizable files in a prompt and requests Copilot to generate an overall summary for the pull request.</p>
+<h3><a href="#output-formatting">Output formatting</a></h3>
+<p>You can initiate this feature when creating a pull request, by editing the pull request description after creation, or in a comment in the pull request thread. Upon initiation, Copilot will generate a two part summary:</p>
+<ul>
+<li>A paragraph, written in prose, giving an overview of the changes in the pull request.</li>
+<li>A bulleted list of the key changes, linked to the respective lines of code where those changes occur.</li>
+</ul>
+<p>Larger pull requests can take a couple minutes for Copilot to generate. Depending on your enterprise settings, you can share your feedback on a summary directly from the UI after a summary is generated to help us continue to improve the feature.</p>
+<h2><a href="#use-case-for-pull-request-summaries">Use case for pull request summaries</a></h2>
+<p>The goal of Copilot pull request summaries is to help optimize an author's ability to quickly provide context when they request a human review that requires sharing context of the changes that were made. It may help increase developer productivity by reducing the time taken to open a pull request.</p>
+<p>For many users, it could provide more helpful context for the changes that were made within a pull request than would normally be available.</p>
+<h2><a href="#improving-performance-of-pull-request-summaries">Improving performance of pull request summaries</a></h2>
+<h3><a href="#use-copilot-pull-request-summaries-as-a-tool-not-a-replacement">Use Copilot pull request summaries as a tool, not a replacement</a></h3>
+<p>The feature is intended to supplement rather than replace a human's work to add context, and we encourage you to continue adding useful context and let Copilot do the busy work of parsing the code and linking to specific files. It remains your responsibility to review and assess the accuracy of information in a pull request that you create.</p>
+<h3><a href="#provide-feedback">Provide feedback</a></h3>
+<div>
+<p> The ability to provide feedback to GitHub about Copilot pull request summaries is dependent on enterprise settings. For more information, see <a href="/en/enterprise-cloud@latest/copilot/managing-copilot/managing-copilot-for-your-enterprise/managing-policies-and-features-for-copilot-in-your-enterprise">Managing policies and features for Copilot in your enterprise</a>.</p>
+</div>
+<p>If you encounter any issues or limitations with Copilot pull request summaries, you can provide feedback by clicking the "Bad summary" button (a thumbs down icon), which is displayed below the text box after a summary is generated and before you click <strong>Create pull request</strong> or <strong>Update comment</strong>.</p>
+<p><picture><source><img src="/assets/cb-41181/images/help/copilot/copilot-summary-feedback.png" alt="Screenshot of the bottom of a pull request comment. The feedback icons, thumbs up and thumbs down, are highlighted with a dark orange outline." width="1288" height="246"></source></picture></p>
+<p>After you rate a summary as good or bad, you can provide written feedback by clicking the link that's displayed.</p>
+<h2><a href="#limitations-of-pull-request-summaries">Limitations of pull request summaries</a></h2>
+<p>Currently, our team is aware that there are limitations to this feature. Many of them are expected in leveraging our Copilot API; however, there are a few that are specific to Copilot pull request summaries which pertain to limited scope, longer processing times, and inaccurate responses. We also note that users should expect terms used in their PR to appear in the AI-generated summary. This feature has been subject to RAI Red Teaming and we will continue to monitor the efficacy and safety of the feature over time. For more information, see <a href="https://www.microsoft.com/en-us/security/blog/2023/08/07/microsoft-ai-red-team-building-future-of-safer-ai/">Microsoft AI Red Team building future of safer AI</a> on the Microsoft security blog.</p>
+<h3><a href="#limited-scope">Limited scope</a></h3>
+<p>Because of capacity, we know that larger pull requests that reference 30 or more files will require more time to be processed thoroughly. We don't have an exact threshold currently, but have observed the first 30 files being accounted for and then any additional files being omitted from the summarization. We are working to address this current scope limitation.</p>
+<h3><a href="#processing-time">Processing time</a></h3>
+<p>In general, we expect a summary to be returned in 40 seconds or less after a user initiates the action. However, we have heard that this can take up to a minute, and in some cases a couple of minutes. We are working to decrease processing time and we know that users may not want to wait for this to finish before moving on to other parts of the pull request.</p>
+<h3><a href="#inaccurate-responses">Inaccurate responses</a></h3>
+<p>The more inputs and context that Copilot can learn from, the better the outputs will become. However, since the feature is quite new, it will take time to reach exact precision with the summaries that are generated. In the meantime, there may be cases where a generated summary is less accurate and requires the user to make modifications before saving and publishing their pull request with this description. In addition, there is a risk of "hallucination," where Copilot generates statements that are inaccurate. For these reasons, reviewing is a requirement, and careful review of the output is highly recommended by our team.</p>
+<h3><a href="#regenerating-summaries">Regenerating summaries</a></h3>
+<p>Pull request summaries are only created when users request them manually. When users submit updates or changes to their pull request, the summary is not automatically updated. Users can ask Copilot to generate a new summary if required. Manual review of the updated Copilot summary is highly recommended. The updated summary carries the same risks of inaccuracy as the original summary.</p>
+<h3><a href="#replication-of-pull-request-content">Replication of pull request content</a></h3>
+<p>Because a summary is an outline of the changes that were made in a pull request, if harmful or offensive terms are within the content of the pull request, there is potential for the summary to also include those terms.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="https://copilot.github.trust.page/">GitHub Copilot Trust Center</a></li>
+<li>
+<a href="/en/copilot/github-copilot-enterprise/copilot-pull-request-summaries/creating-a-pull-request-summary-with-github-copilot">Creating a pull request summary with GitHub Copilot</a> in the GitHub Enterprise Cloud documentation.</li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

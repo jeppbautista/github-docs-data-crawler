@@ -1,0 +1,116 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Use cases and examples" href="/en/actions/use-cases-and-examples">Use cases and examples</a><span>/</span>
+</li>
+<li>
+<a title="Project management" href="/en/actions/use-cases-and-examples/project-management">Project management</a><span>/</span>
+</li>
+<li><a title="Add label to comment on issue" href="/en/actions/use-cases-and-examples/project-management/commenting-on-an-issue-when-a-label-is-added">Add label to comment on issue</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Commenting on an issue when a label is added</h1></div></div>
+<div><div><p>You can use GitHub Actions to automatically comment on issues when a specific label is applied.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#creating-the-workflow"><div><span>Creating the workflow</span></div></a></li>
+<li><a href="#testing-the-workflow"><div><span>Testing the workflow</span></div></a></li>
+<li><a href="#next-steps"><div><span>Next steps</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>This tutorial demonstrates how to use the GitHub CLI to comment on an issue when a specific label is applied. For example, when the <code>help wanted</code> label is added to an issue, you can add a comment to encourage contributors to work on the issue. For more information about GitHub CLI, see <a href="/en/actions/using-workflows/using-github-cli-in-workflows">Using GitHub CLI in workflows</a>.</p>
+<p>In the tutorial, you will first make a workflow file that uses the <code>gh issue comment</code> command to comment on an issue. Then, you will customize the workflow to suit your needs.</p>
+<h2><a href="#creating-the-workflow">Creating the workflow</a></h2>
+<ol>
+<li>
+<p>Choose a repository where you want to apply this project management workflow. You can use an existing repository that you have write access to, or you can create a new repository. For more information about creating a repository, see <a href="/en/repositories/creating-and-managing-repositories/creating-a-new-repository">Creating a new repository</a>.</p>
+</li>
+<li>
+<p>In your repository, create a file called <code>.github/workflows/YOUR_WORKFLOW.yml</code>, replacing <code>YOUR_WORKFLOW</code> with a name of your choice. This is a workflow file. For more information about creating new files on GitHub, see <a href="/en/repositories/working-with-files/managing-files/creating-new-files">Creating new files</a>.</p>
+</li>
+<li>
+<p>Copy the following YAML contents into your workflow file.</p>
+<div>
+<header><span>YAML</span><pre>name: Add comment
+on:
+  issues:
+    types:
+      - labeled
+jobs:
+  add-comment:
+    if: github.event.label.name == 'help wanted'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Add comment
+        run: gh issue comment "$NUMBER" --body "$BODY"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.issue.number }}
+          BODY: &gt;
+            This issue is available for anyone to work on.
+            **Make sure to reference this issue in your pull request.**
+            :sparkles: Thank you for your contribution! :sparkles:
+</pre></header><pre><code><span>name:</span> <span>Add</span> <span>comment</span>
+<span>on:</span>
+  <span>issues:</span>
+    <span>types:</span>
+      <span>-</span> <span>labeled</span>
+<span>jobs:</span>
+  <span>add-comment:</span>
+    <span>if:</span> <span>github.event.label.name</span> <span>==</span> <span>'help wanted'</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>permissions:</span>
+      <span>issues:</span> <span>write</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>Add</span> <span>comment</span>
+        <span>run:</span> <span>gh</span> <span>issue</span> <span>comment</span> <span>"$NUMBER"</span> <span>--body</span> <span>"$BODY"</span>
+        <span>env:</span>
+          <span>GH_TOKEN:</span> <span>${{</span> <span>secrets.GITHUB_TOKEN</span> <span>}}</span>
+          <span>GH_REPO:</span> <span>${{</span> <span>github.repository</span> <span>}}</span>
+          <span>NUMBER:</span> <span>${{</span> <span>github.event.issue.number</span> <span>}}</span>
+          <span>BODY:</span> <span>&gt;
+            This issue is available for anyone to work on.
+            **Make sure to reference this issue in your pull request.**
+            :sparkles: Thank you for your contribution! :sparkles:
+</span></code></pre>
+</div>
+</li>
+<li>
+<p>Customize the parameters in your workflow file:</p>
+<ul>
+<li>Replace <code>help wanted</code> in <code>if: github.event.label.name == 'help wanted'</code> with the label that you want to act on. If you want to act on more than one label, separate the conditions with <code>||</code>. For example, <code>if: github.event.label.name == 'bug' || github.event.label.name == 'fix me'</code> will comment whenever the <code>bug</code> or <code>fix me</code> labels are added to an issue.</li>
+<li>Change the value for <code>BODY</code> to the comment that you want to add. GitHub flavored markdown is supported. For more information about markdown, see <a href="/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax">Basic writing and formatting syntax</a>.</li>
+</ul>
+</li>
+<li>
+<p>Commit your workflow file to the default branch of your repository. For more information, see <a href="/en/repositories/working-with-files/managing-files/creating-new-files">Creating new files</a>.</p>
+</li>
+</ol>
+<h2><a href="#testing-the-workflow">Testing the workflow</a></h2>
+<p>Every time an issue in your repository is labeled, this workflow will run. If the label that was added is one of the labels that you specified in your workflow file, the <code>gh issue comment</code> command will add the comment that you specified to the issue.</p>
+<p>Test your workflow by applying your specified label to an issue.</p>
+<ol>
+<li>Open an issue in your repository. For more information, see <a href="/en/issues/tracking-your-work-with-issues/creating-an-issue">Creating an issue</a>.</li>
+<li>Label the issue with the specified label in your workflow file. For more information, see <a href="/en/issues/using-labels-and-milestones-to-track-work/managing-labels#applying-labels-to-issues-and-pull-requests">Managing labels</a>.</li>
+<li>To see the workflow run triggered by labeling the issue, view the history of your workflow runs. For more information, see <a href="/en/actions/monitoring-and-troubleshooting-workflows/viewing-workflow-run-history">Viewing workflow run history</a>.</li>
+<li>When the workflow completes, the issue that you labeled should have a comment added.</li>
+</ol>
+<h2><a href="#next-steps">Next steps</a></h2>
+<ul>
+<li>To learn more about additional things you can do with the GitHub CLI, like editing existing comments, visit the <a href="https://cli.github.com/manual/">GitHub CLI Manual</a>.</li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

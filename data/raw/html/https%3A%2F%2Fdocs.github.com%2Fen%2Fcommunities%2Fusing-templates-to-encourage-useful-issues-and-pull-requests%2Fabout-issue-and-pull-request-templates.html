@@ -1,0 +1,42 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Building communities" href="/en/communities">Building communities</a><span>/</span>
+</li>
+<li>
+<a title="Issue &amp; PR templates" href="/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests">Issue &amp; PR templates</a><span>/</span>
+</li>
+<li><a title="About templates" href="/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/about-issue-and-pull-request-templates">About templates</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>About issue and pull request templates</h1></div></div>
+<div><div><p>With issue and pull request templates, you can customize and standardize the information you'd like contributors to include when they open issues and pull requests in your repository.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#issue-templates"><div><span>Issue templates</span></div></a></li>
+<li><a href="#pull-request-templates"><div><span>Pull request templates</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>After you create issue and pull request templates in your repository, contributors can use the templates to open issues or describe the proposed changes in their pull requests according to the repository's contributing guidelines. For more information about adding contributing guidelines to a repository, see <a href="/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors">Setting guidelines for repository contributors</a>.</p>
+<p>You can create default issue and pull request templates for your organization or personal account. For more information, see <a href="/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file">Creating a default community health file</a>.</p>
+<h2><a href="#issue-templates">Issue templates</a></h2>
+<p>When you create issue templates for your repository using the issue template builder or with issue forms, contributors can select the appropriate template when they open new issues in the repository.</p>
+<p><picture><source><img src="/assets/cb-47031/images/help/issues/new-issue-page-with-multiple-templates.png" alt="Screenshot of the new issue page, with multiple templates to choose from." width="720" height="242"></source></picture></p>
+<p>Issue templates are helpful when you want to provide guidance for opening issues while allowing contributors to specify the content of their issues. If you want contributors to provide specific, structured information when they open issues, issue forms help ensure that you receive your desired information.</p>
+<p>Using the template builder, you can specify a title and description for each template, add the template content, and either commit the template to the default branch or open a pull request in the repository. The template builder automatically adds the YAML front matter markup that is required for the template to show on the new issue page. For more information, see <a href="/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository">Configuring issue templates for your repository</a>.</p>
+<p>With issue forms, you can create templates that have web form fields using the GitHub form schema. When a contributor opens an issue using an issue form, the form inputs are converted to a standard markdown issue comment. You can specify different input types and set inputs as required to help contributors open actionable issues in your repository. For more information, see <a href="/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository#creating-issue-forms">Configuring issue templates for your repository</a> and <a href="/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms">Syntax for issue forms</a>.</p>
+<p>You can customize the issue template chooser that people see when creating a new issue in your repository by adding a <code>config.yml</code> file to the <code>.github/ISSUE_TEMPLATE</code> folder. For more information, see <a href="/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository#configuring-the-template-chooser">Configuring issue templates for your repository</a>.</p>
+<p>Issue templates are stored on the repository's default branch, in a hidden <code>.github/ISSUE_TEMPLATE</code> directory. If you create a template in another branch, it will not be available for collaborators to use. Issue template filenames are not case sensitive, and need a <em>.md</em> extension. Issue templates created with issue forms need a <em>.yml</em> extension. To be displayed with a <code>.github/ISSUE_TEMPLATE</code> folder and contain valid <code>name:</code> and <code>about:</code> keys in the YAML frontmatter (for issue templates defined in <code>.md</code> files) or valid <code>name:</code> and <code>description:</code> keys (for issue forms defined in <code>.yml</code> files).</p>
+<p>It is possible to manually create a single issue template in Markdown using the legacy issue template workflow, and project contributors will automatically see the template's contents in the issue body. However, we recommend using the upgraded multiple issue template builder or issue forms to create issue templates. For more information about the legacy workflow, see <a href="/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/manually-creating-a-single-issue-template-for-your-repository">Manually creating a single issue template for your repository</a>.</p>
+<p>You can create a security policy to give people instructions for reporting security vulnerabilities in your project. For more information, see <a href="/en/code-security/getting-started/adding-a-security-policy-to-your-repository">Adding a security policy to your repository</a>.</p>
+<h2><a href="#pull-request-templates">Pull request templates</a></h2>
+<p>When you add a pull request template to your repository, project contributors will automatically see the template's contents in the pull request body.</p>
+<p>You must create templates on the repository's default branch. Templates created in other branches are not available for collaborators to use. You can store your pull request template in the repository's visible root directory, the <code>docs</code> folder, or the hidden <code>.github</code> directory. Pull request template filenames are not case sensitive, and can have an extension such as <em>.md</em> or <em>.txt</em>.</p>
+<p>For more information, see <a href="/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository">Creating a pull request template for your repository</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

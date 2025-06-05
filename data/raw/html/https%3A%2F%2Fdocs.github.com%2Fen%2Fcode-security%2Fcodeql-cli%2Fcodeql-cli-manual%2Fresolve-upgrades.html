@@ -1,0 +1,131 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="CodeQL CLI" href="/en/code-security/codeql-cli">CodeQL CLI</a><span>/</span>
+</li>
+<li>
+<a title="CodeQL CLI manual" href="/en/code-security/codeql-cli/codeql-cli-manual">CodeQL CLI manual</a><span>/</span>
+</li>
+<li><a title="resolve upgrades" href="/en/code-security/codeql-cli/codeql-cli-manual/resolve-upgrades">resolve upgrades</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>resolve upgrades</h1></div></div>
+<div>
+<div><p>[Deep plumbing] Determine upgrades to run for a raw dataset.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div>
+<p>CodeQL is available for the following repository types:</p>
+<ul>
+<li>Public repositories on GitHub.com, see <a href="https://github.com/github/codeql-cli-binaries/blob/main/LICENSE.md">GitHub CodeQL Terms and Conditions</a>
+</li>
+<li>Organization-owned repositories on GitHub Team with <a href="/en/get-started/learning-about-github/about-github-advanced-security">GitHub Code Security</a> enabled</li>
+</ul>
+</div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#synopsis"><div><span>Synopsis</span></div></a></li>
+<li><a href="#description"><div><span>Description</span></div></a></li>
+<li><a href="#options"><div><span>Options</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<p>
+This content describes the most recent release of the CodeQL CLI. For more information about this release, see <a href="https://github.com/github/codeql-cli-binaries/releases">https://github.com/github/codeql-cli-binaries/releases</a>.</p>
+<p>To see details of the options available for this command in an earlier release, run the command with the <span><code>--help</code></span> option in your terminal.</p>
+</div>
+<h2><a href="#synopsis">Synopsis</a></h2>
+<div>
+<header><span>Shell</span><pre>codeql resolve upgrades --dbscheme=&lt;file&gt; &lt;options&gt;...
+</pre></header><pre><code>codeql resolve upgrades --dbscheme=&lt;file&gt; &lt;options&gt;...
+</code></pre>
+</div>
+<h2><a href="#description">Description</a></h2>
+<p>[Deep plumbing] Determine upgrades to run for a raw dataset.</p>
+<p>Determine which upgrades need to be performed on a particular raw QL
+dataset to bring it up to the state of the configured QL libraries. This
+computation is part of what happens during an ordinary database upgrade,
+and is exposed as a separate plumbing command in order to (a) help with
+troubleshooting, and (b) provide a starting point for modifying the path
+in extraordinary cases where exact control is needed.</p>
+<h2><a href="#options">Options</a></h2>
+<h3><a href="#primary-options">Primary Options</a></h3>
+<h4><a href="#--dbschemefile"><code>--dbscheme=&lt;file&gt;</code></a></h4>
+<p>[Mandatory] The <em>current</em> dbscheme of the dataset we want to upgrade.</p>
+<h4><a href="#--formatfmt"><code>--format=&lt;fmt&gt;</code></a></h4>
+<p>Select output format. Choices include:</p>
+<p><code>lines</code> <em>(default)</em>: Print upgrade scripts on one line each.</p>
+<p><code>json</code>: Print a JSON array of upgrade script paths.</p>
+<h4><a href="#--just-check"><code>--just-check</code></a></h4>
+<p>Don't print any output, but exit with code 0 if there are upgrades to
+do, and code 1 if there are none.</p>
+<h3><a href="#options-from-the-invoking-commands-command-line">Options from the invoking command's command line</a></h3>
+<h4><a href="#--search-pathdirdir"><code>--search-path=&lt;dir&gt;[:&lt;dir&gt;...]</code></a></h4>
+<p>A list of directories under which QL packs containing upgrade recipes
+may be found. Each directory can either be a QL pack (or bundle of packs
+containing a <code>.codeqlmanifest.json</code> file at the root) or the immediate
+parent of one or more such directories.</p>
+<p>If the path contains directories trees, their order defines precedence
+between them: if a pack name that must be resolved is matched in more
+than one of the directory trees, the one given first wins.</p>
+<p>Pointing this at a checkout of the open-source CodeQL repository ought
+to work when querying one of the languages that live there.</p>
+<p>(Note: On Windows the path separator is <code>;</code>).</p>
+<h4><a href="#--additional-packsdirdir"><code>--additional-packs=&lt;dir&gt;[:&lt;dir&gt;...]</code></a></h4>
+<p>[Advanced] If this list of directories is given, they will be searched
+for upgrades before the ones in <code>--search-path</code>. The order between these
+doesn't matter; it is an error if a pack name is found in two different
+places through this list.</p>
+<p>This is useful if you're temporarily developing a new version of a pack
+that also appears in the default path. On the other hand it is <em>not
+recommended</em> to override this option in a config file; some internal
+actions will add this option on the fly, overriding any configured
+value.</p>
+<p>(Note: On Windows the path separator is <code>;</code>).</p>
+<h4><a href="#--target-dbschemefile"><code>--target-dbscheme=&lt;file&gt;</code></a></h4>
+<p>The <em>target</em> dbscheme we want to upgrade to. If this is not given, a
+maximal upgrade path will be constructed</p>
+<h4><a href="#--target-shasha"><code>--target-sha=&lt;sha&gt;</code></a></h4>
+<p>[Advanced] An alternative to <code>--target-dbscheme</code> that gives the
+internal hash of the target dbscheme instead of the dbscheme file.</p>
+<h4><a href="#--no-allow-downgrades"><code>--[no-]allow-downgrades</code></a></h4>
+<p>Include any relevant downgrades if there are no upgrades</p>
+<h3><a href="#common-options">Common options</a></h3>
+<h4><a href="#-h---help"><code>-h, --help</code></a></h4>
+<p>Show this help text.</p>
+<h4><a href="#-jopt"><code>-J=&lt;opt&gt;</code></a></h4>
+<p>[Advanced] Give option to the JVM running the command.</p>
+<p>(Beware that options containing spaces will not be handled correctly.)</p>
+<h4><a href="#-v---verbose"><code>-v, --verbose</code></a></h4>
+<p>Incrementally increase the number of progress messages printed.</p>
+<h4><a href="#-q---quiet"><code>-q, --quiet</code></a></h4>
+<p>Incrementally decrease the number of progress messages printed.</p>
+<h4><a href="#--verbositylevel"><code>--verbosity=&lt;level&gt;</code></a></h4>
+<p>[Advanced] Explicitly set the verbosity level to one of errors,
+warnings, progress, progress+, progress++, progress+++. Overrides <code>-v</code>
+and <code>-q</code>.</p>
+<h4><a href="#--logdirdir"><code>--logdir=&lt;dir&gt;</code></a></h4>
+<p>[Advanced] Write detailed logs to one or more files in the given
+directory, with generated names that include timestamps and the name of
+the running subcommand.</p>
+<p>(To write a log file with a name you have full control over, instead
+give <code>--log-to-stderr</code> and redirect stderr as desired.)</p>
+<h4><a href="#--common-cachesdir"><code>--common-caches=&lt;dir&gt;</code></a></h4>
+<p>[Advanced] Controls the location of cached data on disk that will
+persist between several runs of the CLI, such as downloaded QL packs and
+compiled query plans. If not set explicitly, this defaults to a
+directory named <code>.codeql</code> in the user's home directory; it will be
+created if it doesn't already exist.</p>
+<p>Available since <code>v2.15.2</code>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

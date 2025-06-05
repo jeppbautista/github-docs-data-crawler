@@ -1,0 +1,115 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="CodeQL for VS Code" href="/en/code-security/codeql-for-vs-code">CodeQL for VS Code</a><span>/</span>
+</li>
+<li>
+<a title="Advanced functionality" href="/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension">Advanced functionality</a><span>/</span>
+</li>
+<li><a title="Customize settings" href="/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension/customizing-settings">Customize settings</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Customizing settings</h1></div></div>
+<div><div><p>You can edit the settings for the CodeQL for Visual Studio Code extension to suit your needs.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-settings-in-the-codeql-for-visual-studio-code-extension"><div><span>About settings in the CodeQL for Visual Studio Code extension</span></div></a></li>
+<li><a href="#editing-settings-for-the-codeql-extension"><div><span>Editing settings for the CodeQL extension</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-settings-in-the-codeql-for-visual-studio-code-extension">About settings in the CodeQL for Visual Studio Code extension</a></h2>
+<p>You can change numerous settings for the CodeQL for Visual Studio Code extension, including:</p>
+<ul>
+<li>Which version of the CodeQL CLI the extension uses.</li>
+<li>How the extension displays previous queries.</li>
+<li>How the extension runs queries.</li>
+</ul>
+<h2><a href="#editing-settings-for-the-codeql-extension">Editing settings for the CodeQL extension</a></h2>
+<ol>
+<li>
+<p>Open the "Extensions" view and right-click <strong>CodeQL</strong>, then click <strong>Extension Settings</strong>.</p>
+<div><picture><source><img src="/assets/cb-152951/images/help/security/codeql-for-vs-code-extensions-view.png" alt='Screenshot of the "Extensions" view, with the right-click menu displayed and "Extension Settings" outlined in dark orange.'></source></picture></div>
+</li>
+<li>
+<p>In the Settings window, edit settings as desired. The new settings are saved automatically.</p>
+<div><picture><source><img src="/assets/cb-188490/images/help/security/codeql-for-vs-code-extension-settings.png" alt="Screenshot of the CodeQL for VS Code Extension Settings window displayed inside VS Code."></source></picture></div>
+</li>
+</ol>
+<div>
+<p>
+Alternatively, you can edit the settings in JSON format by opening the VS Code Command Palette and selecting <strong>Preferences: Open User Settings (JSON)</strong>.</p>
+</div>
+<h3><a href="#choosing-a-version-of-the-codeql-cli">Choosing a version of the CodeQL CLI</a></h3>
+<p>To override the default behavior and use a specific version of the CodeQL CLI, you can specify the CodeQL CLI "Executable Path" in the extension settings, and point it to your existing copy of the CodeQL CLI. That is, the file named <code>codeql</code> (Linux and macOS), or <code>codeql.exe</code> (Windows). For more information about the default behavior, see <a href="/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension/configuring-access-to-the-codeql-cli">Configuring access to the CodeQL CLI</a>.</p>
+<h3><a href="#changing-the-labels-of-query-history-items">Changing the labels of query history items</a></h3>
+<p>The query history "Format" setting controls how the extension lists queries in the query history. By default, each item has a label with the following format:</p>
+<pre><code>QUERY-NAME on DATABASE-NAME - QUERY-STATUS NUMBER-OF-RESULTS [QUERY-RUNTIME]
+</code></pre>
+<p>To override the default label, you can specify a different format for the query history items.</p>
+<h3><a href="#changing-the-retention-period-for-query-history-items">Changing the retention period for query history items</a></h3>
+<p>By default, items in the "Query History" view are retained for 30 days. You can set a different time to live (TTL) by changing the "Query History: Ttl" setting. To retain items indefinitely, set the value to 0.</p>
+<h3><a href="#configuring-settings-for-running-queries-locally">Configuring settings for running queries locally</a></h3>
+<p>There are a number of settings under "Running Queries". For example, if your queries run too slowly and time out frequently, you may want to increase the memory by changing the "Running Queries: Memory" setting.</p>
+<p>If you want to examine query performance, enable the "Running Queries: Debug" setting to include timing and tuple counts. This will then be shown in the logs in the CodeQL "Query Server" tab of the "Output" view. The tuple count is useful because it indicates the size of the <a href="https://codeql.github.com/docs/ql-language-reference/predicates/#predicates">predicates</a> computed by the query.</p>
+<p>To save query server logs in a custom location, edit the "Running Queries: Custom Log Directory" setting. If you use a custom log directory, the extension saves the logs permanently, instead of deleting them automatically after each workspace session. This is useful if you want to investigate these logs to improve the performance of your queries.</p>
+<h3><a href="#configuring-settings-for-variant-analysis">Configuring settings for variant analysis</a></h3>
+<p>There are a number of settings under "Variant Analysis" that you can use to define or edit lists of GitHub repositories for variant analysis, and change to a different controller repository. For information on the purpose and requirements for a controller repository, see <a href="/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/running-codeql-queries-at-scale-with-multi-repository-variant-analysis">Running CodeQL queries at scale with multi-repository variant analysis</a>.</p>
+<p>You can also edit the items shown in the "Variant Analysis Repositories" view by editing a file in your Visual Studio Code workspace called <code>databases.json</code>. This file contains a JSON representation of all the items displayed in the view. To open your <code>databases.json</code> file in an editor window, click the <strong>{ }</strong> icon in the top right of the "Variant Analysis Repositories" view. You can then see a structured representation of the repositories, organizations and lists in your view. For example:</p>
+<pre><code><span>{</span>
+  <span>"version"</span><span>:</span> <span>1</span><span>,</span>
+  <span>"databases"</span><span>:</span> <span>{</span>
+    <span>"variantAnalysis"</span><span>:</span> <span>{</span>
+      <span>"repositoryLists"</span><span>:</span> <span>[</span>
+        <span>{</span>
+          <span>"name"</span><span>:</span> <span>"My favorite JavaScript repos"</span><span>,</span>
+          <span>"repositories"</span><span>:</span> <span>[</span>
+            <span>"facebook/react"</span><span>,</span>
+            <span>"babel/babel"</span><span>,</span>
+            <span>"angular/angular"</span>
+          <span>]</span>
+        <span>}</span>
+      <span>]</span><span>,</span>
+      <span>"owners"</span><span>:</span> <span>[</span>
+        <span>"microsoft"</span>
+      <span>]</span><span>,</span>
+      <span>"repositories"</span><span>:</span> <span>[</span>
+        <span>"apache/hadoop"</span>
+      <span>]</span>
+    <span>}</span>
+  <span>}</span><span>,</span>
+  <span>"selected"</span><span>:</span> <span>{</span>
+    <span>"kind"</span><span>:</span> <span>"variantAnalysisSystemDefinedList"</span><span>,</span>
+    <span>"listName"</span><span>:</span> <span>"top_10"</span>
+  <span>}</span>
+<span>}</span>
+</code></pre>
+<p>You can change the items shown in the view or add new items by directly editing this file.</p>
+<h3><a href="#configuring-settings-for-adding-databases">Configuring settings for adding databases</a></h3>
+<p>To automatically add database source folders to your workspace, you can enable the "Adding Databases: Add Database Source to Workspace" setting.</p>
+<p>This setting is disabled by default. You may want to enable the setting if you regularly browse the source code of databases (for example, to view the abstract syntax tree of the code). For more information, see <a href="/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension/exploring-the-structure-of-your-source-code">Exploring the structure of your source code</a>.</p>
+<div>
+<p>
+If you are in a single-folder workspace, adding database source folders will cause the workspace to reload as a multi-root workspace. This may cause query history and database lists to reset.</p>
+<p>Before enabling this setting, we recommend that you save your workspace as a multi-root workspace. For more information, see <a href="https://code.visualstudio.com/docs/editing/workspaces/multi-root-workspaces">Multi-root Workspaces</a> in the Visual Studio Code documentation.</p>
+</div>
+<h3><a href="#configuring-settings-for-testing-queries-locally">Configuring settings for testing queries locally</a></h3>
+<p>To increase the number of threads used for testing queries, you can update the "Running Tests: Number Of Threads" setting.</p>
+<p>To pass additional arguments to the CodeQL CLI when running tests, you can update the "Running Tests: Additional Test Arguments" setting. For more information about the available arguments, see <a href="/en/code-security/codeql-cli/codeql-cli-manual/test-run">test run</a>.</p>
+<h3><a href="#configuring-settings-for-telemetry-and-data-collection">Configuring settings for telemetry and data collection</a></h3>
+<p>You can configure whether the CodeQL extension collects telemetry data. This is disabled by default. For more information, see <a href="/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension/telemetry-in-codeql-for-visual-studio-code">Telemetry in CodeQL for Visual Studio Code</a>.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li>
+<a href="https://code.visualstudio.com/docs/configure/settings">User and Workspace Settings</a> in the Visual Studio Code documentation</li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

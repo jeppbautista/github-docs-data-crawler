@@ -1,0 +1,85 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Security" href="/en/actions/security-for-github-actions">Security</a><span>/</span>
+</li>
+<li>
+<a title="Artifact attestations" href="/en/actions/security-for-github-actions/using-artifact-attestations">Artifact attestations</a><span>/</span>
+</li>
+<li><a title="Attest with reusable workflows" href="/en/actions/security-for-github-actions/using-artifact-attestations/using-artifact-attestations-and-reusable-workflows-to-achieve-slsa-v1-build-level-3">Attest with reusable workflows</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Using artifact attestations and reusable workflows to achieve SLSA v1 Build Level 3</h1></div></div>
+<div><div><p>Building software with reusable workflows and artifact attestations can streamline your supply chain security and help you achieve SLSA v1.0 Build Level 3.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#step-1-configuring-your-builds"><div><span>Step 1: Configuring your builds</span></div></a></li>
+<li><a href="#step-2-verifying-artifact-attestations-built-with-a-reusable-workflow"><div><span>Step 2: Verifying artifact attestations built with a reusable workflow</span></div></a></li>
+<li><a href="#conclusion"><div><span>Conclusion</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>Artifact attestations are a great way to create unfalsifiable provenance and integrity guarantees for the software you build.</p>
+<p>But remember that by itself, artifact attestations provides links, like the build instructions an artifact was built with, which meets SLSA v1.0 Build Level 2. To make an informed risk decision, it's up to you to follow those links and evaluate those build instructions.</p>
+<p>You can take this a step further by requiring builds make use of known, vetted build instructions. A great way to do this is to have your build take place in a reusable workflow that many repositories across your organization share. Reusable workflows can provide isolation between the build process and the calling workflow, to meet SLSA v1.0 Build Level 3.</p>
+<p>Before starting this guide, you should be familiar with:</p>
+<ul>
+<li>Generating artifact attestations. See <a href="/en/actions/security-guides/using-artifact-attestations-to-establish-provenance-for-builds">Using artifact attestations to establish provenance for builds</a>.</li>
+<li>Writing and using reusable workflows. See <a href="/en/actions/using-workflows/reusing-workflows">Reusing workflows</a>.</li>
+</ul>
+<h2><a href="#step-1-configuring-your-builds">Step 1: Configuring your builds</a></h2>
+<p>First, we need to build with both artifact attestations and a reusable workflow.</p>
+<h3><a href="#building-with-a-reusable-workflow">Building with a reusable workflow</a></h3>
+<p>If you aren't already using reusable workflows to build your software, you'll need to take your build steps and move them into a reusable workflow. For more information on how to write and call a reusable workflow, see <a href="/en/actions/using-workflows/reusing-workflows">Reusing workflows</a>.</p>
+<h3><a href="#building-with-artifact-attestations">Building with artifact attestations</a></h3>
+<p>The reusable workflow you use to build your software must also generate artifact attestations to establish build provenance. For more information, see <a href="/en/actions/security-guides/using-artifact-attestations-to-establish-provenance-for-builds">Using artifact attestations to establish provenance for builds</a>.</p>
+<p>When you use a reusable workflow to generate artifact attestations, both the calling workflow and the reusable workflow need to have the following permissions.</p>
+<div>
+<header><span>YAML</span><pre>permissions:
+  attestations: write
+  contents: read
+  id-token: write
+</pre></header><pre><code><span>permissions:</span>
+  <span>attestations:</span> <span>write</span>
+  <span>contents:</span> <span>read</span>
+  <span>id-token:</span> <span>write</span>
+</code></pre>
+</div>
+<p>If you are building container images, you will also need to include the <code>packages: write</code> permission.</p>
+<h2><a href="#step-2-verifying-artifact-attestations-built-with-a-reusable-workflow">Step 2: Verifying artifact attestations built with a reusable workflow</a></h2>
+<p>To verify the artifact attestations generated with your builds, you can use <a href="https://cli.github.com/manual/gh_attestation_verify"><code>gh attestation verify</code></a> from the GitHub CLI.</p>
+<p>The <code>gh attestation verify</code> command requires either <code>--owner</code> or <code>--repo</code> flags to be used with it. These flags do two things.</p>
+<ul>
+<li>They tell <code>gh attestation verify</code> where to fetch the attestation from. This will always be your caller workflow.</li>
+<li>They tell <code>gh attestation verify</code> where the workflow that did the signing came from. This will always be the workflow that uses <a href="https://github.com/actions/attest-build-provenance"><code>attest-build-provenance</code> action</a>, which may be a reusable workflow.</li>
+</ul>
+<p>You can use optional flags with the <code>gh attestation verify</code> command.</p>
+<ul>
+<li>If your reusable workflow is not in the same repository as the caller workflow, use the <code>--signer-repo</code> flag to specify the repository that contains the reusable workflow.</li>
+<li>If you would like to require an artifact attestation to be signed with a specific workflow, use the <code>--signer-workflow</code> flag to indicate the workflow file that should be used.</li>
+</ul>
+<p>For example, if your calling workflow is <code>ORGANIZATION_NAME/REPOSITORY_NAME/.github/workflows/calling.yml</code> and it uses <code>REUSABLE_ORGANIZATION_NAME/REUSABLE_REPOSITORY_NAME/.github/workflows/reusable.yml</code> you could do:</p>
+<div>
+<header><span>Bash</span><pre>gh attestation verify -o ORGANIZATION_NAME --signer-repo REUSABLE_ORGANIZATION_NAME/REUSABLE_REPOSITORY_NAME PATH/TO/YOUR/BUILD/ARTIFACT-BINARY
+</pre></header><pre><code>gh attestation verify -o ORGANIZATION_NAME --signer-repo REUSABLE_ORGANIZATION_NAME/REUSABLE_REPOSITORY_NAME PATH/TO/YOUR/BUILD/ARTIFACT-BINARY
+</code></pre>
+</div>
+<p>Or if you want to specify the exact workflow:</p>
+<div>
+<header><span>Bash</span><pre>gh attestation verify -o ORGANIZATION_NAME --signer-workflow REUSABLE_ORGANIZATION_NAME/REUSABLE_REPOSITORY_NAME/.github/workflows/reusable.yml PATH/TO/YOUR/BUILD/ARTIFACT-BINARY
+</pre></header><pre><code>gh attestation verify -o ORGANIZATION_NAME --signer-workflow REUSABLE_ORGANIZATION_NAME/REUSABLE_REPOSITORY_NAME/.github/workflows/reusable.yml PATH/TO/YOUR/BUILD/ARTIFACT-BINARY
+</code></pre>
+</div>
+<h2><a href="#conclusion">Conclusion</a></h2>
+<p>You are now building and signing your artifacts in a reusable workflow, which can provide the isolation required by SLSA v1.0 Build Level 3. You can verify artifacts are built with known, vetted build instructions by requiring your artifact was built with a specific workflow, reusable or not.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

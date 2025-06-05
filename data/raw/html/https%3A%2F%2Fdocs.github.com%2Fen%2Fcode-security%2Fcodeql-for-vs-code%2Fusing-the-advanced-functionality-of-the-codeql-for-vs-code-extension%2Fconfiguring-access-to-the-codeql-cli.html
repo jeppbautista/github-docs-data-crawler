@@ -1,0 +1,41 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="CodeQL for VS Code" href="/en/code-security/codeql-for-vs-code">CodeQL for VS Code</a><span>/</span>
+</li>
+<li>
+<a title="Advanced functionality" href="/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension">Advanced functionality</a><span>/</span>
+</li>
+<li><a title="CodeQL CLI access" href="/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension/configuring-access-to-the-codeql-cli">CodeQL CLI access</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Configuring access to the CodeQL CLI</h1></div></div>
+<div><div><p>The CodeQL for Visual Studio Code extension uses the CodeQL CLI to compile and run queries.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#configuring-access-to-the-codeql-cli"><div><span>Configuring access to the CodeQL CLI</span></div></a></li>
+<li><a href="#troubleshooting"><div><span>Troubleshooting</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#configuring-access-to-the-codeql-cli">Configuring access to the CodeQL CLI</a></h2>
+<p>If you already have the CodeQL CLI installed and added to your <code>PATH</code>, the extension will use that version. This might be the case if you create your own CodeQL databases instead of downloading them from GitHub. For more information, see <a href="/en/code-security/codeql-cli/getting-started-with-the-codeql-cli/preparing-your-code-for-codeql-analysis">Preparing your code for CodeQL analysis</a>.</p>
+<p>Otherwise, the extension automatically manages access to the executable of the CodeQL CLI for you. This ensures that the CodeQL CLI is compatible with the CodeQL extension. You can also check for updates with the <strong>CodeQL: Check for CLI Updates</strong> command from the VS Code Command Palette.</p>
+<div>
+<ul>
+<li>The extension-managed CodeQL CLI is not accessible from the terminal. If you intend to use the CLI outside of the extension (for example to create databases), we recommend that you install your own copy of the CodeQL CLI."</li>
+<li>To override the default behavior and use a specific version of the CodeQL CLI, you can specify the CodeQL CLI <strong>Executable Path</strong> in the extension settings. For more information, see <a href="/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension/customizing-settings">Customizing settings</a>.</li>
+</ul>
+</div>
+<h2><a href="#troubleshooting">Troubleshooting</a></h2>
+<p>If you have any difficulty setting up access to the CodeQL CLI, check the CodeQL Extension log for error messages or to see the location of the CodeQL CLI being used. For more information, see <a href="/en/code-security/codeql-for-vs-code/troubleshooting-codeql-for-vs-code/accessing-logs">Accessing logs</a>. In particular, in the Extension log you can see the location of the CodeQL CLI that is being used. This is useful if you want to see whether this is an extension-managed CLI or an external one.</p>
+<p>If you use the extension-managed CodeQL CLI, the extension checks for updates automatically (or with the <strong>CodeQL: Check for CLI Updates</strong> command) and prompts you to accept the updated version. If you use an external CLI, you need to update it manually (when updates are necessary).</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

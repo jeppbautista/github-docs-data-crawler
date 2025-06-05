@@ -1,0 +1,79 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Issues" href="/en/issues">GitHub Issues</a><span>/</span>
+</li>
+<li>
+<a title="Projects" href="/en/issues/planning-and-tracking-with-projects">Projects</a><span>/</span>
+</li>
+<li>
+<a title="Learning about Projects" href="/en/issues/planning-and-tracking-with-projects/learning-about-projects">Learning about Projects</a><span>/</span>
+</li>
+<li><a title="Best practices for Projects" href="/en/issues/planning-and-tracking-with-projects/learning-about-projects/best-practices-for-projects">Best practices for Projects</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Best practices for Projects</h1></div></div>
+<div><div><p>Learn tips for managing your projects.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#break-down-large-issues-into-smaller-issues"><div><span>Break down large issues into smaller issues</span></div></a></li>
+<li><a href="#communicate"><div><span>Communicate</span></div></a></li>
+<li><a href="#make-use-of-the-description-readme-and-status-updates"><div><span>Make use of the description, README, and status updates</span></div></a></li>
+<li><a href="#use-views"><div><span>Use views</span></div></a></li>
+<li><a href="#have-a-single-source-of-truth"><div><span>Have a single source of truth</span></div></a></li>
+<li><a href="#use-automation"><div><span>Use automation</span></div></a></li>
+<li><a href="#use-different-field-types"><div><span>Use different field types</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>You can use Projects to manage your work on GitHub, where your issues and pull requests live. Read on for tips to manage your projects efficiently and effectively. For more information about Projects, see <a href="/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects">About Projects</a>.</p>
+<h2><a href="#break-down-large-issues-into-smaller-issues">Break down large issues into smaller issues</a></h2>
+<p>Breaking a large issue into smaller issues makes the work more manageable and enables team members to work in parallel. It also leads to smaller pull requests, which are easier to review.</p>
+<p>To track how smaller issues fit into the larger goal, milestones, or labels. For more information, see <a href="/en/issues/using-labels-and-milestones-to-track-work/about-milestones">About milestones</a> and <a href="/en/issues/using-labels-and-milestones-to-track-work/managing-labels">Managing labels</a>.</p>
+<h2><a href="#communicate">Communicate</a></h2>
+<p>Issues and pull requests include built-in features to let you easily communicate with your collaborators. Use @mentions to alert a person or entire team about a comment. Assign collaborators to issues to communicate responsibility. Link to related issues or pull requests to communicate how they are connected.</p>
+<h2><a href="#make-use-of-the-description-readme-and-status-updates">Make use of the description, README, and status updates</a></h2>
+<p>Use your project's description and README to share information about the project.</p>
+<p>For example:</p>
+<ul>
+<li>Explaining the purpose of the project.</li>
+<li>Describing the project views and how to use them.</li>
+<li>Including relevant links and people to contact for more information.</li>
+</ul>
+<p>Project READMEs support Markdown which allows you to use images and advanced formatting such as links, lists, and headers. For more information, see <a href="/en/issues/planning-and-tracking-with-projects/creating-projects/creating-a-project">Creating a project</a>.</p>
+<p>You can also share high-level updates with other users of your project by posting status updates. Status updates allow you to mark the project with a status, such as "On track" or "At risk", set start and target dates, and share written updates with your team. For more information, see <a href="/en/issues/planning-and-tracking-with-projects/learning-about-projects/sharing-project-updates">Sharing project updates</a>.</p>
+<h2><a href="#use-views">Use views</a></h2>
+<p>Use project views to look at your project from different angles.</p>
+<p>For example:</p>
+<ul>
+<li>Filter by status to view all un-started items</li>
+<li>Group by a custom priority field to monitor the volume of high priority items</li>
+<li>Sort by a custom date field to view the items with the earliest target ship date</li>
+</ul>
+<p>For more information, see <a href="/en/issues/planning-and-tracking-with-projects/customizing-views-in-your-project/changing-the-layout-of-a-view">Changing the layout of a view</a>.</p>
+<h2><a href="#have-a-single-source-of-truth">Have a single source of truth</a></h2>
+<p>To prevent information from getting out of sync, maintain a single source of truth. For example, track a target ship date in a single location instead of spread across multiple fields. Then, if the target ship date shifts, you only need to update the date in one location.</p>
+<p>Projects automatically stay up to date with GitHub data, such as assignees, milestones, and labels. When one of these fields changes in an issue or pull request, the change is automatically reflected in your project.</p>
+<h2><a href="#use-automation">Use automation</a></h2>
+<p>You can automate tasks to spend less time on busy work and more time on the project itself. The less you need to remember to do manually, the more likely your project will stay up to date.</p>
+<p>Projects offers built-in workflows. For example, when an issue is closed, you can automatically set the status to "Done". You can also configure built-in workflows to automatically archive items when they meet certain criteria and to automatically add items from a repository when they match a filter.</p>
+<p>Additionally, GitHub Actions and the GraphQL API enable you to automate routine project management tasks. For example, to keep track of pull requests awaiting review, you can create a workflow that adds a pull request to a project and sets the status to "needs review"; this process can be automatically triggered when a pull request is marked as "ready for review."</p>
+<ul>
+<li>For more information about the built-in workflows, see <a href="/en/issues/planning-and-tracking-with-projects/automating-your-project/using-the-built-in-automations">Using the built-in automations</a>.</li>
+<li>For more information about automatically archiving items, see <a href="/en/issues/planning-and-tracking-with-projects/automating-your-project/archiving-items-automatically">Archiving items automatically</a>.</li>
+<li>For more information about automatically adding items, see <a href="/en/issues/planning-and-tracking-with-projects/automating-your-project/adding-items-automatically">Adding items automatically</a>.</li>
+<li>For an example workflow, see <a href="/en/issues/planning-and-tracking-with-projects/automating-your-project/automating-projects-using-actions">Automating Projects using Actions</a>.</li>
+<li>For more information about the API, see <a href="/en/issues/planning-and-tracking-with-projects/automating-your-project/using-the-api-to-manage-projects">Using the API to manage Projects</a>.</li>
+<li>For more information about GitHub Actions, see <a href="/en/actions">GitHub Actions documentation</a>.</li>
+</ul>
+<h2><a href="#use-different-field-types">Use different field types</a></h2>
+<p>Take advantage of the various field types to meet your needs.</p>
+<p>Use an iteration field to schedule work or create a timeline. You can group by iteration to see if items are balanced between iterations, or you can filter to focus on a single iteration. Iteration fields also let you view work that you completed in past iterations, which can help with velocity planning and reflecting on your team's accomplishments. Iteration fields also support breaks to show when you and your team are taking time away from their iterations. For more information, see <a href="/en/issues/planning-and-tracking-with-projects/understanding-fields/about-iteration-fields">About iteration fields</a>.</p>
+<p>Use a single select field to track information about a task based on a preset list of values. For example, track priority or project phase. Since the values are selected from a preset list, you can easily group or filter to focus on items with a specific value.</p>
+<p>For more information about the different field types, see <a href="/en/issues/planning-and-tracking-with-projects/understanding-fields">Understanding fields</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

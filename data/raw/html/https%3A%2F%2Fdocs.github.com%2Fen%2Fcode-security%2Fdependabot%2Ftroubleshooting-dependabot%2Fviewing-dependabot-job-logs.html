@@ -1,0 +1,75 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Dependabot" href="/en/code-security/dependabot">Dependabot</a><span>/</span>
+</li>
+<li>
+<a title="Troubleshoot Dependabot" href="/en/code-security/dependabot/troubleshooting-dependabot">Troubleshoot Dependabot</a><span>/</span>
+</li>
+<li><a title="Viewing Dependabot logs" href="/en/code-security/dependabot/troubleshooting-dependabot/viewing-dependabot-job-logs">Viewing Dependabot logs</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Viewing Dependabot job logs</h1></div></div>
+<div>
+<div><p>To support debugging of Dependabot pull requests, GitHub provides logs of all Dependabot jobs.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Users with <strong>write</strong> access</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-dependabot-job-logs"><div><span>About Dependabot job logs</span></div></a></li>
+<li><a href="#viewing-dependabot-job-logs"><div><span>Viewing Dependabot job logs</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-dependabot-job-logs">About Dependabot job logs</a></h2>
+<p>Job logs are only available if Dependabot version updates are enabled for the repository.</p>
+<p>Whenever a Dependabot job runs, the details of the job are captured in the job logs list, which is accessible from the dependency graph.</p>
+<p>For each manifest file, the job logs record the most recent runs of Dependabot, with each log entry displaying the job type, job ID, timestamp, and, where necessary, a link to the pull request(s) associated with the job.</p>
+<p>You may find that the log entry contains a short error message, which can be useful for debugging issues with a particular pull request or run. If you need to troubleshoot further, you can click <strong>view logs</strong> to access the full log files for a specific run.</p>
+<p>You will see the following job types recorded in the log list:</p>
+<ul>
+<li>
+<strong>Version update</strong> - refers to a Dependabot version updates run.</li>
+<li>
+<strong>Security update</strong> - refers to a Dependabot security updates run.</li>
+<li>
+<strong>Rebase update</strong> - refers to a run where Dependabot has automatically rebased the pull request to resolve a conflict with the target branch. This update could apply to a pull request from a Dependabot version updates job, or a Dependabot security updates job.</li>
+</ul>
+<h2><a href="#viewing-dependabot-job-logs">Viewing Dependabot job logs</a></h2>
+<p>The Dependabot job logs list is accessible from the dependency graph tab in your repository.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click </p>
+<div><picture><source><img src="/assets/cb-52175/images/help/repository/repo-nav-insights-tab.png" alt='Screenshot of the main page of a repository. In the horizontal navigation bar, a tab, labeled with a graph icon and "Insights," is outlined in orange.' width="720" height="107"></source></picture></div>
+</li>
+<li>
+<p>In the left sidebar, click <strong>Dependency graph</strong>.
+</p>
+<div><picture><source><img src="/assets/cb-3959/images/help/graphs/graphs-sidebar-dependency-graph.png" alt='Screenshot of the "Dependency graph" tab. The tab is highlighted with an orange outline.' width="193" height="246"></source></picture></div>
+</li>
+<li>
+<p>Under "Dependency graph", click <strong>Dependabot</strong>.</p>
+</li>
+<li>
+<p>To the right of the name of manifest file that you're interested in, click <strong>Recent update jobs</strong>.</p>
+</li>
+<li>
+<p>Optionally, to see the full logs files for a particular job, click <strong>view logs</strong>.</p>
+<div><picture><source><img src="/assets/cb-64050/images/help/dependabot/dependabot-job-logs.png" alt='Screenshot of a Dependabot job log entry for the Gemfile package manager. A button, called "View logs", is highlighted in a dark orange outline.'></source></picture></div>
+</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

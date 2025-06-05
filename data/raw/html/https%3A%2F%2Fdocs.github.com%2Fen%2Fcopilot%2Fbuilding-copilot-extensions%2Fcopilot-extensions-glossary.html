@@ -1,0 +1,52 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Build Copilot Extensions" href="/en/copilot/building-copilot-extensions">Build Copilot Extensions</a><span>/</span>
+</li>
+<li><a title="Extensions Glossary" href="/en/copilot/building-copilot-extensions/copilot-extensions-glossary">Extensions Glossary</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Copilot Extensions Glossary</h1></div></div>
+<div><div><p>Understand the terminology used in Copilot Extensions.</p></div></div>
+<div><div><div>
+<p>The following terms are used in the context of Copilot Extensions, and are defined here for clarity.</p>
+<h4><a href="#agent">Agent</a></h4>
+<p>A type of Copilot Extension implementation that gives developers full control over handling user queries and response generation. This approach is ideal for builders who want complete customization and management of AI interactions.</p>
+<h4><a href="#context-passing">Context Passing</a></h4>
+<p>A capability in Copilot Extensions that enables user context from editors to be sent to agents, allowing for more tailored responses.</p>
+<h4><a href="#copilot-chat">Copilot Chat</a></h4>
+<p>The conversational interface within GitHub Copilot where users can interact with the AI assistant and extensions.</p>
+<h4><a href="#copilot-extension">Copilot Extension</a></h4>
+<p>A GitHub App with additional access to the Copilot Chat window and Copilot API, allowing for extended functionality in GitHub's Copilot Chat. This is how we will refer to extensions from the perspective of an extension user.</p>
+<h4><a href="#copilot-extensibility-platform">Copilot Extensibility Platform</a></h4>
+<p>The system that handles authentication and proxies requests between clients and agent plugins.</p>
+<h4><a href="#copilot-enabled-visual-studio-code-extension">Copilot-enabled Visual Studio Code extension</a></h4>
+<p>Also known as Visual Studio Code Chat extensions, Copilot-enabled Visual Studio Code extensions are built as a Visual Studio Code extension rather than a GitHub App. These extensions are exclusive to VS Code and can be downloaded from the VS Code Marketplace.</p>
+<h4><a href="#github-app">GitHub App</a></h4>
+<p>The foundation for a Copilot Extension that provides the necessary infrastructure, permissions, and context from GitHub, such as user, repo and organization metadata.</p>
+<h4><a href="#github-marketplace">GitHub Marketplace</a></h4>
+<p>The platform where GitHub approved GitHub Copilot Extensions can be listed publicly and discovered by users.</p>
+<h4><a href="#listedpublished-extension">Listed/Published Extension</a></h4>
+<p>An extension that appears on the GitHub Marketplace. These extensions must be reviewed and approved by GitHub.</p>
+<h4><a href="#private-extension">Private Extension</a></h4>
+<p>An extension that is only visible and usable by the enterprise, organization, or individual user that created it. Enterprise-created extensions can be installed by organizations that are within the enterprise.</p>
+<h4><a href="#public-extension">Public Extension</a></h4>
+<p>An extension that is visible and installable by any GitHub user or organization.</p>
+<h4><a href="#skill">Skill</a></h4>
+<p>A piece of code that retrieves context or executes an action in response to a user’s prompt (for example, "findIssueByID(id: number)"). For a list of a skills, see <a href="/en/copilot/using-github-copilot/asking-github-copilot-questions-in-your-ide#currently-available-skills">Currently available skills</a>.</p>
+<h4><a href="#skillset">Skillset</a></h4>
+<p>A type of Copilot Extension implementation that gives developers the ability to connect external services and custom API endpoints to Copilot with minimal complexity. The Copilot Extensibility Platform handles prompt crafting, function evaluation, and response generation. The builder only needs to handle API skill definitions. This approach is ideal for builders who want minimal complexity.</p>
+<h4><a href="#toolfunction-calling">Tool/Function Calling</a></h4>
+<p>A capability of Copilot's LLM (as well as Open AI’s) that allows them to invoke specific tools or functions. Extension builders can define available tools with parameters, enabling the LLM to select and call appropriate tools to fulfill a user’s request. “Functions” are a subset of “tools” and the “function calling” term will be closing down.</p>
+<h4><a href="#unlisted-extension">Unlisted Extension</a></h4>
+<p>An extension that is not published on the GitHub Marketplace. Builders may develop and distribute public unlisted extensions without requiring review or approval from GitHub. GitHub does not guarantee the security or quality of unlisted extensions.</p>
+<h4><a href="#verified-creator">Verified Creator</a></h4>
+<p>A status required for organizations to publish extensions on the GitHub Marketplace.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

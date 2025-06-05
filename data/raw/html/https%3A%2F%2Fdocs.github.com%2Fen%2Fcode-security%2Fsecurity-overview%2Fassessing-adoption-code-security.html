@@ -1,0 +1,179 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Security overview" href="/en/code-security/security-overview">Security overview</a><span>/</span>
+</li>
+<li><a title="Assess adoption of features" href="/en/code-security/security-overview/assessing-adoption-code-security">Assess adoption of features</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Assessing adoption of security features</h1></div></div>
+<div>
+<div><p>You can use security overview to see which teams and repositories have already enabled features for secure coding, and identify any that are not yet protected.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div>
+<p>Access requires:</p>
+<ul>
+<li>Organization views: <strong>write</strong> access to repositories in the organization</li>
+<li>Enterprise views: organization owners and security managers</li>
+</ul>
+</div></div>
+<div><div><p>Organizations owned by a GitHub Team account with GitHub Secret Protection or GitHub Code Security, or owned by a GitHub Enterprise account</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-adoption-of-features-for-secure-coding"><div><span>About adoption of features for secure coding</span></div></a></li>
+<li><a href="#viewing-the-enablement-of-security-features-for-an-organization"><div><span>Viewing the enablement of security features for an organization</span></div></a></li>
+<li><a href="#viewing-the-enablement-of-features-for-secure-coding-in-an-enterprise"><div><span>Viewing the enablement of features for secure coding in an enterprise</span></div></a></li>
+<li><a href="#viewing-enablement-trends-for-an-organization"><div><span>Viewing enablement trends for an organization</span></div></a></li>
+<li><a href="#viewing-enablement-trends-for-an-enterprise"><div><span>Viewing enablement trends for an enterprise</span></div></a></li>
+<li><a href="#interpreting-and-acting-on-the-enablement-data"><div><span>Interpreting and acting on the enablement data</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-adoption-of-features-for-secure-coding">About adoption of features for secure coding</a></h2>
+<p>You can use security overview to see which repositories and teams have already enabled each security feature, and where people need more encouragement to adopt these features. The "Security coverage" view shows a summary and detailed information on feature enablement for an organization. You can filter the view to show a subset of repositories using the "enabled" and "not enabled" links, the "Teams" dropdown menu, and a search field in the page header.</p>
+<p><picture><source><img src="/assets/cb-114980/images/help/security-overview/security-coverage-view-summary.png" alt='Screenshot of the header section of the "Security coverage" view on the "Security" tab for an organization.'></source></picture></p>
+<div>
+<p> "Pull request alerts" are reported as enabled only when code scanning has analyzed at least one pull request since alerts were enabled for the repository.</p>
+</div>
+<p>You can download a CSV file of the data displayed on the "Security coverage" page. This data file can be used for efforts like security research and in-depth data analysis, and can integrate easily with external datasets. For more information, see <a href="/en/code-security/security-overview/exporting-data-from-security-overview">Exporting data from security overview</a>.</p>
+<p>You can use the "Enablement trends" view to see enablement status and enablement status trends over time for Dependabot, code scanning, or secret scanning for repositories in an organization, or across organizations in an enterprise. For each of these features, you can view a graph visualizing the percentage of repositories that have the feature enabled, as well as a detailed table with enablement percentages for different points in time. For more information, see <a href="#viewing-enablement-trends-for-an-organization">Viewing enablement trends for an organization</a> and <a href="#viewing-enablement-trends-for-an-enterprise">Viewing enablement trends for an enterprise</a>.</p>
+<h2><a href="#viewing-the-enablement-of-security-features-for-an-organization">Viewing the enablement of security features for an organization</a></h2>
+<p>You can view data to assess the enablement of features for secure coding across repositories in an organization.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the organization.</p>
+</li>
+<li>
+<p>Under your organization name, click </p>
+<div><picture><source><img src="/assets/cb-22170/images/help/organizations/organization-security-tab.png" alt='Screenshot of the horizontal navigation bar for an organization. A tab, labeled with a shield icon and "Security," is outlined in dark orange.' width="720" height="91"></source></picture></div>
+</li>
+<li>
+<p>To display the "Security coverage" view, in the sidebar, click </p>
+</li>
+<li>
+<p>Use options in the page summary to filter results to show the repositories you want to assess. The list of repositories and metrics displayed on the page automatically update to match your current selection. For more information on filtering, see <a href="/en/code-security/security-overview/filtering-alerts-in-security-overview">Filtering alerts in security overview</a>.</p>
+<ul>
+<li>Use the <strong>Teams</strong> dropdown to show information only for the repositories owned by one or more teams. For more information, see <a href="/en/organizations/managing-user-access-to-your-organizations-repositories/managing-team-access-to-an-organization-repository">Managing team access to an organization repository</a>.</li>
+<li>Click <strong>NUMBER enabled</strong> or <strong>NUMBER not enabled</strong> in the header for any feature to show only the repositories with that feature enabled or not enabled.</li>
+<li>At the top of the list of repositories, click <strong>NUMBER Archived</strong> to show only repositories that are archived.</li>
+<li>Click in the search box to add further filters to the repositories displayed.</li>
+</ul>
+</li>
+</ol>
+<h2><a href="#viewing-the-enablement-of-features-for-secure-coding-in-an-enterprise">Viewing the enablement of features for secure coding in an enterprise</a></h2>
+<p>You can view data to assess the enablement of security features across organizations in an enterprise.</p>
+<ol>
+<li>
+<p>Navigate to GitHub Enterprise Cloud.</p>
+</li>
+<li>
+<p>In the top-right corner of GitHub, click your profile photo, then click <strong>Your enterprises</strong>.</p>
+</li>
+<li>
+<p>In the list of enterprises, click the enterprise you want to view.</p>
+</li>
+<li>
+<p>On the left side of the page, in the enterprise account sidebar, click </p>
+</li>
+<li>
+<p>To display the "Security coverage" view, in the sidebar, click <strong>Coverage</strong>.</p>
+</li>
+<li>
+<p>Use options in the page summary to filter results to show the repositories you want to assess. The list of repositories and metrics displayed on the page automatically update to match your current selection. For more information on filtering, see <a href="/en/code-security/security-overview/filtering-alerts-in-security-overview">Filtering alerts in security overview</a>.</p>
+<ul>
+<li>
+<p>Use the <strong>Teams</strong> dropdown to show information only for the repositories owned by one or more teams. For more information, see <a href="/en/organizations/managing-user-access-to-your-organizations-repositories/managing-team-access-to-an-organization-repository">Managing team access to an organization repository</a>.</p>
+</li>
+<li>
+<p>Click <strong>NUMBER enabled</strong> or <strong>NUMBER not enabled</strong> in the header for any feature to show only the repositories with that feature enabled or not enabled.</p>
+</li>
+<li>
+<p>At the top of the list of repositories, click <strong>NUMBER Archived</strong> to show only repositories that are archived.</p>
+</li>
+<li>
+<p>Click in the search box to add further filters to the repositories displayed.</p>
+</li>
+</ul>
+<div>
+<p>
+You can use the <code>owner</code> filter in the search field to filter the data by organization. For more information, see <a href="/en/code-security/security-overview/filtering-alerts-in-security-overview#repository-owner-name-and-type-filters">Filtering alerts in security overview</a>.</p>
+</div>
+</li>
+</ol>
+<h2><a href="#viewing-enablement-trends-for-an-organization">Viewing enablement trends for an organization</a></h2>
+<p>You can view data to assess the enablement status and enablement status trends of security features for an organization.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the organization.</p>
+</li>
+<li>
+<p>Under your organization name, click </p>
+<div><picture><source><img src="/assets/cb-22170/images/help/organizations/organization-security-tab.png" alt='Screenshot of the horizontal navigation bar for an organization. A tab, labeled with a shield icon and "Security," is outlined in dark orange.' width="720" height="91"></source></picture></div>
+</li>
+<li>
+<p>In the sidebar, under "Metrics", click </p>
+</li>
+<li>
+<p>Click on one of the tabs for "Dependabot", "Code scanning", or "Secret scanning" to view enablement trends and the percentage of repositories in your organization with that feature enabled. This data is displayed as a graph and a detailed table.</p>
+</li>
+<li>
+<p>Optionally, use the options at the top of the "Enablement trends" view page to filter the group of repositories you want to see enablement trends for.</p>
+<ul>
+<li>
+<p>Use the date picker to set the time range that you want to view enablement trends for.</p>
+</li>
+<li>
+<p>Click in the search box to add further filters on the enablement trends displayed. The filters you can apply are the same as those for the "Overview" dashboard view. For more information, see <a href="/en/code-security/security-overview/filtering-alerts-in-security-overview">Filtering alerts in security overview</a>.</p>
+<div><picture><source><img src="/assets/cb-101335/images/help/security-overview/security-overview-enablement-trends.png" alt='Screenshot of the "Enablement trends" view for an organization, showing Dependabot status and trends over 30 days, with a filter applied.'></source></picture></div>
+</li>
+</ul>
+</li>
+</ol>
+<h2><a href="#viewing-enablement-trends-for-an-enterprise">Viewing enablement trends for an enterprise</a></h2>
+<p>You can view data to assess the enablement status and enablement status trends of security features across organizations in an enterprise.</p>
+<ol>
+<li>
+<p>Navigate to GitHub Enterprise Cloud.</p>
+</li>
+<li>
+<p>In the top-right corner of GitHub, click your profile photo, then click <strong>Your enterprises</strong>.</p>
+</li>
+<li>
+<p>In the list of enterprises, click the enterprise you want to view.</p>
+</li>
+<li>
+<p>On the left side of the page, in the enterprise account sidebar, click </p>
+</li>
+<li>
+<p>To display the "Enablement trends" view, in the sidebar, click <strong>Enablement trends</strong>.</p>
+</li>
+<li>
+<p>Click on one of the tabs for "Dependabot", "Code scanning", or "Secret scanning" to view enablement trends and the percentage of repositories across organizations in your enterprise with that feature enabled. This data is displayed as a graph and a detailed table.</p>
+</li>
+<li>
+<p>Optionally, use the options at the top of the "Enablement trends" view page to filter the group of repositories you want to see enablement trends for.</p>
+<ul>
+<li>Use the date picker to set the time range that you want to view enablement trends for.</li>
+<li>Click in the search box to add further filters on the enablement trends displayed. For more information, see <a href="/en/code-security/security-overview/filtering-alerts-in-security-overview">Filtering alerts in security overview</a>.</li>
+</ul>
+</li>
+</ol>
+<div>
+<p> You can use the <code>owner:</code> filter in the search field to filter the data by organization. For more information, see <a href="/en/code-security/security-overview/filtering-alerts-in-security-overview">Filtering alerts in security overview</a>.</p>
+</div>
+<h2><a href="#interpreting-and-acting-on-the-enablement-data">Interpreting and acting on the enablement data</a></h2>
+<p>Some security features can and should be enabled on all repositories. For example, secret scanning alerts and push protection reduce the risk of a security leak no matter what information is stored in the repository. If you see repositories that don't already use these features, you should either enable them or discuss an enablement plan with the team who owns the repository. For information on enabling features for a whole organization, see <a href="/en/code-security/securing-your-organization/enabling-security-features-in-your-organization">Enabling security features in your organization</a>.</p>
+<p>Other features are not suitable for use in all repositories. For example, there would be no point in enabling Dependabot for repositories that only use ecosystems or languages that are unsupported. As such, it's normal to have some repositories where these features are not enabled.</p>
+<p>Your enterprise may also have configured policies to limit the use of some security features. For more information, see <a href="/en/enterprise-cloud@latest/admin/policies/enforcing-policies-for-your-enterprise/enforcing-policies-for-code-security-and-analysis-for-your-enterprise">Enforcing policies for code security and analysis for your enterprise</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,82 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Supply chain security" href="/en/code-security/supply-chain-security">Supply chain security</a><span>/</span>
+</li>
+<li>
+<a title="Understand your supply chain" href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain">Understand your supply chain</a><span>/</span>
+</li>
+<li><a title="Enforce dependency review" href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/enforcing-dependency-review-across-an-organization">Enforce dependency review</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Enforcing dependency review across an organization</h1></div></div>
+<div>
+<div><p>Dependency review lets you catch insecure dependencies before you introduce them to your environment. You can enforce the use of the dependency review action across your organization.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Organization owners, security managers, and organization members with the <strong>admin</strong> role</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-dependency-review-enforcement"><div><span>About dependency review enforcement</span></div></a></li>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#enforcing-dependency-review-for-your-organization"><div><span>Enforcing dependency review for your organization</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-dependency-review-enforcement">About dependency review enforcement</a></h2>
+<p>The "dependency review action" refers to the specific action that can report on differences in a pull request within the GitHub Actions context. See <a href="https://github.com/actions/dependency-review-action"><code>dependency-review-action</code></a>. You can use the dependency review action in your repository to enforce dependency reviews on your pull requests. The action scans for vulnerable versions of dependencies introduced by package version changes in pull requests, and warns you about the associated security vulnerabilities. This gives you better visibility of what's changing in a pull request, and helps prevent vulnerabilities being added to your repository. For more information, see <a href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-dependency-review#about-the-dependency-review-action">About dependency review</a>.</p>
+<p>You can enforce the use of the dependency review action in your organization by setting up a repository ruleset that will require the <code>dependency-review-action</code> workflow to pass before pull requests can be merged. Repository rulesets are rule settings that allow you to control how users can interact with selected branches and tags in your repositories. For more information, see <a href="/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets">About rulesets</a> and <a href="/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets#require-workflows-to-pass-before-merging">Require workflows to pass before merging</a>.</p>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<p>You need to add the dependency review action to one of the repositories in your organization, and configure the action. For more information, see <a href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/configuring-the-dependency-review-action">Configuring the dependency review action</a>.</p>
+<h2><a href="#enforcing-dependency-review-for-your-organization">Enforcing dependency review for your organization</a></h2>
+<ol>
+<li>
+<p>In the upper-right corner of GitHub, select your profile photo, then click </p>
+</li>
+<li>
+<p>Next to the organization, click <strong>Settings</strong>.</p>
+</li>
+<li>
+<p>In the left sidebar, in the "Code, planning, and automation" section, click <strong>Rulesets</strong>.</p>
+<div><picture><source><img src="/assets/cb-32436/images/help/organizations/sidebar-repository-rulesets.png" alt="Screenshot of an organization's settings page. In the sidebar, a link labeled &quot;Rulesets&quot; is outlined in orange." width="502" height="900"></source></picture></div>
+</li>
+<li>
+<p>Click the <strong>New ruleset</strong> dropdown menu, and select <strong>New branch ruleset</strong>.</p>
+</li>
+<li>
+<p>To help identify your ruleset and clarify its purpose, give the ruleset a name in <strong>Ruleset Name</strong>.</p>
+</li>
+<li>
+<p>Set <strong>Enforcement status</strong> to </p>
+</li>
+<li>
+<p>Optionally, you can target specific repositories in your organization. For more information, see <a href="/en/organizations/managing-organization-settings/creating-rulesets-for-repositories-in-your-organization#choosing-which-repositories-to-target-in-your-organization">Choosing which repositories to target in your organization</a>.</p>
+</li>
+<li>
+<p>In the "Rules" section, select the "Require workflows to pass before merging" option.</p>
+</li>
+<li>
+<p>In "Workflow configurations", click <strong>Add workflow</strong>.</p>
+</li>
+<li>
+<p>In the dialog, select the repository that you added the dependency review action to. For more information, see <a href="#prerequisites">Prerequisites</a>.</p>
+</li>
+<li>
+<p>Select a branch and the workflow file for dependency review in the enhanced dialog.</p>
+<div><picture><source><img src="/assets/cb-117046/images/help/repository/add-required-workflow-dialog.png" alt="Screenshot of the Add required workflow dialog. You need to specify a repository, branch, and workflow."></source></picture></div>
+</li>
+<li>
+<p>Click <strong>Create</strong>.</p>
+</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

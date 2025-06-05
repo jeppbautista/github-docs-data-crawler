@@ -1,0 +1,61 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="CodeQL for VS Code" href="/en/code-security/codeql-for-vs-code">CodeQL for VS Code</a><span>/</span>
+</li>
+<li>
+<a title="Getting started" href="/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code">Getting started</a><span>/</span>
+</li>
+<li><a title="Manage CodeQL databases" href="/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/managing-codeql-databases">Manage CodeQL databases</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Managing CodeQL databases</h1></div></div>
+<div><div><p>You can work with CodeQL databases using the extension.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-codeql-databases"><div><span>About CodeQL databases</span></div></a></li>
+<li><a href="#choosing-a-database-to-analyze"><div><span>Choosing a database to analyze</span></div></a></li>
+<li><a href="#filtering-databases-and-queries-by-language"><div><span>Filtering databases and queries by language</span></div></a></li>
+<li><a href="#next-steps"><div><span>Next steps</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-codeql-databases">About CodeQL databases</a></h2>
+<p>To analyze a project, you need to select a CodeQL database for that project. You can select a database locally (from a ZIP archive or an unarchived folder), from a public URL, or from a project's URL on GitHub. Alternatively, you can create a database using the CodeQL CLI, see <a href="/en/code-security/codeql-cli/using-the-codeql-cli/creating-codeql-databases">Preparing your code for CodeQL analysis</a>.</p>
+<h3><a href="#downloading-a-database-from-github">Downloading a database from GitHub</a></h3>
+<p>GitHub.com stores CodeQL databases for over 200,000 open source repositories that you can use to test your analysis on.</p>
+<p>You can check if a repository has any CodeQL databases available for download, and if so download it, using the REST API. For more information, see <a href="/en/rest/code-scanning/code-scanning#list-codeql-databases-for-a-repository">List CodeQL databases for a repository</a> and <a href="/en/rest/code-scanning/code-scanning#get-a-codeql-database-for-a-repository">Get a CodeQL database for a repository</a> in the GitHub REST API documentation.</p>
+<h2><a href="#choosing-a-database-to-analyze">Choosing a database to analyze</a></h2>
+<ol>
+<li>
+<p>Hover over the title bar of the "Databases" view and choose the appropriate icon to select your database. You can select a local database (from a ZIP archive or an unarchived folder), from a public URL, or from a project's URL on GitHub.</p>
+</li>
+<li>
+<p>Once you've chosen a database, it will be displayed in the "Databases" view. To see the menu options for interacting with a database, right-click an entry in the list. You can select multiple databases at once.</p>
+</li>
+</ol>
+<div>
+<p>
+You can also analyze test databases. Test databases (folders with a <code>.testproj</code> extension) are generated when you run regression tests on custom queries using the CodeQL CLI. If a query fails a regression test, you may want to import the test database into Visual Studio Code to debug the failure. For more information about running query tests, see <a href="/en/code-security/codeql-cli/using-the-codeql-cli/testing-custom-queries">Testing custom queries</a>.</p>
+</div>
+<h2><a href="#filtering-databases-and-queries-by-language">Filtering databases and queries by language</a></h2>
+<p>Optionally, to see databases containing a specific language and queries written for that language, you can apply a language filter using the language selector.</p>
+<ol>
+<li>
+<p>To see available language filters, in the sidebar, open the "Language" view.</p>
+</li>
+<li>
+<p>Hover over the language filter you would like to apply, then click <strong>Select</strong>.</p>
+</li>
+</ol>
+<h2><a href="#next-steps">Next steps</a></h2>
+<p>To learn how to use the extension to analyze your projects by running queries on CodeQL databases, see <a href="/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/running-codeql-queries">Running CodeQL queries</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

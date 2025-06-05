@@ -1,0 +1,205 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Apps" href="/en/apps">Apps</a><span>/</span>
+</li>
+<li>
+<a title="Sharing GitHub Apps" href="/en/apps/sharing-github-apps">Sharing GitHub Apps</a><span>/</span>
+</li>
+<li><a title="App query parameters" href="/en/apps/sharing-github-apps/registering-a-github-app-using-url-parameters">App query parameters</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Registering a GitHub App using URL parameters</h1></div></div>
+<div><div><p>You can use URL query parameters to help other people quickly set up a new GitHub App with a specific configuration you have preselected.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-url-parameters-for-registering-github-apps"><div><span>About URL parameters for registering GitHub Apps</span></div></a></li>
+<li><a href="#creating-a-custom-configuration-url-with-query-parameters"><div><span>Creating a custom configuration URL with query parameters</span></div></a></li>
+<li><a href="#github-app-configuration-parameters"><div><span>GitHub App configuration parameters</span></div></a></li>
+<li><a href="#github-app-permissions"><div><span>GitHub App permissions</span></div></a></li>
+<li><a href="#github-app-webhook-events"><div><span>GitHub App webhook events</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-url-parameters-for-registering-github-apps">About URL parameters for registering GitHub Apps</a></h2>
+<p>You can use URL parameters to preselect the configuration settings of a new GitHub App registration and share a custom link with other people. The link will take people to a GitHub App registration page, where the app settings will be pre-filled according to the URL parameters you included in the URL.</p>
+<p>This approach is useful for integrators who want customers to set up an app on their personal account or organization with certain specifications, or for customers using GitHub Enterprise Server who aren't able to install apps from the GitHub Marketplace.</p>
+<p>Alternatively, you can create a GitHub App manifest. For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/creating-a-github-app-from-a-manifest">Registering a GitHub App from a manifest</a>.</p>
+<h2><a href="#creating-a-custom-configuration-url-with-query-parameters">Creating a custom configuration URL with query parameters</a></h2>
+<p>To create a custom configuration URL for a GitHub App on a personal or organization account, add query parameters after the following base URLs.</p>
+<ul>
+<li>To register an app on a personal account, add URL parameters to: <code>https://github.com/settings/apps/new</code>
+</li>
+<li>To register an app on an organization account, add URL parameters to: <code>https://github.com/organizations/ORGANIZATION/settings/apps/new</code>. Replace <code>ORGANIZATION</code> with the name of the organization where you'd like the customer to register the app.</li>
+</ul>
+<p>On the app registration page, the person registering the app can edit the preselected values before submitting the app. If you do not include parameters for required values (like <code>name</code>) in the URL query string, the person registering the app will need to input a value before they can register the app.</p>
+<p>For example, the following URL registers a new public app named <code>octocat-github-app</code> on a personal account. Using query parameters, the URL preconfigures a description and a callback URL. It also selects read and write permissions for <code>checks</code>, activates webhooks using the <code>webhook_active</code> parameter, subscribes to the <code>check_run</code> and <code>check_suite</code> webhook events, and selects the option to request user authorization (OAuth) during installation:</p>
+<pre><code>https://github.com/settings/apps/new?name=octocat-github-app&amp;description=An%20Octocat%20App&amp;callback_urls[]=https://example.com&amp;request_oauth_on_install=true&amp;public=true&amp;checks=write&amp;webhook_active=true&amp;events[]=check_run&amp;events[]=check_suite
+</code></pre>
+<h2><a href="#github-app-configuration-parameters">GitHub App configuration parameters</a></h2>
+<p>You can use the following query parameters to select a specific configuration for the GitHub App registration. For example, to name the app "octocat-github-app", your query string would include <code>name=octocat-github-app</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Parameter name</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td><code>string</code></td>
+<td>The name of the GitHub App. Give your app a clear and succinct name. Your app cannot have the same name as an existing GitHub user, unless it is your own user or organization name. A slugged version of your app's name will be shown in the user interface when your integration takes an action.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>string</code></td>
+<td>A description of the GitHub App.</td>
+</tr>
+<tr>
+<td><code>url</code></td>
+<td><code>string</code></td>
+<td>The full URL of your GitHub App's website homepage.</td>
+</tr>
+<tr>
+<td><code>callback_urls</code></td>
+<td><code>array of strings</code></td>
+<td>A full URL to redirect to after someone authorizes an installation. You can provide up to 10 callback URLs. These URLs are used if your app needs to generate a user access token. For example, <code>callback_urls[]=https:/<wbr>/<wbr>example.com&amp;callback_<wbr>urls[]=https:/<wbr>/<wbr>example-2.com</wbr></wbr></wbr></wbr></wbr></code>. For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/about-the-user-authorization-callback-url">About the user authorization callback URL</a>.</td>
+</tr>
+<tr>
+<td><code>request_oauth_<wbr>on_install</wbr></code></td>
+<td><code>boolean</code></td>
+<td>If your app authorizes users using the OAuth flow, you can set this option to <code>true</code> to allow people to authorize the app when they install it, saving a step. If you select this option, the <code>setup_url</code> becomes unavailable and users will be redirected to your <code>callback_url</code> after installing the app.</td>
+</tr>
+<tr>
+<td><code>setup_url</code></td>
+<td><code>string</code></td>
+<td>The full URL to redirect to after someone installs the GitHub App if the app requires additional setup after installation. For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/about-the-setup-url">About the setup URL</a>.</td>
+</tr>
+<tr>
+<td><code>setup_on_update</code></td>
+<td><code>boolean</code></td>
+<td>Set to <code>true</code> to redirect people to the setup URL when installations have been updated, for example, after repositories are added or removed.</td>
+</tr>
+<tr>
+<td><code>public</code></td>
+<td><code>boolean</code></td>
+<td>Set to <code>true</code> when your GitHub App is available to the public or <code>false</code> when it is only accessible to the owner of the app. This parameter does not apply to apps owned by enterprises.</td>
+</tr>
+<tr>
+<td><code>webhook_active</code></td>
+<td><code>boolean</code></td>
+<td>Set to <code>true</code> to enable webhook. Webhook is disabled by default.</td>
+</tr>
+<tr>
+<td><code>webhook_url</code></td>
+<td><code>string</code></td>
+<td>The full URL that you would like to send webhook event payloads to.</td>
+</tr>
+<tr>
+<td><code>events</code></td>
+<td><code>array of strings</code></td>
+<td>Webhook events. Some webhook events require <code>read</code> or <code>write</code> permissions for a resource before you can select the event when registering a new GitHub App. For more information, see the <a href="#github-app-webhook-events">GitHub App webhook events</a> section. You can select multiple events in a query string. For example, <code>events[]=public&amp;events[]=label</code>.</td>
+</tr>
+<tr>
+<td><code>single_file_name</code></td>
+<td><code>string</code></td>
+<td>This is a narrowly-scoped permission that allows the app to access a single file in any repository. When you set the <code>single_file</code> permission to <code>read</code> or <code>write</code>, this field provides the path to the single file your GitHub App will manage. If you need to manage multiple files, see <code>single_file_paths</code> below.</td>
+</tr>
+<tr>
+<td><code>single_file_paths</code></td>
+<td><code>array of strings</code></td>
+<td>This allows the app to access up ten specified files in a repository. When you set the <code>single_file</code> permission to <code>read</code> or <code>write</code>, this array can store the paths for up to ten files that your GitHub App will manage. These files all receive the same permission set by <code>single_file</code>, and do not have separate individual permissions. When two or more files are configured, the API returns <code>multiple_single_<wbr>files=true</wbr></code>, otherwise it returns <code>multiple_single_<wbr>files=false</wbr></code>.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#github-app-permissions">GitHub App permissions</a></h2>
+<p>You can use query parameters to select the permissions for the GitHub App registration. For the URL query parameter, use the permission name as the query parameter name, and set the query value to one of the possible values for that permission set.</p>
+<p>For example, to select "Read &amp; write" permissions in the user interface for <code>contents</code>, your query string would include <code>contents=write</code>. To select "Read-only" permissions in the user interface for <code>blocking</code>, your query string would include <code>blocking=read</code>. To select "No access" in the user interface for <code>checks</code>, your query string would not include the <code>checks</code> permission.</p>
+<p>For more information about permissions and GitHub Apps, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/choosing-permissions-for-a-github-app">Choosing permissions for a GitHub App</a>.</p>
+<h2><a href="#github-app-webhook-events">GitHub App webhook events</a></h2>
+<p>You can use query parameters to enable the GitHub App webhook, designate a webhook URL, and subscribe the app to receive webhook payloads for specific events.</p>
+<p>To enable the GitHub App webhook, use <code>webhook_active=true</code> in your query string. To designate a full URL that you would like to send webhook event payloads to, use <code>webhook_url</code> in your query string. To subscribe the app to specific webhook payload events, use <code>events[]</code> as the query parameter name, and set the query value to the name of the webhook event. For more information about the possible webhook events and the GitHub App permissions required to subscribe to each event, see <a href="/en/webhooks-and-events/webhooks/webhook-events-and-payloads">Webhook events and payloads</a>.</p>
+<p>For example, to subscribe a GitHub App to receive webhook payloads for activity relating to commit comments, the query string would include <code>&amp;webhook_active=true&amp;webhook_url=https://example.com&amp;events[]=commit_comment</code>. Note that the <code>commit_comment</code> webhook event requires the GitHub App to have at least read-level access for the "Contents" repository permission. So your query string should also include a parameter to set the <code>contents</code> permission to <code>read</code> or <code>write</code>. For more information, see <a href="#github-app-permissions">GitHub app permissions</a>.</p>
+<p>You cannot use query parameters to set the value of a webhook secret. If an app requires a secret to secure its webhook, the value of the secret must be set in the GitHub UI by the person registering the app.</p>
+<p>For more information about webhooks and GitHub Apps, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/using-webhooks-with-github-apps">Using webhooks with GitHub Apps</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

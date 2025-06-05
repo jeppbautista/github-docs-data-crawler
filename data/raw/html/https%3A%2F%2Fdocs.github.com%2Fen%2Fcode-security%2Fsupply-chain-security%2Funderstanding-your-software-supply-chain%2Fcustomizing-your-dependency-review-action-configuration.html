@@ -1,0 +1,231 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Supply chain security" href="/en/code-security/supply-chain-security">Supply chain security</a><span>/</span>
+</li>
+<li>
+<a title="Understand your supply chain" href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain">Understand your supply chain</a><span>/</span>
+</li>
+<li><a title="Customize dependency review action" href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/customizing-your-dependency-review-action-configuration">Customize dependency review action</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Customizing your dependency review action configuration</h1></div></div>
+<div>
+<div><p>Learn how to add a basic customization to your dependency review action configuration.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Repository owners, organization owners, security managers, and users with the <strong>admin</strong> role</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#step-1-adding-the-dependency-review-action"><div><span>Step 1: Adding the dependency review action</span></div></a></li>
+<li><a href="#step-2-changing-the-severity"><div><span>Step 2: Changing the severity</span></div></a></li>
+<li><a href="#step-3-adding-licenses-to-block"><div><span>Step 3: Adding licenses to block</span></div></a></li>
+<li><a href="#step-4-adding-scopes"><div><span>Step 4: Adding scopes</span></div></a></li>
+<li><a href="#step-5-check-the-configuration"><div><span>Step 5: Check the configuration</span></div></a></li>
+<li><a href="#best-practices"><div><span>Best practices</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>The dependency review action scans your pull requests for dependency changes and raises an error if any new dependencies have known vulnerabilities. Once installed, if the workflow run is marked as required, pull requests introducing known vulnerable packages will be blocked from merging.</p>
+<p>This guide shows you how to add three very common customizations: failing builds based on vulnerability severity level, dependency license, and scope.</p>
+<h3><a href="#prerequisites">Prerequisites</a></h3>
+<p>This guide assumes that:</p>
+<ul>
+<li>Dependency graph is enabled for the repository. For more information, see <a href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/configuring-the-dependency-graph#enabling-and-disabling-the-dependency-graph">Configuring the dependency graph</a>.</li>
+<li>GitHub Actions is enabled for the repository. For more information, see <a href="/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository">Managing GitHub Actions settings for a repository</a>.</li>
+</ul>
+<h2><a href="#step-1-adding-the-dependency-review-action">Step 1: Adding the dependency review action</a></h2>
+<p>In this step, we'll add the dependency review workflow to your repository.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click </p>
+<div><picture><source><img src="/assets/cb-12958/images/help/repository/actions-tab-global-nav-update.png" alt='Screenshot of the tabs for the "github/docs" repository. The "Actions" tab is highlighted with an orange outline.' width="1242" height="186"></source></picture></div>
+</li>
+<li>
+<p>Under "Get started with GitHub Actions", find the "Security" category, then click <strong>View all</strong>.</p>
+</li>
+<li>
+<p>Find "Dependency review", then click <strong>Configure</strong>. Alternatively, search for "Dependency review" using the search bar.</p>
+</li>
+<li>
+<p>This will open dependency review’s GitHub Actions workflow file, <code>dependency-review.yml</code>. It should contain the following:</p>
+<div>
+<header><span>YAML</span><pre>name: 'Dependency review'
+on:
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout repository'
+        uses: actions/checkout@v4
+      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@v4
+</pre></header><pre><code><span>name:</span> <span>'Dependency review'</span>
+<span>on:</span>
+  <span>pull_request:</span>
+    <span>branches:</span> [ <span>"main"</span> ]
+
+<span>permissions:</span>
+  <span>contents:</span> <span>read</span>
+
+<span>jobs:</span>
+  <span>dependency-review:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>'Checkout repository'</span>
+        <span>uses:</span> <span>actions/checkout@v4</span>
+      <span>-</span> <span>name:</span> <span>'Dependency Review'</span>
+        <span>uses:</span> <span>actions/dependency-review-action@v4</span>
+</code></pre>
+</div>
+</li>
+</ol>
+<h2><a href="#step-2-changing-the-severity">Step 2: Changing the severity</a></h2>
+<p>You can block code containing vulnerable dependencies from ever being merged by setting the dependency review action to required. However, it's worth noting that blocking low-risk vulnerabilities may be too restrictive in some circumstances. In this step, we will change the severity of vulnerability that will cause a build to fail with the <code>fail-on-severity</code> option.</p>
+<ol>
+<li>
+<p>Add the <code>fail-on-severity</code> option to the end of the <code>dependency-review.yml</code> file:</p>
+<div>
+<header><span>YAML</span><pre>      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: moderate
+</pre></header><pre><code>      <span>-</span> <span>name:</span> <span>'Dependency Review'</span>
+        <span>uses:</span> <span>actions/dependency-review-action@v4</span>
+        <span>with:</span>
+          <span>fail-on-severity:</span> <span>moderate</span>
+</code></pre>
+</div>
+</li>
+</ol>
+<h2><a href="#step-3-adding-licenses-to-block">Step 3: Adding licenses to block</a></h2>
+<p>Vulnerabilities aren’t the only reason you might want to block a dependency. If your organization has restrictions on what sorts of licenses you can use, you can use dependency review to enforce those policies with the <code>deny-licenses</code> option. In this step, we will add a customization that will break the build if the pull request introduces a dependency that contains the LGPL-2.0 or BSD-2-Clause license.</p>
+<ol>
+<li>
+<p>Add the <code>deny-licenses</code> option to the end of the <code>dependency-review.yml</code> file:</p>
+<div>
+<header><span>YAML</span><pre>      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: moderate
+          deny-licenses: LGPL-2.0, BSD-2-Clause
+</pre></header><pre><code>      <span>-</span> <span>name:</span> <span>'Dependency Review'</span>
+        <span>uses:</span> <span>actions/dependency-review-action@v4</span>
+        <span>with:</span>
+          <span>fail-on-severity:</span> <span>moderate</span>
+          <span>deny-licenses:</span> <span>LGPL-2.0,</span> <span>BSD-2-Clause</span>
+</code></pre>
+</div>
+</li>
+</ol>
+<h2><a href="#step-4-adding-scopes">Step 4: Adding scopes</a></h2>
+<p>Finally, we'll use the <code>fail-on-scopes</code> option to prevent merging vulnerable dependencies to specific deployment environments, in this case the development environment.</p>
+<ol>
+<li>
+<p>Add the <code>fail-on-scopes</code> option to the end of the <code>dependency-review.yml</code> file:</p>
+<div>
+<header><span>YAML</span><pre>      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: moderate
+          deny-licenses: LGPL-2.0, BSD-2-Clause
+          fail-on-scopes: development
+</pre></header><pre><code>      <span>-</span> <span>name:</span> <span>'Dependency Review'</span>
+        <span>uses:</span> <span>actions/dependency-review-action@v4</span>
+        <span>with:</span>
+          <span>fail-on-severity:</span> <span>moderate</span>
+          <span>deny-licenses:</span> <span>LGPL-2.0,</span> <span>BSD-2-Clause</span>
+          <span>fail-on-scopes:</span> <span>development</span>
+</code></pre>
+</div>
+</li>
+</ol>
+<h2><a href="#step-5-check-the-configuration">Step 5: Check the configuration</a></h2>
+<p>The <code>dependency-review.yml</code> file should now look like this:</p>
+<div>
+<header><span>YAML</span><pre>name: 'Dependency Review'
+on: [pull_request]
+
+
+permissions:
+  contents: read
+
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v4
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: moderate
+          deny-licenses: LGPL-2.0, BSD-2-Clause
+          fail-on-scopes: development
+</pre></header><pre><code>
+<span>name:</span> <span>'Dependency Review'</span>
+<span>on:</span> [<span>pull_request</span>]
+
+
+<span>permissions:</span>
+  <span>contents:</span> <span>read</span>
+
+
+<span>jobs:</span>
+  <span>dependency-review:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>'Checkout Repository'</span>
+        <span>uses:</span> <span>actions/checkout@v4</span>
+      <span>-</span> <span>name:</span> <span>Dependency</span> <span>Review</span>
+        <span>uses:</span> <span>actions/dependency-review-action@v4</span>
+        <span>with:</span>
+          <span>fail-on-severity:</span> <span>moderate</span>
+          <span>deny-licenses:</span> <span>LGPL-2.0,</span> <span>BSD-2-Clause</span>
+          <span>fail-on-scopes:</span> <span>development</span>
+</code></pre>
+</div>
+<p>You can use this configuration as a template for your own custom configurations.</p>
+<p>For more information on all the possible customization options, see the <a href="https://github.com/actions/dependency-review-action/blob/main/README.md#configuration">README</a> in the dependency review action documentation.</p>
+<h2><a href="#best-practices">Best practices</a></h2>
+<p>When customizing your dependency review configuration, there are some best practices you can follow:</p>
+<ul>
+<li>
+<p>Choose block lists over allow lists. It is more practical to compile a list of the "really bad" dependencies you want to block than to create an inclusive list of all the libraries you want to allow.</p>
+</li>
+<li>
+<p>Choose to block licenses instead of specifying which licenses to allow. There are a wide variety of licenses out there, so it's usually more practical to exclude those you know are incompatible with current licenses than it is to compile a complete list of compatible licenses.</p>
+</li>
+<li>
+<p>Choose <code>fail-on-severity</code>. Failing based on the severity of a vulnerability is a good way to balance the need for security with the need to create low-friction experiences for developers.</p>
+</li>
+</ul>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/configuring-the-dependency-review-action">Configuring the dependency review action</a></li>
+<li><a href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/enforcing-dependency-review-across-an-organization">Enforcing dependency review across an organization</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

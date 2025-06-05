@@ -1,0 +1,102 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Code scanning" href="/en/code-security/code-scanning">Code scanning</a><span>/</span>
+</li>
+<li>
+<a title="Create advanced setup" href="/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning">Create advanced setup</a><span>/</span>
+</li>
+<li><a title="Code scanning in a container" href="/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/running-codeql-code-scanning-in-a-container">Code scanning in a container</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Running CodeQL code scanning in a container</h1></div></div>
+<div>
+<div><p>You can run code scanning in a container by ensuring that all processes run in the same container.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div>
+<p>Code scanning is available for the following repository types:</p>
+<ul>
+<li>Public repositories on GitHub.com</li>
+<li>Organization-owned repositories on GitHub Team with <a href="/en/get-started/learning-about-github/about-github-advanced-security">GitHub Code Security</a> enabled</li>
+</ul>
+</div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-code-scanning-with-a-containerized-build"><div><span>About code scanning with a containerized build</span></div></a></li>
+<li><a href="#dependencies-for-codeql-code-scanning"><div><span>Dependencies for CodeQL code scanning</span></div></a></li>
+<li><a href="#example-workflow"><div><span>Example workflow</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-code-scanning-with-a-containerized-build">About code scanning with a containerized build</a></h2>
+<p>If you're configuring code scanning for a compiled language, and you're building the code in a containerized environment, the analysis may fail with the error message "No source code was seen during the build." This indicates that CodeQL was unable to monitor your code as it was compiled.</p>
+<p>You must run CodeQL inside the container in which you build your code. This applies whether you are using the CodeQL CLI or GitHub Actions. For the CodeQL CLI, see <a href="/en/code-security/code-scanning/integrating-with-code-scanning/using-code-scanning-with-your-existing-ci-system">Using code scanning with your existing CI system</a> for more information. If you're using GitHub Actions, configure your workflow to run all the actions in the same container. For more information, see <a href="#example-workflow">Example workflow</a>.</p>
+<div>
+<p>
+The CodeQL CLI is currently not compatible with non-glibc Linux distributions such as (musl-based) Alpine Linux.</p>
+</div>
+<h2><a href="#dependencies-for-codeql-code-scanning">Dependencies for CodeQL code scanning</a></h2>
+<p>You may have difficulty running code scanning if the container you're using is missing certain dependencies (for example, Git must be installed and added to the PATH variable). If you encounter dependency issues, review the list of software typically included on GitHub's runner images. For more information, see the version-specific <code>readme</code> files in these locations:</p>
+<ul>
+<li>Linux: <a href="https://github.com/actions/runner-images/tree/main/images/ubuntu">https://github.com/actions/runner-images/tree/main/images/ubuntu</a>
+</li>
+<li>macOS: <a href="https://github.com/actions/runner-images/tree/main/images/macos">https://github.com/actions/runner-images/tree/main/images/macos</a>
+</li>
+<li>Windows: <a href="https://github.com/actions/runner-images/tree/main/images/windows">https://github.com/actions/runner-images/tree/main/images/windows</a>
+</li>
+</ul>
+<h2><a href="#example-workflow">Example workflow</a></h2>
+<p>This sample workflow uses GitHub Actions to run CodeQL analysis in a containerized environment. The value of <code>container.image</code> identifies the container to use. In this example the image is named <code>codeql-container</code>, with a tag of <code>f0f91db</code>. For more information, see <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idcontainer">Workflow syntax for GitHub Actions</a>.</p>
+<pre><code><span>name:</span> <span>"CodeQL"</span>
+
+<span>on:</span>
+  <span>push:</span>
+    <span>branches:</span> [<span>main</span>]
+  <span>pull_request:</span>
+    <span>branches:</span> [<span>main</span>]
+  <span>schedule:</span>
+    <span>-</span> <span>cron:</span> <span>'15 5 * * 3'</span>
+
+<span>jobs:</span>
+  <span>analyze:</span>
+    <span>name:</span> <span>Analyze</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>permissions:</span>
+      <span>security-events:</span> <span>write</span>
+      <span>actions:</span> <span>read</span>
+
+    <span>strategy:</span>
+      <span>fail-fast:</span> <span>false</span>
+      <span>matrix:</span>
+        <span>language:</span> [<span>java-kotlin</span>]
+
+    <span># Specify the container in which actions will run</span>
+    <span>container:</span>
+      <span>image:</span> <span>codeql-container:f0f91db</span>
+
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>Checkout</span> <span>repository</span>
+        <span>uses:</span> <span>actions/checkout@v4</span>
+      <span>-</span> <span>name:</span> <span>Initialize</span> <span>CodeQL</span>
+        <span>uses:</span> <span>github/codeql-action/init@v3</span>
+        <span>with:</span>
+          <span>languages:</span> <span>${{</span> <span>matrix.language</span> <span>}}</span>
+      <span>-</span> <span>name:</span> <span>Build</span>
+        <span>run:</span> <span>|
+          ./configure
+          make
+</span>      <span>-</span> <span>name:</span> <span>Perform</span> <span>CodeQL</span> <span>Analysis</span>
+        <span>uses:</span> <span>github/codeql-action/analyze@v3</span>
+</code></pre>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

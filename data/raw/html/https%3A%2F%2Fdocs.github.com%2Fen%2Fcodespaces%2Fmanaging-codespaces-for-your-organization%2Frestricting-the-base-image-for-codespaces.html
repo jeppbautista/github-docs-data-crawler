@@ -1,0 +1,164 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Managing your organization" href="/en/codespaces/managing-codespaces-for-your-organization">Managing your organization</a><span>/</span>
+</li>
+<li><a title="Restrict base image" href="/en/codespaces/managing-codespaces-for-your-organization/restricting-the-base-image-for-codespaces">Restrict base image</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Restricting the base image for codespaces</h1></div></div>
+<div>
+<div><p>You can specify which base images can be used to create the dev container for new codespaces created within your organization.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>To manage image constraints for an organization's codespaces, you must be an owner of the organization.</p></div></div>
+<div><div><p>Organizations on GitHub Team and GitHub Enterprise plans can pay for members' and collaborators' use of GitHub Codespaces. These organizations can then access settings and policies to manage codespaces paid for by the organization. For more information, see <a href="/en/codespaces/managing-codespaces-for-your-organization/choosing-who-owns-and-pays-for-codespaces-in-your-organization#about-ownership-of-codespaces">Choosing who owns and pays for codespaces in your organization</a> and <a href="/en/get-started/learning-about-github/githubs-plans">GitHub’s plans</a>.</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#overview"><div><span>Overview</span></div></a></li>
+<li><a href="#adding-a-policy-to-define-the-allowed-images"><div><span>Adding a policy to define the allowed images</span></div></a></li>
+<li><a href="#editing-a-policy"><div><span>Editing a policy</span></div></a></li>
+<li><a href="#deleting-a-policy"><div><span>Deleting a policy</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#overview">Overview</a></h2>
+<p>When you create a codespace, a development container is automatically created on a remote virtual machine. This dev container is created from a Docker image. The image is effectively a template for Docker containers and it determines many aspects of the resulting environment provided by the codespace. For more information, see <a href="/en/codespaces/quickstart#introduction">Quickstart for GitHub Codespaces</a>.</p>
+<p>You can choose which image you want to use for your codespaces by specifying it in the dev container configuration for a repository. You can do this, for example, by using the <code>image</code> property in the <code>devcontainer.json</code> file.</p>
+<div>
+<header><span>JSON</span><pre>"image": "mcr.microsoft.com/devcontainers/javascript-node:18",
+</pre></header><pre><code><span>"image"</span><span>:</span> <span>"mcr.microsoft.com/devcontainers/javascript-node:18"</span><span>,</span>
+</code></pre>
+</div>
+<p>For more information, see the <a href="https://containers.dev/implementors/json_reference/#image-specific">dev containers specification</a> on the Development Containers website.</p>
+<p>Alternatively, you can specify the base image in a Dockerfile. For more information, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers#dockerfile">Introduction to dev containers</a>.</p>
+<p>If you don't specify an image in the dev container configuration for a repository, the default dev container image is used. The default image contains a number of runtime versions for popular languages and commonly used tools. For more information, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers#using-the-default-dev-container-configuration">Introduction to dev containers</a>.</p>
+<p>As an organization owner, you can add a policy to restrict which dev container images can be used for codespaces created within your organization.</p>
+<p>If you attempt to create a codespace using a <code>devcontainer.json</code> that specifies an image that is not allowed by the policy, the following message is displayed in GitHub:</p>
+<blockquote>
+<p>The codespace cannot be created because the image specified in your dev container configuration is not allowed. You may need to select a different branch, modify your container configuration, or adjust your organization's policy setting.</p>
+</blockquote>
+<p>Using the CLI, the error message is:</p>
+<blockquote>
+<p>error creating codespace: HTTP 400: Base image 'IMAGE-REFERENCE' is not allowed based on an organization policy set by your organization administrator.</p>
+</blockquote>
+<p>If the image for a codespace is specified in a Dockerfile, and does not match the policy, a codespace is created in recovery mode, using the default recovery container rather than the specified image. A message to this effect is included at the end of the creation log. For more information about the creation log, see <a href="/en/codespaces/troubleshooting/github-codespaces-logs#creation-logs">GitHub Codespaces logs</a>.</p>
+<div>
+<ul>
+<li>The dev container base image should not be confused with the host image. The host image is the image used to build the virtual machine on which the dev container runs. For more information, see <a href="/en/codespaces/setting-your-user-preferences/choosing-the-stable-or-beta-host-image">Choosing the stable or beta host image</a>.</li>
+<li>The base image policy is applied when a codespace is created, and when you perform a full container rebuild. For more information, see <a href="/en/codespaces/about-codespaces/understanding-the-codespace-lifecycle#rebuilding-a-codespace">Understanding the codespace lifecycle</a>.</li>
+<li>The base image policy does not apply to the default image, or the image that's used to recover a codespace if an error is introduced into a dev container configuration which prevents the container from being rebuilt.</li>
+</ul>
+</div>
+<h3><a href="#setting-organization-wide-and-repository-specific-policies">Setting organization-wide and repository-specific policies</a></h3>
+<p>When you create a policy you choose whether it applies to all repositories in your organization, or only to specified repositories. If you set an organization-wide policy then any policies you set for individual repositories must fall within the restriction set at the organization level. Adding policies makes the choice of image more, not less, restrictive.</p>
+<p>For example, you could create an organization-wide policy that restricts the base image to any of ten specified images. You can then set a policy for Repository A that restricts the image to a subset of just two of the images specified at the organization level. Specifying additional images for Repository A will have no effect because these images are not specified in the organization-level policy. If you add an organization-wide policy, you should set it to the largest choice of images that will be available for any repository in your organization. You can then add repository-specific policies to further restrict the choice.</p>
+<div>
+<p>
+Codespaces policies only apply to codespaces that your organizations pays for. If someone creates a codespace for a repository in your organization at their own expense, then the codespace will not be bound by these policies. For more information, see <a href="/en/codespaces/managing-codespaces-for-your-organization/choosing-who-owns-and-pays-for-codespaces-in-your-organization">Choosing who owns and pays for codespaces in your organization</a>.</p>
+</div>
+<h2><a href="#adding-a-policy-to-define-the-allowed-images">Adding a policy to define the allowed images</a></h2>
+<ol>
+<li>
+<p>In the upper-right corner of GitHub, select your profile photo, then click </p>
+</li>
+<li>
+<p>Next to the organization, click <strong>Settings</strong>.</p>
+</li>
+<li>
+<p>In the "Code, planning, and automation" section of the sidebar, select <strong>Policies</strong>.</p>
+</li>
+<li>
+<p>On the "Codespaces policies" page, click <strong>Create Policy</strong>.</p>
+</li>
+<li>
+<p>Enter a name for your new policy.</p>
+</li>
+<li>
+<p>Click <strong>Add constraint</strong> and choose <strong>Base images</strong>.</p>
+</li>
+<li>
+<p>Click </p>
+</li>
+<li>
+<p>In the "Allowed values" field, enter the image reference of the Docker image you want to allow.</p>
+<div><picture><source><img src="/assets/cb-32455/images/help/codespaces/image-allowed-values.png" alt='Screenshot of the image reference "mcr.microsoft.com/devcontainers/java" entered in the "Allowed values" field.' width="720" height="149"></source></picture></div>
+<p>You can use the <code>*</code> wildcard as the last character of the image reference to match all images that start with the same reference to the left of the wildcard. For example, <code>mcr.microsoft.com/devcontainers/*</code>.</p>
+</li>
+<li>
+<p>Click </p>
+</li>
+<li>
+<p>If required, repeat the previous two steps to add more image references.</p>
+<p>When you add multiple image references, if an image reference specified in the dev container configuration of a repository does not match any of the references in a policy that applies to the repository, you will not be able to create codespaces for that repository.</p>
+</li>
+<li>
+<p>Click outside of the dialog box to close it.</p>
+</li>
+<li>
+<p>By default the policy is set to apply to all repositories, if you want it to apply only to some of the repositories in your organization, click <strong>All repositories</strong> and then click <strong>Selected repositories</strong> in the dropdown menu.</p>
+<div><picture><source><img src="/assets/cb-48372/images/help/codespaces/selected-repositories.png" alt='Screenshot of the repository selection dropdown, showing the options "All repositories" and "Selected repositories."' width="720" height="217"></source></picture></div>
+<div>
+<p>
+If you're adding a constraint to an existing policy that already contains the "Maximum codespaces per user" constraint, you won't be able to apply the policy to selected repositories. This is because the "Maximum codespaces per user" constraint always applies to all repositories in the organization.</p>
+</div>
+<p>With <strong>Selected repositories</strong> selected:</p>
+<ol>
+<li>
+<p>Click </p>
+<div><picture><source><img src="/assets/cb-7694/images/help/codespaces/policy-edit.png" alt='Screenshot of the settings icon (a gear symbol) to the left of a button labeled "Selected repositories."' width="356" height="110"></source></picture></div>
+</li>
+<li>
+<p>Select the repositories you want this policy to apply to.</p>
+</li>
+<li>
+<p>At the bottom of the repository list, click <strong>Select repositories</strong>.</p>
+<div><picture><source><img src="/assets/cb-53629/images/help/codespaces/policy-select-repos.png" alt="Screenshot of a list of repositories, each with a checkbox. Three repositories are selected." width="465" height="477"></source></picture></div>
+</li>
+</ol>
+</li>
+<li>
+<p>If you want to add another constraint to the policy, click <strong>Add constraint</strong> and choose another constraint. For information about other constraints, see:</p>
+<ul>
+<li><a href="/en/codespaces/managing-codespaces-for-your-organization/restricting-access-to-machine-types">Restricting access to machine types</a></li>
+<li><a href="/en/codespaces/managing-codespaces-for-your-organization/restricting-the-number-of-organization-billed-codespaces-a-user-can-create">Restricting the number of organization-billed codespaces a user can create</a></li>
+<li><a href="/en/codespaces/managing-codespaces-for-your-organization/restricting-the-visibility-of-forwarded-ports">Restricting the visibility of forwarded ports</a></li>
+<li><a href="/en/codespaces/managing-codespaces-for-your-organization/restricting-the-idle-timeout-period">Restricting the idle timeout period</a></li>
+<li><a href="/en/codespaces/managing-codespaces-for-your-organization/restricting-the-retention-period-for-codespaces">Restricting the retention period for codespaces</a></li>
+</ul>
+</li>
+<li>
+<p>After you've finished adding constraints to your policy, click <strong>Save</strong>.</p>
+</li>
+</ol>
+<p>The policy is applied when anyone attempts to create a new codespace that is billable to your organization. The base image constraint does not affect existing codespaces, either active or stopped.</p>
+<h2><a href="#editing-a-policy">Editing a policy</a></h2>
+<p>You can edit an existing policy. For example, you may want to add or remove constraints to or from a policy.</p>
+<ol>
+<li>Display the "Codespaces policies" page. For more information, see <a href="#adding-a-policy-to-define-the-allowed-images">Adding a policy to define the allowed images</a>.</li>
+<li>Click the name of the policy you want to edit.</li>
+<li>Beside the "Base images" constraint, click </li>
+<li>Add or remove image references.</li>
+<li>Click <strong>Save</strong>.</li>
+</ol>
+<h2><a href="#deleting-a-policy">Deleting a policy</a></h2>
+<ol>
+<li>
+<p>Display the "Codespaces policies" page. For more information, see <a href="#adding-a-policy-to-define-the-allowed-images">Adding a policy to define the allowed images</a>.</p>
+</li>
+<li>
+<p>Click </p>
+<div><picture><source><img src="/assets/cb-9797/images/help/codespaces/policy-delete.png" alt="Screenshot of a policy with the delete button (a trash can icon) highlighted with a dark orange outline." width="710" height="105"></source></picture></div>
+</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

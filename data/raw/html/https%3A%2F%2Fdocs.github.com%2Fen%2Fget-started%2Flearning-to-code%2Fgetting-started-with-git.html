@@ -1,0 +1,220 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Get started" href="/en/get-started">Get started</a><span>/</span>
+</li>
+<li>
+<a title="Learn to code" href="/en/get-started/learning-to-code">Learn to code</a><span>/</span>
+</li>
+<li><a title="Get started with Git" href="/en/get-started/learning-to-code/getting-started-with-git">Get started with Git</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Getting started with Git</h1></div></div>
+<div><div><p>Learn the basics of Git by working through an example scenario.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#learning-git-basics-with-github-desktop"><div><span>Learning Git basics with GitHub Desktop</span></div></a></li>
+<li><a href="#diving-deeper-into-git-on-the-command-line"><div><span>Diving deeper into Git on the command line</span></div></a></li>
+<li><a href="#review-and-next-steps"><div><span>Review and next steps</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>Have you ever wished you had a time machine for your code? Well, Git is exactly that, and so much more!</p>
+<p>If you aren't familiar with Git, it's a <strong>version control</strong> system that helps you keep track of changes to your code. You can save a snapshot of your project at a particular point in time, then make experimental changes without risking your work, since you can always go back to your snapshot.</p>
+<p>GitHub itself is a platform built around Git, letting you save your Git projects to the cloud and work on them with other developers.</p>
+<p>While Git can be complicated, it's a powerful and necessary tool for any developer. This article will give you all the tools you need to use Git in your day-to-day workflow.</p>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<p>To follow this tutorial, you need to <a href="https://code.visualstudio.com/download">install Visual Studio Code</a>.</p>
+<h2><a href="#learning-git-basics-with-github-desktop">Learning Git basics with GitHub Desktop</a></h2>
+<p>For standard Git operations, we recommend GitHub Desktop, an app that lets you interact with Git visually instead of through written commands. In this section, we'll learn how to use GitHub Desktop to quickly perform the most common Git operations.</p>
+<h3><a href="#setting-up-github-desktop">Setting up GitHub Desktop</a></h3>
+<p>If this is your first time using GitHub Desktop, you need to install it and connect your GitHub account.</p>
+<ol>
+<li>
+<a href="https://desktop.github.com/download/">Download GitHub Desktop</a>.</li>
+<li>Open GitHub Desktop, then click <strong>Sign in to GitHub.com</strong> and authorize GitHub Desktop to access your account.</li>
+<li>Back in GitHub Desktop, click <strong>Finish</strong>. This will add your name and email from your GitHub account to Git.</li>
+</ol>
+<h3><a href="#creating-a-local-repository">Creating a local repository</a></h3>
+<p>Now, you can take your first steps into Git by creating a <strong>repository</strong>. Think of a repository as a project folder that tracks changes and stores history. First, we'll create a <strong>local</strong> repository:</p>
+<ol>
+<li>
+<p>In GitHub Desktop, click <strong>Create a New Repository on your Local Drive</strong>.</p>
+</li>
+<li>
+<p>Name the repository <code>learning-git</code>.</p>
+</li>
+<li>
+<p>Select <strong>Initialize this repository with a README</strong> to create a blank <code>README.md</code> file automatically.</p>
+<div>
+<p> It's standard practice to include a <code>README.md</code> file, also known as a README, in your projects. READMEs typically contain information that helps others understand, set up, and run your project.</p>
+</div>
+</li>
+<li>
+<p>Click <strong>Create repository</strong>.</p>
+</li>
+</ol>
+<h3><a href="#creating-a-remote-repository">Creating a remote repository</a></h3>
+<p>The local repository you just created lives on your computer. Now, let's create a <strong>remote</strong> repository for the same project, which will be hosted on GitHub. Linking a remote repository makes it easier to collaborate on and back up your work.</p>
+<ol>
+<li>In GitHub Desktop, click <strong>Publish repository</strong>.</li>
+<li>In the pop up that appears, click <strong>Publish repository</strong> one more time.</li>
+<li>To see your remote repository, click <strong>View on GitHub</strong>.</li>
+</ol>
+<h3><a href="#setting-up-a-space-to-make-changes">Setting up a space to make changes</a></h3>
+<p>Now that you've created a repository, let's talk about <strong>branches</strong>. Branches are essentially copies of your project where you can test changes without risking the stability of your existing work.</p>
+<p>Repositories are automatically created with a <code>main</code> branch, which you can think of as the stable, primary version of your project. For example, in the repository for a website, the <code>main</code> branch corresponds to the site that visitors can see.</p>
+<p>When you create a new branch, you're creating a safe space to work on a new feature without affecting the primary version. You and your collaborators can use different branches to work on multiple features at the same time.</p>
+<p>Let's create a branch to work on changes in our repository:</p>
+<ol>
+<li>In GitHub Desktop, select the <strong>Current Branch</strong> dropdown menu, then click <strong>New Branch</strong>.</li>
+<li>Name your new branch <code>readme-updates</code>, then click <strong>Create Branch</strong>.</li>
+</ol>
+<h3><a href="#saving-snapshots-of-your-project">Saving snapshots of your project</a></h3>
+<p>To save your progress to your branch, you make a <strong>commit</strong>. A commit is a snapshot you take of your project at a particular point in time. You've actually already made your first commit: when you initialized your project with a README, GitHub Desktop automatically created an initial commit to add the <code>README.md</code> file.</p>
+<p>Whenever you complete a chunk of work that you want to save, you should make a commit. After you do, you can always go back to that point in time, no matter how many changes you make in the future.</p>
+<ol>
+<li>
+<p>In GitHub Desktop, click <strong>Open in Visual Studio Code</strong>.</p>
+</li>
+<li>
+<p>In VS Code, paste the following text into <code>README.md</code> and save your changes:</p>
+<div>
+<header><span>Markdown</span><pre>Hello, World!
+
+This is a demo project for learning how to use Git.
+</pre></header><pre><code>Hello, World!
+
+This is a demo project for learning how to use Git.
+</code></pre>
+</div>
+</li>
+<li>
+<p>Back in GitHub Desktop, you'll see the updates you just made to your README. In the bottom left, next to your GitHub profile picture, type "Update README" in the text box. This is called a <strong>commit message</strong>, and it helps you keep track of the changes you make in each commit.</p>
+</li>
+<li>
+<p>To make your commit, click <strong>Commit to readme-updates</strong>.</p>
+</li>
+</ol>
+<h3><a href="#bringing-your-changes-into-your-main-branch">Bringing your changes into your main branch</a></h3>
+<p>When you're happy with the changes you've made on a branch, you can publish your branch to the remote repository and create a <strong>pull request</strong>. Pull requests let you review a set of proposed changes, then merge them from one branch into another. In our case, we'll create a pull request that brings the changes we made in <code>readme-updates</code> into our original branch, <code>main</code>.</p>
+<ol>
+<li>
+<p>Click <strong>Publish branch</strong> to push the <code>readme-updates</code> branch with your changes to the remote repository.</p>
+</li>
+<li>
+<p>To review your suggested changes, click <strong>Preview Pull Request</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Create Pull Request</strong>.</p>
+</li>
+<li>
+<p>In the GitHub window that appears, change your pull request title to "Add a message to the README", then write a brief description of your changes in the comment box.</p>
+</li>
+<li>
+<p>Click <strong>Create pull request</strong>.</p>
+</li>
+<li>
+<p>To bring your changes into the <code>main</code> branch, at the bottom of the page, click <strong>Merge pull request</strong>.</p>
+<div>
+<p> When you're working on a project with other developers, it's standard practice for someone else to review your pull request before it's merged.</p>
+</div>
+</li>
+<li>
+<p>Near the bottom of the page, click <strong>Delete branch</strong>. Deleting branches that have been merged into <code>main</code> helps keep your repository clean and easy to navigate.</p>
+</li>
+</ol>
+<h3><a href="#preparing-to-make-more-changes">Preparing to make more changes</a></h3>
+<p>Congratulations on merging your first pull request! Now that you've successfully brought your changes into the <code>main</code> branch, there are a few steps you should take to get ready for your next round of changes:</p>
+<ol>
+<li>
+<p>In GitHub Desktop, if you aren't on the <code>main</code> branch, select the <strong>Current Branch</strong> dropdown menu, then click <strong>main</strong>.</p>
+<p>You should almost always switch back to the <code>main</code> branch before creating a new branch, since new branches are created as copies of the currently selected branch.</p>
+</li>
+<li>
+<p>To check if any changes have been made to your remote <code>main</code> branch, click <strong>Fetch origin</strong>.</p>
+</li>
+<li>
+<p>Finally, to update your local <code>main</code> branch with changes to the remote <code>main</code> branch, click <strong>Pull origin</strong>.</p>
+</li>
+</ol>
+<p>You now have all of the skills necessary for setting up and using Git on a project!</p>
+<h2><a href="#diving-deeper-into-git-on-the-command-line">Diving deeper into Git on the command line</a></h2>
+<p>GitHub Desktop is designed to address your day-to-day Git needs. As you grow as a developer, you're likely to run into some unusual situations where you want more control over a Git operation, or you need to use more complex commands. In those instances, you'll need to switch to using written Git commands on the command line.</p>
+<h3><a href="#setting-up-your-command-line">Setting up your command line</a></h3>
+<p>Before you start working with the command line, you need to set up a few tools.</p>
+<ol>
+<li>
+<p>In GitHub Desktop, press <kbd>Ctrl</kbd>+<kbd>`</kbd> to open your project on the command line.</p>
+</li>
+<li>
+<p>If you're using Windows, <a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">install Git</a>. For macOS and Linux, Git is installed by default.</p>
+</li>
+<li>
+<p><a href="https://github.com/cli/cli?tab=readme-ov-file#installation">Install the GitHub CLI</a>, which lets you perform GitHub-related actions quickly from the command line.</p>
+</li>
+<li>
+<p>To authenticate to GitHub from the GitHub CLI, run the following command:</p>
+<div>
+<header><span>Shell</span><pre>gh auth login
+</pre></header><pre><code>gh auth login
+</code></pre>
+</div>
+<p>Choose to authenticate with <strong>GitHub.com</strong>, then follow the on-screen prompts.</p>
+</li>
+<li>
+<p>Install GitHub Copilot in the CLI, a powerful extension for the GitHub CLI that helps you find and understand commands, by running the following command:</p>
+<div>
+<header><span>Shell</span><pre>gh extension install github/gh-copilot
+</pre></header><pre><code>gh extension install github/gh-copilot
+</code></pre>
+</div>
+</li>
+</ol>
+<h3><a href="#experimenting-with-complex-commands">Experimenting with complex commands</a></h3>
+<p>Now that you're set up, let's learn how to find and understand the commands you might need in the future. For example, let's say you saw someone online mention <code>git blame</code>, but you don't know what it does. Try asking Copilot to explain it with the following command:</p>
+<div>
+<header><span>Shell</span><pre>gh copilot explain "git blame"
+</pre></header><pre><code>gh copilot explain "git blame"
+</code></pre>
+</div>
+<p>Copilot will tell us that <code>git blame</code> provides a detailed history of a file, showing the author and commit that last modified each line in the file. Try it yourself with the following command:</p>
+<div>
+<header><span>Shell</span><pre>git blame README.md
+</pre></header><pre><code>git blame README.md
+</code></pre>
+</div>
+<p>This is a great tool, but as you can imagine, the blame for a file can get really long. Let's say you're only interested in the most recent update to a specific line in a file. You can ask Copilot to build you the right command:</p>
+<div>
+<header><span>Shell</span><pre>gh copilot suggest "Show me the blame for line 1 of README.md"
+</pre></header><pre><code>gh copilot suggest "Show me the blame for line 1 of README.md"
+</code></pre>
+</div>
+<p>When Copilot asks what kind of command you're looking for, use your arrow keys to choose <strong>git command</strong>, then press <kbd>Enter</kbd>. Copilot will then suggest the following command:</p>
+<div>
+<header><span>Shell</span><pre>git blame -L 1,1 README.md
+</pre></header><pre><code>git blame -L 1,1 README.md
+</code></pre>
+</div>
+<p>Use your arrow keys to choose <strong>Execute command</strong>, then press <kbd>Enter</kbd>. You'll see the author and commit that last modified line 1 of <code>README.md</code>.</p>
+<h2><a href="#review-and-next-steps">Review and next steps</a></h2>
+<p>In this article, we covered the basics of Git with GitHub Desktop, learning important terms like:</p>
+<ul>
+<li>
+<strong>Repository</strong>: A folder that saves all of the changes made to files in your project.</li>
+<li>
+<strong>Commit</strong>: A snapshot of your project at a particular point in time.</li>
+<li>
+<strong>Branch</strong>: A copy of your project where you can work on a set of changes.</li>
+<li>
+<strong>Pull request</strong>: A request to merge changes from one branch into another.</li>
+</ul>
+<p>We also talked about performing more complicated Git operations on the command line. We tried out <code>gh copilot explain</code> and <code>gh copilot suggest</code> to understand and find new commands and functionality.</p>
+<p>Now, try applying what you've learned to your own work. Add Git to an existing project with GitHub Desktop by pressing <kbd>Ctrl</kbd>+<kbd>O</kbd> (Windows/Linux) or <kbd>Command</kbd>+<kbd>O</kbd> (Mac) and experience the benefits of version control yourself!</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,57 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Managing your organization" href="/en/codespaces/managing-codespaces-for-your-organization">Managing your organization</a><span>/</span>
+</li>
+<li><a title="List organization codespaces" href="/en/codespaces/managing-codespaces-for-your-organization/listing-the-codespaces-in-your-organization">List organization codespaces</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Listing the codespaces in your organization</h1></div></div>
+<div>
+<div><p>You can list all of the currently active or stopped codespaces for your organization.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>To list all of the current codespaces for your organization, you must be an organization owner.</p></div></div>
+<div><div><p>Organizations on GitHub Team and GitHub Enterprise plans can pay for members' and collaborators' use of GitHub Codespaces. These organizations can then access settings and policies to manage codespaces paid for by the organization. For more information, see <a href="/en/codespaces/managing-codespaces-for-your-organization/choosing-who-owns-and-pays-for-codespaces-in-your-organization#about-ownership-of-codespaces">Choosing who owns and pays for codespaces in your organization</a> and <a href="/en/get-started/learning-about-github/githubs-plans">GitHub’s plans</a>.</p></div></div>
+</div></div>
+</div>
+<div><div><div>
+<h2><a href="#overview">Overview</a></h2>
+<p>As an organization owner, you can list all of the currently active and stopped codespaces for your organization. You might want to do this to check how many codespaces users are creating, to make sure they aren't incurring unnecessary costs. For information about pricing, see <a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/about-billing-for-github-codespaces">About billing for GitHub Codespaces</a>.</p>
+<p>The easiest way to list the codespaces for an organization is by using GitHub CLI. You can also use the REST API, which provides more information about each codespace.</p>
+<p>For information on how to see the current total Codespaces usage for your organization or enterprise, and generate a detailed report, see <a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/viewing-your-github-codespaces-usage">Viewing your GitHub Codespaces usage</a>.</p>
+<h3><a href="#using-github-cli-to-list-codespaces">Using GitHub CLI to list codespaces</a></h3>
+<p>To list all of the current codespaces for a specified organization, use the following command.</p>
+<div>
+<header><span>Shell</span><pre>gh codespace list --org ORGANIZATION
+</pre></header><pre><code>gh codespace list --org ORGANIZATION
+</code></pre>
+</div>
+<p>This command returns a list that includes the following information for each codespace:</p>
+<ul>
+<li>The name and display name</li>
+<li>The user who created the codespace</li>
+<li>The repository and branch</li>
+<li>The current state of the codespace</li>
+</ul>
+<p>To list all of the current codespaces for an organization that were created by a specific user, use the following command.</p>
+<div>
+<header><span>Shell</span><pre>gh codespace list --org ORGANIZATION --user USER
+</pre></header><pre><code>gh codespace list --org ORGANIZATION --user USER
+</code></pre>
+</div>
+<div>
+<p>
+In the above commands, replace <code>ORGANIZATION</code> with the name of the organization you are querying. You must be an owner of the organization.</p>
+</div>
+<h3><a href="#using-the-rest-api-to-list-codespaces">Using the REST API to list codespaces</a></h3>
+<p>You can use the <code>/orgs/{org}/codespaces</code> API endpoint as an alternative method of listing the current codespaces for an organization. This returns more information than GitHub CLI; for example, the machine type details.</p>
+<p>For more information about this endpoint, see <a href="/en/rest/codespaces/organizations#list-codespaces-for-the-organization">REST API endpoints for Codespaces organizations</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

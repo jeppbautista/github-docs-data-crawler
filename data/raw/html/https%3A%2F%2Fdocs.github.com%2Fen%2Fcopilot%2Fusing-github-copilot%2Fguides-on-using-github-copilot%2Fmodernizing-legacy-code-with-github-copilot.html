@@ -1,0 +1,404 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Use GitHub Copilot" href="/en/copilot/using-github-copilot">Use GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Guides" href="/en/copilot/using-github-copilot/guides-on-using-github-copilot">Guides</a><span>/</span>
+</li>
+<li><a title="Modernize legacy code" href="/en/copilot/using-github-copilot/guides-on-using-github-copilot/modernizing-legacy-code-with-github-copilot">Modernize legacy code</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Modernizing legacy code with GitHub Copilot</h1></div></div>
+<div><div><p>Copilot Chat helps modernize legacy code by suggesting refactors and creating tests to catch potential issues.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#example-scenario"><div><span>Example scenario</span></div></a></li>
+<li><a href="#step-1-get-a-local-copy-of-the-repository"><div><span>Step 1: Get a local copy of the repository</span></div></a></li>
+<li><a href="#step-2-compile-and-run-the-program"><div><span>Step 2: Compile and run the program</span></div></a></li>
+<li><a href="#step-3-explain-the-files-and-code"><div><span>Step 3: Explain the files and code</span></div></a></li>
+<li><a href="#step-4-chart-out-the-data-flow-between-the-files"><div><span>Step 4: Chart out the data flow between the files</span></div></a></li>
+<li><a href="#step-5-generate-a-test-plan"><div><span>Step 5: Generate a test plan</span></div></a></li>
+<li><a href="#step-6-convert-the-files-from-cobol-to-nodejs"><div><span>Step 6: Convert the files from COBOL to Node.js</span></div></a></li>
+<li><a href="#step-7-link-the-files-together-and-set-up-a-working-nodejs-project"><div><span>Step 7: Link the files together and set up a working Node.js project</span></div></a></li>
+<li><a href="#step-8-generate-unit-and-integration-tests"><div><span>Step 8: Generate unit and integration tests</span></div></a></li>
+<li><a href="#step-9-run-tests-and-refine-the-code"><div><span>Step 9: Run tests and refine the code</span></div></a></li>
+<li><a href="#step-10-move-the-javascript-project-to-a-new-location"><div><span>Step 10: Move the JavaScript project to a new location</span></div></a></li>
+<li><a href="#conclusion"><div><span>Conclusion</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<p> The responses shown in this article are examples. Copilot Chat responses are non-deterministic, so you may get different responses from the ones shown here.</p>
+</div>
+<p>Legacy code is code that is old, outdated, or no longer supported by the original developers. It can be difficult to maintain and extend because it may not follow modern best practices, such as using consistent naming conventions or writing clear documentation.</p>
+<p>Modernizing legacy code can help you:</p>
+<ul>
+<li>Improve performance and scalability.</li>
+<li>Make the code easier to maintain and extend.</li>
+<li>Reduce the risk of introducing bugs when making changes.</li>
+<li>Make the code easier to test.</li>
+</ul>
+<p>Copilot can help you modernize your legacy code by:</p>
+<ul>
+<li>
+<strong>Providing suggestions</strong> for refactoring the code to follow modern best practices.</li>
+<li>
+<strong>Generating documentation</strong> to help you understand how the code works.</li>
+<li>
+<strong>Generating tests</strong> to help you verify that your changes haven't introduced bugs.</li>
+</ul>
+<h2><a href="#example-scenario">Example scenario</a></h2>
+<p>In this example, we’ll be looking at an account management system written in COBOL and modernizing it into Node.js. You can find the COBOL code in the <a href="https://github.com/continuous-copilot/modernize-legacy-cobol-app"><code>modernize-legacy-cobol-app</code> repository</a>.</p>
+<p>The account management system consists of three key files:</p>
+<ul>
+<li>
+<code>main.cob</code>: The main program that reads input from the user and calls the appropriate subprogram.</li>
+<li>
+<code>operations.cob</code>: A subprogram that performs operations on the account data, such as credit, debit, and view balance.</li>
+<li>
+<code>data.cob</code>: A subprogram that manages the storage of the account balance.</li>
+</ul>
+<h2><a href="#step-1-get-a-local-copy-of-the-repository">Step 1: Get a local copy of the repository</a></h2>
+<p>Before you compile and run the program, you need to have the code locally. If you haven't already cloned the repository, navigate to the directory where you want to store the project and run the following command:</p>
+<div>
+<header><span>Shell</span><pre>git clone https://github.com/continuous-copilot/modernize-legacy-cobol-app.git
+</pre></header><pre><code>git clone https://github.com/continuous-copilot/modernize-legacy-cobol-app.git
+</code></pre>
+</div>
+<h2><a href="#step-2-compile-and-run-the-program">Step 2: Compile and run the program</a></h2>
+<p>You can either install a COBOL compiler in your preferred development environment (for example, the open source GnuCOBOL compiler), or use Copilot Chat in GitHub Codespaces.</p>
+<p>If you use MacOS, you can install GnuCOBOL using <a href="https://brew.sh/">Homebrew</a>:</p>
+<div>
+<header><span>Shell</span><pre>brew install gnu-cobol
+</pre></header><pre><code>brew install gnu-cobol
+</code></pre>
+</div>
+<p>If you use Codespaces or an Ubuntu Linux system, you can install GnuCOBOL using <code>apt</code>:</p>
+<div>
+<header><span>Shell</span><pre>sudo apt-get update &amp;&amp; \
+sudo apt-get install gnucobol
+</pre></header><pre><code>sudo apt-get update &amp;&amp; \
+sudo apt-get install gnucobol
+</code></pre>
+</div>
+<p>To compile the code, link the files, and create an executable, run the following command from the root of the repository:</p>
+<div>
+<header><span>Shell</span><pre>cobc -x main.cob operations.cob data.cob -o accountsystem
+</pre></header><pre><code>cobc -x main.cob operations.cob data.cob -o accountsystem
+</code></pre>
+</div>
+<p>To run the program, use the following command:</p>
+<div>
+<header><span>Shell</span><pre>./accountsystem
+</pre></header><pre><code>./accountsystem
+</code></pre>
+</div>
+<h2><a href="#step-3-explain-the-files-and-code">Step 3: Explain the files and code</a></h2>
+<p>The first step in modernizing the code is to understand how it works. You can ask Copilot Chat to explain the code in each file.</p>
+<p>Open the repository in your IDE then, in the Copilot Chat panel, enter the following prompt.</p>
+<h3><a href="#example-prompt-1">Example prompt 1</a></h3>
+<p><code>/explain #file:main.cob #file:operations.cob #file:data.cob Can you please create a high level overview of the app. It will be great if you can explain each file in detail and how they are linked.</code></p>
+<h3><a href="#example-response-1">Example response 1</a></h3>
+<p>This is an excerpt from the response to the prompt above:</p>
+<p><code>Sure! Here's a high-level overview of the COBOL application, along with detailed explanations of each file and how they are linked together.</code></p>
+<p><code>High-Level Overview</code></p>
+<p><code>This COBOL application simulates an account management system. It allows users to view the current balance, credit the account, debit the account, and exit the application. The application is divided into three main COBOL source files: main.cob, operations.cob, and data.cob. ...</code></p>
+<h2><a href="#step-4-chart-out-the-data-flow-between-the-files">Step 4: Chart out the data flow between the files</a></h2>
+<p>The next step is to understand how the files are linked together. You can use <code>@workspace</code> to create a data flow diagram for the application.</p>
+<div>
+<p>
+The <code>@workspace</code> chat participant in VS Code and Visual Studio provides Copilot with context about all of the code in your workspace. You can use <code>@workspace</code> when you want Copilot to consider the structure of your project and how different parts of your code interact. If you're using a JetBrains IDE, use <code>@project</code> rather than <code>@workspace</code>.</p>
+</div>
+<h3><a href="#example-prompt-2">Example prompt 2</a></h3>
+<p><code>@workspace can you create a sequence diagram of the app showing the data flow of the app. Please create this in mermaid format so that I can render this in a markdown file.</code></p>
+<p>Copilot outputs the Mermaid markup for a full sequence diagram that shows how the application works. You can copy and paste this markup into a Mermaid application to generate the diagram.</p>
+<h2><a href="#step-5-generate-a-test-plan">Step 5: Generate a test plan</a></h2>
+<p>Create a test plan to ensure that the application works as expected after you make changes. You can use <code>@workspace</code> to generate a test plan that covers all of the files in the project.</p>
+<h3><a href="#example-prompt-3">Example prompt 3</a></h3>
+<pre><code>@workspace The current Cobol app has no tests. Can you please create a test plan of current business logic that I can use to validate with business stakeholders about the current implementation.
+
+Later I would like to use this test plan to create unit and integration tests in a node.js app. I am in the middle of transforming the current Cobol app to a node.js app.
+
+The test plan should include the following:
+
+1. Test Case ID
+2. Test Case Description
+3. Pre-conditions
+4. Test Steps
+5. Expected Result
+6. Actual Result
+7. Status (Pass/Fail)
+8. Comments
+
+Please create the test plan in a markdown table format. The test plan should cover all the business logic in the current Cobol app.
+
+Convert this to markdown syntax to insert as a new file
+</code></pre>
+<p>Copilot outputs a test plan in Markdown format that you can use to validate the application. To use this plan later in the process, create a file called <code>TESTPLAN.md</code> and copy the suggested plan into it. This will allow you to reference the test plan when generating test cases in the next steps.</p>
+<h2><a href="#step-6-convert-the-files-from-cobol-to-nodejs">Step 6: Convert the files from COBOL to Node.js</a></h2>
+<p>The next step is to convert the COBOL files to Node.js. It's important to keep the following prompt practices in mind:</p>
+<ul>
+<li>Provide context</li>
+<li>Give clear directions</li>
+<li>Be specific about the outcome you want to achieve</li>
+</ul>
+<p>Start by creating a temporary directory within your project, in which to save the JavaScript files you're going to create.</p>
+<div>
+<header><span>Shell</span><pre>mkdir temp-JS-project-directory
+</pre></header><pre><code>mkdir temp-JS-project-directory
+</code></pre>
+</div>
+<p>Then, iteratively convert the COBOL files to Node.js.</p>
+<h3><a href="#example-prompt-4">Example prompt 4</a></h3>
+<p><code>Can you convert code in #file:main.cob to node.js?</code></p>
+<h3><a href="#example-response-4">Example response 4</a></h3>
+<pre><code>Sure! Here is the equivalent Node.js code for the main.cob file. This code will simulate the same account management system functionality.
+<span>
+#</span><span><span>## COBOL Code:</span></span>
+
+main.cob
+
+```COBOL
+IDENTIFICATION DIVISION.
+       PROGRAM-ID. MainProgram.
+
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01  CONTINUE-FLAG      PIC X VALUE 'Y'.
+       01  USER-CHOICE        PIC 9.
+       01  FINAL-BALANCE      PIC 9(6)V99 VALUE 1000.00.
+
+       PROCEDURE DIVISION.
+           PERFORM UNTIL CONTINUE-FLAG = 'N'
+               DISPLAY "1. View Balance"
+               DISPLAY "2. Credit Account"
+               DISPLAY "3. Debit Account"
+               DISPLAY "4. Exit"
+               ACCEPT USER-CHOICE
+
+               EVALUATE USER-CHOICE
+                   WHEN 1
+                       CALL 'Operations' USING 'TOTAL'
+                   WHEN 2
+                       CALL 'Operations' USING 'CREDIT'
+                   WHEN 3
+                       CALL 'Operations' USING 'DEBIT'
+                   WHEN 4
+                       MOVE 'N' TO CONTINUE-FLAG
+                       DISPLAY "Exiting the program. Goodbye!"
+                   WHEN OTHER
+                       DISPLAY "Invalid choice. Please try again."
+               END-EVALUATE
+           END-PERFORM
+           STOP RUN.
+<span>
+#</span><span><span>## Node.js Code: `main.js`</span></span>
+```javascript
+const readline = require('readline');
+
+let continueFlag = 'Y';
+let finalBalance = 1000.00;
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+function displayMenu() {
+    console.log("1. View Balance");
+    console.log("2. Credit Account");
+    console.log("3. Debit Account");
+    console.log("4. Exit");
+}
+
+function handleUserChoice(choice) {
+    switch (choice) {
+        case '1':
+            viewBalance();
+            break;
+        case '2':
+            creditAccount();
+            break;
+        case '3':
+            debitAccount();
+            break;
+        case '4':
+            continueFlag = 'N';
+            console.log("Exiting the program. Goodbye!");
+            rl.close();
+            break;
+        default:
+            console.log("Invalid choice. Please try again.");
+            promptUser();
+            break;
+    }
+}
+
+function viewBalance() {
+    console.log(`Current balance: ${finalBalance.toFixed(2)}`);
+    promptUser();
+}
+
+function creditAccount() {
+    rl.question("Enter credit amount: ", (amount) =&amp;gt; {
+        amount = parseFloat(amount);
+        if (!isNaN(amount) &amp;amp;&amp;amp; amount &amp;gt; 0) {
+            finalBalance += amount;
+            console.log(`Amount credited. New balance: ${finalBalance.toFixed(2)}`);
+        } else {
+            console.log("Invalid amount. Please try again.");
+        }
+        promptUser();
+    });
+}
+
+function debitAccount() {
+    rl.question("Enter debit amount: ", (amount) =&amp;gt; {
+        amount = parseFloat(amount);
+        if (!isNaN(amount) &amp;amp;&amp;amp; amount &amp;gt; 0) {
+            if (finalBalance &amp;gt;= amount) {
+                finalBalance -= amount;
+                console.log(`Amount debited. New balance: ${finalBalance.toFixed(2)}`);
+            } else {
+                console.log("Insufficient funds for this debit.");
+            }
+        } else {
+            console.log("Invalid amount. Please try again.");
+        }
+        promptUser();
+    });
+}
+
+function promptUser() {
+    if (continueFlag === 'Y') {
+        displayMenu();
+        rl.question("Select an option: ", handleUserChoice);
+    }
+}
+
+promptUser();
+
+This Node.js code replicates the functionality of the COBOL main.cob file, providing a simple command-line interface for viewing the balance, crediting the account, debiting the account, and exiting the application.
+</code></pre>
+<p>You should review the suggested code thoroughly before using it. Once you're satisfied with the generated code, follow these steps to save it locally and complete the conversion:</p>
+<ol>
+<li>In the temporary directory you created earlier, create a new file called <code>main.js</code>.</li>
+<li>Copy the generated code from the Copilot Chat panel and paste it into <code>main.js</code>.</li>
+<li>Save the file.</li>
+<li>Use similar prompts to convert <code>operations.cob</code> and <code>data.cob</code> to Node.js.</li>
+<li>Create corresponding JavaScript files, <code>operations.js</code> and <code>data.js</code>, in the same temporary directory.</li>
+<li>Copy and paste the generated code into each file, then save them.</li>
+</ol>
+<h2><a href="#step-7-link-the-files-together-and-set-up-a-working-nodejs-project">Step 7: Link the files together and set up a working Node.js project</a></h2>
+<p>Once you have converted all of the files to Node.js, you need to link them together and set up a working Node.js project.</p>
+<ol>
+<li>
+<p>Navigate to the temporary directory in your terminal.</p>
+</li>
+<li>
+<p>Run the following command to create a <code>package.json</code> file:</p>
+<div>
+<header><span>Shell</span><pre>npm init -y
+</pre></header><pre><code>npm init -y
+</code></pre>
+</div>
+</li>
+<li>
+<p>If your application requires external packages, install them by running:</p>
+<div>
+<header><span>Shell</span><pre>npm install
+</pre></header><pre><code>npm install
+</code></pre>
+</div>
+</li>
+<li>
+<p>Start the app by running:</p>
+<div>
+<header><span>Shell</span><pre>npm start
+</pre></header><pre><code>npm start
+</code></pre>
+</div>
+</li>
+</ol>
+<p>At this point, the Node.js application may not fully replicate the functionality of the original COBOL program. For example, balances may not update correctly, or calculations might not match the COBOL logic.</p>
+<p>To refine the application, you will need to:</p>
+<ul>
+<li>
+<p><strong>Identify incorrect behavior</strong> by running the program and comparing it to the COBOL version.</p>
+</li>
+<li>
+<p><strong>Work iteratively with Copilot</strong> to adjust the logic until the Node.js program behaves as expected.</p>
+</li>
+<li>
+<p><strong>Use targeted prompts</strong> to debug and improve specific parts of the code, such as:</p>
+<p><code>@workspace - analyze main.js and ensure account balance updates correctly when crediting an account.</code></p>
+</li>
+</ul>
+<p>Refactoring legacy code isn’t always a one-step process—Copilot can assist in debugging and improving functionality as you refine your new Node.js implementation.</p>
+<h2><a href="#step-8-generate-unit-and-integration-tests">Step 8: Generate unit and integration tests</a></h2>
+<p>The next step is to generate unit and integration tests to ensure that the application works as expected. You can use <code>@workspace</code> to generate a test plan that covers all of the files in the project.</p>
+<h3><a href="#example-prompt-5">Example prompt 5</a></h3>
+<p><code>@workspace I would like to create unit and integration tests cases from the test plan mentioned in #file:TESTPLAN.md file The node.js code is in node-accounting-app folder and I am looking to generate tests for #file:operations.js file. Use a popular testing framework and also provide all the dependencies required to run the tests.</code></p>
+<h3><a href="#example-response-5">Example response 5</a></h3>
+<p>Copilot generates a number of tests in Jest, a JavaScript testing framework, with a full, step-by-step guide on how to implement and run them.</p>
+<p>This is an excerpt from the response to the prompt above:</p>
+<p><code>“This test plan covers the main functionalities of the COBOL application, including viewing the balance, crediting the account, debiting the account, and exiting the application. The test cases are implemented using Jest, a popular testing framework for Node.js. Validate this test plan with the business stakeholders to ensure it meets the business requirements. Once validated, you can use this plan to create corresponding unit tests and integration tests for the Node.js application.”</code></p>
+<h2><a href="#step-9-run-tests-and-refine-the-code">Step 9: Run tests and refine the code</a></h2>
+<p>After generating the test plan and writing the tests, you’ll need to run them and fix any failing tests. Testing is an iterative process, you may need to modify the code to resolve issues, then re-run the tests until everything passes.</p>
+<p>If a test fails, use Copilot to help debug and refine the implementation.</p>
+<h3><a href="#example-prompt-6">Example prompt 6</a></h3>
+<p><code>@workspace - analyze test failures in operations.test.js and suggest fixes to match the expected behavior.</code></p>
+<p>Even if all tests pass, the program may still have issues. Automated tests don’t always catch missing functionality or logic errors, so manual testing is required to ensure the application behaves as expected.</p>
+<h2><a href="#step-10-move-the-javascript-project-to-a-new-location">Step 10: Move the JavaScript project to a new location</a></h2>
+<p>Once the application is working as expected, move the new JavaScript project out of the COBOL directory to keep it separate.</p>
+<ol>
+<li>
+<p>Navigate to the parent directory of the COBOL project.</p>
+</li>
+<li>
+<p>Move the JavaScript project to a new location:</p>
+<div>
+<header><span>Shell</span><pre>mv modernize-legacy-cobol-app new-js-project
+</pre></header><pre><code>mv modernize-legacy-cobol-app new-js-project
+</code></pre>
+</div>
+</li>
+<li>
+<p>Navigate to the new project directory and confirm everything runs correctly:</p>
+<div>
+<header><span>Shell</span><pre>cd new-js-project
+npm start
+</pre></header><pre><code>cd new-js-project
+npm start
+</code></pre>
+</div>
+</li>
+</ol>
+<p>Now, the refactored Node.js application is in its own standalone project folder, separate from the original COBOL files.</p>
+<h2><a href="#conclusion">Conclusion</a></h2>
+<p>In this example, we looked at an account management system written in COBOL and modernized it into Node.js. We used Copilot Chat to explain the code, chart out the data flow, generate a test plan, and convert the code to Node.js. By following these steps, you can modernize your legacy code and make it easier to maintain and extend. Here are some additional tips for modernizing legacy code:</p>
+<ul>
+<li>
+<strong>Prompting best practices are key</strong>: The quality of your prompts determines the quality of Copilot's suggestions. Provide clear context, break down complex tasks into smaller steps, provide examples, and give Copilot specific goals to work toward. This makes your workflow smoother and your results more precise</li>
+<li>
+<strong>Review the code before using it</strong>: Make sure you understand the code that Copilot provides before using it in your application. This will help you catch any potential issues and ensure that the code meets your requirements.</li>
+<li>
+<strong>Validate your changes</strong>: After making changes to the code, it's important to validate that the application still works as expected. You can use the test plan generated by Copilot to create unit and integration tests for the application.</li>
+</ul>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/copilot/copilot-chat-cookbook/documenting-code/documenting-legacy-code">Documenting legacy code</a></li>
+<li>
+<a href="https://github.blog/ai-and-ml/github-copilot/modernizing-legacy-code-with-github-copilot-tips-and-examples/">Modernizing legacy code with GitHub Copilot: Tips and examples</a> on the GitHub Blog</li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

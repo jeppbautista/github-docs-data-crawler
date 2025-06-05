@@ -1,0 +1,77 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Organizations" href="/en/organizations">Organizations</a><span>/</span>
+</li>
+<li>
+<a title="Manage programmatic access" href="/en/organizations/managing-programmatic-access-to-your-organization">Manage programmatic access</a><span>/</span>
+</li>
+<li><a title="Set a token policy" href="/en/organizations/managing-programmatic-access-to-your-organization/setting-a-personal-access-token-policy-for-your-organization">Set a token policy</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Setting a personal access token policy for your organization</h1></div></div>
+<div><div><p>Organization owners can control access to resources by applying policies to personal access tokens</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#restricting-access-by-personal-access-tokens"><div><span>Restricting access by personal access tokens</span></div></a></li>
+<li><a href="#enforcing-a-maximum-lifetime-policy-for-personal-access-tokens"><div><span>Enforcing a maximum lifetime policy for personal access tokens</span></div></a></li>
+<li><a href="#enforcing-an-approval-policy-for-fine-grained-personal-access-tokens"><div><span>Enforcing an approval policy for fine-grained personal access tokens</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#restricting-access-by-personal-access-tokens">Restricting access by personal access tokens</a></h2>
+<p>Organization owners can prevent personal access tokens from accessing resources owned by the organization with the following options:</p>
+<ul>
+<li>
+<strong>Restrict access via personal access tokens:</strong> Personal access tokens (classic) or fine-grained personal access tokens cannot access resources owned by the organization. SSH keys created by personal access tokens will continue to work.</li>
+<li>
+<strong>Allow access via personal access tokens:</strong> Personal access tokens (classic) or fine-grained personal access tokens can access resources owned by the organization.</li>
+</ul>
+<p>Regardless of the chosen policy, Personal access tokens will have access to public resources within the organization. By default, both Personal access tokens (classic) and fine-grained personal access tokens are enabled.</p>
+<ol>
+<li>In the upper-right corner of GitHub, select your profile photo, then click </li>
+<li>Next to the organization, click <strong>Settings</strong>.</li>
+<li>In the left sidebar, under <strong>Settings</strong>.</li>
+<li>Select either the <strong>Fine-grained tokens</strong> or <strong>Tokens (classic)</strong> tab to enforce this policy based on the token type.</li>
+<li>Under <strong>Fine-grained personal access tokens</strong> or <strong>Restrict personal access tokens (classic) from accessing your organizations</strong>, select your access policy.</li>
+<li>Click <strong>Save</strong>.</li>
+</ol>
+<h2><a href="#enforcing-a-maximum-lifetime-policy-for-personal-access-tokens">Enforcing a maximum lifetime policy for personal access tokens</a></h2>
+<p>Organization owners can set maximum lifetime allowances for both fine-grained personal access tokens and personal access tokens (classic) to control access to organization resources.</p>
+<p>For fine-grained personal access tokens, the default the maximum lifetime policy for organizations is set to expire within 366 days. Personal access tokens (classic) do not have an expiration requirement.</p>
+<p>When you set a policy, tokens with non-compliant lifetimes will be blocked from accessing your organization if the token belongs to a member of your organization. Setting this policy does not revoke or disable these tokens. Users will learn that their existing token is non-compliant when API calls for your organization are rejected.</p>
+<ol>
+<li>In the upper-right corner of GitHub, select your profile photo, then click </li>
+<li>Next to the organization, click <strong>Settings</strong>.</li>
+<li>In the left sidebar, click </li>
+<li>Select either the <strong>Fine-grained tokens</strong> or <strong>Tokens (classic)</strong> tab to enforce this policy based on the token type.</li>
+<li>Under <strong>Set maximum lifetimes for personal access tokens</strong>, set the maximum lifetime.</li>
+<li>Click <strong>Save</strong>.</li>
+</ol>
+<h2><a href="#enforcing-an-approval-policy-for-fine-grained-personal-access-tokens">Enforcing an approval policy for fine-grained personal access tokens</a></h2>
+<p>Organization owners can manage approval requirements for each fine-grained personal access token that can access the organization with the following options:</p>
+<ul>
+<li>
+<strong>Require administrator approval:</strong> An organization owner must approve each fine-grained personal access token that can access the organization. Fine-grained personal access tokens created by organization owners will not need approval. This is the default value.</li>
+<li>
+<strong>Do not require administrator approval:</strong> Fine-grained personal access tokens created by organization members can access resources in the organization without prior approval.</li>
+</ul>
+<p>Fine-grained personal access tokens will still be able to read public resources within the organization without approval.</p>
+<div>
+<p>
+Only fine-grained personal access tokens, not personal access tokens (classic), are subject to approval. Unless the organization has restricted access by personal access tokens (classic), any personal access token (classic) can access organization resources without prior approval. For more information, see <a href="#restricting-access-by-personal-access-tokens">Restricting access by personal access tokens</a> on this page.</p>
+</div>
+<ol>
+<li>In the upper-right corner of GitHub, select your profile photo, then click </li>
+<li>Next to the organization, click <strong>Settings</strong>.</li>
+<li>In the left sidebar, under <strong>Settings</strong>.</li>
+<li>Select the <strong>Fine-grained tokens</strong> tab.</li>
+<li>Under <strong>Require approval of fine-grained personal access tokens</strong>, select the option that meets your needs:</li>
+<li>Click <strong>Save</strong>.</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

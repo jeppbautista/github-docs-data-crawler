@@ -1,0 +1,477 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Use GitHub Copilot" href="/en/copilot/using-github-copilot">Use GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Guides" href="/en/copilot/using-github-copilot/guides-on-using-github-copilot">Guides</a><span>/</span>
+</li>
+<li><a title="Refactor code" href="/en/copilot/using-github-copilot/guides-on-using-github-copilot/refactoring-code-with-github-copilot">Refactor code</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Refactoring code with GitHub Copilot</h1></div></div>
+<div><div><p>Leverage Copilot artificial intelligence to help you refactor your code quickly and effectively.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#understanding-code"><div><span>Understanding code</span></div></a></li>
+<li><a href="#optimizing-inefficient-code"><div><span>Optimizing inefficient code</span></div></a></li>
+<li><a href="#cleaning-up-repeated-code"><div><span>Cleaning up repeated code</span></div></a></li>
+<li><a href="#making-code-more-concise"><div><span>Making code more concise</span></div></a></li>
+<li><a href="#splitting-up-complex-units-of-code"><div><span>Splitting up complex units of code</span></div></a></li>
+<li><a href="#rewrite-conditional-code-for-better-readability"><div><span>Rewrite conditional code for better readability</span></div></a></li>
+<li><a href="#reformat-code-to-use-a-different-structure"><div><span>Reformat code to use a different structure</span></div></a></li>
+<li><a href="#improving-the-name-of-a-symbol"><div><span>Improving the name of a symbol</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>Refactoring code is the process of restructuring existing code without changing its behavior. The benefits of refactoring include improving code readability, reducing complexity, making the code easier to maintain, and allowing new features to be added more easily.</p>
+<p>This article gives you some ideas for using Copilot to refactor code in your IDE.</p>
+<div>
+<p> Example responses are included in this article. GitHub Copilot Chat may give you different responses from the ones shown here.</p>
+</div>
+<h2><a href="#understanding-code">Understanding code</a></h2>
+<p>Before you modify existing code you should make sure you understand its purpose and how it currently works. Copilot can help you with this.</p>
+<ol>
+<li>
+<p>Select the relevant code in your IDE's editor.</p>
+</li>
+<li>
+<p>Open inline chat:</p>
+<ul>
+<li>
+<strong>In VS Code:</strong> Press <kbd>Command</kbd>+<kbd>i</kbd> (Mac) or <kbd>Ctrl</kbd>+<kbd>i</kbd> (Windows/Linux).</li>
+<li>
+<strong>In Visual Studio:</strong> Press <kbd>Alt</kbd>+<kbd>/</kbd>.</li>
+<li>
+<strong>In JetBrains IDEs:</strong> Press <kbd>Control</kbd>+<kbd>Shift</kbd>+<kbd>i</kbd> (Mac) or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>g</kbd> (Windows/Linux).</li>
+</ul>
+</li>
+<li>
+<p>In the input box for inline chat, type a forward slash (<code>/</code>).</p>
+</li>
+<li>
+<p>In the dropdown list, select <strong>/explain</strong> and press <kbd>Enter</kbd>.</p>
+</li>
+<li>
+<p>If the explanation that Copilot returns is more than a few lines, click <strong>View in Chat</strong> to allow you to read the explanation more easily.</p>
+</li>
+</ol>
+<h2><a href="#optimizing-inefficient-code">Optimizing inefficient code</a></h2>
+<p>Copilot can help you to optimize code - for example, to make the code run more quickly.</p>
+<h3><a href="#example-code">Example code</a></h3>
+<p>In the two sections below, we'll use the following example bash script to demonstrate how to optimize inefficient code:</p>
+<pre><code><span>#!/bin/bash</span>
+
+<span># Find all .txt files and count lines in each</span>
+<span>for</span> file <span>in</span> $(find . -<span>type</span> f -name <span>"*.txt"</span>); <span>do</span>
+    <span>wc</span> -l <span>"<span>$file</span>"</span>
+<span>done</span>
+</code></pre>
+<h3><a href="#use-the-copilot-chat-panel">Use the Copilot Chat panel</a></h3>
+<p>Copilot can tell you whether code, like the example bash script, can be optimized.</p>
+<ol>
+<li>
+<p>Select either the <code>for</code> loop or the entire contents of the file.</p>
+</li>
+<li>
+<p>Open Copilot Chat by clicking the chat icon in the activity bar or by using the keyboard shortcut:</p>
+<ul>
+<li>
+<strong>VS Code and Visual Studio:</strong> <kbd>Control</kbd>+<kbd>Command</kbd>+<kbd>i</kbd> (Mac) / <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>i</kbd> (Windows/Linux)</li>
+<li>
+<strong>JetBrains:</strong> <kbd>Control</kbd>+<kbd>Shift</kbd>+<kbd>c</kbd>
+</li>
+</ul>
+</li>
+<li>
+<p>In the input box at the bottom of the chat panel, type: <code>Can this script be improved?</code></p>
+<p>Copilot replies with a suggestion that will make the code more efficient.</p>
+</li>
+<li>
+<p>To apply the suggested change:</p>
+<ul>
+<li>
+<p><strong>In VS Code and JetBrains:</strong> Hover over the suggestion in the chat panel and click the <strong>Insert At Cursor</strong> icon.</p>
+<div><picture><source><img src="/assets/cb-9909/images/help/copilot/insert-at-cursor.png" alt="Screenshot of the 'Insert at cursor' icon in the Copilot Chat panel." width="445" height="125"></source></picture></div>
+</li>
+<li>
+<p><strong>In Visual Studio:</strong> Click <strong>Preview</strong> then, in the comparison view, click <strong>Accept</strong>.</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3><a href="#use-copilot-inline-chat">Use Copilot inline chat</a></h3>
+<p>Alternatively, if you already know that existing code, like the example bash script, is inefficient:</p>
+<ol>
+<li>
+<p>Select either the <code>for</code> loop or the entire contents of the file.</p>
+</li>
+<li>
+<p>Open inline chat:</p>
+<ul>
+<li>
+<strong>In VS Code:</strong> Press <kbd>Command</kbd>+<kbd>i</kbd> (Mac) or <kbd>Ctrl</kbd>+<kbd>i</kbd> (Windows/Linux).</li>
+<li>
+<strong>In Visual Studio:</strong> Press <kbd>Alt</kbd>+<kbd>/</kbd>.</li>
+<li>
+<strong>In JetBrains IDEs:</strong> Press <kbd>Control</kbd>+<kbd>Shift</kbd>+<kbd>i</kbd> (Mac) or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>g</kbd> (Windows/Linux).</li>
+</ul>
+</li>
+<li>
+<p>Type <code>optimize</code> and press <kbd>Enter</kbd>.</p>
+<p>Copilot suggests revised code. For example:</p>
+<pre><code>find . -<span>type</span> f -name <span>"*.txt"</span> -<span>exec</span> <span>wc</span> -l {} +
+</code></pre>
+<p>This is more efficient than the original code, shown earlier in this article, because using <code>-exec ... +</code> allows <code>find</code> to pass multiple files to <code>wc</code> at once rather than calling <code>wc</code> once for each <code>*.txt</code> file that's found.</p>
+</li>
+<li>
+<p>Assess Copilot's suggestion and, if you agree with the change:</p>
+<ul>
+<li>
+<strong>In VS Code and Visual Studio:</strong> Click <strong>Accept</strong>.</li>
+<li>
+<strong>In JetBrains:</strong> Click the Preview icon (double arrows), then click the Apply All Diffs icon (double angle brackets).</li>
+</ul>
+</li>
+</ol>
+<p>As with all Copilot suggestions, you should always check that the revised code runs without errors and produces the correct result.</p>
+<h2><a href="#cleaning-up-repeated-code">Cleaning up repeated code</a></h2>
+<p>Avoiding repetition will make your code easier to revise and debug. For example, if the same calculation is performed more than once at different places in a file, you could move the calculation to a function.</p>
+<p>In the following very simple JavaScript example, the same calculation (item price multiplied by number of items sold) is performed in two places.</p>
+<pre><code><span>let</span> totalSales = <span>0</span>;
+
+<span>let</span> applePrice = <span>3</span>;
+<span>let</span> applesSold = <span>100</span>;
+totalSales += applePrice * applesSold;
+
+<span>let</span> orangePrice = <span>5</span>;
+<span>let</span> orangesSold = <span>50</span>;
+totalSales += orangePrice * orangesSold;
+
+<span>console</span>.<span>log</span>(<span>`Total: <span>${totalSales}</span>`</span>);
+</code></pre>
+<p>You can ask Copilot to move the repeated calculation into a function.</p>
+<ol>
+<li>
+<p>Select the entire contents of the file.</p>
+</li>
+<li>
+<p>Open inline chat:</p>
+<ul>
+<li>
+<strong>In VS Code:</strong> Press <kbd>Command</kbd>+<kbd>i</kbd> (Mac) or <kbd>Ctrl</kbd>+<kbd>i</kbd> (Windows/Linux).</li>
+<li>
+<strong>In Visual Studio:</strong> Press <kbd>Alt</kbd>+<kbd>/</kbd>.</li>
+<li>
+<strong>In JetBrains IDEs:</strong> Press <kbd>Control</kbd>+<kbd>Shift</kbd>+<kbd>i</kbd> (Mac) or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>g</kbd> (Windows/Linux).</li>
+</ul>
+</li>
+<li>
+<p>Type: <code>move repeated calculations into functions</code> and press <kbd>Enter</kbd>.</p>
+<p>Copilot suggests revised code. For example:</p>
+<pre><code><span>function</span> <span>calculateSales</span>(<span>price, quantity</span>) {
+  <span>return</span> price * quantity;
+}
+
+<span>let</span> totalSales = <span>0</span>;
+
+<span>let</span> applePrice = <span>3</span>;
+<span>let</span> applesSold = <span>100</span>;
+totalSales += <span>calculateSales</span>(applePrice, applesSold);
+
+<span>let</span> orangePrice = <span>5</span>;
+<span>let</span> orangesSold = <span>50</span>;
+totalSales += <span>calculateSales</span>(orangePrice, orangesSold);
+
+<span>console</span>.<span>log</span>(<span>`Total: <span>${totalSales}</span>`</span>);
+</code></pre>
+</li>
+<li>
+<p>Assess Copilot's suggestion and, if you agree with the change:</p>
+<ul>
+<li>
+<strong>In VS Code and Visual Studio:</strong> Click <strong>Accept</strong>.</li>
+<li>
+<strong>In JetBrains:</strong> Click the Preview icon (double arrows), then click the Apply All Diffs icon (double angle brackets).</li>
+</ul>
+</li>
+</ol>
+<p>As with all Copilot suggestions, you should always check that the revised code runs without errors and produces the correct result.</p>
+<h2><a href="#making-code-more-concise">Making code more concise</a></h2>
+<p>If code is unnecessarily verbose it can be difficult to read and maintain. Copilot can suggest a more concise version of selected code.</p>
+<p>In the following example, this Python code outputs the area of a rectangle and a circle, but could be written more concisely:</p>
+<pre><code><span>def</span> <span>calculate_area_of_rectangle</span>(<span>length, width</span>):
+    area = length * width
+    <span>return</span> area
+
+<span>def</span> <span>calculate_area_of_circle</span>(<span>radius</span>):
+    <span>import</span> math
+    area = math.pi * (radius ** <span>2</span>)
+    <span>return</span> area
+
+length_of_rectangle = <span>10</span>
+width_of_rectangle = <span>5</span>
+area_of_rectangle = calculate_area_of_rectangle(length_of_rectangle, width_of_rectangle)
+<span>print</span>(<span>f"Area of rectangle: <span>{area_of_rectangle}</span>"</span>)
+
+radius_of_circle = <span>7</span>
+area_of_circle = calculate_area_of_circle(radius_of_circle)
+<span>print</span>(<span>f"Area of circle: <span>{area_of_circle}</span>"</span>)
+</code></pre>
+<ol>
+<li>
+<p>Select the entire contents of the file.</p>
+</li>
+<li>
+<p>Open inline chat:</p>
+<ul>
+<li>
+<strong>In VS Code:</strong> Press <kbd>Command</kbd>+<kbd>i</kbd> (Mac) or <kbd>Ctrl</kbd>+<kbd>i</kbd> (Windows/Linux).</li>
+<li>
+<strong>In Visual Studio:</strong> Press <kbd>Alt</kbd>+<kbd>/</kbd>.</li>
+<li>
+<strong>In JetBrains IDEs:</strong> Press <kbd>Control</kbd>+<kbd>Shift</kbd>+<kbd>i</kbd> (Mac) or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>g</kbd> (Windows/Linux).</li>
+</ul>
+</li>
+<li>
+<p>Type: <code>make this more concise</code> and press <kbd>Enter</kbd>.</p>
+<p>Copilot suggests revised code. For example:</p>
+<pre><code><span>import</span> math
+
+<span>def</span> <span>calculate_area_of_rectangle</span>(<span>length, width</span>):
+  <span>return</span> length * width
+
+<span>def</span> <span>calculate_area_of_circle</span>(<span>radius</span>):
+  <span>return</span> math.pi * (radius ** <span>2</span>)
+
+<span>print</span>(<span>f"Area of rectangle: <span>{calculate_area_of_rectangle(<span>10</span>, <span>5</span>)}</span>"</span>)
+<span>print</span>(<span>f"Area of circle: <span>{calculate_area_of_circle(<span>7</span>)}</span>"</span>)
+</code></pre>
+</li>
+<li>
+<p>Assess Copilot's suggestion and, if you agree with the change:</p>
+<ul>
+<li>
+<strong>In VS Code and Visual Studio:</strong> Click <strong>Accept</strong>.</li>
+<li>
+<strong>In JetBrains:</strong> Click the Preview icon (double arrows), then click the Apply All Diffs icon (double angle brackets).</li>
+</ul>
+</li>
+</ol>
+<p>As with all Copilot suggestions, you should always check that the revised code runs without errors and produces the correct result.</p>
+<h2><a href="#splitting-up-complex-units-of-code">Splitting up complex units of code</a></h2>
+<p>Large methods or functions that perform multiple operations are likely to offer fewer opportunities for reuse than smaller, simpler functions that are focused on performing a particular operation. They may also be more difficult to understand and debug.</p>
+<p>Copilot can help you to split up complex blocks of code into smaller units that are more suitable for reuse.</p>
+<p>The following Python code is a very simple example, but it shows the principle of splitting up a single function into two functions that perform particular operations.</p>
+<pre><code><span>import</span> pandas <span>as</span> pd
+<span>from</span> pandas.io.formats.style <span>import</span> Styler
+
+<span>def</span> <span>process_data</span>(<span>item, price</span>):
+    <span># Cleanse data</span>
+    item = item.strip()  <span># Strip whitespace from item</span>
+    price = price.strip()  <span># Strip whitespace from price</span>
+    price = <span>float</span>(price) <span># Convert price to a float</span>
+    <span># More cleansing operations here</span>
+
+    <span># Create and print a DataFrame</span>
+    data = {<span>'Item'</span>: [item], <span>'Price'</span>: [price]}
+    df = pd.DataFrame(data)
+    <span>print</span>(df.to_string(index=<span>False</span>))
+
+<span># Example usage</span>
+item = <span>"   Apple "</span>
+price = <span>" 1.25"</span>
+process_data(item, price)
+</code></pre>
+<p>To split up the <code>process_data</code> function:</p>
+<ol>
+<li>
+<p>Put the cursor in the function name.</p>
+</li>
+<li>
+<p>Open inline chat:</p>
+<ul>
+<li>
+<strong>In VS Code:</strong> Press <kbd>Command</kbd>+<kbd>i</kbd> (Mac) or <kbd>Ctrl</kbd>+<kbd>i</kbd> (Windows/Linux).</li>
+<li>
+<strong>In Visual Studio:</strong> Press <kbd>Alt</kbd>+<kbd>/</kbd>.</li>
+<li>
+<strong>In JetBrains IDEs:</strong> Press <kbd>Control</kbd>+<kbd>Shift</kbd>+<kbd>i</kbd> (Mac) or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>g</kbd> (Windows/Linux).</li>
+</ul>
+</li>
+<li>
+<p>Type: <code>split into 2 separate functions: one for cleansing data, the other for printing</code> and press <kbd>Enter</kbd>.</p>
+<p>Copilot suggests revised code. For example:</p>
+<pre><code><span>def</span> <span>cleanse_data</span>(<span>item, price</span>):
+  <span># Cleanse data</span>
+  item = item.strip()  <span># Strip whitespace from item</span>
+  price = price.strip()  <span># Strip whitespace from price</span>
+  price = <span>float</span>(price)  <span># Convert price to a float</span>
+  <span>return</span> item, price
+
+<span>def</span> <span>print_data</span>(<span>item, price</span>):
+  <span># Create and print a DataFrame</span>
+  data = {<span>'Item'</span>: [item], <span>'Price'</span>: [price]}
+  df = pd.DataFrame(data)
+  <span>print</span>(df.to_string(index=<span>False</span>))
+
+<span>def</span> <span>process_data</span>(<span>item, price</span>):
+  item, price = cleanse_data(item, price)
+  print_data(item, price)
+</code></pre>
+<div>
+<p> The example suggestion shown above replaces the existing function with three functions. The third function simply calls the other two functions, and allows for existing code that calls the <code>process_data</code> function.</p>
+</div>
+</li>
+<li>
+<p>Assess Copilot's suggestion and, if you agree with the change:</p>
+<ul>
+<li>
+<strong>In VS Code and Visual Studio:</strong> Click <strong>Accept</strong>.</li>
+<li>
+<strong>In JetBrains:</strong> Click the Preview icon (double arrows), then click the Apply All Diffs icon (double angle brackets).</li>
+</ul>
+</li>
+</ol>
+<p>As with all Copilot suggestions, you should always check that the revised code runs without errors and produces the correct result.</p>
+<h2><a href="#rewrite-conditional-code-for-better-readability">Rewrite conditional code for better readability</a></h2>
+<p>There are often several ways to write code that does, or does not, get executed depending on various conditions. Some conditional structures are better suited than others to particular use cases, and choosing an alternative conditional structure can sometimes make the code easier to read.</p>
+<p>This Java method uses a series of <code>if</code> and <code>else if</code> statements to determine which operation to perform:</p>
+<pre><code><span>public</span> String <span>getSound</span><span>(String animal)</span> {
+  <span>if</span> (animal == <span>null</span>) {
+      System.out.println(<span>"Oops! A null animal?"</span>);
+  } <span>else</span> <span>if</span> (animal.equalsIgnoreCase(<span>"Dog"</span>)) {
+      <span>return</span> <span>"Bark"</span>;
+  } <span>else</span> <span>if</span> ( animal.equalsIgnoreCase(<span>"Cat"</span>)) {
+      <span>return</span> <span>"Meow"</span>;
+  } <span>else</span> <span>if</span> ( animal.equalsIgnoreCase(<span>"Bird"</span>)) {
+      <span>return</span> <span>"Tweet"</span>;
+  }
+  <span>return</span> <span>"Unknown"</span>;
+}
+</code></pre>
+<p>A <code>switch</code> statement might be a better way of applying the same logic.</p>
+<ol>
+<li>
+<p>Put the cursor in the method name.</p>
+</li>
+<li>
+<p>Open inline chat:</p>
+<ul>
+<li>
+<strong>In VS Code:</strong> Press <kbd>Command</kbd>+<kbd>i</kbd> (Mac) or <kbd>Ctrl</kbd>+<kbd>i</kbd> (Windows/Linux).</li>
+<li>
+<strong>In Visual Studio:</strong> Press <kbd>Alt</kbd>+<kbd>/</kbd>.</li>
+<li>
+<strong>In JetBrains IDEs:</strong> Press <kbd>Control</kbd>+<kbd>Shift</kbd>+<kbd>i</kbd> (Mac) or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>g</kbd> (Windows/Linux).</li>
+</ul>
+</li>
+<li>
+<p>Type: <code>rewrite the condition to use a switch and use Java 21 syntax with null case, but also add documentation and provide a better function name</code>.</p>
+<p>This demonstrates how you can use a single prompt to ask Copilot to make multiple changes.</p>
+</li>
+<li>
+<p>Press <kbd>Enter</kbd>.</p>
+<p>Copilot suggests revised code. For example:</p>
+<pre><code><span>/**
+ * Retrieves the sound made by a given animal.
+ *
+ * <span>@param</span> animal The name of the animal.
+ * <span>@return</span> The sound made by the animal, or "Unknown" if the animal is not recognized.
+ */</span>
+<span>public</span> String <span>getAnimalSound</span><span>(String animal)</span> {
+    <span>return</span> <span>switch</span> (animal) {
+        <span>case</span> <span>null</span> -&gt; {
+            System.out.println(<span>"Oops! A null animal?"</span>);
+            <span>yield</span> <span>"Unknown"</span>;
+        }
+        <span>case</span> String a when a.equalsIgnoreCase(<span>"Dog"</span>) -&gt; <span>"Bark"</span>;
+        <span>case</span> String a when a.equalsIgnoreCase(<span>"Cat"</span>) -&gt; <span>"Meow"</span>;
+        <span>case</span> String a when a.equalsIgnoreCase(<span>"Bird"</span>) -&gt; <span>"Tweet"</span>;
+        <span>default</span> -&gt; <span>"Unknown"</span>;
+    };
+}
+</code></pre>
+</li>
+<li>
+<p>Assess Copilot's suggestion and, if you agree with the change:</p>
+<ul>
+<li>
+<strong>In VS Code and Visual Studio:</strong> Click <strong>Accept</strong>.</li>
+<li>
+<strong>In JetBrains:</strong> Click the Preview icon (double arrows), then click the Apply All Diffs icon (double angle brackets).</li>
+</ul>
+</li>
+</ol>
+<p>As with all Copilot suggestions, you should always check that the revised code runs without errors and produces the correct result.</p>
+<h2><a href="#reformat-code-to-use-a-different-structure">Reformat code to use a different structure</a></h2>
+<p>Suppose you have this function in JavaScript:</p>
+<pre><code><span>function</span> <span>listRepos</span>(<span>o, p</span>) {
+ <span>return</span> <span>fetch</span>(<span>`https://api.github.com/orgs/<span>${o}</span>/repos?per_page=<span>${<span>parseInt</span>(p)}</span>`</span>)
+   .<span>then</span>(<span>(<span>response</span>) =&gt;</span> response.<span>json</span>())
+   .<span>then</span>( <span>(<span>data</span>) =&gt;</span> data);
+}
+</code></pre>
+<p>If your coding standards require you to use the arrow notation for functions, and descriptive names for parameters, you can use Copilot to help you make these changes.</p>
+<ol>
+<li>
+<p>Put the cursor in the function name.</p>
+</li>
+<li>
+<p>Open inline chat:</p>
+<ul>
+<li>
+<strong>In VS Code:</strong> Press <kbd>Command</kbd>+<kbd>i</kbd> (Mac) or <kbd>Ctrl</kbd>+<kbd>i</kbd> (Windows/Linux).</li>
+<li>
+<strong>In Visual Studio:</strong> Press <kbd>Alt</kbd>+<kbd>/</kbd>.</li>
+<li>
+<strong>In JetBrains IDEs:</strong> Press <kbd>Control</kbd>+<kbd>Shift</kbd>+<kbd>i</kbd> (Mac) or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>g</kbd> (Windows/Linux).</li>
+</ul>
+</li>
+<li>
+<p>Type: <code>use arrow notation and better parameter names</code> and press <kbd>Enter</kbd>.</p>
+<p>Copilot suggests revised code. For example:</p>
+<pre><code><span>const</span> <span>listRepos</span> = (<span>org, perPage</span>) =&gt; {
+  <span>return</span> <span>fetch</span>(<span>`https://api.github.com/orgs/<span>${org}</span>/repos?per_page=<span>${<span>parseInt</span>(perPage)}</span>`</span>)
+    .<span>then</span>(<span><span>response</span> =&gt;</span> response.<span>json</span>())
+    .<span>then</span>(<span><span>data</span> =&gt;</span> data);
+};
+</code></pre>
+</li>
+</ol>
+<h2><a href="#improving-the-name-of-a-symbol">Improving the name of a symbol</a></h2>
+<div>
+<ul>
+<li>VS Code and Visual Studio only.</li>
+<li>Support for this feature depends on having the appropriate language extension installed in your IDE for the language you are using. Not all language extensions support this feature.</li>
+</ul>
+</div>
+<p>Well chosen names can help to make code easier to maintain. Copilot in VS Code and Visual Studio can suggest alternative names for symbols such as variables or functions.</p>
+<ol>
+<li>
+<p>Put the cursor in the symbol name.</p>
+</li>
+<li>
+<p>Press <kbd>F2</kbd>.</p>
+</li>
+<li>
+<p><strong>Visual Studio only:</strong> Press <kbd>Ctrl</kbd>+<kbd>Space</kbd>.</p>
+<p>Copilot suggests alternative names.</p>
+<div><picture><source><img src="/assets/cb-52618/images/help/copilot/rename-symbol.png" alt="Screenshot of a dropdown list in VS Code giving alternatives for a symbol name." width="523" height="189"></source></picture></div>
+</li>
+<li>
+<p>In the dropdown list, select one of the suggested names.</p>
+<p>The name is changed throughout the project.</p>
+</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

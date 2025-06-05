@@ -1,0 +1,204 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Apps" href="/en/apps">Apps</a><span>/</span>
+</li>
+<li>
+<a title="Creating GitHub Apps" href="/en/apps/creating-github-apps">Creating GitHub Apps</a><span>/</span>
+</li>
+<li>
+<a title="Authenticate with a GitHub App" href="/en/apps/creating-github-apps/authenticating-with-a-github-app">Authenticate with a GitHub App</a><span>/</span>
+</li>
+<li><a title="Authenticate as an installation" href="/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app-installation">Authenticate as an installation</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Authenticating as a GitHub App installation</h1></div></div>
+<div><div><p>You can make your GitHub App authenticate as an installation in order to make API requests that affect resources owned by the account where the app is installed.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-authentication-as-a-github-app-installation"><div><span>About authentication as a GitHub App installation</span></div></a></li>
+<li><a href="#using-an-installation-access-token-to-authenticate-as-an-app-installation"><div><span>Using an installation access token to authenticate as an app installation</span></div></a></li>
+<li><a href="#using-the-octokitjs-sdk-to-authenticate-as-an-app-installation"><div><span>Using the Octokit.js SDK to authenticate as an app installation</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-authentication-as-a-github-app-installation">About authentication as a GitHub App installation</a></h2>
+<p>Once your GitHub App is installed on an account, you can make it authenticate as an app installation for API requests. This allows the app to access resources owned by that installation, as long as the app was granted the necessary repository access and permissions. API requests made by an app installation are attributed to the app. For more information about installing GitHub Apps, see <a href="/en/developers/apps/managing-github-apps/installing-github-apps">Installing GitHub Apps</a>.</p>
+<p>For example, if you want your app to change the <code>Status</code> field of an issue on a project owned by an organization called "octo-org," then you would authenticate as the octo-org installation of your app. The timeline of the issue would state that your app updated the status.</p>
+<p>To make an API request as an installation, you must first generate an installation access token. Then, you will send the installation access token in the <code>Authorization</code> header of your subsequent API requests. You can also use GitHub's Octokit SDKs, which can generate an installation access token for you.</p>
+<p>Some REST API endpoints do not accept installation access tokens, and most REST API endpoints require your app to have certain permissions to use an endpoint. To see whether a REST API endpoint accepts installation access tokens and to see what permissions are required, refer to the documentation for the endpoint.</p>
+<p>App installations can also use the GraphQL API. Similar to the REST API, the app must have certain permissions to access objects in the GraphQL API. For GraphQL requests, you should test that your app has the required permissions for the GraphQL queries and mutations that you want to make.</p>
+<p>You can also use an installation access token to authenticate for HTTP-based Git access. Your app must have the "Contents" repository permission. You can then use the installation access token as the HTTP password. Replace <code>TOKEN</code> with the installation access token: <code>git clone https://x-access-token:TOKEN@github.com/owner/repo.git</code>.</p>
+<p>Requests made with an installation access token are sometimes called "server-to-server" requests.</p>
+<p>For more information about authenticating as an app on behalf of a user instead of as an app installation, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/identifying-and-authorizing-users-for-github-apps">Authenticating with a GitHub App on behalf of a user</a>.</p>
+<h2><a href="#using-an-installation-access-token-to-authenticate-as-an-app-installation">Using an installation access token to authenticate as an app installation</a></h2>
+<p>To authenticate as an installation with an installation access token, first use the REST API to generate an installation access token. Then, use that installation access token in the <code>Authorization</code> header of a REST API or GraphQL API request. The installation access token will expire after 1 hour.</p>
+<h3><a href="#generating-an-installation-access-token">Generating an installation access token</a></h3>
+<ol>
+<li>
+<p>Generate a JSON web token (JWT) for your app. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-json-web-token-jwt-for-a-github-app">Generating a JSON Web Token (JWT) for a GitHub App</a>.</p>
+</li>
+<li>
+<p>Get the ID of the installation that you want to authenticate as.</p>
+<p>If you are responding to a webhook event, the webhook payload will include the installation ID.</p>
+<p>You can also use the REST API to find the ID for an installation of your app. For example, you can get an installation ID with the <code>GET /users/{username}/installation</code>, <code>GET /repos/{owner}/{repo}/installation</code>, <code>GET /orgs/{org}/installation</code>, or <code>GET /app/installations</code> endpoints. For more information, see <a href="/en/rest/apps/apps">REST API endpoints for GitHub Apps</a>.</p>
+<p>You can also find the app ID on the settings page for your app. The app ID is different from the client ID. For more information about navigating to the settings page for your GitHub App, see <a href="/en/apps/maintaining-github-apps/modifying-a-github-app-registration#navigating-to-your-github-app-settings">Modifying a GitHub App registration</a>.</p>
+</li>
+<li>
+<p>Send a REST API <code>POST</code> request to <code>/app/installations/INSTALLATION_ID/access_tokens</code>. Include your JSON web token in the <code>Authorization</code> header of your request. Replace <code>INSTALLATION_ID</code> with the ID of the installation that you want to authenticate as.</p>
+<p>For example, send this curl request. Replace <code>INSTALLATION_ID</code> with the ID of the installation and <code>JWT</code> with your JSON web token:</p>
+<pre><code>curl --request POST \
+--url "https://api.github.com/app/installations/INSTALLATION_ID/access_tokens" \
+--header "Accept: application/vnd.github+json" \
+--header "Authorization: Bearer JWT" \
+--header "X-GitHub-Api-Version: 2022-11-28"
+</code></pre>
+<p>Optionally, you can use the <code>repositories</code> or <code>repository_ids</code> body parameters to specify individual repositories that the installation access token can access. If you don't use <code>repositories</code> or <code>repository_ids</code> to grant access to specific repositories, the installation access token will have access to all repositories that the installation was granted access to. The installation access token cannot be granted access to repositories that the installation was not granted access to. You can list up to 500 repositories.</p>
+<p>Optionally, use the <code>permissions</code> body parameter to specify the permissions that the installation access token should have. If <code>permissions</code> is not specified, the installation access token will have all of the permissions that were granted to the app. The installation access token cannot be granted permissions that the app was not granted.</p>
+<p>The response will include an installation access token, the time that the token expires, the permissions that the token has, and the repositories that the token can access. The installation access token will expire after 1 hour.</p>
+<p>For more information about this endpoint, see <a href="/en/rest/apps/apps">REST API endpoints for GitHub Apps</a>.</p>
+<div>
+<p>
+In most cases, you can use <code>Authorization: Bearer</code> or <code>Authorization: token</code> to pass a token. However, if you are passing a JSON web token (JWT), you must use <code>Authorization: Bearer</code>.</p>
+</div>
+</li>
+</ol>
+<h3><a href="#authenticating-with-an-installation-access-token">Authenticating with an installation access token</a></h3>
+<p>To authenticate with an installation access token, include it in the <code>Authorization</code> header of an API request. The access token will work with both the GraphQL API and the REST API.</p>
+<p>Your app must have the required permissions to use the endpoint. For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/choosing-permissions-for-a-github-app">Choosing permissions for a GitHub App</a>.</p>
+<p>In the following example, replace <code>INSTALLATION_ACCESS_TOKEN</code> with an installation access token:</p>
+<pre><code>curl --request GET \
+--url "https://api.github.com/meta" \
+--header "Accept: application/vnd.github+json" \
+--header "Authorization: Bearer INSTALLATION_ACCESS_TOKEN" \
+--header "X-GitHub-Api-Version: 2022-11-28"
+</code></pre>
+<h2><a href="#using-the-octokitjs-sdk-to-authenticate-as-an-app-installation">Using the Octokit.js SDK to authenticate as an app installation</a></h2>
+<p>You can use GitHub's Octokit.js SDK to authenticate as an app installation. One advantage of using the SDK to authenticate is that you do not need to generate a JSON web token (JWT) yourself. Additionally, the SDK will take care of regenerating an installation access token for you so you don't need to worry about the one hour expiration.</p>
+<div>
+<p>
+You must install and import <code>octokit</code> in order to use the Octokit.js library. The following example uses import statements in accordance with ES6. For more information about different installation and import methods, see <a href="https://github.com/octokit/octokit.js/#usage">the Octokit.js README's Usage section</a>.</p>
+</div>
+<h3><a href="#using-octokitjs-to-authenticate-with-an-installation-id">Using Octokit.js to authenticate with an installation ID</a></h3>
+<ol>
+<li>
+<p>Get the ID of your GitHub App. You can find your app's ID on the settings page for your GitHub App. For more information about navigating to the settings page for your GitHub App, see <a href="/en/apps/maintaining-github-apps/modifying-a-github-app-registration#navigating-to-your-github-app-settings">Modifying a GitHub App registration</a>.</p>
+</li>
+<li>
+<p>Generate a private key. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/managing-private-keys-for-github-apps">Managing private keys for GitHub Apps</a>.</p>
+</li>
+<li>
+<p>Get the ID of the installation that you want to authenticate as.</p>
+<p>If you are responding to a webhook event, the webhook payload will include the installation ID.</p>
+<p>You can also use the REST API to find the ID for an installation of your app. For example, you can get an installation ID with the <code>GET /users/{username}/installation</code>, <code>GET /repos/{owner}/{repo}/installation</code>, <code>GET /orgs/{org}/installation</code>, or <code>GET /app/installations</code> endpoints. For more information, see <a href="/en/rest/apps/apps">REST API endpoints for GitHub Apps</a>.</p>
+</li>
+<li>
+<p>Import <code>App</code> from <code>octokit</code>. Create a new instance of <code>App</code>. In the following example, replace <code>APP_ID</code> with a reference to your app's ID. Replace <code>PRIVATE_KEY</code> with a reference to your app's private key.</p>
+<div>
+<header><span>JavaScript</span><pre>import { App } from "octokit";
+
+const app = new App({
+  appId: APP_ID,
+  privateKey: PRIVATE_KEY,
+});
+</pre></header><pre><code><span>import</span> { <span>App</span> } <span>from</span> <span>"octokit"</span>;
+
+<span>const</span> app = <span>new</span> <span>App</span>({
+  <span>appId</span>: <span>APP_ID</span>,
+  <span>privateKey</span>: <span>PRIVATE_KEY</span>,
+});
+</code></pre>
+</div>
+</li>
+<li>
+<p>Use the <code>getInstallationOctokit</code> method to create an authenticated <code>octokit</code> instance. In the following example, replace <code>INSTALLATION_ID</code> with the ID of the installation of your app that you want to authenticate on behalf of.</p>
+<div>
+<header><span>JavaScript</span><pre>const octokit = await app.getInstallationOctokit(INSTALLATION_ID);
+</pre></header><pre><code><span>const</span> octokit = <span>await</span> app.<span>getInstallationOctokit</span>(<span>INSTALLATION_ID</span>);
+</code></pre>
+</div>
+</li>
+<li>
+<p>Use an <code>octokit</code> method to make a request to the API.</p>
+<p>Your app must have the required permissions to use the endpoint. For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/choosing-permissions-for-a-github-app">Choosing permissions for a GitHub App</a>.</p>
+<p>For example, to make a request to the GraphQL API:</p>
+<div>
+<header><span>JavaScript</span><pre>await octokit.graphql(`
+  query {
+    viewer {
+      login
+    }
+  }
+  `)
+</pre></header><pre><code><span>await</span> octokit.<span>graphql</span>(<span>`
+  query {
+    viewer {
+      login
+    }
+  }
+  `</span>)
+</code></pre>
+</div>
+<p>For example, to make a request to the REST API:</p>
+<div>
+<header><span>JavaScript</span><pre>await octokit.request("GET /meta")
+</pre></header><pre><code><span>await</span> octokit.<span>request</span>(<span>"GET /meta"</span>)
+</code></pre>
+</div>
+</li>
+</ol>
+<h3><a href="#using-octokitjs-to-authenticate-in-response-to-a-webhook-event">Using Octokit.js to authenticate in response to a webhook event</a></h3>
+<p>The Octokit.js SDK also passes a pre-authenticated <code>octokit</code> instance to webhook event handlers.</p>
+<ol>
+<li>
+<p>Get the ID of your GitHub App. You can find your app's ID on the settings page for your GitHub App. For more information about navigating to the settings page for your GitHub App, see <a href="/en/apps/maintaining-github-apps/modifying-a-github-app-registration#navigating-to-your-github-app-settings">Modifying a GitHub App registration</a>.</p>
+</li>
+<li>
+<p>Generate a private key. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/managing-private-keys-for-github-apps">Managing private keys for GitHub Apps</a>.</p>
+</li>
+<li>
+<p>Get the webhook secret that you specified in your app's settings. For more information about webhook secrets, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/using-webhooks-with-github-apps#securing-your-webhooks-with-a-webhook-secret">Using webhooks with GitHub Apps</a>.</p>
+</li>
+<li>
+<p>Import <code>App</code> from <code>octokit</code>. Create a new instance of <code>App</code>. In the following example, replace <code>APP_ID</code> with a reference to your app's ID. Replace <code>PRIVATE_KEY</code> with a reference to your app's private key. Replace <code>WEBHOOK_SECRET</code> with the your app's webhook secret.</p>
+<div>
+<header><span>JavaScript</span><pre>import { App } from "octokit";
+
+const app = new App({
+  appId: APP_ID,
+  privateKey: PRIVATE_KEY,
+  webhooks: { WEBHOOK_SECRET },
+});
+</pre></header><pre><code><span>import</span> { <span>App</span> } <span>from</span> <span>"octokit"</span>;
+
+<span>const</span> app = <span>new</span> <span>App</span>({
+  <span>appId</span>: <span>APP_ID</span>,
+  <span>privateKey</span>: <span>PRIVATE_KEY</span>,
+  <span>webhooks</span>: { <span>WEBHOOK_SECRET</span> },
+});
+</code></pre>
+</div>
+</li>
+<li>
+<p>Use an <code>app.webhooks.*</code> method to handle webhook events. For more information, see <a href="https://github.com/octokit/octokit.js#webhooks">the Octokit.js README's Webhooks section</a>. For example, to create a comment on an issue when the issue is opened:</p>
+<pre><code>app.<span>webhooks</span>.<span>on</span>(<span>"issues.opened"</span>, <span>(<span>{ octokit, payload }</span>) =&gt;</span> {
+  <span>await</span> octokit.<span>request</span>(<span>"POST /repos/{owner}/{repo}/issues/{issue_number}/comments"</span>, {
+      <span>owner</span>: payload.<span>repository</span>.<span>owner</span>.<span>login</span>,
+      <span>repo</span>: payload.<span>repository</span>.<span>name</span>,
+      <span>issue_number</span>: payload.<span>issue</span>.<span>number</span>,
+      <span>body</span>: <span>`This is a bot post in response to this issue being opened.`</span>,
+      <span>headers</span>: {
+        <span>"x-github-api-version"</span>: <span>"2022-11-28"</span>,
+      },
+    }
+  )
+});
+</code></pre>
+</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

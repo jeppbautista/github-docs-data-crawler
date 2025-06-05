@@ -1,0 +1,650 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Apps" href="/en/apps">Apps</a><span>/</span>
+</li>
+<li>
+<a title="Creating GitHub Apps" href="/en/apps/creating-github-apps">Creating GitHub Apps</a><span>/</span>
+</li>
+<li>
+<a title="Writing code for a GitHub App" href="/en/apps/creating-github-apps/writing-code-for-a-github-app">Writing code for a GitHub App</a><span>/</span>
+</li>
+<li><a title='Build a "Login" button' href="/en/apps/creating-github-apps/writing-code-for-a-github-app/building-a-login-with-github-button-with-a-github-app">Build a "Login" button</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Building a "Login with GitHub" button with a GitHub App</h1></div></div>
+<div><div><p>Follow this tutorial to write Ruby code to generate a user access token via the web application flow for your GitHub App.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#install-dependencies"><div><span>Install dependencies</span></div></a></li>
+<li><a href="#store-the-client-id-and-client-secret"><div><span>Store the client ID and client secret</span></div></a></li>
+<li><a href="#add-code-to-generate-a-user-access-token"><div><span>Add code to generate a user access token</span></div></a></li>
+<li><a href="#full-code-example"><div><span>Full code example</span></div></a></li>
+<li><a href="#testing"><div><span>Testing</span></div></a></li>
+<li><a href="#next-steps"><div><span>Next steps</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>This tutorial demonstrates how to build a "Login with GitHub" button for a website. The website will use a GitHub App to generate a user access token via the web application flow. Then, the website uses the user access token to make API requests on behalf of the authenticated user.</p>
+<p>This tutorial uses Ruby, but you can use the web application flow with any programming language that is used for web development.</p>
+<h3><a href="#about-web-application-flow-and-user-access-tokens">About web application flow and user access tokens</a></h3>
+<p>Your app should use a user access token if you want to attribute the app's actions to a user. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-with-a-github-app-on-behalf-of-a-user">Authenticating with a GitHub App on behalf of a user</a>.</p>
+<p>There are two ways to generate a user access token for a GitHub App: web application flow and device flow. If your app has access to a web interface, you should use web application flow. If your app does not have access to a web interface, you should use device flow instead. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app">Generating a user access token for a GitHub App</a> and <a href="/en/apps/creating-github-apps/guides/building-a-cli-with-a-github-app">Building a CLI with a GitHub App</a>.</p>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<p>This tutorial assumes that you have already registered a GitHub App. For more information about registering a GitHub App, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/creating-a-github-app">Registering a GitHub App</a>.</p>
+<p>Before following this tutorial, you must set a callback URL for your app. This tutorial uses a local Sinatra server with the default URL of <code>http://localhost:4567</code>. For example, to work with the default URL for a local Sinatra application, your callback URL can be <code>http://localhost:4567/github/callback</code>. Once you are ready to deploy your app, you can change the callback URL to use your live server address. For more information about updating the callback URL for your app, see <a href="/en/apps/maintaining-github-apps/modifying-a-github-app">Modifying a GitHub App registration</a> and <a href="/en/apps/creating-github-apps/setting-up-a-github-app/about-the-user-authorization-callback-url">About the user authorization callback URL</a>.</p>
+<p>This tutorial assumes that you have a basic understanding of Ruby and of the Ruby template system, ERB. For more information, see <a href="https://www.ruby-lang.org">Ruby</a> and <a href="https://github.com/ruby/erb">ERB</a>.</p>
+<h2><a href="#install-dependencies">Install dependencies</a></h2>
+<p>This tutorial uses the Ruby gem, Sinatra, to create a web application with Ruby. For more information, see <a href="https://github.com/sinatra/sinatra#readme">the Sinatra README</a>.</p>
+<p>This tutorial uses the Ruby gem, dotenv, to access values stored in a <code>.env</code> file. For more information, see <a href="https://github.com/bkeepers/dotenv#readme">the dotenv README</a>.</p>
+<p>To follow this tutorial, you must install the Sinatra and dotenv gems in your Ruby project. For example, you can do this with <a href="https://bundler.io/">Bundler</a>:</p>
+<ol>
+<li>
+<p>If you don't already have Bundler installed, run the following command in your terminal:</p>
+<pre><code>gem install bundler
+</code></pre>
+</li>
+<li>
+<p>If you don't already have a Gemfile for your app, run the following command in your terminal:</p>
+<pre><code>bundle init
+</code></pre>
+</li>
+<li>
+<p>If you don't already have a Gemfile.lock for your app, run the following command in your terminal:</p>
+<pre><code>bundle install
+</code></pre>
+</li>
+<li>
+<p>Install the gems by running the following commands in your terminal:</p>
+<pre><code>bundle add sinatra
+</code></pre>
+<pre><code>bundle add dotenv
+</code></pre>
+</li>
+</ol>
+<h2><a href="#store-the-client-id-and-client-secret">Store the client ID and client secret</a></h2>
+<p>This tutorial will show you how to store the client ID and client secret in environment variables and access them with <code>ENV.fetch</code>. When you deploy your app, you will want to change how you store the client ID and client secret. For more information, see <a href="#securely-store-your-client-secret">Securely store your client secret</a>.</p>
+<ol>
+<li>
+<p>In the upper-right corner of any page on GitHub, click your profile photo.</p>
+</li>
+<li>
+<p>Navigate to your account settings.</p>
+<ul>
+<li>For an app owned by a personal account, click <strong>Settings</strong>.</li>
+<li>For an app owned by an organization:
+<ol>
+<li>Click <strong>Your organizations</strong>.</li>
+<li>To the right of the organization, click <strong>Settings</strong>.</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p>In the left sidebar, click </p>
+</li>
+<li>
+<p>In the left sidebar, click <strong>GitHub Apps</strong>.</p>
+</li>
+<li>
+<p>Next to the GitHub App that you want to work with, click <strong>Edit</strong>.</p>
+</li>
+<li>
+<p>On the app's settings page, find the client ID for your app. You will add it to a <code>.env</code> file in a following step. Note that the client ID is different from the app ID.</p>
+</li>
+<li>
+<p>On the app's settings page, click <strong>Generate a new client secret</strong>. You will add the client secret to a <code>.env</code> file in a following step.</p>
+</li>
+<li>
+<p>Create a file called <code>.env</code> at the same level as your <code>Gemfile</code>.</p>
+</li>
+<li>
+<p>If your project doesn't already have a <code>.gitignore</code> file, create a <code>.gitignore</code> file at the same level as your <code>Gemfile</code>.</p>
+</li>
+<li>
+<p>Add <code>.env</code> to your <code>.gitignore</code> file. This will prevent you from accidentally committing your client secret. For more information about <code>.gitignore</code> files, see <a href="/en/get-started/git-basics/ignoring-files">Ignoring files</a>.</p>
+</li>
+<li>
+<p>Add the following contents to your <code>.env</code> file. Replace <code>YOUR_CLIENT_ID</code> with the client ID of your app. Replace <code>YOUR_CLIENT_SECRET</code> with the client secret for your app.</p>
+<pre><code>CLIENT_ID="YOUR_CLIENT_ID"
+CLIENT_SECRET="YOUR_CLIENT_SECRET"
+</code></pre>
+</li>
+</ol>
+<h2><a href="#add-code-to-generate-a-user-access-token">Add code to generate a user access token</a></h2>
+<p>To get a user access token, you first need to prompt the user to authorize your app. When a user authorizes your app, they are redirected to the callback URL for your app. The request to the callback URL includes a <code>code</code> query parameter. When your app gets a request to serve that callback URL, you can exchange the <code>code</code> parameter for a user access token.</p>
+<p>These steps lead you through writing code to generate a user access token. To skip ahead to the final code, see <a href="#full-code-example">Full code example</a>.</p>
+<ol>
+<li>
+<p>In the same directory as your <code>.env</code> file, create a Ruby file to hold the code that will generate a user access token. This tutorial will name the file <code>app.rb</code>.</p>
+</li>
+<li>
+<p>At the top of <code>app.rb</code>, add these dependencies:</p>
+<div>
+<header><span>Ruby</span><pre>require "sinatra"
+require "dotenv/load"
+require "net/http"
+require "json"
+</pre></header><pre><code><span>require</span> <span>"sinatra"</span>
+<span>require</span> <span>"dotenv/load"</span>
+<span>require</span> <span>"net/http"</span>
+<span>require</span> <span>"json"</span>
+</code></pre>
+</div>
+<p>The <code>sinatra</code> and <code>dotenv/load</code> dependencies use the gems that you installed earlier. <code>net/http</code> and <code>json</code> are part of the Ruby standard library.</p>
+</li>
+<li>
+<p>Add the following code to <code>app.rb</code>, to get your app's client ID and client secret from your <code>.env</code> file.</p>
+<div>
+<header><span>Ruby</span><pre>CLIENT_ID = ENV.fetch("CLIENT_ID")
+CLIENT_SECRET = ENV.fetch("CLIENT_SECRET")
+</pre></header><pre><code><span>CLIENT_ID</span> = <span>ENV</span>.fetch(<span>"CLIENT_ID"</span>)
+<span>CLIENT_SECRET</span> = <span>ENV</span>.fetch(<span>"CLIENT_SECRET"</span>)
+</code></pre>
+</div>
+</li>
+<li>
+<p>Add the following code to <code>app.rb</code> to display a link that will prompt users to authenticate your app.</p>
+<div>
+<header><span>Ruby</span><pre>get "/" do
+  link = '&lt;a href="https://github.com/login/oauth/authorize?client_id=&lt;%= CLIENT_ID %&gt;"&gt;Login with GitHub&lt;/a&gt;'
+  erb link
+end
+</pre></header><pre><code>get <span>"/"</span> <span>do</span>
+  link = <span>'&lt;a href="https://github.com/login/oauth/authorize?client_id=&lt;%= CLIENT_ID %&gt;"&gt;Login with GitHub&lt;/a&gt;'</span>
+  erb link
+<span>end</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Add the following code to <code>app.rb</code> to handle requests to your app's callback URL and get the <code>code</code> parameter from the request. Replace <code>CALLBACK_URL</code> with the callback URL for your app, minus the domain. For example, if your callback URL is <code>http://localhost:4567/github/callback</code>, replace <code>CALLBACK_URL</code> with <code>/github/callback</code>.</p>
+<div>
+<header><span>Ruby</span><pre>get "CALLBACK_URL" do
+  code = params["code"]
+  render = "Successfully authorized! Got code #{code}."
+  erb render
+end
+</pre></header><pre><code>get <span>"CALLBACK_URL"</span> <span>do</span>
+  code = params[<span>"code"</span>]
+  render = <span>"Successfully authorized! Got code <span>#{code}</span>."</span>
+  erb render
+<span>end</span>
+</code></pre>
+</div>
+<p>Currently, the code just renders a message along with the <code>code</code> parameter. The following steps will expand this code block.</p>
+</li>
+<li>
+<p>Optionally, check your progress:</p>
+<p><code>app.rb</code> now looks like this, where <code>CALLBACK_URL</code> is the callback URL for your app, minus the domain:</p>
+<div>
+<header><span>Ruby</span><pre>require "sinatra"
+require "dotenv/load"
+require "net/http"
+require "json"
+
+CLIENT_ID = ENV.fetch("CLIENT_ID")
+CLIENT_SECRET = ENV.fetch("CLIENT_SECRET")
+
+get "/" do
+  link = '&lt;a href="https://github.com/login/oauth/authorize?client_id=&lt;%= CLIENT_ID %&gt;"&gt;Login with GitHub&lt;/a&gt;'
+  erb link
+end
+
+get "CALLBACK_URL" do
+  code = params["code"]
+  render = "Successfully authorized! Got code #{code}."
+  erb render
+end
+</pre></header><pre><code><span>require</span> <span>"sinatra"</span>
+<span>require</span> <span>"dotenv/load"</span>
+<span>require</span> <span>"net/http"</span>
+<span>require</span> <span>"json"</span>
+
+<span>CLIENT_ID</span> = <span>ENV</span>.fetch(<span>"CLIENT_ID"</span>)
+<span>CLIENT_SECRET</span> = <span>ENV</span>.fetch(<span>"CLIENT_SECRET"</span>)
+
+get <span>"/"</span> <span>do</span>
+  link = <span>'&lt;a href="https://github.com/login/oauth/authorize?client_id=&lt;%= CLIENT_ID %&gt;"&gt;Login with GitHub&lt;/a&gt;'</span>
+  erb link
+<span>end</span>
+
+get <span>"CALLBACK_URL"</span> <span>do</span>
+  code = params[<span>"code"</span>]
+  render = <span>"Successfully authorized! Got code <span>#{code}</span>."</span>
+  erb render
+<span>end</span>
+</code></pre>
+</div>
+<ol>
+<li>
+<p>In your terminal, from the directory where <code>app.rb</code> is stored, run <code>ruby app.rb</code>. A local Sinatra server should start.</p>
+</li>
+<li>
+<p>In your browser, navigate to <code>http://localhost:4567</code>. You should see a link with the text "Login with GitHub".</p>
+</li>
+<li>
+<p>Click on the "Login with GitHub" link.</p>
+<p>If you have not authorized the app, clicking on the link should take you to <code>https://github.com/login/oauth/authorize?client_id=CLIENT_ID</code>, where <code>CLIENT_ID</code> is the client ID of your app. This is a GitHub page that prompts users to authorize your app. If you click the button to authorize your app, you will go to the callback URL for your app.</p>
+<p>If you previously authorized your app and the authorization has not been revoked, you will skip the authorization prompt and go directly to the callback URL instead. You can revoke your previous authorization if you want to see the authorization prompt. For more information, see <a href="/en/apps/using-github-apps/reviewing-your-authorized-integrations">Reviewing and revoking authorization of GitHub Apps</a>.</p>
+</li>
+<li>
+<p>The callback URL page, reached by clicking the "Login with GitHub" link and then authorizing the app if prompted to do so, should display the text similar to "Successfully authorized! Got code agc622abb6135be5d1f2."</p>
+</li>
+<li>
+<p>In your terminal where Sinatra is running, stop the server by entering <kbd>Ctrl</kbd>+<kbd>C</kbd>.</p>
+</li>
+</ol>
+</li>
+<li>
+<p>Replace the content of <code>app.rb</code> with the following code, where <code>CALLBACK_URL</code> is the callback URL for your app, minus the domain.</p>
+<p>This code adds logic to exchange the <code>code</code> parameter for a user access token:</p>
+<ul>
+<li>The <code>parse_response</code> function parses the response from the GitHub API.</li>
+<li>The <code>exchange_code</code> function exchanges the <code>code</code> parameter for a user access token.</li>
+<li>The handler for the callback URL request now calls <code>exchange_code</code> to exchange the code parameter for a user access token.</li>
+<li>The callback page now shows text to indicate that a token was generated. If the token generation was not successful, the page will indicate that failure.</li>
+</ul>
+<div>
+<header><span>Ruby</span><pre>require "sinatra"
+require "dotenv/load"
+require "net/http"
+require "json"
+
+CLIENT_ID = ENV.fetch("CLIENT_ID")
+CLIENT_SECRET = ENV.fetch("CLIENT_SECRET")
+
+def parse_response(response)
+  case response
+  when Net::HTTPOK
+    JSON.parse(response.body)
+  else
+    puts response
+    puts response.body
+    {}
+  end
+end
+
+def exchange_code(code)
+  params = {
+    "client_id" =&gt; CLIENT_ID,
+    "client_secret" =&gt; CLIENT_SECRET,
+    "code" =&gt; code
+  }
+  result = Net::HTTP.post(
+    URI("https://github.com/login/oauth/access_token"),
+    URI.encode_www_form(params),
+    {"Accept" =&gt; "application/json"}
+  )
+
+  parse_response(result)
+end
+
+get "/" do
+  link = '&lt;a href="https://github.com/login/oauth/authorize?client_id=&lt;%= CLIENT_ID %&gt;"&gt;Login with GitHub&lt;/a&gt;'
+  erb link
+end
+
+get "CALLBACK_URL" do
+  code = params["code"]
+
+  token_data = exchange_code(code)
+
+  if token_data.key?("access_token")
+    token = token_data["access_token"]
+
+    render = "Successfully authorized! Got code #{code} and exchanged it for a user access token ending in #{token[-9..-1]}."
+    erb render
+  else
+    render = "Authorized, but unable to exchange code #{code} for token."
+    erb render
+  end
+end
+</pre></header><pre><code><span>require</span> <span>"sinatra"</span>
+<span>require</span> <span>"dotenv/load"</span>
+<span>require</span> <span>"net/http"</span>
+<span>require</span> <span>"json"</span>
+
+<span>CLIENT_ID</span> = <span>ENV</span>.fetch(<span>"CLIENT_ID"</span>)
+<span>CLIENT_SECRET</span> = <span>ENV</span>.fetch(<span>"CLIENT_SECRET"</span>)
+
+<span>def</span> <span>parse_response</span>(<span>response</span>)
+  <span>case</span> response
+  <span>when</span> <span>Net</span><span>:</span><span>:HTTPOK</span>
+    <span>JSON</span>.parse(response.body)
+  <span>else</span>
+    puts response
+    puts response.body
+    {}
+  <span>end</span>
+<span>end</span>
+
+<span>def</span> <span>exchange_code</span>(<span>code</span>)
+  params = {
+    <span>"client_id"</span> =&gt; <span>CLIENT_ID</span>,
+    <span>"client_secret"</span> =&gt; <span>CLIENT_SECRET</span>,
+    <span>"code"</span> =&gt; code
+  }
+  result = <span>Net</span><span>:</span><span>:HTTP</span>.post(
+    <span>URI</span>(<span>"https://github.com/login/oauth/access_token"</span>),
+    <span>URI</span>.encode_www_form(params),
+    {<span>"Accept"</span> =&gt; <span>"application/json"</span>}
+  )
+
+  parse_response(result)
+<span>end</span>
+
+get <span>"/"</span> <span>do</span>
+  link = <span>'&lt;a href="https://github.com/login/oauth/authorize?client_id=&lt;%= CLIENT_ID %&gt;"&gt;Login with GitHub&lt;/a&gt;'</span>
+  erb link
+<span>end</span>
+
+get <span>"CALLBACK_URL"</span> <span>do</span>
+  code = params[<span>"code"</span>]
+
+  token_data = exchange_code(code)
+
+  <span>if</span> token_data.key?(<span>"access_token"</span>)
+    token = token_data[<span>"access_token"</span>]
+
+    render = <span>"Successfully authorized! Got code <span>#{code}</span> and exchanged it for a user access token ending in <span>#{token[-<span>9</span>..-<span>1</span>]}</span>."</span>
+    erb render
+  <span>else</span>
+    render = <span>"Authorized, but unable to exchange code <span>#{code}</span> for token."</span>
+    erb render
+  <span>end</span>
+<span>end</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Optionally, check your progress:</p>
+<ol>
+<li>In your terminal, from the directory where <code>app.rb</code> is stored, run <code>ruby app.rb</code>. A local Sinatra server should start.</li>
+<li>In your browser, navigate to <code>http://localhost:4567</code>. You should see a link with the text "Login with GitHub".</li>
+<li>Click on the "Login with GitHub" link.</li>
+<li>If prompted to do so, authorize your app.</li>
+<li>The callback URL page, reached by clicking the "Login with GitHub" link and then authorizing the app if prompted to do so, should display the text similar to "Successfully authorized! Got code 4acd44861aeda86dacce and exchanged it for a user access token ending in 2zU5kQziE."</li>
+<li>In your terminal where Sinatra is running, stop the server by entering <kbd>Ctrl</kbd>+<kbd>C</kbd>.</li>
+</ol>
+</li>
+<li>
+<p>Now that you have a user access token, you can use the token to make API requests on behalf of the user. For example:</p>
+<p>Add this function to <code>app.rb</code> to get information about the user with the <code>/user</code> REST API endpoint:</p>
+<div>
+<header><span>Ruby</span><pre>def user_info(token)
+  uri = URI("https://api.github.com/user")
+
+  result = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
+    auth = "Bearer #{token}"
+    headers = {"Accept" =&gt; "application/json", "Content-Type" =&gt; "application/json", "Authorization" =&gt; auth}
+
+    http.send_request("GET", uri.path, nil, headers)
+  end
+
+  parse_response(result)
+end
+</pre></header><pre><code><span>def</span> <span>user_info</span>(<span>token</span>)
+  uri = <span>URI</span>(<span>"https://api.github.com/user"</span>)
+
+  result = <span>Net</span><span>:</span><span>:HTTP</span>.start(uri.host, uri.port, <span>use_ssl:</span> <span>true</span>) <span>do</span> |<span>http</span>|
+    auth = <span>"Bearer <span>#{token}</span>"</span>
+    headers = {<span>"Accept"</span> =&gt; <span>"application/json"</span>, <span>"Content-Type"</span> =&gt; <span>"application/json"</span>, <span>"Authorization"</span> =&gt; auth}
+
+    http.send_request(<span>"GET"</span>, uri.path, <span>nil</span>, headers)
+  <span>end</span>
+
+  parse_response(result)
+<span>end</span>
+</code></pre>
+</div>
+<p>Update the callback handler to call the <code>user_info</code> function and to display the user's name and GitHub login. Remember to replace <code>CALLBACK_URL</code> with the callback URL for your app, minus the domain.</p>
+<div>
+<header><span>Ruby</span><pre>get "CALLBACK_URL" do
+  code = params["code"]
+
+  token_data = exchange_code(code)
+
+  if token_data.key?("access_token")
+    token = token_data["access_token"]
+
+    user_info = user_info(token)
+    handle = user_info["login"]
+    name = user_info["name"]
+
+    render = "Successfully authorized! Welcome, #{name} (#{handle})."
+    erb render
+  else
+    render = "Authorized, but unable to exchange code #{code} for token."
+    erb render
+  end
+end
+</pre></header><pre><code>get <span>"CALLBACK_URL"</span> <span>do</span>
+  code = params[<span>"code"</span>]
+
+  token_data = exchange_code(code)
+
+  <span>if</span> token_data.key?(<span>"access_token"</span>)
+    token = token_data[<span>"access_token"</span>]
+
+    user_info = user_info(token)
+    handle = user_info[<span>"login"</span>]
+    name = user_info[<span>"name"</span>]
+
+    render = <span>"Successfully authorized! Welcome, <span>#{name}</span> (<span>#{handle}</span>)."</span>
+    erb render
+  <span>else</span>
+    render = <span>"Authorized, but unable to exchange code <span>#{code}</span> for token."</span>
+    erb render
+  <span>end</span>
+<span>end</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Check your code against the full code example in the next section. You can test your code by following the steps outlined in the <a href="#testing">Testing</a> section below the full code example.</p>
+</li>
+</ol>
+<h2><a href="#full-code-example">Full code example</a></h2>
+<p>This is the full code example that was outlined in the previous section.</p>
+<p>Replace <code>CALLBACK_URL</code> with the callback URL for your app, minus the domain. For example, if your callback URL is <code>http://localhost:4567/github/callback</code>, replace <code>CALLBACK_URL</code> with <code>/github/callback</code>.</p>
+<div>
+<header><span>Ruby</span><pre>require "sinatra"
+require "dotenv/load"
+require "net/http"
+require "json"
+
+CLIENT_ID = ENV.fetch("CLIENT_ID")
+CLIENT_SECRET = ENV.fetch("CLIENT_SECRET")
+
+def parse_response(response)
+  case response
+  when Net::HTTPOK
+    JSON.parse(response.body)
+  else
+    puts response
+    puts response.body
+    {}
+  end
+end
+
+def exchange_code(code)
+  params = {
+    "client_id" =&gt; CLIENT_ID,
+    "client_secret" =&gt; CLIENT_SECRET,
+    "code" =&gt; code
+  }
+  result = Net::HTTP.post(
+    URI("https://github.com/login/oauth/access_token"),
+    URI.encode_www_form(params),
+    {"Accept" =&gt; "application/json"}
+  )
+
+  parse_response(result)
+end
+
+def user_info(token)
+  uri = URI("https://api.github.com/user")
+
+  result = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
+    auth = "Bearer #{token}"
+    headers = {"Accept" =&gt; "application/json", "Content-Type" =&gt; "application/json", "Authorization" =&gt; auth}
+
+    http.send_request("GET", uri.path, nil, headers)
+  end
+
+  parse_response(result)
+end
+
+get "/" do
+  link = '&lt;a href="https://github.com/login/oauth/authorize?client_id=&lt;%= CLIENT_ID %&gt;"&gt;Login with GitHub&lt;/a&gt;'
+  erb link
+end
+
+get "CALLBACK_URL" do
+  code = params["code"]
+
+  token_data = exchange_code(code)
+
+  if token_data.key?("access_token")
+    token = token_data["access_token"]
+
+    user_info = user_info(token)
+    handle = user_info["login"]
+    name = user_info["name"]
+
+    render = "Successfully authorized! Welcome, #{name} (#{handle})."
+    erb render
+  else
+    render = "Authorized, but unable to exchange code #{code} for token."
+    erb render
+  end
+end
+</pre></header><pre><code><span>require</span> <span>"sinatra"</span>
+<span>require</span> <span>"dotenv/load"</span>
+<span>require</span> <span>"net/http"</span>
+<span>require</span> <span>"json"</span>
+
+<span>CLIENT_ID</span> = <span>ENV</span>.fetch(<span>"CLIENT_ID"</span>)
+<span>CLIENT_SECRET</span> = <span>ENV</span>.fetch(<span>"CLIENT_SECRET"</span>)
+
+<span>def</span> <span>parse_response</span>(<span>response</span>)
+  <span>case</span> response
+  <span>when</span> <span>Net</span><span>:</span><span>:HTTPOK</span>
+    <span>JSON</span>.parse(response.body)
+  <span>else</span>
+    puts response
+    puts response.body
+    {}
+  <span>end</span>
+<span>end</span>
+
+<span>def</span> <span>exchange_code</span>(<span>code</span>)
+  params = {
+    <span>"client_id"</span> =&gt; <span>CLIENT_ID</span>,
+    <span>"client_secret"</span> =&gt; <span>CLIENT_SECRET</span>,
+    <span>"code"</span> =&gt; code
+  }
+  result = <span>Net</span><span>:</span><span>:HTTP</span>.post(
+    <span>URI</span>(<span>"https://github.com/login/oauth/access_token"</span>),
+    <span>URI</span>.encode_www_form(params),
+    {<span>"Accept"</span> =&gt; <span>"application/json"</span>}
+  )
+
+  parse_response(result)
+<span>end</span>
+
+<span>def</span> <span>user_info</span>(<span>token</span>)
+  uri = <span>URI</span>(<span>"https://api.github.com/user"</span>)
+
+  result = <span>Net</span><span>:</span><span>:HTTP</span>.start(uri.host, uri.port, <span>use_ssl:</span> <span>true</span>) <span>do</span> |<span>http</span>|
+    auth = <span>"Bearer <span>#{token}</span>"</span>
+    headers = {<span>"Accept"</span> =&gt; <span>"application/json"</span>, <span>"Content-Type"</span> =&gt; <span>"application/json"</span>, <span>"Authorization"</span> =&gt; auth}
+
+    http.send_request(<span>"GET"</span>, uri.path, <span>nil</span>, headers)
+  <span>end</span>
+
+  parse_response(result)
+<span>end</span>
+
+get <span>"/"</span> <span>do</span>
+  link = <span>'&lt;a href="https://github.com/login/oauth/authorize?client_id=&lt;%= CLIENT_ID %&gt;"&gt;Login with GitHub&lt;/a&gt;'</span>
+  erb link
+<span>end</span>
+
+get <span>"CALLBACK_URL"</span> <span>do</span>
+  code = params[<span>"code"</span>]
+
+  token_data = exchange_code(code)
+
+  <span>if</span> token_data.key?(<span>"access_token"</span>)
+    token = token_data[<span>"access_token"</span>]
+
+    user_info = user_info(token)
+    handle = user_info[<span>"login"</span>]
+    name = user_info[<span>"name"</span>]
+
+    render = <span>"Successfully authorized! Welcome, <span>#{name}</span> (<span>#{handle}</span>)."</span>
+    erb render
+  <span>else</span>
+    render = <span>"Authorized, but unable to exchange code <span>#{code}</span> for token."</span>
+    erb render
+  <span>end</span>
+<span>end</span>
+</code></pre>
+</div>
+<h2><a href="#testing">Testing</a></h2>
+<p>This tutorial assumes that your app code is stored in a file named <code>app.rb</code> and that you are using the default URL for a local Sinatra application, <code>http://localhost:4567</code>.</p>
+<ol>
+<li>
+<p>In your terminal, from the directory where <code>app.rb</code> is stored, run <code>ruby app.rb</code>. A local Sinatra server should start.</p>
+</li>
+<li>
+<p>In your browser, navigate to <code>http://localhost:4567</code>. You should see a link with the text "Login with GitHub".</p>
+</li>
+<li>
+<p>Click on the "Login with GitHub" link.</p>
+<p>If you have not authorized the app, clicking on the link should take you to <code>https://github.com/login/oauth/authorize?client_id=CLIENT_ID</code>, where <code>CLIENT_ID</code> is the client ID of your app. This is a GitHub page that prompts users to authorize your app. If you click the button to authorize your app, you will go to the callback URL for your app.</p>
+<p>If you previously authorized your app and the authorization has not been revoked, you will skip the authorization prompt and go directly to the callback URL instead. You can revoke your previous authorization if you want to see the authorization prompt. For more information, see <a href="/en/apps/using-github-apps/reviewing-your-authorized-integrations">Reviewing and revoking authorization of GitHub Apps</a>.</p>
+</li>
+<li>
+<p>The callback URL page, reached by clicking the "Login with GitHub" link and then authorizing the app if prompted to do so, should display the text similar to "Successfully authorized! Welcome, Mona Lisa (octocat)."</p>
+</li>
+<li>
+<p>In your terminal where Sinatra is running, stop the server by entering <kbd>Ctrl</kbd>+<kbd>C</kbd>.</p>
+</li>
+</ol>
+<h2><a href="#next-steps">Next steps</a></h2>
+<h3><a href="#securely-store-your-client-secret">Securely store your client secret</a></h3>
+<p>You should never publicize your app's client secret. This tutorial stored the client secret in a gitignored <code>.env</code> file and accessed the value with <code>ENV.fetch</code>. When you deploy your app, you should choose a secure way to store the client secret and update your code to get the value accordingly.</p>
+<p>For example, you can store the secret in an environment variable on the server where your application is deployed. You can also use a secret management service like Azure Key Vault.</p>
+<h3><a href="#update-the-callback-url-for-deployment">Update the callback URL for deployment</a></h3>
+<p>This tutorial used a callback URL starting with <code>http://localhost:4567</code>. However, <code>http://localhost:4567</code> is only available locally to your computer when you start the Sinatra server. Before you deploy your app, you should update the callback URL to use the callback URL that you use in production. For more information about updating the callback URL for your app, see <a href="/en/apps/maintaining-github-apps/modifying-a-github-app">Modifying a GitHub App registration</a> and <a href="/en/apps/creating-github-apps/setting-up-a-github-app/about-the-user-authorization-callback-url">About the user authorization callback URL</a>.</p>
+<h3><a href="#handle-multiple-callback-urls">Handle multiple callback URLs</a></h3>
+<p>This tutorial used a single callback URL, but your app can have up to 10 callback URLs. If you want to use multiple callback URLs:</p>
+<ul>
+<li>Add the additional callback URLs to your app. For more information about adding callback URLs, see <a href="/en/apps/maintaining-github-apps/modifying-a-github-app">Modifying a GitHub App registration</a>.</li>
+<li>When you link to <code>https://github.com/login/oauth/authorize</code>, use the <code>redirect_uri</code> query parameter to redirect users to the desired callback URL. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app#using-the-web-application-flow-to-generate-a-user-access-token">Generating a user access token for a GitHub App</a>.</li>
+<li>In your app code, handle each callback URL, similar to the code block starting in <code>get "CALLBACK_URL" do</code>.</li>
+</ul>
+<h3><a href="#specify-additional-parameters">Specify additional parameters</a></h3>
+<p>When you link to <code>https://github.com/login/oauth/authorize</code>, you can pass additional query parameters. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app#using-the-web-application-flow-to-generate-a-user-access-token">Generating a user access token for a GitHub App</a>.</p>
+<p>Unlike a traditional OAuth token, the user access token does not use scopes so you cannot specify scopes via the <code>scope</code> parameter. Instead, it uses fine-grained permissions. A user access token only has permissions that both the user and the app have.</p>
+<h3><a href="#adjust-the-code-to-meet-your-apps-needs">Adjust the code to meet your app's needs</a></h3>
+<p>This tutorial demonstrated how to display information about the authenticated user, but you can adjust this code to take other actions. Remember to update your app's permissions if your app needs additional permissions for the API requests that you want to make. For more information, see <a href="/en/apps/creating-github-apps/creating-github-apps/choosing-permissions-for-a-github-app">Choosing permissions for a GitHub App</a>.</p>
+<p>This tutorial stored all of the code into a single file, but you may want to move functions and components into separate files.</p>
+<h3><a href="#securely-store-tokens">Securely store tokens</a></h3>
+<p>This tutorial generates a user access token. Unless you opted out of expiration for user access tokens, the user access token will expire after eight hours. You will also receive a refresh token that can regenerate a user access token. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/refreshing-user-access-tokens">Refreshing user access tokens</a>.</p>
+<p>If you plan on interacting further with GitHub's APIs, you should store the token for future use. If you choose to store the user access token or refresh token, you must store it securely. You should never publicize the token.</p>
+<p>For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/best-practices-for-creating-a-github-app">Best practices for creating a GitHub App</a>.</p>
+<h3><a href="#follow-best-practices">Follow best practices</a></h3>
+<p>You should aim to follow best practices with your GitHub App. For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/best-practices-for-creating-a-github-app">Best practices for creating a GitHub App</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

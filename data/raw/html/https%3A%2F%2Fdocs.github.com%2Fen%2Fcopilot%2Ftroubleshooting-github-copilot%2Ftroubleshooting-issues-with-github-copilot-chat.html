@@ -1,0 +1,90 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Troubleshooting" href="/en/copilot/troubleshooting-github-copilot">Troubleshooting</a><span>/</span>
+</li>
+<li><a title="Copilot Chat" href="/en/copilot/troubleshooting-github-copilot/troubleshooting-issues-with-github-copilot-chat">Copilot Chat</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Troubleshooting issues with GitHub Copilot Chat</h1></div></div>
+<div>
+<div><p>This guide describes common issues with Copilot Chat and how to resolve them.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div>
+<p>All users with a Copilot Pro, Copilot Pro+, or Copilot Free plan can access Copilot Chat in supported IDEs and on the GitHub website.</p>
+<p>Owners of organizations with a Copilot Business plan can decide whether to grant access to Copilot Chat.</p>
+</div></div>
+</div></div>
+<div>
+<h2>Tool navigation</h2>
+<nav><ul>
+<li><a href="?tool=visualstudio"><span>Visual Studio</span></a></li>
+<li><a href="?tool=vscode"><span>Visual Studio Code</span></a></li>
+<li><a href="?tool=webui"><span>Web browser</span></a></li>
+</ul></nav>
+</div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#troubleshooting-issues-caused-by-version-incompatibility"><div><span>Troubleshooting issues caused by version incompatibility</span></div></a></li>
+<li><a href="#troubleshooting-authentication-issues-in-your-editor"><div><span>Troubleshooting authentication issues in your editor</span></div></a></li>
+<li><a href="#troubleshooting-authentication-issues-in-your-editor-1"><div><span>Troubleshooting authentication issues in your editor</span></div></a></li>
+<li><a href="#troubleshooting-interrupted-chat-responses"><div><span>Troubleshooting interrupted chat responses</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>You can use GitHub Copilot Chat in your IDE or on the GitHub website. Click the tabs above for troubleshooting information for Copilot in Visual Studio, Visual Studio Code, and on GitHub in the browser.</p>
+<p>If you need help with Copilot Chat and can't find the answer here, you can report a bug or ask for help. For more information, see <a href="/en/copilot/github-copilot-chat/copilot-chat-in-ides/using-github-copilot-chat-in-your-ide#sharing-feedback-about-github-copilot-chat">Sharing feedback about GitHub Copilot Chat</a>.</p>
+<div>
+<p>If you can't find Copilot Chat in your editor, make sure you have checked the <a href="/en/copilot/github-copilot-chat/copilot-chat-in-ides/using-github-copilot-chat-in-your-ide#prerequisites">Prerequisites</a> section.</p>
+<h2><a href="#troubleshooting-issues-caused-by-version-incompatibility">Troubleshooting issues caused by version incompatibility</a></h2>
+<p>Changes to Copilot Chat coincide with Visual Studio Code releases, due to Copilot Chat's deep UI integration. As a result, every new version of Copilot Chat is only compatible with the latest release of Visual Studio Code. This means that if you are using an older version of Visual Studio Code, you will not be able to use the latest Copilot Chat.</p>
+<p>Only the latest Copilot Chat versions will use the latest large language model provided by the Copilot service, as even minor model upgrades require prompt changes and fixes in the extension. An older version of Copilot Chat will still use the latest version of Copilot code completion.</p>
+<p>To use Copilot Chat, make sure you are using the <a href="https://code.visualstudio.com/updates">latest version of Visual Studio Code</a>.</p>
+<h2><a href="#troubleshooting-authentication-issues-in-your-editor">Troubleshooting authentication issues in your editor</a></h2>
+<p>If you're using a Copilot plan for a managed user account on GHE.com, you'll need to update some settings before you sign in. See <a href="/en/copilot/managing-copilot/configure-personal-settings/using-github-copilot-with-an-account-on-ghecom">Using GitHub Copilot with an account on GHE.com</a>.</p>
+<h3><a href="#troubleshooting-authentication-issues-in-visual-studio-code">Troubleshooting authentication issues in Visual Studio Code</a></h3>
+<p>If you are signed in to GitHub but Copilot is unavailable in Visual Studio Code, it may be due to an authentication problem. Try the following steps to resolve the issue:</p>
+<ol>
+<li>In the bottom left corner of the Visual Studio Code window, click the <strong>Accounts</strong> icon, hover over your GitHub username, and click the <strong>Sign out</strong> button.</li>
+<li>To reload Visual Studio Code, press <kbd>F1</kbd> to open the command palette, and select <strong>Developer: Reload Window</strong>.</li>
+<li>After Visual Studio Code reloads, sign back in to your GitHub account.</li>
+</ol>
+</div>
+<div>
+<p>If you can't find Copilot Chat in your editor, make sure you have checked the <a href="/en/copilot/github-copilot-chat/copilot-chat-in-ides/using-github-copilot-chat-in-your-ide#prerequisites">Prerequisites</a> section.</p>
+<h2><a href="#troubleshooting-authentication-issues-in-your-editor-1">Troubleshooting authentication issues in your editor</a></h2>
+<p>If you're using a Copilot plan for a managed user account on GHE.com, you'll need to update some settings before you sign in. See <a href="/en/copilot/managing-copilot/configure-personal-settings/using-github-copilot-with-an-account-on-ghecom">Using GitHub Copilot with an account on GHE.com</a>.</p>
+<h3><a href="#troubleshooting-authentication-issues-in-visual-studio">Troubleshooting authentication issues in Visual Studio</a></h3>
+<p>If you experience authentication issues when you try to use GitHub Copilot Chat in Visual Studio, you can try the following steps to resolve the issue.</p>
+<ol>
+<li>
+<p>Check that the GitHub ID you are signed into Visual Studio with is the same as the one you have been granted access to GitHub Copilot Chat with.</p>
+</li>
+<li>
+<p>Check whether your GitHub ID/credentials need refreshing in Visual Studio. For more information, see <a href="https://learn.microsoft.com/en-us/visualstudio/ide/work-with-github-accounts?view=vs-2022">Work with GitHub accounts in Visual Studio</a> in the Visual Studio documentation.</p>
+</li>
+<li>
+<p>Try removing and re-adding your GitHub ID to Visual Studio and restarting Visual Studio.</p>
+</li>
+<li>
+<p>If the above steps don't work, click the <strong>Share feedback</strong> button and select <strong>Report a problem</strong> to report the issue to the Visual Studio team.</p>
+<div><picture><source><img src="/assets/cb-76215/images/help/copilot/vs-share-feedback-button.png" alt="Screenshot of the share feedback button in Visual Studio."></source></picture></div>
+</li>
+</ol>
+</div>
+<div>
+<h2><a href="#troubleshooting-interrupted-chat-responses">Troubleshooting interrupted chat responses</a></h2>
+<p>If a chat response terminates unexpectedly, before the response is complete, try resubmitting the question.</p>
+<p>In Copilot Chat's immersive view (the <a href="https://github.com/copilot">github.com/copilot</a> page), you can resubmit your question by clicking the </p>
+</div>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

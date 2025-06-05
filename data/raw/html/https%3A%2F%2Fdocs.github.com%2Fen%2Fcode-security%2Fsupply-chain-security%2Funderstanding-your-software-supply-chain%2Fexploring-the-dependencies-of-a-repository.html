@@ -1,0 +1,138 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Supply chain security" href="/en/code-security/supply-chain-security">Supply chain security</a><span>/</span>
+</li>
+<li>
+<a title="Understand your supply chain" href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain">Understand your supply chain</a><span>/</span>
+</li>
+<li><a title="Explore dependencies" href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/exploring-the-dependencies-of-a-repository">Explore dependencies</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Exploring the dependencies of a repository</h1></div></div>
+<div>
+<div><p>You can use the dependency graph to see the packages your project depends on and the repositories that depend on it. In addition, you can see any vulnerabilities detected in its dependencies.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Repository administrators, organization owners, and people with <strong>write</strong> or <strong>maintain</strong> access to a repository</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#viewing-the-dependency-graph"><div><span>Viewing the dependency graph</span></div></a></li>
+<li><a href="#enabling-and-disabling-the-dependency-graph"><div><span>Enabling and disabling the dependency graph</span></div></a></li>
+<li><a href="#changing-the-used-by-package"><div><span>Changing the "Used by" package</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#viewing-the-dependency-graph">Viewing the dependency graph</a></h2>
+<p>The dependency graph shows the dependencies and dependents of your repository.  For each dependency, you can see the version, license information, the manifest file which included it, and whether it has known vulnerabilities. For package ecosystems supporting transitive dependencies, the relationship status will be displayed and you can click "</p>
+<p>You can also search for a specific dependency using the search bar. Dependencies are sorted automatically with vulnerable packages at the top. For information about the detection of dependencies and which ecosystems are supported, see <a href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/dependency-graph-supported-package-ecosystems">Dependency graph supported package ecosystems</a>.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click </p>
+<div><picture><source><img src="/assets/cb-52175/images/help/repository/repo-nav-insights-tab.png" alt='Screenshot of the main page of a repository. In the horizontal navigation bar, a tab, labeled with a graph icon and "Insights," is outlined in orange.' width="720" height="107"></source></picture></div>
+</li>
+<li>
+<p>In the left sidebar, click <strong>Dependency graph</strong>.
+</p>
+<div><picture><source><img src="/assets/cb-3959/images/help/graphs/graphs-sidebar-dependency-graph.png" alt='Screenshot of the "Dependency graph" tab. The tab is highlighted with an orange outline.' width="193" height="246"></source></picture></div>
+</li>
+<li>
+<p>Optionally, use the search bar to find a specific dependency or set of dependencies. You can use the keywords <code>ecosystem:</code> to show only packages of a certain type, or <code>relationship:</code> to show only direct or transitive dependencies (if the ecosystem supports transitivity). Plain words in search bar will only match package names.</p>
+</li>
+<li>
+<p>Optionally, to view the repositories and packages that depend on your repository, under "Dependency graph", click <strong>Dependents</strong>.</p>
+<div><picture><source><img src="/assets/cb-6905/images/help/graphs/dependency-graph-dependents-tab.png" alt='Screenshot of the "Dependency graph" page. The "Dependents" tab is highlighted with an orange outline.' width="292" height="125"></source></picture></div>
+<div>
+<p> GitHub currently only determines dependents for public repositories.</p>
+</div>
+</li>
+</ol>
+<h3><a href="#dependencies-view">Dependencies view</a></h3>
+<p>For each dependency, you can see its ecosystem, the manifest file in which it was found, and its license (where detected).</p>
+<ul>
+<li>
+<p>Dependencies for private repositories, private packages, or unrecognized files are shown in plain text.</p>
+</li>
+<li>
+<p>If the package manager for the dependency is in a public repository, you can hover on the dependency name to display a pop-up with the associated repository information.</p>
+</li>
+<li>
+<p>You can sort and filter dependencies by typing filters as <code>key:value</code> pairs into the search bar.</p>
+<ul>
+<li>Use <code>ecosystem: &lt;ecosystem-name&gt;</code> to display dependencies for the selected ecosystem.</li>
+<li>Use <code>relationship:</code> to filter the list by relationship status. Possible values are <code>direct</code>, <code>transitive</code>, and <code>inconclusive</code>. Alternatively, you can click the relationship label adjacent to a dependency name to only show dependencies of the same relationship status. This filter is only available for ecosystems with transitive dependency support. See <a href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/dependency-graph-supported-package-ecosystems">Dependency graph supported package ecosystems</a> for more information.</li>
+</ul>
+</li>
+</ul>
+<p>Dependencies submitted to a project using the dependency submission API will show which detector was used for their submission and when they were submitted. For more information on using the dependency submission API, see <a href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/using-the-dependency-submission-api">Using the dependency submission API</a>.</p>
+<p>If vulnerabilities have been detected in the repository, these are shown at the top of the view for users with access to Dependabot alerts.</p>
+<h3><a href="#dependents-view">Dependents view</a></h3>
+<p>For public repositories, the dependents view shows how the repository is used by other repositories. To show only the repositories that contain a library in a package manager, click <strong>NUMBER Packages</strong> immediately above the list of dependent repositories. The dependent counts are approximate and may not always match the dependents listed.</p>
+<h2><a href="#enabling-and-disabling-the-dependency-graph">Enabling and disabling the dependency graph</a></h2>
+<p>Repository administrators can enable or disable the dependency graph for all repositories owned by your user account, regardless of their visibility. See <a href="/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-user-account-settings/managing-security-and-analysis-settings-for-your-personal-account">Managing security and analysis settings for your personal account</a>.</p>
+<p>You can also enable the dependency graph for multiple repositories in an organization at the same time. For more information, see <a href="/en/code-security/securing-your-organization">Securing your organization</a>.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click <strong>Settings</strong>.</p>
+<div><picture><source><img src="/assets/cb-28260/images/help/repository/repo-actions-settings.png" alt='Screenshot of a repository header showing the tabs. The "Settings" tab is highlighted by a dark orange outline.' width="720" height="71"></source></picture></div>
+</li>
+<li>
+<p>In the "Security" section of the sidebar, click </p>
+</li>
+<li>
+<p>Read the message about granting GitHub read-only access to the repository data to enable the dependency graph, then next to "Dependency Graph", click <strong>Enable</strong>.</p>
+<p>You can disable the dependency graph at any time by clicking <strong>Disable</strong> next to "Dependency Graph" on the settings page for "Advanced Security".</p>
+</li>
+</ol>
+<h2><a href="#changing-the-used-by-package">Changing the "Used by" package</a></h2>
+<p>You may notice some repositories have a "Used by" section in the sidebar of the <strong>Code</strong> tab. Your repository will have a "Used by" section if:</p>
+<ul>
+<li>The dependency graph is enabled for the repository (see the above section for more details).</li>
+<li>Your repository contains a package that is published on a <a href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/dependency-graph-supported-package-ecosystems#supported-package-ecosystems">supported package ecosystem</a>.</li>
+<li>Within the ecosystem, your package has a link to a <em>public</em> repository where the source is stored.</li>
+<li>More than 100 repositories depend on your package.</li>
+</ul>
+<p>The "Used by" section shows the number of public references to the package that were found, and displays the avatars of some of the owners of the dependent projects.</p>
+<p><picture><source><img src="/assets/cb-40707/images/help/repository/used-by-section.png" alt='Screenshot of the "Used by" section for a repository showing the summary of "13.4m" with details of 8 avatars and "+13,435,819."' width="365" height="111"></source></picture></p>
+<p>Clicking any item in this section takes you to the <strong>Dependents</strong> tab of the dependency graph.</p>
+<p>The "Used by" section represents a single package from the repository. If you have admin permissions to a repository that contains multiple packages, you can choose which package the "Used by" section represents.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click <strong>Settings</strong>.</p>
+<div><picture><source><img src="/assets/cb-28260/images/help/repository/repo-actions-settings.png" alt='Screenshot of a repository header showing the tabs. The "Settings" tab is highlighted by a dark orange outline.' width="720" height="71"></source></picture></div>
+</li>
+<li>
+<p>In the "Security" section of the sidebar, click </p>
+</li>
+<li>
+<p>Under "Advanced Security", click the drop-down menu in the "Used by counter" section and choose a package.</p>
+</li>
+</ol>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/troubleshooting-the-dependency-graph">Troubleshooting the dependency graph</a></li>
+<li><a href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-the-dependency-graph">About the dependency graph</a></li>
+<li><a href="/en/code-security/dependabot/dependabot-alerts/viewing-and-updating-dependabot-alerts">Viewing and updating Dependabot alerts</a></li>
+<li><a href="/en/get-started/privacy-on-github">Archiving your GitHub personal account and public repositories</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

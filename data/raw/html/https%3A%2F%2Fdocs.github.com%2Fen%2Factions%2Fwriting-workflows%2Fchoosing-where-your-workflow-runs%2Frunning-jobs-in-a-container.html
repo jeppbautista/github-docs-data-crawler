@@ -1,0 +1,125 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Write workflows" href="/en/actions/writing-workflows">Write workflows</a><span>/</span>
+</li>
+<li>
+<a title="Choose where workflows run" href="/en/actions/writing-workflows/choosing-where-your-workflow-runs">Choose where workflows run</a><span>/</span>
+</li>
+<li><a title="Run jobs in a container" href="/en/actions/writing-workflows/choosing-where-your-workflow-runs/running-jobs-in-a-container">Run jobs in a container</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Running jobs in a container</h1></div></div>
+<div><div><p>Use a container to run the steps in a job.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#overview"><div><span>Overview</span></div></a></li>
+<li><a href="#defining-the-container-image"><div><span>Defining the container image</span></div></a></li>
+<li><a href="#defining-credentials-for-a-container-registry"><div><span>Defining credentials for a container registry</span></div></a></li>
+<li><a href="#using-environment-variables-with-a-container"><div><span>Using environment variables with a container</span></div></a></li>
+<li><a href="#exposing-network-ports-on-a-container"><div><span>Exposing network ports on a container</span></div></a></li>
+<li><a href="#mounting-volumes-in-a-container"><div><span>Mounting volumes in a container</span></div></a></li>
+<li><a href="#setting-container-resource-options"><div><span>Setting container resource options</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#overview">Overview</a></h2>
+<p>Use <code>jobs.&lt;job_id&gt;.container</code> to create a container to run any steps in a job that don't already specify a container. If you have steps that use both script and container actions, the container actions will run as sibling containers on the same network with the same volume mounts.</p>
+<p>If you do not set a <code>container</code>, all steps will run directly on the host specified by <code>runs-on</code> unless a step refers to an action configured to run in a container.</p>
+<div>
+<p>
+The default shell for <code>run</code> steps inside a container is <code>sh</code> instead of <code>bash</code>. This can be overridden with <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_iddefaultsrun"><code>jobs.&lt;job_id&gt;.defaults.run</code></a> or <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell"><code>jobs.&lt;job_id&gt;.steps[*].shell</code></a>.</p>
+</div>
+<h3><a href="#example-running-a-job-within-a-container">Example: Running a job within a container</a></h3>
+<div>
+<header><span>YAML</span><pre>name: CI
+on:
+  push:
+    branches: [ main ]
+jobs:
+  container-test-job:
+    runs-on: ubuntu-latest
+    container:
+      image: node:18
+      env:
+        NODE_ENV: development
+      ports:
+        - 80
+      volumes:
+        - my_docker_volume:/volume_mount
+      options: --cpus 1
+    steps:
+      - name: Check for dockerenv file
+        run: (ls /.dockerenv &amp;&amp; echo Found dockerenv) || (echo No dockerenv)
+</pre></header><pre><code><span>name:</span> <span>CI</span>
+<span>on:</span>
+  <span>push:</span>
+    <span>branches:</span> [ <span>main</span> ]
+<span>jobs:</span>
+  <span>container-test-job:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>container:</span>
+      <span>image:</span> <span>node:18</span>
+      <span>env:</span>
+        <span>NODE_ENV:</span> <span>development</span>
+      <span>ports:</span>
+        <span>-</span> <span>80</span>
+      <span>volumes:</span>
+        <span>-</span> <span>my_docker_volume:/volume_mount</span>
+      <span>options:</span> <span>--cpus</span> <span>1</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>Check</span> <span>for</span> <span>dockerenv</span> <span>file</span>
+        <span>run:</span> <span>(ls</span> <span>/.dockerenv</span> <span>&amp;&amp;</span> <span>echo</span> <span>Found</span> <span>dockerenv)</span> <span>||</span> <span>(echo</span> <span>No</span> <span>dockerenv)</span>
+</code></pre>
+</div>
+<p>When you only specify a container image, you can omit the <code>image</code> keyword.</p>
+<pre><code><span>jobs:</span>
+  <span>container-test-job:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>container:</span> <span>node:18</span>
+</code></pre>
+<h2><a href="#defining-the-container-image">Defining the container image</a></h2>
+<p>Use <code>jobs.&lt;job_id&gt;.container.image</code> to define the Docker image to use as the container to run the action. The value can be the Docker Hub image name or a registry name.</p>
+<div>
+<p>
+Docker Hub normally imposes rate limits on both push and pull operations which will affect jobs on self-hosted runners. However, GitHub-hosted runners are not subject to these limits based on an agreement between GitHub and Docker.</p>
+</div>
+<h2><a href="#defining-credentials-for-a-container-registry">Defining credentials for a container registry</a></h2>
+<p>If the image's container registry requires authentication to pull the image, you can use <code>jobs.&lt;job_id&gt;.container.credentials</code> to set a <code>map</code> of the <code>username</code> and <code>password</code>. The credentials are the same values that you would provide to the <a href="https://docs.docker.com/engine/reference/commandline/login/"><code>docker login</code></a> command.</p>
+<h3><a href="#example-defining-credentials-for-a-container-registry">Example: Defining credentials for a container registry</a></h3>
+<pre><code><span>container:</span>
+  <span>image:</span> <span>ghcr.io/owner/image</span>
+  <span>credentials:</span>
+     <span>username:</span> <span>${{</span> <span>github.actor</span> <span>}}</span>
+     <span>password:</span> <span>${{</span> <span>secrets.github_token</span> <span>}}</span>
+</code></pre>
+<h2><a href="#using-environment-variables-with-a-container">Using environment variables with a container</a></h2>
+<p>Use <code>jobs.&lt;job_id&gt;.container.env</code> to set a <code>map</code> of environment variables in the container.</p>
+<h2><a href="#exposing-network-ports-on-a-container">Exposing network ports on a container</a></h2>
+<p>Use <code>jobs.&lt;job_id&gt;.container.ports</code> to set an <code>array</code> of ports to expose on the container.</p>
+<h2><a href="#mounting-volumes-in-a-container">Mounting volumes in a container</a></h2>
+<p>Use <code>jobs.&lt;job_id&gt;.container.volumes</code> to set an <code>array</code> of volumes for the container to use. You can use volumes to share data between services or other steps in a job. You can specify named Docker volumes, anonymous Docker volumes, or bind mounts on the host.</p>
+<p>To specify a volume, you specify the source and destination path:</p>
+<p><code>&lt;source&gt;:&lt;destinationPath&gt;</code>.</p>
+<p>The <code>&lt;source&gt;</code> is a volume name or an absolute path on the host machine, and <code>&lt;destinationPath&gt;</code> is an absolute path in the container.</p>
+<h3><a href="#example-mounting-volumes-in-a-container">Example: Mounting volumes in a container</a></h3>
+<pre><code><span>volumes:</span>
+  <span>-</span> <span>my_docker_volume:/volume_mount</span>
+  <span>-</span> <span>/data/my_data</span>
+  <span>-</span> <span>/source/directory:/destination/directory</span>
+</code></pre>
+<h2><a href="#setting-container-resource-options">Setting container resource options</a></h2>
+<p>Use <code>jobs.&lt;job_id&gt;.container.options</code> to configure additional Docker container resource options. For a list of options, see <a href="https://docs.docker.com/engine/reference/commandline/create/#options"><code>docker create</code> options</a>.</p>
+<div>
+<p>
+The <code>--network</code> and <code>--entrypoint</code> options are not supported.</p>
+</div>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,77 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Troubleshooting" href="/en/codespaces/troubleshooting">Troubleshooting</a><span>/</span>
+</li>
+<li><a title="Connection" href="/en/codespaces/troubleshooting/troubleshooting-your-connection-to-github-codespaces">Connection</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Troubleshooting your connection to GitHub Codespaces</h1></div></div>
+<div><div><p>Troubleshooting help for connecting to GitHub Codespaces.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#503-codespace-service-unavailable"><div><span>503 codespace service unavailable</span></div></a></li>
+<li><a href="#browser-cannot-connect"><div><span>Browser cannot connect</span></div></a></li>
+<li><a href="#unable-to-connect-to-your-codespace-in-jupyterlab"><div><span>Unable to connect to your codespace in JupyterLab</span></div></a></li>
+<li><a href="#github-codespaces-extension-for-visual-studio-code-cannot-connect"><div><span>GitHub Codespaces extension for Visual Studio Code cannot connect</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#503-codespace-service-unavailable">503 codespace service unavailable</a></h2>
+<p>Codespaces are set to stop after 30 minutes without any activity. If you try to interact with a codespace after it has stopped, you may see a <code>503 service unavailable</code> error.</p>
+<ul>
+<li>If a <strong>Start</strong> button is shown in Visual Studio Code or in your browser window, click <strong>Start</strong> to reconnect to the codespace.</li>
+<li>Reset your codespace by reloading the window. From the <a href="/en/codespaces/reference/using-the-vs-code-command-palette-in-codespaces#accessing-the-command-palette">Command Palette</a> in Visual Studio Code, click <strong>Developer: Reload Window</strong>.</li>
+</ul>
+<h2><a href="#browser-cannot-connect">Browser cannot connect</a></h2>
+<p>Sometimes you may not be able to access a codespace from your browser. If this happens, go to <a href="https://github.com/codespaces">https://github.com/codespaces</a> and try connecting to the codespace from that page.</p>
+<ul>
+<li>If the codespace is not listed on that page, check that you are the owner of the codespace you are trying to connect to. You can only open a codespace that you created.</li>
+<li>If the codespace is listed but you cannot connect from that page, check whether you can connect using a different browser.</li>
+</ul>
+<h3><a href="#diagnose-by-error-message">Diagnose by error message</a></h3>
+<h4><a href="#oh-no-it-looks-like-you-are-offline">"Oh no, it looks like you are offline"</a></h4>
+<p>Check that you have a stable internet connection and that your company network is not blocking the connection. If possible, check logging for rejected connections on your device.</p>
+<p>If you see rejected connections, make sure the domains documented by the <code>/meta</code> REST API endpoint are not blocked by your firewall. For more information, see <a href="/en/rest/meta/meta#get-github-meta-information">REST API endpoints for meta data</a>.</p>
+<p>To get the list of domains required by GitHub Codespaces, execute the following command using GitHub CLI:</p>
+<p><code>gh api meta --jq .domains.codespaces</code></p>
+<h3><a href="#we-are-having-trouble-fetching-your-codespace-information">"We are having trouble fetching your codespace information"</a></h3>
+<p>This is a transitional error. Wait for a few minutes and try again.</p>
+<h3><a href="#we-were-unable-to-authenticate-your-connection">"We were unable to authenticate your connection"</a></h3>
+<p>This indicates that something went wrong with authentication. Try clearing up your local storage and cookies and try again.</p>
+<p>If you still can't connect and the message you're seeing isn't in this list, check the service availability of Codespaces at <a href="https://www.githubstatus.com/">githubstatus.com</a>. If the Codespaces service is available, you may need to contact support. For more information, see <a href="/en/codespaces/troubleshooting/working-with-support-for-github-codespaces">Working with support for GitHub Codespaces</a>.</p>
+<h2><a href="#unable-to-connect-to-your-codespace-in-jupyterlab">Unable to connect to your codespace in JupyterLab</a></h2>
+<p>To be able to use a codespace in JupyterLab, you must ensure that your codespace has it installed. The default dev container image that's used by GitHub Codespaces includes JupyterLab, but if you have customized your dev container configuration you will have to manually install JupyterLab.</p>
+<p>If your codespace uses a Debian-based image, you can install JupyterLab in the dev container by adding the <code>python</code> feature to your <code>devcontainer.json</code> file, with the <code>installJupyterlab</code> option set to <code>true</code>. Otherwise, install it directly in your Dockerfile. For installation instructions, see <a href="https://jupyterlab.readthedocs.io/en/stable/getting_started/installation.html">Installation</a> in the JupyterLab documentation.</p>
+<p>For more information about the <code>python</code> feature, see the README page in the <a href="https://github.com/devcontainers/features/tree/main/src/python"><code>devcontainers/features</code> repository</a>. For more information about the <code>devcontainer.json</code> file and the Dockerfile, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers#devcontainerjson">Introduction to dev containers</a>.</p>
+<p>If you still cannot connect, you may need to contact support. For more information, see <a href="/en/codespaces/troubleshooting/working-with-support-for-github-codespaces">Working with support for GitHub Codespaces</a>.</p>
+<h2><a href="#github-codespaces-extension-for-visual-studio-code-cannot-connect">GitHub Codespaces extension for Visual Studio Code cannot connect</a></h2>
+<p>If you cannot connect to a codespace from Visual Studio Code desktop, use the following troubleshooting steps.</p>
+<ol>
+<li>Check that you have the latest version of the GitHub Codespaces extension installed. The extension is a preview release and frequent updates are released.
+<ol>
+<li>In Visual Studio Code, display the "Extensions" tab.</li>
+<li>Select the GitHub Codespaces extension to display the extension's overview page.</li>
+<li>If an update is available, a button is shown, click <strong>Update to X.X.X</strong> to upgrade to the latest version.</li>
+</ol>
+</li>
+<li>Check whether you are using the stable build of Visual Studio Code or the <a href="https://code.visualstudio.com/insiders/">Visual Studio Code Insiders</a> release (nightly updates). If you are using the insiders release, try installing the <a href="https://code.visualstudio.com/">stable build</a>.</li>
+<li>Make sure your company network is not blocking the connection.
+<ol>
+<li>If you receive errors like <code>connect EACCES</code>, <code>connect ECONNREFUSED</code>, <code>getaddrinfo ENOTFOUND</code>, or other similar errors, your firewall is likely blocking connections to our connection service. To verify this, please visit <a href="https://global.rel.tunnels.api.visualstudio.com/api/version">this URL</a>. If the request fails or you see no data, you likely need to work with your system administrator add <code>*.visualstudio.com</code> to your firewall's IP allow list.</li>
+<li>If you see the error <code>Tunnel service HTTPS certificate is invalid. This may be caused by the use of a self-signed certificate or a firewall intercepting the connection</code> it's likely that your firewall is doing TLS inspection and injecting a self-signed certificate which GitHub is not able to verify. To resolve this, your system administrator will either need to allow <code>*.visualstudio.com</code> to bypass the inspection or install the root CA that the firewall is injecting on your local machine.</li>
+</ol>
+</li>
+</ol>
+<p>If you still cannot connect, you may need to contact support. For more information, see <a href="/en/codespaces/troubleshooting/working-with-support-for-github-codespaces">Working with support for GitHub Codespaces</a>.</p>
+<h3><a href="#the-codespace-has-latency-issues">The codespace has latency issues</a></h3>
+<p>If the codespace seems particularly slow or has latency issues, it is possible that it has been created in a region that is far from you. To resolve this, you can <a href="/en/codespaces/setting-your-user-preferences/setting-your-default-region-for-github-codespaces">manually set your GitHub Codespaces region</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

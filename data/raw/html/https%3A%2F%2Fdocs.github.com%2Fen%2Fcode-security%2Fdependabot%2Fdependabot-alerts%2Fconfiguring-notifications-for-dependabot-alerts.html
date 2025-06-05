@@ -1,0 +1,73 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Dependabot" href="/en/code-security/dependabot">Dependabot</a><span>/</span>
+</li>
+<li>
+<a title="Dependabot alerts" href="/en/code-security/dependabot/dependabot-alerts">Dependabot alerts</a><span>/</span>
+</li>
+<li><a title="Configure notifications" href="/en/code-security/dependabot/dependabot-alerts/configuring-notifications-for-dependabot-alerts">Configure notifications</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Configuring notifications for Dependabot alerts</h1></div></div>
+<div><div><p>Optimize how you receive notifications about Dependabot alerts.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-notifications-for-dependabot-alerts"><div><span>About notifications for Dependabot alerts</span></div></a></li>
+<li><a href="#configuring-notifications-for-dependabot-alerts"><div><span>Configuring notifications for Dependabot alerts</span></div></a></li>
+<li><a href="#how-to-reduce-the-noise-from-notifications-for-dependabot-alerts"><div><span>How to reduce the noise from notifications for Dependabot alerts</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-notifications-for-dependabot-alerts">About notifications for Dependabot alerts</a></h2>
+<p>When Dependabot detects vulnerable dependencies in your repositories, we generate a Dependabot alert and display it on the <strong>Security</strong> tab for the repository. GitHub notifies the maintainers of affected repositories about the new alert according to their notification preferences. Dependabot is enabled by default on all public repositories, and needs to be enabled on private repositories. By default, you will receive Dependabot alerts by email. You can override the default overall behavior by choosing the type of notifications you want to receive, or switching notifications off altogether in the settings page for your user notifications at <a href="https://github.com/settings/notifications">https://github.com/settings/notifications</a>.</p>
+<p>Dependabot doesn't generate Dependabot alerts for malware. For more information, see <a href="/en/code-security/security-advisories/working-with-global-security-advisories-from-the-github-advisory-database/about-the-github-advisory-database#malware-advisories">About the GitHub Advisory database</a>.</p>
+<p>Regardless of your notification preferences, when Dependabot is first enabled, GitHub does not send notifications for all vulnerable dependencies found in your repository. Instead, you will receive notifications for new vulnerable dependencies identified after Dependabot is enabled, if your notification preferences allow it.</p>
+<p>If you're an organization owner, you can enable or disable Dependabot alerts for all repositories in your organization with one click. You can also set whether Dependabot alerts will be enabled or disabled for newly-created repositories. For more information, see <a href="/en/organizations/keeping-your-organization-secure/managing-security-settings-for-your-organization/managing-security-and-analysis-settings-for-your-organization#enabling-or-disabling-a-feature-for-all-new-repositories-when-they-are-added">Managing security and analysis settings for your organization</a>.</p>
+<h2><a href="#configuring-notifications-for-dependabot-alerts">Configuring notifications for Dependabot alerts</a></h2>
+<p>When a new Dependabot alert is detected, GitHub notifies all users with access to Dependabot alerts for the repository according to their notification preferences. You will receive alerts if you are watching the repository, have enabled notifications for security alerts or for all the activity on the repository, and are not ignoring the repository. For more information, see <a href="/en/account-and-profile/managing-subscriptions-and-notifications-on-github/setting-up-notifications/configuring-notifications#configuring-your-watch-settings-for-an-individual-repository">Configuring notifications</a>.</p>
+<p>You can configure notification settings for yourself or your organization from the Manage notifications drop-down <a href="/en/account-and-profile/managing-subscriptions-and-notifications-on-github/setting-up-notifications/configuring-notifications#choosing-your-notification-settings">Configuring notifications</a>.</p>
+<p>You can choose the delivery method for notifications, as well as the frequency at which the notifications are sent to you.
+By default, you will receive notifications:</p>
+<ul>
+<li>In your inbox, as web notifications. A web notification is sent when Dependabot is enabled for a repository, when a new manifest file is committed to the repository, and when a new vulnerability with a critical or high severity is found (<strong>On GitHub</strong> option).</li>
+<li>By email. An email is sent when Dependabot is enabled for a repository, when a new manifest file is committed to the repository, and when a new vulnerability with a critical or high severity is found (<strong>Email</strong> option).</li>
+<li>On the command line. Warnings are displayed as callbacks when you push to repositories with any insecure dependencies (<strong>CLI</strong> option).</li>
+<li>On GitHub Mobile, as web notifications. For more information, see <a href="/en/account-and-profile/managing-subscriptions-and-notifications-on-github/setting-up-notifications/configuring-notifications#enabling-push-notifications-with-github-mobile">Configuring notifications</a>.</li>
+</ul>
+<div>
+<p>
+The email and web/GitHub Mobile notifications are:</p>
+<ul>
+<li>
+<em>Per repository</em> when Dependabot is enabled on the repository, or when a new manifest file is committed to the repository.</li>
+<li>
+<em>Per organization</em> when a new vulnerability is discovered.</li>
+<li>Sent when a new vulnerability is discovered. GitHub doesn't send notifications when vulnerabilities are updated.</li>
+</ul>
+</div>
+<p>You can customize the way you are notified about Dependabot alerts. For example, you can receive a daily or weekly digest email summarizing alerts for up to 10 of your repositories using the <strong>Email weekly digest</strong> option.</p>
+<p><picture><source><img src="/assets/cb-70021/images/help/dependabot/dependabot-notification-frequency.png" alt="Screenshot of the notification options for Dependabot alerts. A dropdown menu with frequency options is outlined in orange."></source></picture></p>
+<div>
+<p>
+You can filter your notifications on GitHub to show Dependabot alerts. For more information, see <a href="/en/account-and-profile/managing-subscriptions-and-notifications-on-github/viewing-and-triaging-notifications/managing-notifications-from-your-inbox#dependabot-custom-filters">Managing notifications from your inbox</a>.</p>
+</div>
+<p>Email notifications for Dependabot alerts that affect one or more repositories include the <code>X-GitHub-Severity</code> header field. You can use the value of the <code>X-GitHub-Severity</code> header field to filter email notifications for Dependabot alerts. For more information, see <a href="/en/account-and-profile/managing-subscriptions-and-notifications-on-github/setting-up-notifications/configuring-notifications#filtering-email-notifications">Configuring notifications</a>.</p>
+<h2><a href="#how-to-reduce-the-noise-from-notifications-for-dependabot-alerts">How to reduce the noise from notifications for Dependabot alerts</a></h2>
+<p>If you are concerned about receiving too many notifications for Dependabot alerts, we recommend leveraging Dependabot auto-triage rules to auto-dismiss low-risk alerts. Rules are applied before alert notifications are sent, so alerts that are auto-dismissed upon creation do not send notifications. For more information, see <a href="/en/code-security/dependabot/dependabot-auto-triage-rules/about-dependabot-auto-triage-rules">About Dependabot auto-triage rules</a>.</p>
+<p>Alternatively, you can opt into the weekly email digest, or even completely turn off notifications while keeping Dependabot alerts enabled. You can still navigate to see your Dependabot alerts in your repository's <strong>Security</strong> tab. For more information, see <a href="/en/code-security/dependabot/dependabot-alerts/viewing-and-updating-dependabot-alerts">Viewing and updating Dependabot alerts</a>.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/account-and-profile/managing-subscriptions-and-notifications-on-github/setting-up-notifications/configuring-notifications">Configuring notifications</a></li>
+<li><a href="/en/account-and-profile/managing-subscriptions-and-notifications-on-github/viewing-and-triaging-notifications/managing-notifications-from-your-inbox#supported-is-queries">Managing notifications from your inbox</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

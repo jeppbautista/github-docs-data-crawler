@@ -1,0 +1,99 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Use GitHub Copilot" href="/en/copilot/using-github-copilot">Use GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Coding agent" href="/en/copilot/using-github-copilot/coding-agent">Coding agent</a><span>/</span>
+</li>
+<li><a title="Troubleshooting" href="/en/copilot/using-github-copilot/coding-agent/troubleshooting-copilot-coding-agent">Troubleshooting</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Troubleshooting Copilot coding agent</h1></div></div>
+<div>
+<div><p>Learn how to resolve problems that may occur when you assign tasks to Copilot.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Copilot coding agent is available with the GitHub Copilot Pro+ and GitHub Copilot Enterprise plans in repositories where it is enabled.<br><a href="https://github.com/features/copilot/plans?ref_cta=Copilot+plans+signup&amp;ref_loc=troubleshooting+copilot+coding+agent&amp;ref_page=docs"><span>Sign up for Copilot</span> </a></p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#copilot-is-not-available-in-the-assignees-list-on-my-issue"><div><span>Copilot is not available in the "Assignees" list on my issue</span></div></a></li>
+<li><a href="#copilot-cant-create-a-pull-request-from-copilot-chat"><div><span>Copilot can't create a pull request from Copilot Chat</span></div></a></li>
+<li><a href="#i-assigned-an-issue-to-copilot-but-nothing-is-happening"><div><span>I assigned an issue to Copilot, but nothing is happening</span></div></a></li>
+<li><a href="#copilot-has-opened-a-pull-request-but-nothing-is-happening"><div><span>Copilot has opened a pull request, but nothing is happening</span></div></a></li>
+<li><a href="#copilot-wont-respond-to-my-pull-request-comments"><div><span>Copilot won't respond to my pull request comments</span></div></a></li>
+<li><a href="#based-on-the-agent-session-logs-copilot-appears-to-be-stuck"><div><span>Based on the agent session logs, Copilot appears to be stuck</span></div></a></li>
+<li><a href="#my-github-actions-workflows-are-not-running-when-copilot-pushes"><div><span>My GitHub Actions workflows are not running when Copilot pushes</span></div></a></li>
+<li><a href="#copilot-is-pushing-changes-which-dont-pass-my-ci-checks"><div><span>Copilot is pushing changes which don't pass my CI checks</span></div></a></li>
+<li><a href="#there-is-a-warning-from-github-copilot-about-the-firewall"><div><span>There is a warning from GitHub Copilot about the firewall</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<p> Copilot coding agent is in public preview and subject to change.</p>
+</div>
+<h2><a href="#copilot-is-not-available-in-the-assignees-list-on-my-issue">Copilot is not available in the "Assignees" list on my issue</a></h2>
+<p>You can only assign issues to Copilot if you have access to Copilot through either the <strong>GitHub Copilot Pro+</strong> plan or the <strong>GitHub Copilot Enterprise</strong> plan.</p>
+<p>If you do not already have a subscription for one of these plans, click this button for more information:<br>
+<a href="https://github.com/features/copilot/plans?ref_cta=Copilot+plans+signup&amp;ref_loc=troubleshooting+copilot+coding+agent&amp;ref_page=docs"><span>Sign up for Copilot</span> </a></p>
+<p>If you <em>do</em> have either GitHub Copilot Pro+ or GitHub Copilot Enterprise, check that Copilot coding agent  has been made available for the repository:</p>
+<ul>
+<li>
+<p>For organization-owned repositories, the availability of Copilot coding agent in the repository is configured in the settings for the organization. See <a href="/en/enterprise-cloud@latest/copilot/managing-copilot/managing-github-copilot-in-your-organization/adding-copilot-coding-agent-to-organization">Adding Copilot coding agent to your organization</a>.</p>
+</li>
+<li>
+<p>For personal repositories, the availability of Copilot coding agent in the repository is configured in your account settings. See <a href="/en/copilot/managing-copilot/managing-copilot-as-an-individual-subscriber/managing-your-copilot-plan/managing-copilot-policies-as-an-individual-subscriber#enabling-or-disabling-copilot-coding-agent">Managing Copilot policies as an individual subscriber</a>.</p>
+</li>
+</ul>
+<div>
+<p>
+You can check whether Copilot coding agent has been enabled for you in the features page of your Copilot settings: <a href="https://github.com/settings/copilot/features">github.com/settings/copilot/features</a>.</p>
+</div>
+<h2><a href="#copilot-cant-create-a-pull-request-from-copilot-chat">Copilot can't create a pull request from Copilot Chat</a></h2>
+<p>If you asked Copilot to create a pull request and it responds that it cannot directly create a pull request, check that Copilot coding agent is available.</p>
+<div>
+<p>
+In VS Code, Visual Studio, and JetBrains IDEs, you must mention the <code>@github</code> chat participant in your prompt. You can omit this in Copilot Chat on GitHub.com.</p>
+</div>
+<h2><a href="#i-assigned-an-issue-to-copilot-but-nothing-is-happening">I assigned an issue to Copilot, but nothing is happening</a></h2>
+<p>Wait a while, then refresh the page. You should see Copilot leave an 👀 reaction on the issue. Shortly after this, Copilot will open a draft pull request linked to the issue, which will be shown in the issue timeline.</p>
+<h2><a href="#copilot-has-opened-a-pull-request-but-nothing-is-happening">Copilot has opened a pull request, but nothing is happening</a></h2>
+<p>If there is a "Copilot started work" event in the pull request timeline, click <strong>View session</strong> to see the session logs. These will stream live, and you will be able to see what Copilot is doing.</p>
+<h2><a href="#copilot-wont-respond-to-my-pull-request-comments">Copilot won't respond to my pull request comments</a></h2>
+<p>Copilot only responds to comments from people who have write access to the repository.</p>
+<p>If you do have write access, and you add a comment on a pull request that is assigned to Copilot, the comment is passed to Copilot coding agent. An eyes emoji (👀) is added to your comment to indicate that Copilot coding agent is considering your comment. If the agent proceeds to work on making changes in response to your comment a "Copilot started work" event is added to the pull request timeline.</p>
+<p>If this doesn't happen, Copilot may have been unassigned from the pull request, or Copilot may have decided that your comment is not actionable.</p>
+<p>Check that Copilot is assigned to the pull request. If it is, you can force Copilot to respond to your comment by @mentioning Copilot in the comment with <code>@copilot</code>.</p>
+<h2><a href="#based-on-the-agent-session-logs-copilot-appears-to-be-stuck">Based on the agent session logs, Copilot appears to be stuck</a></h2>
+<p>Copilot can appear to be stuck for a while, and then get moving again.</p>
+<p>If the session remains stuck, it will time out after an hour. You can retry by unassigning the issue and then reassigning it to Copilot.</p>
+<p>If Copilot got stuck while responding to a comment, try adding the same comment to the pull request again.</p>
+<h2><a href="#my-github-actions-workflows-are-not-running-when-copilot-pushes">My GitHub Actions workflows are not running when Copilot pushes</a></h2>
+<p>GitHub Actions workflows will not run automatically when Copilot pushes changes to a pull request.</p>
+<p>To allow GitHub Actions workflows to run, click the <strong>Approve and run workflows</strong> button in the pull request's merge box. See <a href="/en/copilot/using-github-copilot/coding-agent/using-copilot-to-work-on-an-issue#allowing-github-actions-workflows-to-run-when-copilot-pushes-changes">Using Copilot to work on an issue</a>.</p>
+<h2><a href="#copilot-is-pushing-changes-which-dont-pass-my-ci-checks">Copilot is pushing changes which don't pass my CI checks</a></h2>
+<p>While working on an issue, Copilot has access to its own ephemeral development environment, powered by GitHub Actions, where it can execute automated tests and linters to validate its work before it pushes.</p>
+<p>It is most likely to do this if given clear instructions on what to do. The best way to do this is with a <code>.github/copilot-instructions.md</code> file. See <a href="/en/copilot/using-github-copilot/coding-agent/best-practices-for-using-copilot-to-work-on-tasks#adding-custom-instructions-to-your-repository">Best practices for using Copilot to work on tasks</a>.</p>
+<h2><a href="#there-is-a-warning-from-github-copilot-about-the-firewall">There is a warning from GitHub Copilot about the firewall</a></h2>
+<p>By default, Copilot's access to the internet is limited by a firewall.</p>
+<p>Limiting access to the internet helps to manage data exfiltration risks, where surprising behavior from Copilot or malicious instructions given to it could lead to code or other sensitive information being leaked to remote locations.</p>
+<p>If Copilot tries to make a request which is blocked by the firewall, a warning is added to the pull request body (if Copilot is responding to an issue assignment) or to a comment (if Copilot is responding to a comment). The warning shows the blocked address and the command that tried to make the request.</p>
+<p><picture><source><img src="/assets/cb-121588/images/help/copilot/coding-agent/firewall-warning.png" alt="Screenshot of a warning from Copilot about being blocked by the firewall." width="720" height="306"></source></picture></p>
+<p>For more information, see <a href="/en/copilot/customizing-copilot/customizing-or-disabling-the-firewall-for-copilot-coding-agent">Customizing or disabling the firewall for Copilot coding agent</a>.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/copilot/using-github-copilot/coding-agent/best-practices-for-using-copilot-to-work-on-tasks">Best practices for using Copilot to work on tasks</a></li>
+<li><a href="/en/copilot/customizing-copilot/customizing-the-development-environment-for-copilot-coding-agent">Customizing the development environment for Copilot coding agent</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,87 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Manage workflows and deployments" href="/en/actions/managing-workflow-runs-and-deployments">Manage workflows and deployments</a><span>/</span>
+</li>
+<li>
+<a title="Manage deployments" href="/en/actions/managing-workflow-runs-and-deployments/managing-deployments">Manage deployments</a><span>/</span>
+</li>
+<li><a title="Configure custom protection rules" href="/en/actions/managing-workflow-runs-and-deployments/managing-deployments/configuring-custom-deployment-protection-rules">Configure custom protection rules</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Configuring custom deployment protection rules</h1></div></div>
+<div>
+<div><p>Use GitHub Apps to automate protecting deployments with third-party systems.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Custom deployment protection rules are available in public repositories for all plans. For access to custom deployment protection rules in private or internal repositories, you must use GitHub Enterprise. For more information, see <a href="/en/get-started/learning-about-github/githubs-plans">GitHub’s plans</a>.</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-custom-deployment-protection-rules"><div><span>About custom deployment protection rules</span></div></a></li>
+<li><a href="#using-existing-custom-deployment-protection-rules"><div><span>Using existing custom deployment protection rules</span></div></a></li>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#enabling-custom-deployment-protection-rules-for-the-environment"><div><span>Enabling custom deployment protection rules for the environment</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<p>
+Custom deployment protection rules are currently in public preview and subject to change.</p>
+</div>
+<h2><a href="#about-custom-deployment-protection-rules">About custom deployment protection rules</a></h2>
+<p>Custom deployment protection rules are powered by GitHub Apps. Once a deployment protection rule is configured and installed in a repository, it can be enabled for any environments in the repository.</p>
+<p>After you enable a custom deployment protection rule on an environment, every time a workflow step targets that environment, the deployment protection rule will run automatically. For more information about targeting an environment for deployments, see <a href="/en/actions/deployment/targeting-different-environments/managing-environments-for-deployment">Managing environments for deployment</a>.</p>
+<p>When a custom deployment protection rule is triggered it will wait for up to 30 days for a webhook event response before it times out and the workflow job fails.</p>
+<p>For more information about creating your own custom deployment protection rules, see <a href="/en/actions/deployment/protecting-deployments/creating-custom-deployment-protection-rules">Creating custom deployment protection rules</a>.</p>
+<div>
+<p>
+Any number of GitHub Apps-based deployment protection rules can be installed on a repository. However, a maximum of 6 deployment protection rules can be enabled on any environment at the same time.</p>
+</div>
+<h2><a href="#using-existing-custom-deployment-protection-rules">Using existing custom deployment protection rules</a></h2>
+<p>You can choose to create your own custom deployment protection rules or you may use any existing custom deployment protection rules.</p>
+<p>The following is a list of official partner implementations for deployment protection rules.</p>
+<ul>
+<li>Datadog: you can enforce protection rules on your GitHub Actions deployment workflows using Datadog monitors. For more information, see <a href="https://docs.datadoghq.com/continuous_integration/guides/github_gating/">Gating your GitHub Actions Deployments with Datadog Monitors</a> in the Datadog documentation.</li>
+<li>Honeycomb: you can define thresholds to reject or approve deployments based on data you are sending to Honeycomb. For more information, see <a href="https://github.com/apps/honeycomb-io">the Honeycomb app</a> in the GitHub Marketplace.</li>
+<li>New Relic: for more information, see <a href="https://github.com/apps/new-relic-gate">the New Relic app</a> in the GitHub Marketplace.</li>
+<li>NCM NodeSource: for more information, see <a href="https://github.com/apps/ncm-nodesource">the NCM NodeSource app</a> in the GitHub Marketplace.</li>
+<li>Sentry: for more information, see <a href="https://github.com/apps/sentry-deployment-gate">the Sentry Deployment Gate app</a> in the GitHub Marketplace.</li>
+<li>ServiceNow: for more information, see <a href="https://www.servicenow.com/docs/bundle/utah-devops/page/product/enterprise-dev-ops/concept/github-integration-dev-ops.html">GitHub integration with DevOps Change Velocity</a> in the ServiceNow documentation.</li>
+</ul>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<p>In order for a custom deployment protection rule to be available to all environments in a repository, you must first install the custom deployment protection rule on the repository. For more information, see <a href="/en/apps/maintaining-github-apps/installing-github-apps">Installing your own GitHub App</a>.</p>
+<p>After a custom deployment protection rule has been installed in a repository, it must be enabled for each environment where you want the rule to apply.</p>
+<h2><a href="#enabling-custom-deployment-protection-rules-for-the-environment">Enabling custom deployment protection rules for the environment</a></h2>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click <strong>Settings</strong>.</p>
+<div><picture><source><img src="/assets/cb-28260/images/help/repository/repo-actions-settings.png" alt='Screenshot of a repository header showing the tabs. The "Settings" tab is highlighted by a dark orange outline.' width="720" height="71"></source></picture></div>
+</li>
+<li>
+<p>In the left sidebar, click <strong>Environments</strong>.</p>
+</li>
+<li>
+<p>Select the environment you want to configure.</p>
+</li>
+<li>
+<p>Under "Deployment protection rules," check the box next to each custom deployment protection rule you want to enable for the environment.</p>
+</li>
+<li>
+<p>Click <strong>Save protection rules</strong>.</p>
+</li>
+</ol>
+<p>Once a custom deployment protection rule has been enabled for an environment, it will automatically run whenever a workflow reaches a job that references the environment. You can see the results of an approval or rejection for your deployment by reviewing the details of the deployment. For more information, see <a href="/en/actions/managing-workflow-runs/reviewing-deployments">Reviewing deployments</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

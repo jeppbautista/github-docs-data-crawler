@@ -1,0 +1,179 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Use cases and examples" href="/en/actions/use-cases-and-examples">Use cases and examples</a><span>/</span>
+</li>
+<li>
+<a title="Build and test" href="/en/actions/use-cases-and-examples/building-and-testing">Build and test</a><span>/</span>
+</li>
+<li><a title="Build &amp; test Swift" href="/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-swift">Build &amp; test Swift</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Building and testing Swift</h1></div></div>
+<div><div><p>You can create a continuous integration (CI) workflow to build and test your Swift project.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#using-a-swift-workflow-template"><div><span>Using a Swift workflow template</span></div></a></li>
+<li><a href="#specifying-a-swift-version"><div><span>Specifying a Swift version</span></div></a></li>
+<li><a href="#building-and-testing-your-code"><div><span>Building and testing your code</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>This guide shows you how to build and test a Swift package.</p>
+<p>GitHub-hosted runners have a tools cache with preinstalled software, and the Ubuntu and macOS runners include the dependencies for building Swift packages. For a full list of up-to-date software and the preinstalled versions of Swift and Xcode, see <a href="/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-software">Using GitHub-hosted runners</a>.</p>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<p>You should already be familiar with YAML syntax and how it's used with GitHub Actions. For more information, see <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions">Workflow syntax for GitHub Actions</a>.</p>
+<p>We recommend that you have a basic understanding of Swift packages. For more information, see <a href="https://developer.apple.com/documentation/xcode/swift-packages">Swift Packages</a> in the Apple developer documentation.</p>
+<h2><a href="#using-a-swift-workflow-template">Using a Swift workflow template</a></h2>
+<p>To get started quickly, add a workflow template to the <code>.github/workflows</code> directory of your repository.</p>
+<p>GitHub provides a workflow template for Swift that should work for most Swift projects. The subsequent sections of this guide give examples of how you can customize this workflow template.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click </p>
+<div><picture><source><img src="/assets/cb-12958/images/help/repository/actions-tab-global-nav-update.png" alt='Screenshot of the tabs for the "github/docs" repository. The "Actions" tab is highlighted with an orange outline.' width="1242" height="186"></source></picture></div>
+</li>
+<li>
+<p>If you already have a workflow in your repository, click <strong>New workflow</strong>.</p>
+</li>
+<li>
+<p>The "Choose a workflow" page shows a selection of recommended workflow templates. Search for "swift".</p>
+</li>
+<li>
+<p>Filter the selection of workflows by clicking <strong>Continuous integration</strong>.</p>
+</li>
+<li>
+<p>On the "Swift" workflow, click <strong>Configure</strong>.</p>
+</li>
+<li>
+<p>Edit the workflow as required. For example, change the branch on which the workflow will run.</p>
+</li>
+<li>
+<p>Click <strong>Commit changes</strong>.</p>
+<p>The <code>swift.yml</code> workflow file is added to the <code>.github/workflows</code> directory of your repository.</p>
+</li>
+</ol>
+<h2><a href="#specifying-a-swift-version">Specifying a Swift version</a></h2>
+<p>To use a specific preinstalled version of Swift on a GitHub-hosted runner, use the <code>swift-actions/setup-swift</code> action. This action finds a specific version of Swift from the tools cache on the runner and adds the necessary binaries to <code>PATH</code>. These changes will persist for the remainder of a job. For more information, see the <a href="https://github.com/marketplace/actions/setup-swift"><code>swift-actions/setup-swift</code></a> action.</p>
+<p>If you are using a self-hosted runner, you must install your desired Swift versions and add them to <code>PATH</code>.</p>
+<p>The examples below demonstrate using the <code>swift-actions/setup-swift</code> action.</p>
+<h3><a href="#using-multiple-swift-versions">Using multiple Swift versions</a></h3>
+<p>You can configure your job to use multiple versions of Swift in a matrix.</p>
+<div>
+<header><span>YAML</span><pre># This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# GitHub recommends pinning actions to a commit SHA.
+# To get a newer version, you will need to update the SHA.
+# You can also reference a tag or branch, but the action may change without warning.
+
+name: Swift
+
+on: [push]
+
+jobs:
+  build:
+    name: Swift ${{ matrix.swift }} on ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        swift: ["5.2", "5.3"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: swift-actions/setup-swift@65540b95f51493d65f5e59e97dcef9629ddf11bf
+        with:
+          swift-version: ${{ matrix.swift }}
+      - uses: actions/checkout@v4
+      - name: Build
+        run: swift build
+      - name: Run tests
+        run: swift test
+</pre></header><pre><code>
+<span># This workflow uses actions that are not certified by GitHub.</span>
+<span># They are provided by a third-party and are governed by</span>
+<span># separate terms of service, privacy policy, and support</span>
+<span># documentation.</span>
+
+<span># GitHub recommends pinning actions to a commit SHA.</span>
+<span># To get a newer version, you will need to update the SHA.</span>
+<span># You can also reference a tag or branch, but the action may change without warning.</span>
+
+<span>name:</span> <span>Swift</span>
+
+<span>on:</span> [<span>push</span>]
+
+<span>jobs:</span>
+  <span>build:</span>
+    <span>name:</span> <span>Swift</span> <span>${{</span> <span>matrix.swift</span> <span>}}</span> <span>on</span> <span>${{</span> <span>matrix.os</span> <span>}}</span>
+    <span>strategy:</span>
+      <span>matrix:</span>
+        <span>os:</span> [<span>ubuntu-latest</span>, <span>macos-latest</span>]
+        <span>swift:</span> [<span>"5.2"</span>, <span>"5.3"</span>]
+    <span>runs-on:</span> <span>${{</span> <span>matrix.os</span> <span>}}</span>
+    <span>steps:</span>
+      <span>-</span> <span>uses:</span> <span>swift-actions/setup-swift@65540b95f51493d65f5e59e97dcef9629ddf11bf</span>
+        <span>with:</span>
+          <span>swift-version:</span> <span>${{</span> <span>matrix.swift</span> <span>}}</span>
+      <span>-</span> <span>uses:</span> <span>actions/checkout@v4</span>
+      <span>-</span> <span>name:</span> <span>Build</span>
+        <span>run:</span> <span>swift</span> <span>build</span>
+      <span>-</span> <span>name:</span> <span>Run</span> <span>tests</span>
+        <span>run:</span> <span>swift</span> <span>test</span>
+</code></pre>
+</div>
+<h3><a href="#using-a-single-specific-swift-version">Using a single specific Swift version</a></h3>
+<p>You can configure your job to use a single specific version of Swift, such as <code>5.3.3</code>.</p>
+<div>
+<header><span>YAML</span><pre>steps:
+  - uses: swift-actions/setup-swift@65540b95f51493d65f5e59e97dcef9629ddf11bf
+    with:
+      swift-version: "5.3.3"
+  - name: Get swift version
+    run: swift --version # Swift 5.3.3
+</pre></header><pre><code><span>steps:</span>
+  <span>-</span> <span>uses:</span> <span>swift-actions/setup-swift@65540b95f51493d65f5e59e97dcef9629ddf11bf</span>
+    <span>with:</span>
+      <span>swift-version:</span> <span>"5.3.3"</span>
+  <span>-</span> <span>name:</span> <span>Get</span> <span>swift</span> <span>version</span>
+    <span>run:</span> <span>swift</span> <span>--version</span> <span># Swift 5.3.3</span>
+</code></pre>
+</div>
+<h2><a href="#building-and-testing-your-code">Building and testing your code</a></h2>
+<p>You can use the same commands that you use locally to build and test your code using Swift. This example demonstrates how to use <code>swift build</code> and <code>swift test</code> in a job:</p>
+<div>
+<header><span>YAML</span><pre>steps:
+  - uses: actions/checkout@v4
+  - uses: swift-actions/setup-swift@65540b95f51493d65f5e59e97dcef9629ddf11bf
+    with:
+      swift-version: "5.3.3"
+  - name: Build
+    run: swift build
+  - name: Run tests
+    run: swift test
+</pre></header><pre><code><span>steps:</span>
+  <span>-</span> <span>uses:</span> <span>actions/checkout@v4</span>
+  <span>-</span> <span>uses:</span> <span>swift-actions/setup-swift@65540b95f51493d65f5e59e97dcef9629ddf11bf</span>
+    <span>with:</span>
+      <span>swift-version:</span> <span>"5.3.3"</span>
+  <span>-</span> <span>name:</span> <span>Build</span>
+    <span>run:</span> <span>swift</span> <span>build</span>
+  <span>-</span> <span>name:</span> <span>Run</span> <span>tests</span>
+    <span>run:</span> <span>swift</span> <span>test</span>
+</code></pre>
+</div>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

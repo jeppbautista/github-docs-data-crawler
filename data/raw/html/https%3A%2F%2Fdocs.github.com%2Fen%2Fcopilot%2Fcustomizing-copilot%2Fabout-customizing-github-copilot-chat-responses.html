@@ -1,0 +1,236 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Customize Copilot" href="/en/copilot/customizing-copilot">Customize Copilot</a><span>/</span>
+</li>
+<li><a title="About customizing Copilot responses" href="/en/copilot/customizing-copilot/about-customizing-github-copilot-chat-responses">About customizing Copilot responses</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>About customizing GitHub Copilot Chat responses</h1></div></div>
+<div>
+<div><p>Learn about customizing GitHub Copilot Chat responses to fit with your preferences and requirements.</p></div>
+<div>
+<h2>Tool navigation</h2>
+<nav><ul>
+<li><a href="?tool=visualstudio"><span>Visual Studio</span></a></li>
+<li><a href="?tool=vscode"><span>Visual Studio Code</span></a></li>
+<li><a href="?tool=webui"><span>Web browser</span></a></li>
+</ul></nav>
+</div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-customizing-github-copilot-chat-responses"><div><span>About customizing GitHub Copilot Chat responses</span></div></a></li>
+<li><a href="#using-custom-instructions"><div><span>Using custom instructions</span></div></a></li>
+<li><a href="#about-repository-custom-instructions"><div><span>About repository custom instructions</span></div></a></li>
+<li><a href="#about-prompt-files"><div><span>About prompt files</span></div></a></li>
+<li><a href="#about-repository-custom-instructions-1"><div><span>About repository custom instructions</span></div></a></li>
+<li><a href="#next-steps"><div><span>Next steps</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<div>
+<p> This version of this article is about custom instructions on the GitHub website. Click the tabs above for other environments. </p>
+</div>
+</div>
+<div>
+<div>
+<p> This version of this article is about custom instructions and prompt files in VS Code. Click the tabs above for other environments. </p>
+</div>
+</div>
+<div>
+<div>
+<p> This version of this article is about custom instructions in Visual Studio. Click the tabs above for other environments. </p>
+</div>
+</div>
+<h2><a href="#about-customizing-github-copilot-chat-responses">About customizing GitHub Copilot Chat responses</a></h2>
+<div>
+<p>GitHub Copilot can provide chat responses that are tailored to your personal preferences, the way your team works, the tools you use, or the specifics of your project, if you provide it with enough context to do so. Instead of repeatedly adding this contextual detail to your chat questions, you can create custom instructions that automatically add this information for you. The additional information is not displayed in the chat, but is available to Copilot to allow it to generate higher quality responses.</p>
+<h3><a href="#types-of-custom-instructions">Types of custom instructions</a></h3>
+<ul>
+<li>
+<strong>Personal custom instructions</strong> apply to all conversations you have with Copilot Chat across the GitHub website. They allow you to specify your individual preferences, such as preferred language or response style, ensuring that the responses are tailored to your personal needs.</li>
+<li>
+<strong>Repository custom instructions</strong> apply to conversations within the context of a specific repository. They are useful for defining project-specific coding standards, frameworks, or tools. For example, you can specify that a repository uses TypeScript and a particular library, ensuring consistent responses for all contributors.</li>
+<li>
+<strong>Organization custom instructions (public preview)</strong> apply to conversations within the context of an organization on the GitHub website. They are ideal for enforcing organization-wide preferences, such as a common language or security guidelines. Organization custom instructions can only be set by organization owners for organizations with a Copilot Enterprise subscription.</li>
+</ul>
+</div>
+<div>
+<p>GitHub Copilot can provide chat responses that are tailored to the way your team works, the tools you use, or the specifics of your project, if you provide it with enough context to do so. Instead of repeatedly adding this contextual detail to your chat questions, you can create files in your repository that automatically add this information for you.</p>
+<p>There are two types of files you can use to provide context and instructions to GitHub Copilot Chat in VS Code:</p>
+<ul>
+<li>
+<strong>Repository custom instructions</strong> allow you to specify repository-wide instructions and preferences, in a single file, that apply to any conversation held in the context of the repository.</li>
+<li>
+<strong>Prompt files</strong> (public preview) allow you to save common prompt instructions and relevant context in Markdown files (<code>*.prompt.md</code>) that you can then reuse in your chat prompts. Prompt files are only available in VS Code.</li>
+</ul>
+<p>While custom instructions help to add codebase-wide context to each AI workflow, prompt files let you add instructions to a specific chat interaction.</p>
+</div>
+<div>
+<p>GitHub Copilot can provide chat responses that are tailored to the way your team works, the tools you use, or the specifics of your project, if you provide it with enough context to do so. Instead of repeatedly adding this contextual detail to your chat questions, you can create a custom instructions file in your repository that automatically adds this information for you. The additional information is not displayed in the chat, but is available to Copilot to allow it to generate higher quality responses.</p>
+</div>
+<div>
+<h2><a href="#using-custom-instructions">Using custom instructions</a></h2>
+<p>Custom instructions consist of natural language instructions and are most effective when they are short, self-contained statements. Consider the scope over which you want the instruction to apply when choosing whether to add an instruction on the personal, repository, or (if available) organization level.</p>
+<div>
+<ul>
+<li>It is possible for multiple types of custom instructions to apply to a conversation. Personal instructions take the highest priority, followed by repository instructions, with organization instructions prioritized last.  However, all sets of relevant instructions are still combined and provided to Copilot Chat.</li>
+<li>Whenever possible, you should avoid providing conflicting sets of instructions. If you are concerned about response quality, you can also choose to temporarily disable repository instructions. See <a href="/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot?tool=webui#enabling-or-disabling-repository-custom-instructions">Adding repository custom instructions for GitHub Copilot</a>.</li>
+</ul>
+</div>
+<p>Here are some common use cases and examples for each type of custom instructions:</p>
+<ul>
+<li>
+<strong>Personal custom instructions:</strong>
+<ul>
+<li>Preferred individual language: <code>Always respond in Portuguese.</code>
+</li>
+<li>Individual response preferences: <code>Explain a single concept per line. Be clear and concise.</code>
+</li>
+</ul>
+</li>
+<li>
+<strong>Repository custom instructions:</strong>
+<ul>
+<li>Coding standards: <code>Use early returns whenever possible.</code>
+</li>
+<li>Frameworks:  <code>Use Vue with the PrimeVue library.</code> or  <code>Use Typescript rather than Javascript.</code>
+</li>
+<li>Code style preferences: <code>Use camel case for variable names.</code>
+</li>
+</ul>
+</li>
+<li>
+<strong>Organization custom instructions:</strong>
+<ul>
+<li>Describe how to answer certain questions: <code>For questions related to security, use the Security Docs Knowledge Base or advise people to consult with #security on Slack.</code>
+</li>
+<li>Preferred language for a company which exclusively speaks a single language: <code>Always respond in Portuguese.</code>
+</li>
+<li>Organization-wide preferences: <code>Do not generate code blocks in responses.</code>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div>
+<h2><a href="#about-repository-custom-instructions">About repository custom instructions</a></h2>
+<p>Repository custom instructions consist of a single file, <code>.github/copilot-instructions.md</code>, that you create in a repository. The instructions you add to the file should be short, self-contained statements that add context or relevant information to supplement chat questions.</p>
+<p>Common use cases include:</p>
+<ul>
+<li>
+<strong>Test generation.</strong> Create instructions for test generation, such as specifying the use of a certain test framework.</li>
+<li>
+<strong>Code review.</strong> Specify instructions for reviewing code, such as telling a reviewer to look for a specific error in the code.</li>
+<li>
+<strong>Commit message generation.</strong> Write instructions for generating commit messages, such as format or the type of information to include.</li>
+</ul>
+<h3><a href="#example">Example</a></h3>
+<p>This example of a <code>.github/copilot-instructions.md</code> file contains three instructions that will be added to all chat questions.</p>
+<pre><code>We use Bazel for managing our Java dependencies, not Maven, so when talking about Java packages, always give me instructions and code samples that use Bazel.
+
+We always write JavaScript with double quotes and tabs for indentation, so when your responses include JavaScript code, please follow those conventions.
+
+Our team uses Jira for tracking items of work.
+</code></pre>
+<h2><a href="#about-prompt-files">About prompt files</a></h2>
+<div>
+<p> Prompt files are public preview and subject to change.</p>
+</div>
+<p>Prompt files let you build and share reusable prompt instructions with additional context. A prompt file is a Markdown file, stored in your workspace, that mimics the existing format of writing prompts in Copilot Chat (for example, <code>Rewrite #file:x.ts</code>). This allows blending natural language instructions, additional context, and even linking to other prompt files as dependencies.</p>
+<p>Common use cases include:</p>
+<ul>
+<li>
+<strong>Code generation</strong>. Create reusable prompts for components, tests, or migrations (for example, React forms, or API mocks).</li>
+<li>
+<strong>Domain expertise</strong>. Share specialized knowledge through prompts, such as security practices, or compliance checks.</li>
+<li>
+<strong>Team collaboration</strong>. Document patterns and guidelines with references to specs and documentation.</li>
+<li>
+<strong>Onboarding</strong>. Create step-by-step guides for complex processes or project-specific patterns.</li>
+</ul>
+<p>You can have multiple prompt files in your workspace, each of which defines a prompt for a different purpose.</p>
+<h3><a href="#examples">Examples</a></h3>
+<p>The following examples demonstrate how to use prompt files.</p>
+<ul>
+<li>
+<p><code>New React form.prompt.md</code> - contains instructions for a reusable task to generate a form using React.</p>
+<pre><code>Your goal is to generate a new React form component.
+
+Ask for the form name and fields if not provided.
+
+Requirements for the form:
+<span>-</span> Use form design system components: [<span>design-system/Form.md</span>](<span>../docs/design-system/Form.md</span>)
+<span>-</span> Use <span>`react-hook-form`</span> for form state management:
+<span>  -</span> Always define TypeScript types for your form data
+<span>  -</span> Prefer <span>*uncontrolled*</span> components using register
+<span>  -</span> Use <span>`defaultValues`</span> to prevent unnecessary rerenders
+<span>-</span> Use <span>`yup`</span> for validation:
+<span>  -</span> Create reusable validation schemas in separate files
+<span>  -</span> Use TypeScript types to ensure type safety
+<span>  -</span> Customize UX-friendly validation rules
+</code></pre>
+</li>
+<li>
+<p><code>API security review.prompt.md</code> - contains reusable information about security practices for REST APIs, which can be used to do security reviews of REST APIs.</p>
+<pre><code>Secure REST API review:
+<span>-</span> Ensure all endpoints are protected by authentication and authorization
+<span>-</span> Validate all user inputs and sanitize data
+<span>-</span> Implement rate limiting and throttling
+<span>-</span> Implement logging and monitoring for security events
+…
+</code></pre>
+</li>
+</ul>
+</div>
+<div>
+<h2><a href="#about-repository-custom-instructions-1">About repository custom instructions</a></h2>
+<p>Repository custom instructions consist of a single file, <code>.github/copilot-instructions.md</code>, that you create in a repository. The instructions you add to the file should be short, self-contained statements that add context or relevant information to supplement chat questions.</p>
+<p>Common use cases include:</p>
+<ul>
+<li>
+<strong>Test generation.</strong> Create instructions for test generation, such as specifying the use of a certain test framework.</li>
+<li>
+<strong>Code review.</strong> Specify instructions for reviewing code, such as telling a reviewer to look for a specific error in the code.</li>
+<li>
+<strong>Commit message generation.</strong> Write instructions for generating commit messages, such as format or the type of information to include.</li>
+</ul>
+<h3><a href="#example-1">Example</a></h3>
+<p>This example of a <code>.github/copilot-instructions.md</code> file contains three instructions that will be added to all chat questions.</p>
+<pre><code>We use Bazel for managing our Java dependencies, not Maven, so when talking about Java packages, always give me instructions and code samples that use Bazel.
+
+We always write JavaScript with double quotes and tabs for indentation, so when your responses include JavaScript code, please follow those conventions.
+
+Our team uses Jira for tracking items of work.
+</code></pre>
+</div>
+<h2><a href="#next-steps">Next steps</a></h2>
+<div>
+<ul>
+<li><a href="/en/copilot/customizing-copilot/adding-personal-custom-instructions-for-github-copilot">Adding personal custom instructions for GitHub Copilot</a></li>
+<li><a href="/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot">Adding repository custom instructions for GitHub Copilot</a></li>
+<li>
+<a href="/en/copilot/customizing-copilot/adding-organization-custom-instructions-for-github-copilot">Adding organization custom instructions for GitHub Copilot</a> in the GitHub Enterprise Cloud documentation</li>
+</ul>
+</div>
+<div>
+<ul>
+<li><a href="/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot">Adding repository custom instructions for GitHub Copilot</a></li>
+</ul>
+</div>
+<div>
+<ul>
+<li><a href="/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot">Adding repository custom instructions for GitHub Copilot</a></li>
+</ul>
+</div>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,139 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Developing in a codespace" href="/en/codespaces/developing-in-a-codespace">Developing in a codespace</a><span>/</span>
+</li>
+<li><a title="Default environment variables" href="/en/codespaces/developing-in-a-codespace/default-environment-variables-for-your-codespace">Default environment variables</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Default environment variables for your codespace</h1></div></div>
+<div><div><p>GitHub sets default environment variables for each codespace.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-default-environment-variables"><div><span>About default environment variables</span></div></a></li>
+<li><a href="#list-of-default-environment-variables"><div><span>List of default environment variables</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-default-environment-variables">About default environment variables</a></h2>
+<p>GitHub sets default environment variables for every codespace. Commands run in codespaces can create, read, and modify environment variables.</p>
+<div>
+<p>
+Environment variables are case-sensitive.</p>
+</div>
+<h2><a href="#list-of-default-environment-variables">List of default environment variables</a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Environment variable</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>CODESPACE_NAME</code></td>
+<td>The name of the codespace For example, <code>octocat-literate-space-parakeet-mld5</code>
+</td>
+</tr>
+<tr>
+<td><code>CODESPACES</code></td>
+<td>Always <code>true</code> while in a codespace</td>
+</tr>
+<tr>
+<td><code>GIT_COMMITTER_<wbr>EMAIL</wbr></code></td>
+<td>The email for the "author" field of future <code>git</code> commits.</td>
+</tr>
+<tr>
+<td><code>GIT_COMMITTER_<wbr>NAME</wbr></code></td>
+<td>The name for the "committer" field of future <code>git</code> commits.</td>
+</tr>
+<tr>
+<td><code>GITHUB_CODESPACES_<wbr>PORT_FORWARDING_<wbr>DOMAIN</wbr></wbr></code></td>
+<td>Returns the domain of the GitHub Codespaces forwarded port. For example, <code>app.github.dev</code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_API_URL</code></td>
+<td>Returns the API URL. For example, <code>https:/<wbr>/<wbr>api.github.com</wbr></wbr></code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_GRAPHQL_<wbr>URL</wbr></code></td>
+<td>Returns the GraphQL API URL. For example, <code>https:/<wbr>/<wbr>api.github.com/<wbr>graphql</wbr></wbr></wbr></code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_REPOSITORY</code></td>
+<td>The owner and repository name. For example, <code>octocat/<wbr>Hello-World</wbr></code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_SERVER_URL</code></td>
+<td>Returns the URL of the GitHub server. For example, <code>https:/<wbr>/<wbr>github.com</wbr></wbr></code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_TOKEN</code></td>
+<td>A signed auth token representing the user in the codespace. You can use this to make authenticated calls to the GitHub API. For more information, see <a href="/en/codespaces/reference/security-in-github-codespaces#authentication">Security in GitHub Codespaces</a>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_USER</code></td>
+<td>The name of the user that initiated the codespace. For example, <code>octocat</code>.</td>
+</tr>
+</tbody>
+</table>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

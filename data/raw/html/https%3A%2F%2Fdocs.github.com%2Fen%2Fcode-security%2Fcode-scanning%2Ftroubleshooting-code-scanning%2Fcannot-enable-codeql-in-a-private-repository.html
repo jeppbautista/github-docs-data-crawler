@@ -1,0 +1,57 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Code scanning" href="/en/code-security/code-scanning">Code scanning</a><span>/</span>
+</li>
+<li>
+<a title="Troubleshooting code scanning" href="/en/code-security/code-scanning/troubleshooting-code-scanning">Troubleshooting code scanning</a><span>/</span>
+</li>
+<li><a title="Cannot enable CodeQL in a private repository" href="/en/code-security/code-scanning/troubleshooting-code-scanning/cannot-enable-codeql-in-a-private-repository">Cannot enable CodeQL in a private repository</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Cannot enable CodeQL in a private repository</h1></div></div>
+<div><div><p>GitHub Code Security must be enabled in order to use code scanning on private repositories.</p></div></div>
+<div><div><div>
+<p>If you are on a <strong>GitHub Free</strong> or <strong>GitHub Pro</strong> plan, you can only use code scanning on repositories that are publicly available. To enable code scanning for private or internal repositories, you must upgrade to GitHub Team or GitHub Enterprise with GitHub Code Security and enable Code Security for the repository. For more information, see <a href="/en/get-started/learning-about-github/githubs-products#github-team">GitHub’s plans</a> and <a href="/en/get-started/learning-about-github/about-github-advanced-security">About GitHub Advanced Security</a>.</p>
+<h2><a href="#confirm-whether-github-code-security-is-enabled">Confirm whether GitHub Code Security is enabled</a></h2>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click <strong>Settings</strong>.</p>
+<div><picture><source><img src="/assets/cb-28260/images/help/repository/repo-actions-settings.png" alt='Screenshot of a repository header showing the tabs. The "Settings" tab is highlighted by a dark orange outline.' width="720" height="71"></source></picture></div>
+</li>
+<li>
+<p>In the "Security" section of the sidebar, click </p>
+</li>
+<li>
+<p>On the settings page, scroll down to "Code Security."</p>
+</li>
+<li>
+<p>If there is an associated and active <strong>Enable</strong> button, Code Security is available for this repository but not yet enabled.</p>
+</li>
+<li>
+<p>If use of GitHub Code Security is blocked by a policy, "<strong>Enable</strong> button.</p>
+<div><picture><source><img src="/assets/cb-81713/images/help/repository/ghas-enterprise-policy-block.png" alt='"Screenshot of the Advanced Security" setting. The disabled option is highlighted in dark orange.'></source></picture></div>
+</li>
+</ol>
+<h3><a href="#requesting-access-to-github-code-security">Requesting access to GitHub Code Security</a></h3>
+<ol>
+<li>In the "Code Security" settings, click the enterprise or organization name to display a list of users with access to edit the policy that controls access to GitHub Code Security. For more information, see <a href="/en/enterprise-cloud@latest/admin/enforcing-policies/enforcing-policies-for-your-enterprise/enforcing-policies-for-code-security-and-analysis-for-your-enterprise#enforcing-a-policy-for-the-availability-of-advanced-security-in-your-enterprises-organizations">Enforcing policies for code security and analysis for your enterprise</a>.</li>
+<li>Follow your company's policy for requesting access to additional features.</li>
+</ol>
+<h3><a href="#enabling-github-code-security">Enabling GitHub Code Security</a></h3>
+<ol>
+<li>Open the "Code security" settings page.</li>
+<li>Next to the "Code Security" feature, click <strong>Enable</strong>.</li>
+<li>Rerun code scanning.</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

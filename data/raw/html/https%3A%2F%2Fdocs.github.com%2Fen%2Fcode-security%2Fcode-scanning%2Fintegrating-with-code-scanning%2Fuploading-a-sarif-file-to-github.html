@@ -1,0 +1,150 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Code scanning" href="/en/code-security/code-scanning">Code scanning</a><span>/</span>
+</li>
+<li>
+<a title="Integrate with code scanning" href="/en/code-security/code-scanning/integrating-with-code-scanning">Integrate with code scanning</a><span>/</span>
+</li>
+<li><a title="Upload a SARIF file" href="/en/code-security/code-scanning/integrating-with-code-scanning/uploading-a-sarif-file-to-github">Upload a SARIF file</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Uploading a SARIF file to GitHub</h1></div></div>
+<div>
+<div><p>You can upload SARIF files generated outside GitHub and see code scanning alerts from third-party tools in your repository.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Users with <strong>write</strong> access</p></div></div>
+<div><div>
+<p>Code scanning is available for the following repository types:</p>
+<ul>
+<li>Public repositories on GitHub.com</li>
+<li>Organization-owned repositories on GitHub Team with <a href="/en/get-started/learning-about-github/about-github-advanced-security">GitHub Code Security</a> enabled</li>
+</ul>
+</div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-sarif-file-uploads-for-code-scanning"><div><span>About SARIF file uploads for code scanning</span></div></a></li>
+<li><a href="#uploading-a-code-scanning-analysis-with-github-actions"><div><span>Uploading a code scanning analysis with GitHub Actions</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-sarif-file-uploads-for-code-scanning">About SARIF file uploads for code scanning</a></h2>
+<p>GitHub creates code scanning alerts in a repository using information from Static Analysis Results Interchange Format (SARIF) files. SARIF files can be uploaded to a repository using the API or GitHub Actions. For more information, see <a href="/en/code-security/code-scanning/integrating-with-code-scanning/using-code-scanning-with-your-existing-ci-system">Using code scanning with your existing CI system</a>.</p>
+<p>You can generate SARIF files using many static analysis security testing tools, including CodeQL. The results must use SARIF version 2.1.0. For more information, see <a href="/en/code-security/code-scanning/integrating-with-code-scanning/sarif-support-for-code-scanning">SARIF support for code scanning</a>.</p>
+<p>You can upload the results using GitHub Actions, the code scanning API, or the CodeQL CLI. The best upload method will depend on how you generate the SARIF file, for example, if you use:</p>
+<ul>
+<li>GitHub Actions to run the CodeQL action, there is no further action required. The CodeQL action uploads the SARIF file automatically when it completes analysis.</li>
+<li>GitHub Actions to run a SARIF-compatible analysis tool, you could update the workflow to include a final step that uploads the results (see below).</li>
+<li>The CodeQL CLI to run code scanning in your CI system, you can use the CLI to upload results to GitHub (for more information, see <a href="/en/code-security/code-scanning/integrating-with-code-scanning/using-code-scanning-with-your-existing-ci-system">Using code scanning with your existing CI system</a>).</li>
+<li>A tool that generates results as an artifact outside of your repository, you can use the code scanning API to upload the file (for more information, see <a href="/en/rest/code-scanning/code-scanning#upload-an-analysis-as-sarif-data">REST API endpoints for code scanning</a>).</li>
+</ul>
+<div>
+<p>
+For private and internal repositories, code scanning is available when GitHub Code Security features are enabled for the repository. If you see the error <code>GitHub Code Security or GitHub Advanced Security must be enabled for this repository to use code scanning</code>, check that GitHub Code Security is enabled. For more information, see <a href="/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-security-and-analysis-settings-for-your-repository">Managing security and analysis settings for your repository</a>.</p>
+</div>
+<h2><a href="#uploading-a-code-scanning-analysis-with-github-actions">Uploading a code scanning analysis with GitHub Actions</a></h2>
+<p>To use GitHub Actions to upload a third-party SARIF file to a repository, you'll need a workflow. For more information, see <a href="/en/actions/learn-github-actions">Writing workflows</a>.</p>
+<p>Your workflow will need to use the <code>upload-sarif</code> action, which is part of the <code>github/codeql-action</code> repository. It has input parameters that you can use to configure the upload. The main input parameters you'll use are:</p>
+<ul>
+<li>
+<code>sarif-file</code>, which configures the file or directory of SARIF files to be uploaded. The directory or file path is relative to the root of the repository.</li>
+<li>
+<code>category</code> (optional), which assigns a category for results in the SARIF file. This enables you to analyze the same commit in multiple ways and review the results using the code scanning views in GitHub. For example, you can analyze using multiple tools, and in mono-repos, you can analyze different slices of the repository based on the subset of changed files.</li>
+</ul>
+<p>For more information, see the <a href="https://github.com/github/codeql-action/tree/v3/upload-sarif"><code>upload-sarif</code> action</a>.</p>
+<p>The <code>upload-sarif</code> action can be configured to run when the <code>push</code> and <code>scheduled</code> event occur. For more information about GitHub Actions events, see <a href="/en/actions/using-workflows/events-that-trigger-workflows">Events that trigger workflows</a>.</p>
+<p>If your SARIF file doesn't include <code>partialFingerprints</code>, the <code>upload-sarif</code> action will calculate the <code>partialFingerprints</code> field for you and attempt to prevent duplicate alerts. GitHub can only create <code>partialFingerprints</code> when the repository contains both the SARIF file and the source code used in the static analysis. For more information about preventing duplicate alerts, see <a href="/en/code-security/code-scanning/integrating-with-code-scanning/sarif-support-for-code-scanning#providing-data-to-track-code-scanning-alerts-across-runs">SARIF support for code scanning</a>.</p>
+<p>You can check that the SARIF properties have the supported size for upload and that the file is compatible with code scanning. For more information, see <a href="/en/code-security/code-scanning/integrating-with-code-scanning/sarif-support-for-code-scanning#validating-your-sarif-file">SARIF support for code scanning</a>.</p>
+<h3><a href="#example-workflow-for-sarif-files-generated-outside-of-a-repository">Example workflow for SARIF files generated outside of a repository</a></h3>
+<p>You can create a new workflow that uploads SARIF files after you commit them to your repository. This is useful when the SARIF file is generated as an artifact outside of your repository.</p>
+<p>This example workflow runs anytime commits are pushed to the repository. The action uses the <code>partialFingerprints</code> property to determine if changes have occurred. In addition to running when commits are pushed, the workflow is scheduled to run once per week. For more information, see <a href="/en/actions/using-workflows/events-that-trigger-workflows">Events that trigger workflows</a>.</p>
+<p>This workflow uploads the <code>results.sarif</code> file located in the root of the repository. For more information about creating a workflow file, see <a href="/en/actions/learn-github-actions">Writing workflows</a>.</p>
+<p>Alternatively, you could modify this workflow to upload a directory of SARIF files. For example, you could place all SARIF files in a directory in the root of your repository called <code>sarif-output</code> and set the action's input parameter <code>sarif_file</code> to <code>sarif-output</code>. Note that if you upload a directory, each SARIF file must include a unique <code>runAutomationDetails.id</code> to define the category for the results. For more information, see <a href="/en/code-security/code-scanning/integrating-with-code-scanning/sarif-support-for-code-scanning#runautomationdetails-object">SARIF support for code scanning</a>.</p>
+<pre><code><span>name:</span> <span>"Upload SARIF"</span>
+
+<span># Run workflow each time code is pushed to your repository and on a schedule.</span>
+<span># The scheduled workflow runs every Thursday at 15:45 UTC.</span>
+<span>on:</span>
+  <span>push:</span>
+  <span>schedule:</span>
+    <span>-</span> <span>cron:</span> <span>'45 15 * * 4'</span>
+
+<span>jobs:</span>
+  <span>build:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>permissions:</span>
+      <span># required for all workflows</span>
+      <span>security-events:</span> <span>write</span>
+      <span># only required for workflows in private repositories</span>
+      <span>actions:</span> <span>read</span>
+      <span>contents:</span> <span>read</span>
+    <span>steps:</span>
+      <span># This step checks out a copy of your repository.</span>
+      <span>-</span> <span>name:</span> <span>Checkout</span> <span>repository</span>
+        <span>uses:</span> <span>actions/checkout@v4</span>
+      <span>-</span> <span>name:</span> <span>Upload</span> <span>SARIF</span> <span>file</span>
+        <span>uses:</span> <span>github/codeql-action/upload-sarif@v3</span>
+        <span>with:</span>
+          <span># Path to SARIF file relative to the root of the repository</span>
+          <span>sarif_file:</span> <span>results.sarif</span>
+          <span># Optional category for the results</span>
+          <span># Used to differentiate multiple results for one commit</span>
+          <span>category:</span> <span>my-analysis-tool</span>
+</code></pre>
+<h3><a href="#example-workflow-that-runs-the-eslint-analysis-tool">Example workflow that runs the ESLint analysis tool</a></h3>
+<p>If you generate your third-party SARIF file as part of a continuous integration (CI) workflow, you can add the <code>upload-sarif</code> action as a step after running your CI tests. If you don't already have a CI workflow, you can create one using a GitHub Actions template. For more information, see the <a href="/en/actions/quickstart">Quickstart for GitHub Actions</a>.</p>
+<p>This example workflow runs anytime commits are pushed to the repository. The action uses the <code>partialFingerprints</code> property to determine if changes have occurred. In addition to running when commits are pushed, the workflow is scheduled to run once per week. For more information, see <a href="/en/actions/using-workflows/events-that-trigger-workflows">Events that trigger workflows</a>.</p>
+<p>The workflow shows an example of running the ESLint static analysis tool as a step in a workflow. The <code>Run ESLint</code> step runs the ESLint tool and outputs the <code>results.sarif</code> file. The workflow then uploads the <code>results.sarif</code> file to GitHub using the <code>upload-sarif</code> action. For more information about creating a workflow file, see <a href="/en/actions/learn-github-actions/understanding-github-actions">Understanding GitHub Actions</a>.</p>
+<pre><code><span>name:</span> <span>"ESLint analysis"</span>
+
+<span># Run workflow each time code is pushed to your repository and on a schedule.</span>
+<span># The scheduled workflow runs every Wednesday at 15:45 UTC.</span>
+<span>on:</span>
+  <span>push:</span>
+  <span>schedule:</span>
+    <span>-</span> <span>cron:</span> <span>'45 15 * * 3'</span>
+
+<span>jobs:</span>
+  <span>build:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>permissions:</span>
+      <span># required for all workflows</span>
+      <span>security-events:</span> <span>write</span>
+      <span># only required for workflows in private repositories</span>
+      <span>actions:</span> <span>read</span>
+      <span>contents:</span> <span>read</span>
+    <span>steps:</span>
+      <span>-</span> <span>uses:</span> <span>actions/checkout@v4</span>
+      <span>-</span> <span>name:</span> <span>Run</span> <span>npm</span> <span>install</span>
+        <span>run:</span> <span>npm</span> <span>install</span>
+      <span># Runs the ESlint code analysis</span>
+      <span>-</span> <span>name:</span> <span>Run</span> <span>ESLint</span>
+        <span># eslint exits 1 if it finds anything to report</span>
+        <span>run:</span> <span>node_modules/.bin/eslint</span> <span>build</span> <span>docs</span> <span>lib</span> <span>script</span> <span>spec-main</span> <span>-f</span> <span>node_modules/@microsoft/eslint-formatter-sarif/sarif.js</span> <span>-o</span> <span>results.sarif</span> <span>||</span> <span>true</span>
+      <span># Uploads results.sarif to GitHub repository using the upload-sarif action</span>
+      <span>-</span> <span>uses:</span> <span>github/codeql-action/upload-sarif@v3</span>
+        <span>with:</span>
+          <span># Path to SARIF file relative to the root of the repository</span>
+          <span>sarif_file:</span> <span>results.sarif</span>
+</code></pre>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/code-security/code-scanning/troubleshooting-sarif-uploads">Troubleshooting SARIF uploads</a></li>
+<li><a href="/en/actions/using-workflows/workflow-syntax-for-github-actions">Workflow syntax for GitHub Actions</a></li>
+<li><a href="/en/actions/monitoring-and-troubleshooting-workflows/viewing-workflow-run-history">Viewing workflow run history</a></li>
+<li><a href="/en/code-security/code-scanning/integrating-with-code-scanning/using-code-scanning-with-your-existing-ci-system">Using code scanning with your existing CI system</a></li>
+<li><a href="/en/rest/code-scanning/code-scanning#upload-an-analysis-as-sarif-data">REST API endpoints for code scanning</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

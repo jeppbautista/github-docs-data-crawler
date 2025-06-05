@@ -1,0 +1,94 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Building communities" href="/en/communities">Building communities</a><span>/</span>
+</li>
+<li>
+<a title="Issue &amp; PR templates" href="/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests">Issue &amp; PR templates</a><span>/</span>
+</li>
+<li><a title="Create an issue template" href="/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/manually-creating-a-single-issue-template-for-your-repository">Create an issue template</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Manually creating a single issue template for your repository</h1></div></div>
+<div><div><p>When you add a manually-created issue template to your repository, project contributors will automatically see the template's contents in the issue body.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#adding-an-issue-template"><div><span>Adding an issue template</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<p>
+This is the legacy workflow to create an issue template. We recommend using the upgraded multiple issue template builder or issue forms to create issue templates. For more information, see <a href="/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/about-issue-and-pull-request-templates">About issue and pull request templates</a>.</p>
+</div>
+<p>You can create an <em>ISSUE_TEMPLATE/</em> subdirectory in any of the supported folders to contain multiple issue templates, and use the <code>template</code> query parameter to specify the template that will fill the issue body. For more information, see <a href="/en/issues/tracking-your-work-with-issues/creating-an-issue">Creating an issue</a>.</p>
+<p>You can add YAML frontmatter to each issue template to pre-fill the issue title, automatically add labels and assignees, and give the template a name and description that will be shown in the template chooser that people see when creating a new issue in your repository.</p>
+<p>Here is example YAML front matter.</p>
+<pre><code><span>---</span>
+<span>name:</span> <span>Tracking</span> <span>issue</span>
+<span>about:</span> <span>Use</span> <span>this</span> <span>template</span> <span>for</span> <span>tracking</span> <span>new</span> <span>features.</span>
+<span>title:</span> <span>"[DATE]: [FEATURE NAME]"</span>
+<span>labels:</span> <span>tracking</span> <span>issue,</span> <span>needs</span> <span>triage</span>
+<span>assignees:</span> <span>octocat</span>
+<span>---
+</span></code></pre>
+<div>
+<p>
+If a front matter value includes a YAML-reserved character such as <code>:</code> , you must put the whole value in quotes. For example, <code>":bug: Bug"</code> or <code>":new: triage needed, :bug: bug"</code>.</p>
+</div>
+<p>To be displayed with a <code>.github/ISSUE_TEMPLATE</code> folder and contain valid <code>name:</code> and <code>about:</code> keys in the YAML frontmatter (for issue templates defined in <code>.md</code> files) or valid <code>name:</code> and <code>description:</code> keys (for issue forms defined in <code>.yml</code> files).</p>
+<p>You can create default issue templates and a default configuration file for issue templates for your organization or personal account. For more information, see <a href="/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file">Creating a default community health file</a>.</p>
+<h2><a href="#adding-an-issue-template">Adding an issue template</a></h2>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Above the list of files, select the <strong>Add file</strong> </p>
+<p>Alternatively, you can click </p>
+<div><picture><source><img src="/assets/cb-60263/images/help/repository/add-file-buttons.png" alt='Screenshot of the main page of a repository highlighting both the "Add file" and the "plus sign" icon, described above, with an orange outline.' width="1440" height="270"></source></picture></div>
+</li>
+<li>
+<p>In the file name field:</p>
+<ul>
+<li>To make your issue template visible in the repository's root directory, type the name of your <em>issue_template</em>. For example, <code>issue_template.md</code>.</li>
+<li>To make your issue template visible in the repository's <code>docs</code> directory, type <em>docs/</em> followed by the name of your <em>issue_template</em>. For example, <code>docs/issue_template.md</code>,</li>
+<li>To store your file in a hidden directory, type <em>.github/</em> followed by the name of your <em>issue_template</em>. For example, <code>.github/issue_template.md</code>.</li>
+<li>To create multiple issue templates and use the <code>template</code> query parameter to specify a template to fill the issue body, type <em>.github/ISSUE_TEMPLATE/</em>, then the name of your issue template. For example, <code>.github/ISSUE_TEMPLATE/issue_template.md</code>. You can also store multiple issue templates in an <code>ISSUE_TEMPLATE</code> subdirectory within the root or <code>docs/</code> directories. For more information, see <a href="/en/issues/tracking-your-work-with-issues/creating-an-issue">Creating an issue</a>.</li>
+</ul>
+</li>
+<li>
+<p>In the body of the new file, add your issue template. This could include:</p>
+<ul>
+<li>YAML frontmatter</li>
+<li>Expected behavior and actual behavior</li>
+<li>Steps to reproduce the problem</li>
+<li>Specifications like the version of the project, operating system, or hardware</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Commit changes...</strong></p>
+</li>
+<li>
+<p>In the "Commit message" field, type a short, meaningful commit message that describes the change you made to the file. You can attribute the commit to more than one author in the commit message. For more information, see <a href="/en/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/creating-a-commit-with-multiple-authors">Creating a commit with multiple authors</a>.</p>
+</li>
+<li>
+<p>Below the commit message fields, decide whether to add your commit to the current branch or to a new branch. If your current branch is the default branch, you should choose to create a new branch for your commit and then create a pull request. For more information, see <a href="/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request">Creating a pull request</a>.</p>
+<div><picture><source><img src="/assets/cb-27122/images/help/repository/choose-commit-branch.png" alt="Screenshot of a GitHub pull request showing a radio button to commit directly to the main branch or to create a new branch. New branch is selected." width="669" height="166"></source></picture></div> Templates are available to collaborators when they are merged into the repository's default branch.</li>
+<li>
+<p>Click <strong>Commit changes</strong> or <strong>Propose changes</strong>.</p>
+</li>
+</ol>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/about-issue-and-pull-request-templates">About issue and pull request templates</a></li>
+<li><a href="/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository">Configuring issue templates for your repository</a></li>
+<li><a href="/en/issues/tracking-your-work-with-issues/creating-an-issue">Creating an issue</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

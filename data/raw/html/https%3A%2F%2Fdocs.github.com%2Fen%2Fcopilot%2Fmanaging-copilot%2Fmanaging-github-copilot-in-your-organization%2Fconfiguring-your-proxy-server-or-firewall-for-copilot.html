@@ -1,0 +1,182 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Manage Copilot" href="/en/copilot/managing-copilot">Manage Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Manage for organization" href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization">Manage for organization</a><span>/</span>
+</li>
+<li><a title="Allow Copilot traffic" href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/configuring-your-proxy-server-or-firewall-for-copilot">Allow Copilot traffic</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Configuring your proxy server or firewall for Copilot</h1></div></div>
+<div>
+<div><p>You should allow certain traffic through your firewall or proxy server for Copilot to work as intended.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Proxy server maintainers or firewall maintainers</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+<li><a href="#footnote-label"><div><span>Footnotes</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>If your company employs security measures like a firewall or proxy server, you should add the following URLs, ports, and protocols to an allowlist to ensure Copilot works as expected:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Domain and/or URL</th>
+<th>Purpose</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>https:/<wbr>/<wbr>github.com/<wbr>login/<wbr>*</wbr></wbr></wbr></wbr></code></td>
+<td>Authentication</td>
+</tr>
+<tr>
+<td><code>https:/<wbr>/<wbr>github.com/<wbr>enterprises/<wbr>YOUR-ENTERPRISE/<wbr>*</wbr></wbr></wbr></wbr></wbr></code></td>
+<td>Authentication for managed user accounts, only required with Enterprise Managed Users</td>
+</tr>
+<tr>
+<td><code>https:/<wbr>/<wbr>api.github.com/<wbr>user</wbr></wbr></wbr></code></td>
+<td>User Management</td>
+</tr>
+<tr>
+<td><code>https:/<wbr>/<wbr>api.github.com/<wbr>copilot_internal/<wbr>*</wbr></wbr></wbr></wbr></code></td>
+<td>User Management</td>
+</tr>
+<tr>
+<td><code>https:/<wbr>/<wbr>copilot-telemetry.githubusercontent.com/<wbr>telemetry</wbr></wbr></wbr></code></td>
+<td>Telemetry</td>
+</tr>
+<tr>
+<td><code>https:/<wbr>/<wbr>default.exp-tas.com</wbr></wbr></code></td>
+<td>Telemetry</td>
+</tr>
+<tr>
+<td><code>https:/<wbr>/<wbr>copilot-proxy.githubusercontent.com</wbr></wbr></code></td>
+<td>API service for Copilot suggestions</td>
+</tr>
+<tr>
+<td><code>https:/<wbr>/<wbr>origin-tracker.githubusercontent.com</wbr></wbr></code></td>
+<td>API service for Copilot suggestions</td>
+</tr>
+<tr>
+<td>
+<code>https:/<wbr>/<wbr>*.githubcopilot.com</wbr></wbr></code><sup><a href="#user-content-fn-1">1</a></sup>
+</td>
+<td>API service for Copilot suggestions</td>
+</tr>
+<tr>
+<td>
+<code>https:/<wbr>/<wbr>*.individual.githubcopilot.com</wbr></wbr></code><sup><a href="#user-content-fn-2">2</a></sup>
+</td>
+<td>API service for Copilot suggestions</td>
+</tr>
+<tr>
+<td>
+<code>https:/<wbr>/<wbr>*.business.githubcopilot.com</wbr></wbr></code><sup><a href="#user-content-fn-3">3</a></sup>
+</td>
+<td>API service for Copilot suggestions</td>
+</tr>
+<tr>
+<td>
+<code>https:/<wbr>/<wbr>*.enterprise.githubcopilot.com</wbr></wbr></code><sup><a href="#user-content-fn-4">4</a></sup>
+</td>
+<td>API service for Copilot suggestions</td>
+</tr>
+</tbody>
+</table>
+<p>Depending on the security policies and editors your organization uses, you may need to allowlist additional domains and URLs. For more information on specific editors, see <a href="#further-reading">Further reading</a>.</p>
+<p>Every user of the proxy server or firewall also needs to configure their own environment to connect to Copilot. See <a href="/en/copilot/configuring-github-copilot/configuring-network-settings-for-github-copilot">Configuring network settings for GitHub Copilot</a>.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li>
+<a href="https://code.visualstudio.com/docs/setup/network">Network Connections in Visual Studio Code</a> in the Visual Studio documentation</li>
+<li>
+<a href="https://learn.microsoft.com/en-us/visualstudio/install/install-and-use-visual-studio-behind-a-firewall-or-proxy-server">Install and use Visual Studio and Azure Services behind a firewall or proxy server</a> in the Microsoft documentation</li>
+</ul>
+<section><h2><a href="#footnote-label">Footnotes</a></h2>
+<ol>
+<li>
+<p>Allows access to authorized users regardless of Copilot plan. Do not add this URL to your allowlist if you are using subscription-based network routing. For more information on subscription-based network routing, see <a href="/en/copilot/managing-copilot/managing-copilot-for-your-enterprise/managing-access-to-copilot-in-your-enterprise/managing-github-copilot-access-to-your-enterprises-network">Managing GitHub Copilot access to your enterprise's network</a>. <a href="#user-content-fnref-1">↩</a></p>
+</li>
+<li>
+<p>Allows access to authorized users via a Copilot Individual plan. Do not add this URL to your allowlist if you are using subscription-based network routing. <a href="#user-content-fnref-2">↩</a></p>
+</li>
+<li>
+<p>Allows access to authorized users via a Copilot Business plan. Do not add this URL to your allowlist if you want to use subscription-based network routing to block users from using Copilot Business on your network. <a href="#user-content-fnref-3">↩</a></p>
+</li>
+<li>
+<p>Allows access to authorized users via a Copilot Enterprise plan. Do not add this URL to your allowlist if you want to use subscription-based network routing to block users from using Copilot Enterprise on your network. <a href="#user-content-fnref-4">↩</a></p>
+</li>
+</ol>
+</section>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

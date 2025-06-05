@@ -1,0 +1,128 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Security advisories" href="/en/code-security/security-advisories">Security advisories</a><span>/</span>
+</li>
+<li>
+<a title="Repository security advisories" href="/en/code-security/security-advisories/working-with-repository-security-advisories">Repository security advisories</a><span>/</span>
+</li>
+<li><a title="Publish repository advisories" href="/en/code-security/security-advisories/working-with-repository-security-advisories/publishing-a-repository-security-advisory">Publish repository advisories</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Publishing a repository security advisory</h1></div></div>
+<div>
+<div><p>You can publish a security advisory to alert your community about a security vulnerability in your project.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Repository owners, organization owners, security managers, and users with the <strong>admin</strong> role</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#about-publishing-a-security-advisory"><div><span>About publishing a security advisory</span></div></a></li>
+<li><a href="#publishing-a-security-advisory"><div><span>Publishing a security advisory</span></div></a></li>
+<li><a href="#dependabot-alerts-for-published-security-advisories"><div><span>Dependabot alerts for published security advisories</span></div></a></li>
+<li><a href="#requesting-a-cve-identification-number-optional"><div><span>Requesting a CVE identification number (Optional)</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<p>
+This article applies to editing repository-level advisories as an owner of a public repository.</p>
+<p>Users who are not repository owners can contribute to global security advisories in the GitHub Advisory Database at <a href="https://github.com/advisories">github.com/advisories</a>. Edits to global advisories will not change or affect how the advisory appears on the repository. For more information, see <a href="/en/code-security/security-advisories/working-with-global-security-advisories-from-the-github-advisory-database/editing-security-advisories-in-the-github-advisory-database">Editing security advisories in the GitHub Advisory Database</a>.</p>
+</div>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<p>Before you can publish a security advisory or request a CVE identification number, you must create a draft security advisory and provide information about the versions of your project affected by the security vulnerability. For more information, see <a href="/en/code-security/security-advisories/working-with-repository-security-advisories/creating-a-repository-security-advisory">Creating a repository security advisory</a>.</p>
+<p>If you've created a security advisory but haven't yet provided details about the versions of your project that the security vulnerability affects, you can edit the security advisory. For more information, see <a href="/en/code-security/security-advisories/working-with-repository-security-advisories/editing-a-repository-security-advisory">Editing a repository security advisory</a>.</p>
+<h2><a href="#about-publishing-a-security-advisory">About publishing a security advisory</a></h2>
+<p>When you publish a security advisory, you notify your community about the security vulnerability that the security advisory addresses. Publishing a security advisory makes it easier for your community to update package dependencies and research the impact of the security vulnerability.</p>
+<p>You can also use repository security advisories to republish the details of a security vulnerability that you have already disclosed elsewhere by copying and pasting the details of the vulnerability into a new security advisory.</p>
+<p>Before you publish a security advisory, you can privately collaborate to fix the vulnerability in a temporary private fork. For more information, see <a href="/en/code-security/security-advisories/working-with-repository-security-advisories/collaborating-in-a-temporary-private-fork-to-resolve-a-repository-security-vulnerability">Collaborating in a temporary private fork to resolve a repository security vulnerability</a>.</p>
+<div>
+<p>
+Whenever possible, you should always add a fix version to a security advisory prior to publishing the advisory. If you don't, the advisory will be published without a fixed version, and Dependabot will alert your users about the issue, without offering any safe version to update to.</p>
+<p>We recommend you take the following steps in these different situations:</p>
+<ul>
+<li>If a fix version is imminently available, and you are able to, wait to disclose the issue when the fix is ready.</li>
+<li>If a fix version is in development but not yet available, mention this in the advisory, and edit the advisory later, after publication.</li>
+<li>If you are not planning to fix the issue, be clear about it in the advisory so that your users don't contact you to ask when a fix will be made. In this case, it is helpful to include steps users can take to mitigate the issue.</li>
+</ul>
+</div>
+<p>When you publish a draft advisory from a public repository, everyone is able to see:</p>
+<ul>
+<li>The current version of the advisory data.</li>
+<li>Any advisory credits that the credited users have accepted.</li>
+</ul>
+<div>
+<p>
+The general public will never have access to the edit history of the advisory, and will only see the published version.</p>
+</div>
+<p>After you publish a security advisory, the URL for the security advisory will remain the same as before you published the security advisory. Anyone with read access to the repository can see the security advisory. Collaborators on the security advisory can continue to view past conversations, including the full comment stream, in the security advisory unless someone with admin permissions removes the collaborator from the security advisory.</p>
+<p>If you need to update or correct information in a security advisory that you've published, you can edit the security advisory. For more information, see <a href="/en/code-security/security-advisories/working-with-repository-security-advisories/editing-a-repository-security-advisory">Editing a repository security advisory</a>.</p>
+<h2><a href="#publishing-a-security-advisory">Publishing a security advisory</a></h2>
+<p>Publishing a security advisory deletes the temporary private fork for the security advisory.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under the repository name, click <strong>Security</strong>.
+</p>
+<div><picture><source><img src="/assets/cb-17801/images/help/repository/security-tab.png" alt='Screenshot of a repository header showing the tabs. The "Security" tab is highlighted by a dark orange outline.' width="720" height="89"></source></picture></div>
+</li>
+<li>
+<p>In the left sidebar, under "Reporting", click </p>
+</li>
+<li>
+<p>In the "Security Advisories" list, click the name of the security advisory you'd like to publish.</p>
+</li>
+<li>
+<p>Scroll to the bottom of the advisory form and click <strong>Publish advisory</strong>.</p>
+<div><picture><source><img src="/assets/cb-56518/images/help/security/publish-advisory-button.png" alt='Screenshot of the "Required advisory information has been provided" area of the page. The "Publish advisory" button is outlined in orange.' width="720" height="203"></source></picture></div>
+</li>
+</ol>
+<div>
+<p>
+If you selected "Request CVE ID later", you will see a <strong>Request CVE</strong> button in place of the <strong>Publish advisory</strong> button. For more information, see <a href="#requesting-a-cve-identification-number-optional">Requesting a CVE identification number (Optional)</a> below.</p>
+</div>
+<h2><a href="#dependabot-alerts-for-published-security-advisories">Dependabot alerts for published security advisories</a></h2>
+<p>GitHub will review each published security advisory, add it to the GitHub Advisory Database, and may use the security advisory to send Dependabot alerts to affected repositories. If the security advisory comes from a fork, we'll only send an alert if the fork owns a package, published under a unique name, on a public package registry. This process can take up to 72 hours and GitHub may contact you for more information.</p>
+<p>For more information about Dependabot alerts, see <a href="/en/code-security/dependabot/dependabot-alerts/about-dependabot-alerts#dependabot-alerts-for-vulnerable-dependencies">About Dependabot alerts</a> and <a href="/en/code-security/dependabot/dependabot-security-updates/about-dependabot-security-updates#about-dependabot-security-updates">About Dependabot security updates</a>. For more information about GitHub Advisory Database, see <a href="/en/code-security/security-advisories/working-with-global-security-advisories-from-the-github-advisory-database/browsing-security-advisories-in-the-github-advisory-database">Browsing security advisories in the GitHub Advisory Database</a>.</p>
+<h2><a href="#requesting-a-cve-identification-number-optional">Requesting a CVE identification number (Optional)</a></h2>
+<p>If you want a CVE identification number for the security vulnerability in your project, and don't already have one, you can request a CVE identification number from GitHub. GitHub usually reviews the request within 72 hours. Requesting a CVE identification number doesn't make your security advisory public. If your security advisory is eligible for a CVE, GitHub will reserve a CVE identification number for your advisory. We'll then publish the CVE details after you make your security advisory public. Anyone with admin permissions to a security advisory can request a CVE identification number.</p>
+<p>If you already have a CVE you want to use, for example, if you use a CVE Numbering Authority (CNA) other than GitHub, add the CVE to the security advisory form. This may happen, for example, if you want to get the advisory consistent with other communications you plan to send out at publication time. GitHub cannot assign CVEs to your project if it is covered by another CNA. For more information, see <a href="/en/code-security/security-advisories/working-with-repository-security-advisories/about-repository-security-advisories#cve-identification-numbers">About repository security advisories</a>.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under the repository name, click <strong>Security</strong>.
+</p>
+<div><picture><source><img src="/assets/cb-17801/images/help/repository/security-tab.png" alt='Screenshot of a repository header showing the tabs. The "Security" tab is highlighted by a dark orange outline.' width="720" height="89"></source></picture></div>
+</li>
+<li>
+<p>In the left sidebar, under "Reporting", click </p>
+</li>
+<li>
+<p>In the "Security Advisories" list, click the name of the security advisory you'd like to request a CVE identification number for.</p>
+</li>
+<li>
+<p>Scroll to the bottom of the advisory form and click <strong>Request CVE</strong>.</p>
+<div><picture><source><img src="/assets/cb-55619/images/help/security/security-advisory-request-cve-button.png" alt='Screenshot of the "Required advisory information has been provided" area of the page. The "Request CVE" button is outlined in dark orange.'></source></picture></div>
+</li>
+</ol>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/code-security/security-advisories/working-with-repository-security-advisories/deleting-a-repository-security-advisory">Deleting a repository security advisory</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

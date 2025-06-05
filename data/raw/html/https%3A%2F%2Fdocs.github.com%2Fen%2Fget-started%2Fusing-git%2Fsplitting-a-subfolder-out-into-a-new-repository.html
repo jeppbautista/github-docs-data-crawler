@@ -1,0 +1,102 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Get started" href="/en/get-started">Get started</a><span>/</span>
+</li>
+<li>
+<a title="Using Git" href="/en/get-started/using-git">Using Git</a><span>/</span>
+</li>
+<li><a title="Splitting a subfolder" href="/en/get-started/using-git/splitting-a-subfolder-out-into-a-new-repository">Splitting a subfolder</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Splitting a subfolder out into a new repository</h1></div></div>
+<div>
+<div><p>You can turn a folder within a Git repository into a brand new repository.</p></div>
+<div>
+<h2>Platform navigation</h2>
+<nav><ul>
+<li><a href="?platform=mac"><span>Mac</span></a></li>
+<li><a href="?platform=windows"><span>Windows</span></a></li>
+<li><a href="?platform=linux"><span>Linux</span></a></li>
+</ul></nav>
+</div>
+</div>
+<div><div><div>
+<div>
+<p>
+You need Git version 2.22.0 or later to follow these instructions, otherwise <code>git filter-repo</code> will not work.</p>
+</div>
+<p>If you create a new clone of the repository, you won't lose any of your Git history or changes when you split a folder into a separate repository. However, note that the new repository won't have the branches and tags of the original repository.</p>
+<ol>
+<li>
+<p>Open <span>Terminal</span><span>Terminal</span><span>Git Bash</span>.</p>
+</li>
+<li>
+<p>Change the current working directory to the location where you want to create your new repository.</p>
+</li>
+<li>
+<p>Clone the repository that contains the subfolder.</p>
+<pre><code>git clone https://github.com/USERNAME/REPOSITORY-NAME
+</code></pre>
+</li>
+<li>
+<p>Change the current working directory to your cloned repository.</p>
+<pre><code>cd REPOSITORY-NAME
+</code></pre>
+</li>
+<li>
+<p>To filter out the subfolder from the rest of the files in the repository, install <a href="https://github.com/newren/git-filter-repo"><code>git-filter-repo</code></a>, then run <code>git filter-repo</code> with the following arguments.</p>
+<ul>
+<li>
+<code>FOLDER-NAME</code>: The folder within your project where you'd like to create a separate repository.</li>
+</ul>
+<div>
+<div>
+<p>
+Windows users should use <code>/</code> to delimit folders.</p>
+</div>
+</div>
+<pre><code><span>$ </span><span>git filter-repo --path FOLDER-NAME/</span>
+<span># </span><span>Filter the specified branch <span>in</span> your directory and remove empty commits</span>
+</code></pre>
+<p>The repository should now only contain the files that were in your subfolder(s).</p>
+<p>If you want one specific subfolder to be the new root folder of the new repository, you can use the following command:</p>
+<pre><code><span>$ </span><span>git filter-repo --subdirectory-filter FOLDER-NAME</span>
+<span># </span><span>Filter the specific branch by using a single sub-directory as the root <span>for</span> the new repository</span>
+</code></pre>
+</li>
+<li>
+<p><a href="/en/repositories/creating-and-managing-repositories/creating-a-new-repository">Create a new repository</a> on GitHub.</p>
+</li>
+<li>
+<p>At the top of your new repository on GitHub's Quick Setup page, click </p>
+<div><picture><source><img src="/assets/cb-48146/images/help/repository/copy-remote-repository-url-quick-setup.png" alt='Screenshot of the "Quick Setup" header in a repository. Next to the remote URL, an icon of two overlapping squares is outlined in orange.' width="720" height="114"></source></picture></div>
+<div>
+<p>
+For information on the difference between HTTPS and SSH URLs, see <a href="/en/get-started/git-basics/about-remote-repositories">About remote repositories</a>.</p>
+</div>
+</li>
+<li>
+<p>Add a new remote name with the URL you copied for your repository. For example, <code>origin</code> or <code>upstream</code> are two common choices.</p>
+<pre><code>git remote add origin https://github.com/USERNAME/REPOSITORY-NAME.git
+</code></pre>
+</li>
+<li>
+<p>Verify that the remote URL was added with your new repository name.</p>
+<pre><code><span>$ </span><span>git remote -v</span>
+<span># </span><span>Verify new remote URL</span>
+<span>&gt; </span><span>origin  https://github.com/USERNAME/NEW-REPOSITORY-NAME.git (fetch)</span>
+<span>&gt; </span><span>origin  https://github.com/USERNAME/NEW-REPOSITORY-NAME.git (push)</span>
+</code></pre>
+</li>
+<li>
+<p>Push your changes to the new repository on GitHub.</p>
+<pre><code>git push -u origin BRANCH-NAME
+</code></pre>
+</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

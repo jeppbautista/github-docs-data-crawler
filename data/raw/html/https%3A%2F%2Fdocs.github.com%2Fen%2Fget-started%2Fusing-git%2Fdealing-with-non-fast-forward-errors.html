@@ -1,0 +1,38 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Get started" href="/en/get-started">Get started</a><span>/</span>
+</li>
+<li>
+<a title="Using Git" href="/en/get-started/using-git">Using Git</a><span>/</span>
+</li>
+<li><a title="Non-fast-forward error" href="/en/get-started/using-git/dealing-with-non-fast-forward-errors">Non-fast-forward error</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Dealing with non-fast-forward errors</h1></div></div>
+<div><div><p>Sometimes, Git can't make your change to a remote repository without losing commits. When this happens, your push is refused.</p></div></div>
+<div><div><div>
+<p>If another person has pushed to the same branch as you, Git won't be able to push your changes:</p>
+<pre><code><span>$ </span><span>git push origin main</span>
+<span>&gt; </span><span>To https://github.com/USERNAME/REPOSITORY.git</span>
+<span>&gt; </span><span> ! [rejected]        main -&gt; main (non-fast-forward)</span>
+<span>&gt; </span><span>error: failed to push some refs to <span>'https://github.com/USERNAME/REPOSITORY.git'</span></span>
+<span>&gt; </span><span>To prevent you from losing <span>history</span>, non-fast-forward updates were rejected</span>
+<span>&gt; </span><span>Merge the remote changes (e.g. <span>'git pull'</span>) before pushing again. See the</span>
+<span>&gt; </span><span><span>'Note about fast-forwards'</span> section of <span>'git push --help'</span> <span>for</span> details.</span>
+</code></pre>
+<p>You can fix this by <a href="/en/get-started/using-git/getting-changes-from-a-remote-repository">fetching and merging</a> the changes made on the remote branch with the changes that you have made locally:</p>
+<pre><code><span>$ </span><span>git fetch origin</span>
+<span># </span><span>Fetches updates made to an online repository</span>
+<span>$ </span><span>git merge origin YOUR_BRANCH_NAME</span>
+<span># </span><span>Merges updates made online with your <span>local</span> work</span>
+</code></pre>
+<p>Or, you can simply use <code>git pull</code> to perform both commands at once:</p>
+<pre><code><span>$ </span><span>git pull origin YOUR_BRANCH_NAME</span>
+<span># </span><span>Grabs online updates and merges them with your <span>local</span> work</span>
+</code></pre>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,193 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Code scanning" href="/en/code-security/code-scanning">Code scanning</a><span>/</span>
+</li>
+<li>
+<a title="Manage alerts" href="/en/code-security/code-scanning/managing-code-scanning-alerts">Manage alerts</a><span>/</span>
+</li>
+<li><a title="Assess alerts" href="/en/code-security/code-scanning/managing-code-scanning-alerts/assessing-code-scanning-alerts-for-your-repository">Assess alerts</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Assessing code scanning alerts for your repository</h1></div></div>
+<div>
+<div><p>From the security view, you can explore and evaluate alerts for potential vulnerabilities or errors in your project's code.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Users with <strong>write</strong> access</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#viewing-the-alerts-for-a-repository"><div><span>Viewing the alerts for a repository</span></div></a></li>
+<li><a href="#viewing-metrics-for-codeql-pull-request-alerts-for-an-organization"><div><span>Viewing metrics for CodeQL pull request alerts for an organization</span></div></a></li>
+<li><a href="#filtering-code-scanning-alerts"><div><span>Filtering code scanning alerts</span></div></a></li>
+<li><a href="#searching-code-scanning-alerts"><div><span>Searching code scanning alerts</span></div></a></li>
+<li><a href="#auditing-responses-to-code-scanning-alerts"><div><span>Auditing responses to code scanning alerts</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>Anyone with read permission for a repository can see code scanning annotations on pull requests. For more information, see <a href="/en/code-security/code-scanning/managing-code-scanning-alerts/triaging-code-scanning-alerts-in-pull-requests">Triaging code scanning alerts in pull requests</a>.</p>
+<h2><a href="#viewing-the-alerts-for-a-repository">Viewing the alerts for a repository</a></h2>
+<p>You need write permission to view a summary of all the alerts for a repository on the <strong>Security</strong> tab.</p>
+<p>By default, the code scanning alerts page is filtered to show alerts for the default branch of the repository only.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under the repository name, click <strong>Security</strong>.
+</p>
+<div><picture><source><img src="/assets/cb-17801/images/help/repository/security-tab.png" alt='Screenshot of a repository header showing the tabs. The "Security" tab is highlighted by a dark orange outline.' width="720" height="89"></source></picture></div>
+</li>
+<li>
+<p>In the left sidebar, click </p>
+</li>
+<li>
+<p>Optionally, use the free text search box or the dropdown menus to filter alerts. For example, you can filter by the tool that was used to identify alerts.</p>
+<div><picture><source><img src="/assets/cb-49053/images/help/repository/filter-code-scanning-alerts.png" alt="Screenshot of code scanning alerts page. The search box and filter dropdown menus are outlined in dark orange."></source></picture></div>
+</li>
+<li>
+<p>Under "Code scanning," click the alert you'd like to explore to display the detailed alert page.
+The status and details on the alert page only reflect the state of the alert on the default branch of the repository, even if the alert exists in other branches. You can see the status of the alert on non-default branches in the <strong>Affected branches</strong> section on the right-hand side of the alert page. If an alert doesn't exist in the default branch, the status of the alert will display as "in pull request" or "in branch" and will be colored grey. The <strong>Development</strong> section shows linked branches and pull requests that will fix the alert.</p>
+</li>
+<li>
+<p>Optionally, if the alert highlights a problem with data flow, click <strong>Show paths</strong> to display the path from the data source to the sink where it's used.</p>
+<div><picture><source><img src="/assets/cb-107683/images/help/repository/code-scanning-alert-details.png" alt='Screenshot of a code scanning alert. The "Show paths" and "Show more" links are outlined in dark orange.'></source></picture></div>
+</li>
+<li>
+<p>Alerts from CodeQL analysis include a description of the problem. Click <strong>Show more</strong> for guidance on how to fix your code.</p>
+</li>
+</ol>
+<p>For more information, see <a href="/en/code-security/code-scanning/managing-code-scanning-alerts/about-code-scanning-alerts">About code scanning alerts</a>.</p>
+<div>
+<p>
+You can see information about when code scanning analysis last ran on the tool status page. For more information, see <a href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/about-the-tool-status-page">About the tool status page for code scanning</a>.</p>
+</div>
+<h2><a href="#viewing-metrics-for-codeql-pull-request-alerts-for-an-organization">Viewing metrics for CodeQL pull request alerts for an organization</a></h2>
+<p>For code scanning alerts from CodeQL analysis, you can use security overview to see how CodeQL is performing in pull requests in repositories where you have write access across your organization, and to identify repositories where you may need to take action. For more information, see <a href="/en/code-security/security-overview/viewing-metrics-for-pull-request-alerts">Viewing metrics for pull request alerts</a>.</p>
+<h2><a href="#filtering-code-scanning-alerts">Filtering code scanning alerts</a></h2>
+<p>You can filter the alerts shown in the code scanning alerts view. This is useful if there are many alerts as you can focus on a particular type of alert. There are some predefined filters and a range of keywords that you can use to refine the list of alerts displayed.</p>
+<p>When you select a keyword from either a drop-down list, or as you enter a keyword in the search field, only values with results are shown. This makes it easier to avoid setting filters that find no results.</p>
+<p><picture><source><img src="/assets/cb-82053/images/help/repository/code-scanning-filter-keywords.png" alt='Screenshot of search field in alerts view. The field has "branch:dependabot" and all valid branches with a matching name are shown.'></source></picture></p>
+<p>If you enter multiple filters, the view will show alerts matching <em>all</em> these filters. For example, <code>is:closed severity:high branch:main</code> will only display closed high-severity alerts that are present on the <code>main</code> branch. The exception is filters relating to refs (<code>ref</code>, <code>branch</code> and <code>pr</code>): <code>is:open branch:main branch:next</code> will show you open alerts from both the <code>main</code> branch and the <code>next</code> branch.</p>
+<p>Please note that if you have filtered for alerts on a non-default branch, but the same alerts exist on the default branch, the alert page for any given alert will still only reflect the alert's status on the default branch, even if that status conflicts with the status on a non-default branch. For example, an alert that appears in the "Open" list in the summary of alerts for <code>branch-x</code> could show a status of "Fixed" on the alert page, if the alert is already fixed on the default branch. You can view the status of the alert for the branch you filtered on in the <strong>Affected branches</strong> section on the right side of the alert page.</p>
+<p>You can prefix the <code>tag</code> filter with <code>-</code> to exclude results with that tag. For example, <code>-tag:style</code> only shows alerts that do not have the <code>style</code> tag.</p>
+<h3><a href="#restricting-results-to-application-code-only">Restricting results to application code only</a></h3>
+<p>You can use the "Only alerts in application code" filter or <code>autofilter:true</code> keyword and value to restrict results to alerts in application code. For more information about the types of code that are automatically labeled as not application code, see <a href="/en/code-security/code-scanning/managing-code-scanning-alerts/about-code-scanning-alerts#about-labels-for-alerts-that-are-not-found-in-application-code">About code scanning alerts</a>.</p>
+<h2><a href="#searching-code-scanning-alerts">Searching code scanning alerts</a></h2>
+<p>You can search the list of alerts. This is useful if there is a large number of alerts in your repository, or if you don't know the exact name for an alert for example. GitHub performs the free text search across:</p>
+<ul>
+<li>The name of the alert</li>
+<li>The alert details (this also includes the information hidden from view by default in the <strong>Show more</strong> collapsible section)</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Supported search</th>
+<th>Syntax example</th>
+<th>Results</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Single word search</td>
+<td><code>injection</code></td>
+<td>Returns all the alerts containing the word <code>injection</code>
+</td>
+</tr>
+<tr>
+<td>Multiple word search</td>
+<td><code>sql injection</code></td>
+<td>Returns all the alerts containing <code>sql</code> or <code>injection</code>
+</td>
+</tr>
+<tr>
+<td>Exact match search<br>(use double quotes)</td>
+<td><code>"sql injection"</code></td>
+<td>Returns all the alerts containing the exact phrase <code>sql injection</code>
+</td>
+</tr>
+<tr>
+<td>OR search</td>
+<td><code>sql OR injection</code></td>
+<td>Returns all the alerts containing <code>sql</code> or <code>injection</code>
+</td>
+</tr>
+<tr>
+<td>AND search</td>
+<td><code>sql AND injection</code></td>
+<td>Returns all the alerts containing both words <code>sql</code> and <code>injection</code>
+</td>
+</tr>
+</tbody>
+</table>
+<div>
+<ul>
+<li>The multiple word search is equivalent to an OR search.</li>
+<li>The AND search will return results where the search terms are found <em>anywhere</em>, in any order in the alert name or details.</li>
+</ul>
+</div>
+<ol>
+<li>On GitHub, navigate to the main page of the repository.</li>
+<li>Under the repository name, click <strong>Security</strong>.
+<div><picture><source><img src="/assets/cb-17801/images/help/repository/security-tab.png" alt='Screenshot of a repository header showing the tabs. The "Security" tab is highlighted by a dark orange outline.' width="720" height="89"></source></picture></div>
+</li>
+<li>In the left sidebar, click </li>
+<li>To the right of the <strong>Filters</strong> drop-down menus, type the keywords to search for in the free text search box.
+<div><picture><source><img src="/assets/cb-33017/images/help/repository/code-scanning-search-alerts.png" alt='Screenshot of search field in alerts view. The field has pre-defined filters "is: open branch:main" and free text of "sql or injection" highlighted.'></source></picture></div>
+</li>
+<li>Press <kbd>return</kbd>. The alert listing will contain the open code scanning alerts matching your search criteria.</li>
+</ol>
+<h2><a href="#auditing-responses-to-code-scanning-alerts">Auditing responses to code scanning alerts</a></h2>
+<p>You can audit the actions taken in response to code scanning alerts using GitHub tools. For more information, see <a href="/en/code-security/getting-started/auditing-security-alerts">Auditing security alerts</a>.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/code-security/code-scanning/managing-code-scanning-alerts/resolving-code-scanning-alerts">Resolving code scanning alerts</a></li>
+<li><a href="/en/code-security/code-scanning/managing-code-scanning-alerts/triaging-code-scanning-alerts-in-pull-requests">Triaging code scanning alerts in pull requests</a></li>
+<li><a href="/en/code-security/code-scanning/enabling-code-scanning/configuring-default-setup-for-code-scanning">Configuring default setup for code scanning</a></li>
+<li><a href="/en/code-security/code-scanning/integrating-with-code-scanning/about-integration-with-code-scanning">About integration with code scanning</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

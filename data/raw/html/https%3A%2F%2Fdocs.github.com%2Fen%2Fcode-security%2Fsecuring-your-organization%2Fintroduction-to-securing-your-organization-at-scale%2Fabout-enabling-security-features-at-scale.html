@@ -1,0 +1,69 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Secure your organization" href="/en/code-security/securing-your-organization">Secure your organization</a><span>/</span>
+</li>
+<li>
+<a title="Introduction" href="/en/code-security/securing-your-organization/introduction-to-securing-your-organization-at-scale">Introduction</a><span>/</span>
+</li>
+<li><a title="About organization security" href="/en/code-security/securing-your-organization/introduction-to-securing-your-organization-at-scale/about-enabling-security-features-at-scale">About organization security</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>About enabling security features at scale</h1></div></div>
+<div><div><p>You can quickly secure your organization at scale with security configurations and global settings.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-securing-your-organization"><div><span>About securing your organization</span></div></a></li>
+<li><a href="#about-security-configurations"><div><span>About security configurations</span></div></a></li>
+<li><a href="#about-global-settings"><div><span>About global settings</span></div></a></li>
+<li><a href="#about-enabling-secure-access-to-private-registries"><div><span>About enabling secure access to private registries</span></div></a></li>
+<li><a href="#next-steps"><div><span>Next steps</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-securing-your-organization">About securing your organization</a></h2>
+<p>GitHub has many features that help you improve and maintain the quality of your code. Some features are included in all GitHub plans. Additional features are available to organizations on GitHub Team and GitHub Enterprise Cloud that purchase a GitHub Advanced Security product:</p>
+<ul>
+<li>
+<strong>GitHub Secret Protection</strong>, which includes features that help you detect and prevent secret leaks, such as secret scanning and push protection.</li>
+<li>
+<strong>GitHub Code Security</strong>, which includes features that help you find and fix vulnerabilities, like code scanning, premium Dependabot features, and dependency review.</li>
+</ul>
+<p>You can easily enable and manage GitHub's security features throughout your organization with security configurations, which control repository-level security features, and global settings, which control security features at the organization level. We recommend applying security configurations <em>and</em> customizing your global settings to create a system that best meets the security needs of your organization.</p>
+<p>For more information on purchasing GitHub Secret Protection or GitHub Code Security, see <a href="/en/get-started/learning-about-github/about-github-advanced-security">About GitHub Advanced Security</a>.</p>
+<h2><a href="#about-security-configurations">About security configurations</a></h2>
+<p>Security configurations are collections of enablement settings for GitHub's security features that you can apply to any repository within your organization.</p>
+<p>There are two types of security configuration:</p>
+<ul>
+<li>
+<strong>The GitHub-recommended security configuration</strong>. This configuration is a collection of enablement settings created and managed by subject matter experts at GitHub. The GitHub-recommended security configuration is designed to adequately secure any repository, and can easily be applied to all repositories in your organization.</li>
+<li>
+<strong>Custom security configurations</strong>. These are configurations you can create and edit yourself, allowing you to choose different enablement settings for groups of repositories with specific security needs.</li>
+</ul>
+<div>
+<p>
+If a user in your organization attempts to change the enablement status of a feature in an enforced configuration using the REST API, the API call will appear to succeed, but no enablement statuses will change.</p>
+<p>Some situations can break the enforcement of security configurations for a repository. For example, the enablement of code scanning will not apply to a repository if:</p>
+<ul>
+<li>GitHub Actions is initially enabled on the repository, but is then disabled in the repository.</li>
+<li>GitHub Actions required by code scanning configurations are not available in the repository.</li>
+<li>The definition for which languages should not be analyzed using code scanning default setup is changed.</li>
+</ul>
+</div>
+<p>Each repository can only have one security configuration applied to it. To find out how you should get started with security configurations, see <a href="/en/code-security/securing-your-organization/introduction-to-securing-your-organization-at-scale/choosing-a-security-configuration-for-your-repositories">Choosing a security configuration for your repositories</a>.</p>
+<p>You can also create and manage security configurations using the REST API. For more information, see <a href="/en/rest/code-security/configurations">Configurations</a>.</p>
+<h2><a href="#about-global-settings">About global settings</a></h2>
+<p>While security configurations determine repository-level security settings, global settings determine your organization-level security settings, which are then inherited by all repositories. With global settings, you can customize how security features analyze your organization.</p>
+<h2><a href="#about-enabling-secure-access-to-private-registries">About enabling secure access to private registries</a></h2>
+<p>If your organization uses private registries, providing code scanning and Dependabot secure access to these registries will improve code analysis and allow Dependabot to update a wider range of dependencies. For information, see <a href="/en/code-security/securing-your-organization/enabling-security-features-in-your-organization/giving-org-access-private-registries">Giving security features access to private registries</a>.</p>
+<h2><a href="#next-steps">Next steps</a></h2>
+<p>To determine which security configurations are right for the repositories in your organization, see <a href="/en/code-security/securing-your-organization/introduction-to-securing-your-organization-at-scale/choosing-a-security-configuration-for-your-repositories">Choosing a security configuration for your repositories</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

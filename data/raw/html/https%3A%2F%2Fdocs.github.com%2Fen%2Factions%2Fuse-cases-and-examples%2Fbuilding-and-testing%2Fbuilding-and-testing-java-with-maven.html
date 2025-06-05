@@ -1,0 +1,173 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Use cases and examples" href="/en/actions/use-cases-and-examples">Use cases and examples</a><span>/</span>
+</li>
+<li>
+<a title="Build and test" href="/en/actions/use-cases-and-examples/building-and-testing">Build and test</a><span>/</span>
+</li>
+<li><a title="Build &amp; test Java with Maven" href="/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-java-with-maven">Build &amp; test Java with Maven</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Building and testing Java with Maven</h1></div></div>
+<div><div><p>You can create a continuous integration (CI) workflow in GitHub Actions to build and test your Java project with Maven.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#using-a-maven-workflow-template"><div><span>Using a Maven workflow template</span></div></a></li>
+<li><a href="#building-and-testing-your-code"><div><span>Building and testing your code</span></div></a></li>
+<li><a href="#caching-dependencies"><div><span>Caching dependencies</span></div></a></li>
+<li><a href="#packaging-workflow-data-as-artifacts"><div><span>Packaging workflow data as artifacts</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>This guide shows you how to create a workflow that performs continuous integration (CI) for your Java project using the Maven software project management tool. The workflow you create will allow you to see when commits to a pull request cause build or test failures against your default branch; this approach can help ensure that your code is always healthy. You can extend your CI workflow to cache files and upload artifacts from a workflow run.</p>
+<p>GitHub-hosted runners have a tools cache with pre-installed software, which includes Java Development Kits (JDKs) and Maven. For a list of software and the pre-installed versions for JDK and Maven, see <a href="/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-software">Using GitHub-hosted runners</a>.</p>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<p>You should be familiar with YAML and the syntax for GitHub Actions. For more information, see:</p>
+<ul>
+<li><a href="/en/actions/using-workflows/workflow-syntax-for-github-actions">Workflow syntax for GitHub Actions</a></li>
+<li><a href="/en/actions/learn-github-actions">Writing workflows</a></li>
+</ul>
+<p>We recommend that you have a basic understanding of Java and the Maven framework. For more information, see the <a href="https://maven.apache.org/guides/getting-started/index.html">Maven Getting Started Guide</a> in the Maven documentation.</p>
+<h2><a href="#using-a-maven-workflow-template">Using a Maven workflow template</a></h2>
+<p>To get started quickly, add a workflow template to the <code>.github/workflows</code> directory of your repository.</p>
+<p>GitHub provides a workflow template for Maven that should work for most Java with Maven projects. The subsequent sections of this guide give examples of how you can customize this workflow template.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click </p>
+<div><picture><source><img src="/assets/cb-12958/images/help/repository/actions-tab-global-nav-update.png" alt='Screenshot of the tabs for the "github/docs" repository. The "Actions" tab is highlighted with an orange outline.' width="1242" height="186"></source></picture></div>
+</li>
+<li>
+<p>If you already have a workflow in your repository, click <strong>New workflow</strong>.</p>
+</li>
+<li>
+<p>The "Choose a workflow" page shows a selection of recommended workflow templates. Search for "Java with Maven".</p>
+</li>
+<li>
+<p>On the "Java with Maven" workflow, click <strong>Configure</strong>.</p>
+</li>
+<li>
+<p>Edit the workflow as required. For example, change the Java version.</p>
+</li>
+<li>
+<p>Click <strong>Commit changes</strong>.</p>
+<p>The <code>maven.yml</code> workflow file is added to the <code>.github/workflows</code> directory of your repository.</p>
+</li>
+</ol>
+<h3><a href="#specifying-the-java-version-and-architecture">Specifying the Java version and architecture</a></h3>
+<p>The workflow template sets up the <code>PATH</code> to contain OpenJDK 8 for the x64 platform. If you want to use a different version of Java, or target a different architecture (<code>x64</code> or <code>x86</code>), you can use the <code>setup-java</code> action to choose a different Java runtime environment.</p>
+<p>For example, to use version 11 of the JDK provided by Adoptium for the x64 platform, you can use the <code>setup-java</code> action and configure the <code>java-version</code>, <code>distribution</code> and <code>architecture</code> parameters to <code>'11'</code>, <code>'temurin'</code> and <code>x64</code>.</p>
+<div>
+<header><span>YAML</span><pre>steps:
+  - uses: actions/checkout@v4
+  - name: Set up JDK 11 for x64
+    uses: actions/setup-java@v4
+    with:
+      java-version: '11'
+      distribution: 'temurin'
+      architecture: x64
+</pre></header><pre><code><span>steps:</span>
+  <span>-</span> <span>uses:</span> <span>actions/checkout@v4</span>
+  <span>-</span> <span>name:</span> <span>Set</span> <span>up</span> <span>JDK</span> <span>11</span> <span>for</span> <span>x64</span>
+    <span>uses:</span> <span>actions/setup-java@v4</span>
+    <span>with:</span>
+      <span>java-version:</span> <span>'11'</span>
+      <span>distribution:</span> <span>'temurin'</span>
+      <span>architecture:</span> <span>x64</span>
+</code></pre>
+</div>
+<p>For more information, see the <a href="https://github.com/actions/setup-java"><code>setup-java</code></a> action.</p>
+<h2><a href="#building-and-testing-your-code">Building and testing your code</a></h2>
+<p>You can use the same commands that you use locally to build and test your code.</p>
+<p>The workflow template will run the <code>package</code> target by default. In the default Maven configuration, this command will download dependencies, build classes, run tests, and package classes into their distributable format, for example, a JAR file.</p>
+<p>If you use different commands to build your project, or you want to use a different target, you can specify those. For example, you may want to run the <code>verify</code> target that's configured in a <code>pom-ci.xml</code> file.</p>
+<div>
+<header><span>YAML</span><pre>steps:
+  - uses: actions/checkout@v4
+  - uses: actions/setup-java@v4
+    with:
+      java-version: '17'
+      distribution: 'temurin'
+  - name: Run the Maven verify phase
+    run: mvn --batch-mode --update-snapshots verify
+</pre></header><pre><code><span>steps:</span>
+  <span>-</span> <span>uses:</span> <span>actions/checkout@v4</span>
+  <span>-</span> <span>uses:</span> <span>actions/setup-java@v4</span>
+    <span>with:</span>
+      <span>java-version:</span> <span>'17'</span>
+      <span>distribution:</span> <span>'temurin'</span>
+  <span>-</span> <span>name:</span> <span>Run</span> <span>the</span> <span>Maven</span> <span>verify</span> <span>phase</span>
+    <span>run:</span> <span>mvn</span> <span>--batch-mode</span> <span>--update-snapshots</span> <span>verify</span>
+</code></pre>
+</div>
+<h2><a href="#caching-dependencies">Caching dependencies</a></h2>
+<p>You can cache your dependencies to speed up your workflow runs. After a successful run, your local Maven repository will be stored in a cache. In future workflow runs, the cache will be restored so that dependencies don't need to be downloaded from remote Maven repositories. You can cache dependencies simply using the <a href="https://github.com/marketplace/actions/setup-java-jdk"><code>setup-java</code> action</a> or can use <a href="https://github.com/actions/cache"><code>cache</code> action</a> for custom and more advanced configuration.</p>
+<div>
+<header><span>YAML</span><pre>steps:
+  - uses: actions/checkout@v4
+  - name: Set up JDK 17
+    uses: actions/setup-java@v4
+    with:
+      java-version: '17'
+      distribution: 'temurin'
+      cache: maven
+  - name: Build with Maven
+    run: mvn --batch-mode --update-snapshots verify
+</pre></header><pre><code><span>steps:</span>
+  <span>-</span> <span>uses:</span> <span>actions/checkout@v4</span>
+  <span>-</span> <span>name:</span> <span>Set</span> <span>up</span> <span>JDK</span> <span>17</span>
+    <span>uses:</span> <span>actions/setup-java@v4</span>
+    <span>with:</span>
+      <span>java-version:</span> <span>'17'</span>
+      <span>distribution:</span> <span>'temurin'</span>
+      <span>cache:</span> <span>maven</span>
+  <span>-</span> <span>name:</span> <span>Build</span> <span>with</span> <span>Maven</span>
+    <span>run:</span> <span>mvn</span> <span>--batch-mode</span> <span>--update-snapshots</span> <span>verify</span>
+</code></pre>
+</div>
+<p>This workflow will save the contents of your local Maven repository, located in the <code>.m2</code> directory of the runner's home directory. The cache key will be the hashed contents of <code>pom.xml</code>, so changes to <code>pom.xml</code> will invalidate the cache.</p>
+<h2><a href="#packaging-workflow-data-as-artifacts">Packaging workflow data as artifacts</a></h2>
+<p>After your build has succeeded and your tests have passed, you may want to upload the resulting Java packages as a build artifact. This will store the built packages as part of the workflow run, and allow you to download them. Artifacts can help you test and debug pull requests in your local environment before they're merged. For more information, see <a href="/en/actions/using-workflows/storing-workflow-data-as-artifacts">Storing and sharing data from a workflow</a>.</p>
+<p>Maven will usually create output files like JARs, EARs, or WARs in the <code>target</code> directory. To upload those as artifacts, you can copy them into a new directory that contains artifacts to upload. For example, you can create a directory called <code>staging</code>. Then you can upload the contents of that directory using the <code>upload-artifact</code> action.</p>
+<div>
+<header><span>YAML</span><pre>steps:
+  - uses: actions/checkout@v4
+  - uses: actions/setup-java@v4
+    with:
+      java-version: '17'
+      distribution: 'temurin'
+  - run: mvn --batch-mode --update-snapshots verify
+  - run: mkdir staging &amp;&amp; cp target/*.jar staging
+  - uses: actions/upload-artifact@v4
+    with:
+      name: Package
+      path: staging
+</pre></header><pre><code><span>steps:</span>
+  <span>-</span> <span>uses:</span> <span>actions/checkout@v4</span>
+  <span>-</span> <span>uses:</span> <span>actions/setup-java@v4</span>
+    <span>with:</span>
+      <span>java-version:</span> <span>'17'</span>
+      <span>distribution:</span> <span>'temurin'</span>
+  <span>-</span> <span>run:</span> <span>mvn</span> <span>--batch-mode</span> <span>--update-snapshots</span> <span>verify</span>
+  <span>-</span> <span>run:</span> <span>mkdir</span> <span>staging</span> <span>&amp;&amp;</span> <span>cp</span> <span>target/*.jar</span> <span>staging</span>
+  <span>-</span> <span>uses:</span> <span>actions/upload-artifact@v4</span>
+    <span>with:</span>
+      <span>name:</span> <span>Package</span>
+      <span>path:</span> <span>staging</span>
+</code></pre>
+</div>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

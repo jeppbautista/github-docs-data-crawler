@@ -1,0 +1,130 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Copilot Chat Cookbook" href="/en/copilot/copilot-chat-cookbook">Copilot Chat Cookbook</a><span>/</span>
+</li>
+<li>
+<a title="Refactoring code" href="/en/copilot/copilot-chat-cookbook/refactoring-code">Refactoring code</a><span>/</span>
+</li>
+<li><a title="Data access layers" href="/en/copilot/copilot-chat-cookbook/refactoring-code/refactoring-data-access-layers">Data access layers</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Refactoring data access layers</h1></div></div>
+<div><div><p>Copilot Chat can suggest ways to decouple your data access code from your business logic, making an application easier to maintain and scale.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#example-scenario"><div><span>Example scenario</span></div></a></li>
+<li><a href="#example-prompt-1"><div><span>Example prompt 1</span></div></a></li>
+<li><a href="#example-response-1"><div><span>Example response 1</span></div></a></li>
+<li><a href="#example-prompt-2"><div><span>Example prompt 2</span></div></a></li>
+<li><a href="#example-response-2"><div><span>Example response 2</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>Hardcoded SQL queries and tightly coupled data access code can make it difficult to scale or switch databases, and they often lead to repeated logic.</p>
+<p>Copilot Chat can recommend implementing a repository pattern or data access layer that abstracts database interactions, making the code more modular and reducing redundancy. It can also help refactor SQL queries into optimized versions, improving performance and maintainability.</p>
+<div>
+<p> The responses described in this article are examples. Copilot Chat responses are non-deterministic, so you may get different responses from the ones shown here.</p>
+</div>
+<h2><a href="#example-scenario">Example scenario</a></h2>
+<p>This Python code connects to a SQLite database, retrieves a user record, and returns the user data. However, it fails to abstract the database connection logic and uses a hardcoded query that's vulnerable to SQL injection.</p>
+<pre><code><span>import</span> sqlite3
+
+<span>def</span> <span>get_user_by_id</span>(<span>user_id</span>):
+    conn = sqlite3.connect(<span>'database.db'</span>)
+    cursor = conn.cursor()
+    cursor.execute(<span>f"SELECT display_name FROM users WHERE id = <span>{user_id}</span>"</span>)
+    user = cursor.fetchone()
+    conn.close()
+    <span>return</span> user
+</code></pre>
+<h2><a href="#example-prompt-1">Example prompt 1</a></h2>
+<p>You can start by asking Copilot a general question about how to improve the code.</p>
+<p><code>How can I improve this code to make it safe and easier to update and expand? List possible improvements but don't show revised code.</code></p>
+<h2><a href="#example-response-1">Example response 1</a></h2>
+<p>Copilot makes several suggestions for improving the code:</p>
+<ul>
+<li>Abstract the database connection details.</li>
+<li>Use parameterized queries to prevent SQL injection.</li>
+<li>Use a context manager to ensure that the database connection is properly closed if an error occurs.</li>
+<li>Add error handling.</li>
+</ul>
+<h2><a href="#example-prompt-2">Example prompt 2</a></h2>
+<p>You can use the response to your first prompt to write a more specific prompt.</p>
+<p><code>Rewrite this code to make it more scalable and easier to maintain. Use a context manager. Avoid hardcoded SQL queries and tightly coupled data access code. Instead, use a repository pattern to abstract database interactions and make the code more modular and reusable. Where possible optimize the code to improve performance. Include error trapping, and make sure the code is not vulnerable to SQL injection.</code></p>
+<h2><a href="#example-response-2">Example response 2</a></h2>
+<p>Copilot suggests splitting the code into separate files, each with a specific purpose. It also provides example code for returning a user's details.</p>
+<p>The suggested changes implement a repository pattern and use parameterized queries to avoid SQL injection.</p>
+<pre><code><span># database.py</span>
+<span>import</span> sqlite3
+
+<span>class</span> <span>Database</span>:
+    <span>def</span> <span>__init__</span>(<span>self, db_path</span>):
+        self.db_path = db_path
+
+    <span>def</span> <span>__enter__</span>(<span>self</span>):
+        self.conn = sqlite3.connect(self.db_path)
+        self.cursor = self.conn.cursor()
+        <span>return</span> self
+
+    <span>def</span> <span>__exit__</span>(<span>self, exc_type, exc_val, exc_tb</span>):
+        <span>if</span> exc_type <span>or</span> exc_val <span>or</span> exc_tb:
+            self.conn.rollback()
+        <span>else</span>:
+            self.conn.commit()
+        self.conn.close()
+
+<span># user_repository.py</span>
+<span>class</span> <span>UserRepository</span>:
+    <span>def</span> <span>__init__</span>(<span>self, db</span>):
+        self.db = db
+
+    <span>def</span> <span>get_user_by_id</span>(<span>self, user_id</span>):
+        <span>try</span>:
+            self.db.cursor.execute(<span>"SELECT display_name FROM users WHERE id = ?"</span>, (user_id,))
+            user = self.db.cursor.fetchone()
+            <span>return</span> user
+        <span>except</span> sqlite3.Error <span>as</span> e:
+            <span>print</span>(<span>f"An error occurred: <span>{e}</span>"</span>)
+            <span>return</span> <span>None</span>
+
+<span># main.py</span>
+<span>from</span> database <span>import</span> Database
+<span>from</span> user_repository <span>import</span> UserRepository
+
+<span>def</span> <span>get_user_by_id</span>(<span>user_id</span>):
+    <span>with</span> Database(<span>'database.db'</span>) <span>as</span> db:
+        user_repo = UserRepository(db)
+        <span>return</span> user_repo.get_user_by_id(user_id)
+
+<span># Example usage</span>
+<span>if</span> __name__ == <span>"__main__"</span>:
+    user = get_user_by_id(<span>1</span>)
+    <span>if</span> user:
+        <span>print</span>(user)
+    <span>else</span>:
+        <span>print</span>(<span>"User not found or an error occurred."</span>)
+</code></pre>
+<p>The revised code improves on the original in several ways:</p>
+<ul>
+<li>The code now implements a basic data access layer.</li>
+<li>The <code>Database</code> class handles the connection to the SQLite database, implementing the context manager protocol with the <code>__enter__</code> and <code>__exit__</code> methods. This ensures that the database connection is properly managed, including committing transactions and closing the connection.</li>
+<li>The <code>UserRepository</code> class encapsulates the logic for accessing user data.</li>
+<li>Values for the queries are parameterized to prevent SQL injection.</li>
+<li>Errors are caught, with details printed to the console.</li>
+</ul>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/copilot/using-github-copilot/prompt-engineering-for-github-copilot">Prompt engineering for Copilot Chat</a></li>
+<li><a href="/en/copilot/using-github-copilot/best-practices-for-using-github-copilot">Best practices for using GitHub Copilot</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

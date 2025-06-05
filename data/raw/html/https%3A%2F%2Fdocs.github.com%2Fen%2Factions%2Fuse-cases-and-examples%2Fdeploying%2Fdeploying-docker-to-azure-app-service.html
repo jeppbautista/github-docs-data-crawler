@@ -1,0 +1,253 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Use cases and examples" href="/en/actions/use-cases-and-examples">Use cases and examples</a><span>/</span>
+</li>
+<li>
+<a title="Deployment" href="/en/actions/use-cases-and-examples/deploying">Deployment</a><span>/</span>
+</li>
+<li><a title="Deploying Docker to Azure App Service" href="/en/actions/use-cases-and-examples/deploying/deploying-docker-to-azure-app-service">Deploying Docker to Azure App Service</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Deploying Docker to Azure App Service</h1></div></div>
+<div><div><p>You can deploy a Docker container to Azure App Service as part of your continuous deployment (CD) workflows.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#creating-the-workflow"><div><span>Creating the workflow</span></div></a></li>
+<li><a href="#additional-resources"><div><span>Additional resources</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>This guide explains how to use GitHub Actions to build and deploy a Docker container to <a href="https://azure.microsoft.com/services/app-service/">Azure App Service</a>.</p>
+<div>
+<p>
+If your GitHub Actions workflows need to access resources from a cloud provider that supports OpenID Connect (OIDC), you can configure your workflows to authenticate directly to the cloud provider. This will let you stop storing these credentials as long-lived secrets and provide other security benefits. For more information, see <a href="/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect">About security hardening with OpenID Connect</a>. and <a href="/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-azure">Configuring OpenID Connect in Azure</a>.</p>
+</div>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<p>Before creating your GitHub Actions workflow, you will first need to complete the following setup steps:</p>
+<ol>
+<li>
+<p>Create an Azure App Service plan.</p>
+<p>For example, you can use the Azure CLI to create a new App Service plan:</p>
+<div>
+<header><span>Bash</span><pre>az appservice plan create \
+   --resource-group MY_RESOURCE_GROUP \
+   --name MY_APP_SERVICE_PLAN \
+   --is-linux
+</pre></header><pre><code>az appservice plan create \
+   --resource-group MY_RESOURCE_GROUP \
+   --name MY_APP_SERVICE_PLAN \
+   --is-linux
+</code></pre>
+</div>
+<p>In the command above, replace <code>MY_RESOURCE_GROUP</code> with your pre-existing Azure Resource Group, and <code>MY_APP_SERVICE_PLAN</code> with a new name for the App Service plan.</p>
+<p>See the Azure documentation for more information on using the <a href="https://docs.microsoft.com/cli/azure/">Azure CLI</a>:</p>
+<ul>
+<li>For authentication, see <a href="https://docs.microsoft.com/cli/azure/authenticate-azure-cli">Sign in with Azure CLI</a>.</li>
+<li>If you need to create a new resource group, see <a href="https://docs.microsoft.com/cli/azure/group?view=azure-cli-latest#az_group_create">az group</a>.</li>
+</ul>
+</li>
+<li>
+<p>Create a web app.</p>
+<p>For example, you can use the Azure CLI to create an Azure App Service web app:</p>
+<div>
+<header><span>Shell</span><pre>az webapp create \
+    --name MY_WEBAPP_NAME \
+    --plan MY_APP_SERVICE_PLAN \
+    --resource-group MY_RESOURCE_GROUP \
+    --deployment-container-image-name nginx:latest
+</pre></header><pre><code>az webapp create \
+    --name MY_WEBAPP_NAME \
+    --plan MY_APP_SERVICE_PLAN \
+    --resource-group MY_RESOURCE_GROUP \
+    --deployment-container-image-name nginx:latest
+</code></pre>
+</div>
+<p>In the command above, replace the parameters with your own values, where <code>MY_WEBAPP_NAME</code> is a new name for the web app.</p>
+</li>
+<li>
+<p>Configure an Azure publish profile and create an <code>AZURE_WEBAPP_PUBLISH_PROFILE</code> secret.</p>
+<p>Generate your Azure deployment credentials using a publish profile. For more information, see <a href="https://docs.microsoft.com/azure/app-service/deploy-github-actions?tabs=applevel#generate-deployment-credentials">Generate deployment credentials</a> in the Azure documentation.</p>
+<p>In your GitHub repository, create a secret named <code>AZURE_WEBAPP_PUBLISH_PROFILE</code> that contains the contents of the publish profile. For more information on creating secrets, see <a href="/en/actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository">Using secrets in GitHub Actions</a>.</p>
+</li>
+<li>
+<p>Set registry credentials for your web app.</p>
+<p>Create a personal access token (classic) with the <code>repo</code> and <code>read:packages</code> scopes. For more information, see <a href="/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token">Managing your personal access tokens</a>.</p>
+<p>Set <code>DOCKER_REGISTRY_SERVER_URL</code> to <code>https://ghcr.io</code>, <code>DOCKER_REGISTRY_SERVER_USERNAME</code> to the GitHub username or organization that owns the repository, and <code>DOCKER_REGISTRY_SERVER_PASSWORD</code> to your personal access token from above. This will give your web app credentials so it can pull the container image after your workflow pushes a newly built image to the registry. You can do this with the following Azure CLI command:</p>
+<pre><code> az webapp config appsettings set \
+     --name MY_WEBAPP_NAME \
+     --resource-group MY_RESOURCE_GROUP \
+     --settings DOCKER_REGISTRY_SERVER_URL=https://ghcr.io DOCKER_REGISTRY_SERVER_USERNAME=MY_REPOSITORY_OWNER DOCKER_REGISTRY_SERVER_PASSWORD=MY_PERSONAL_ACCESS_TOKEN
+</code></pre>
+</li>
+<li>
+<p>Optionally, configure a deployment environment. Environments are used to describe a general deployment target like <code>production</code>, <code>staging</code>, or <code>development</code>. When a GitHub Actions workflow deploys to an environment, the environment is displayed on the main page of the repository. You can use environments to require approval for a job to proceed, restrict which branches can trigger a workflow, gate deployments with custom deployment protection rules, or limit access to secrets. For more information about creating environments, see <a href="/en/actions/deployment/targeting-different-environments/managing-environments-for-deployment">Managing environments for deployment</a>.</p>
+</li>
+</ol>
+<h2><a href="#creating-the-workflow">Creating the workflow</a></h2>
+<p>Once you've completed the prerequisites, you can proceed with creating the workflow.</p>
+<p>The following example workflow demonstrates how to build and deploy a Docker container to Azure App Service when there is a push to the <code>main</code> branch.</p>
+<p>Ensure that you set <code>AZURE_WEBAPP_NAME</code> in the workflow <code>env</code> key to the name of the web app you created.</p>
+<p>If you configured a deployment environment, change the value of <code>environment</code> to be the name of your environment. If you did not configure an environment or if your workflow is in a private repository and you do not use GitHub Enterprise Cloud, delete the <code>environment</code> key.</p>
+<div>
+<header><span>YAML</span><pre># This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# GitHub recommends pinning actions to a commit SHA.
+# To get a newer version, you will need to update the SHA.
+# You can also reference a tag or branch, but the action may change without warning.
+
+name: Build and deploy a container to an Azure Web App
+
+env:
+  AZURE_WEBAPP_NAME: MY_WEBAPP_NAME   # set this to your application's name
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: 'read'
+  packages: 'write'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b
+
+      - name: Log in to GitHub container registry
+        uses: docker/login-action@8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Lowercase the repo name
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" &gt;&gt;${GITHUB_ENV}
+
+      - name: Build and push container image to registry
+        uses: docker/build-push-action@9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f
+        with:
+          push: true
+          tags: ghcr.io/${{ env.REPO }}:${{ github.sha }}
+          file: ./Dockerfile
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Lowercase the repo name
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" &gt;&gt;${GITHUB_ENV}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@85270a1854658d167ab239bce43949edb336fa7c
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          images: 'ghcr.io/${{ env.REPO }}:${{ github.sha }}'
+</pre></header><pre><code><span># This workflow uses actions that are not certified by GitHub.</span>
+<span># They are provided by a third-party and are governed by</span>
+<span># separate terms of service, privacy policy, and support</span>
+<span># documentation.</span>
+
+<span># GitHub recommends pinning actions to a commit SHA.</span>
+<span># To get a newer version, you will need to update the SHA.</span>
+<span># You can also reference a tag or branch, but the action may change without warning.</span>
+
+<span>name:</span> <span>Build</span> <span>and</span> <span>deploy</span> <span>a</span> <span>container</span> <span>to</span> <span>an</span> <span>Azure</span> <span>Web</span> <span>App</span>
+
+<span>env:</span>
+  <span>AZURE_WEBAPP_NAME:</span> <span>MY_WEBAPP_NAME</span>   <span># set this to your application's name</span>
+
+<span>on:</span>
+  <span>push:</span>
+    <span>branches:</span>
+      <span>-</span> <span>main</span>
+
+<span>permissions:</span>
+  <span>contents:</span> <span>'read'</span>
+  <span>packages:</span> <span>'write'</span>
+
+<span>jobs:</span>
+  <span>build:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+
+    <span>steps:</span>
+      <span>-</span> <span>uses:</span> <span>actions/checkout@v4</span>
+
+      <span>-</span> <span>name:</span> <span>Set</span> <span>up</span> <span>Docker</span> <span>Buildx</span>
+        <span>uses:</span> <span>docker/setup-buildx-action@7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b</span>
+
+      <span>-</span> <span>name:</span> <span>Log</span> <span>in</span> <span>to</span> <span>GitHub</span> <span>container</span> <span>registry</span>
+        <span>uses:</span> <span>docker/login-action@8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d</span>
+        <span>with:</span>
+          <span>registry:</span> <span>ghcr.io</span>
+          <span>username:</span> <span>${{</span> <span>github.actor</span> <span>}}</span>
+          <span>password:</span> <span>${{</span> <span>secrets.GITHUB_TOKEN</span> <span>}}</span>
+
+      <span>-</span> <span>name:</span> <span>Lowercase</span> <span>the</span> <span>repo</span> <span>name</span>
+        <span>run:</span> <span>echo</span> <span>"REPO=${GITHUB_REPOSITORY,,}"</span> <span>&gt;&gt;${GITHUB_ENV}</span>
+
+      <span>-</span> <span>name:</span> <span>Build</span> <span>and</span> <span>push</span> <span>container</span> <span>image</span> <span>to</span> <span>registry</span>
+        <span>uses:</span> <span>docker/build-push-action@9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f</span>
+        <span>with:</span>
+          <span>push:</span> <span>true</span>
+          <span>tags:</span> <span>ghcr.io/${{</span> <span>env.REPO</span> <span>}}:${{</span> <span>github.sha</span> <span>}}</span>
+          <span>file:</span> <span>./Dockerfile</span>
+
+  <span>deploy:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+
+    <span>needs:</span> <span>build</span>
+
+    <span>environment:</span>
+      <span>name:</span> <span>'production'</span>
+      <span>url:</span> <span>${{</span> <span>steps.deploy-to-webapp.outputs.webapp-url</span> <span>}}</span>
+
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>Lowercase</span> <span>the</span> <span>repo</span> <span>name</span>
+        <span>run:</span> <span>echo</span> <span>"REPO=${GITHUB_REPOSITORY,,}"</span> <span>&gt;&gt;${GITHUB_ENV}</span>
+
+      <span>-</span> <span>name:</span> <span>Deploy</span> <span>to</span> <span>Azure</span> <span>Web</span> <span>App</span>
+        <span>id:</span> <span>deploy-to-webapp</span>
+        <span>uses:</span> <span>azure/webapps-deploy@85270a1854658d167ab239bce43949edb336fa7c</span>
+        <span>with:</span>
+          <span>app-name:</span> <span>${{</span> <span>env.AZURE_WEBAPP_NAME</span> <span>}}</span>
+          <span>publish-profile:</span> <span>${{</span> <span>secrets.AZURE_WEBAPP_PUBLISH_PROFILE</span> <span>}}</span>
+          <span>images:</span> <span>'ghcr.io/$<span>{{ env.REPO }}</span>:$<span>{{ github.sha }}</span>'</span>
+</code></pre>
+</div>
+<h2><a href="#additional-resources">Additional resources</a></h2>
+<p>The following resources may also be useful:</p>
+<ul>
+<li>For the original workflow template, see <a href="https://github.com/actions/starter-workflows/blob/main/deployments/azure-container-webapp.yml"><code>azure-container-webapp.yml</code></a> in the GitHub Actions <code>starter-workflows</code> repository.</li>
+<li>The action used to deploy the web app is the official Azure <a href="https://github.com/Azure/webapps-deploy"><code>Azure/webapps-deploy</code></a> action.</li>
+<li>For more examples of GitHub Action workflows that deploy to Azure, see the <a href="https://github.com/Azure/actions-workflow-samples">actions-workflow-samples</a> repository.</li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

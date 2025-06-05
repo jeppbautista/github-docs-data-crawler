@@ -1,0 +1,80 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Get started" href="/en/get-started">Get started</a><span>/</span>
+</li>
+<li>
+<a title="Writing on GitHub" href="/en/get-started/writing-on-github">Writing on GitHub</a><span>/</span>
+</li>
+<li>
+<a title="Work with advanced formatting" href="/en/get-started/writing-on-github/working-with-advanced-formatting">Work with advanced formatting</a><span>/</span>
+</li>
+<li><a title="Permanent links to code" href="/en/get-started/writing-on-github/working-with-advanced-formatting/creating-a-permanent-link-to-a-code-snippet">Permanent links to code</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Creating a permanent link to a code snippet</h1></div></div>
+<div>
+<div><p>You can create a permanent link to a specific line or range of lines of code in a specific version of a file or pull request.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Markdown can be used in the GitHub web interface.</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#linking-to-code"><div><span>Linking to code</span></div></a></li>
+<li><a href="#linking-to-markdown"><div><span>Linking to Markdown</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#linking-to-code">Linking to code</a></h2>
+<p>This type of permanent link will render as a code snippet only in the repository it originated in. In other repositories, the permalink code snippet will render as a URL. This does not work in Markdown files, only in comments.</p>
+<p><picture><source><img src="/assets/cb-68457/images/help/repository/rendered-code-snippet.png" alt="Screenshot of an issue comment. A code snippet has a header that lists the file name and line numbers, and a body that lists the code on those lines." width="720" height="336"></source></picture></p>
+<div>
+<p>
+To create a permalink for an entire file, see <a href="/en/repositories/working-with-files/using-files/getting-permanent-links-to-files">Getting permanent links to files</a>.</p>
+</div>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Locate the code you'd like to link to:</p>
+<ul>
+<li>To link to code from a file, navigate to the file.</li>
+<li>To link to code from a pull request, navigate to the pull request and click <strong>View</strong>.</li>
+</ul>
+</li>
+<li>
+<p>Choose whether to select a single line or a range.</p>
+<ul>
+<li>To select a single line of code, click the line number to highlight the line.</li>
+<li>To select a range of code, click the number of the first line in the range to highlight the line of code. Then, hover over the last line of the code range, press <kbd>Shift</kbd>, and click the line number to highlight the range.</li>
+</ul>
+</li>
+<li>
+<p>To the left of the line or range of lines, click <strong>Copy permalink</strong>.</p>
+<div><picture><source><img src="/assets/cb-40280/images/help/repository/open-new-issue-specific-line.png" alt="Screenshot of a file, with 8 lines selected. To the left of the first selected line, a button labeled with a kebab icon is outlined in dark orange." width="720" height="185"></source></picture></div>
+</li>
+<li>
+<p>Navigate to the conversation where you want to link to the code snippet.</p>
+</li>
+<li>
+<p>Paste your permalink into a comment, and click <strong>Comment</strong>.</p>
+</li>
+</ol>
+<h2><a href="#linking-to-markdown">Linking to Markdown</a></h2>
+<p>You can link to specific lines in Markdown files by loading the Markdown file without Markdown rendering. To load a Markdown file without rendering, you can use the <code>?plain=1</code> parameter at the end of the URL for the file. For example, <code>github.com/&lt;organization&gt;/&lt;repository&gt;/blob/&lt;commit_SHA&gt;/README.md?plain=1</code>.</p>
+<p>You can link to a specific line in the Markdown file the same way you can in code. Append <code>#L</code> with the line number or numbers at the end of the URL. For example, <code>github.com/&lt;organization&gt;/&lt;repository&gt;/blob/&lt;commit_SHA&gt;/README.md?plain=1#L14</code> will highlight line 14 in the plain README.md file.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/issues/tracking-your-work-with-issues/creating-an-issue">Creating an issue</a></li>
+<li><a href="/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests">Reviewing changes in pull requests</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

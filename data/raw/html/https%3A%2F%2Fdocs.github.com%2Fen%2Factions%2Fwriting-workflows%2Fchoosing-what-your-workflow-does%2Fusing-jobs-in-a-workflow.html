@@ -1,0 +1,75 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Write workflows" href="/en/actions/writing-workflows">Write workflows</a><span>/</span>
+</li>
+<li>
+<a title="Choose what workflows do" href="/en/actions/writing-workflows/choosing-what-your-workflow-does">Choose what workflows do</a><span>/</span>
+</li>
+<li><a title="Use jobs in a workflow" href="/en/actions/writing-workflows/choosing-what-your-workflow-does/using-jobs-in-a-workflow">Use jobs in a workflow</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Using jobs in a workflow</h1></div></div>
+<div><div><p>Use workflows to run multiple jobs.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#overview"><div><span>Overview</span></div></a></li>
+<li><a href="#setting-an-id-for-a-job"><div><span>Setting an ID for a job</span></div></a></li>
+<li><a href="#setting-a-name-for-a-job"><div><span>Setting a name for a job</span></div></a></li>
+<li><a href="#defining-prerequisite-jobs"><div><span>Defining prerequisite jobs</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#overview">Overview</a></h2>
+<p>A workflow run is made up of one or more <code>jobs</code>, which run in parallel by default. To run jobs sequentially, you can define dependencies on other jobs using the <code>jobs.&lt;job_id&gt;.needs</code> keyword.</p>
+<p>Each job runs in a runner environment specified by <code>runs-on</code>.</p>
+<p>You can run an unlimited number of jobs as long as you are within the workflow usage limits. For more information, see <a href="/en/actions/learn-github-actions/usage-limits-billing-and-administration">Usage limits, billing, and administration</a> for GitHub-hosted runners and <a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners/usage-limits-for-self-hosted-runners">Usage limits for self-hosted runners</a> for self-hosted runner usage limits.</p>
+<p>If you need to find the unique identifier of a job running in a workflow run, you can use the GitHub API. For more information, see <a href="/en/rest/actions#workflow-jobs">REST API endpoints for GitHub Actions</a>.</p>
+<h2><a href="#setting-an-id-for-a-job">Setting an ID for a job</a></h2>
+<p>Use <code>jobs.&lt;job_id&gt;</code> to give your job a unique identifier. The key <code>job_id</code> is a string and its value is a map of the job's configuration data. You must replace <code>&lt;job_id&gt;</code> with a string that is unique to the <code>jobs</code> object. The <code>&lt;job_id&gt;</code> must start with a letter or <code>_</code> and contain only alphanumeric characters, <code>-</code>, or <code>_</code>.</p>
+<h3><a href="#example-creating-jobs">Example: Creating jobs</a></h3>
+<p>In this example, two jobs have been created, and their <code>job_id</code> values are <code>my_first_job</code> and <code>my_second_job</code>.</p>
+<pre><code><span>jobs:</span>
+  <span>my_first_job:</span>
+    <span>name:</span> <span>My</span> <span>first</span> <span>job</span>
+  <span>my_second_job:</span>
+    <span>name:</span> <span>My</span> <span>second</span> <span>job</span>
+</code></pre>
+<h2><a href="#setting-a-name-for-a-job">Setting a name for a job</a></h2>
+<p>Use <code>jobs.&lt;job_id&gt;.name</code> to set a name for the job, which is displayed in the GitHub UI.</p>
+<h2><a href="#defining-prerequisite-jobs">Defining prerequisite jobs</a></h2>
+<p>Use <code>jobs.&lt;job_id&gt;.needs</code> to identify any jobs that must complete successfully before this job will run. It can be a string or array of strings. If a job fails or is skipped, all jobs that need it are skipped unless the jobs use a conditional expression that causes the job to continue. If a run contains a series of jobs that need each other, a failure or skip applies to all jobs in the dependency chain from the point of failure or skip onwards. If you would like a job to run even if a job it is dependent on did not succeed, use the <code>always()</code> conditional expression in <code>jobs.&lt;job_id&gt;.if</code>.</p>
+<h3><a href="#example-requiring-successful-dependent-jobs">Example: Requiring successful dependent jobs</a></h3>
+<pre><code><span>jobs:</span>
+  <span>job1:</span>
+  <span>job2:</span>
+    <span>needs:</span> <span>job1</span>
+  <span>job3:</span>
+    <span>needs:</span> [<span>job1</span>, <span>job2</span>]
+</code></pre>
+<p>In this example, <code>job1</code> must complete successfully before <code>job2</code> begins, and <code>job3</code> waits for both <code>job1</code> and <code>job2</code> to complete.</p>
+<p>The jobs in this example run sequentially:</p>
+<ol>
+<li><code>job1</code></li>
+<li><code>job2</code></li>
+<li><code>job3</code></li>
+</ol>
+<h3><a href="#example-not-requiring-successful-dependent-jobs">Example: Not requiring successful dependent jobs</a></h3>
+<pre><code><span>jobs:</span>
+  <span>job1:</span>
+  <span>job2:</span>
+    <span>needs:</span> <span>job1</span>
+  <span>job3:</span>
+    <span>if:</span> <span>${{</span> <span>always()</span> <span>}}</span>
+    <span>needs:</span> [<span>job1</span>, <span>job2</span>]
+</code></pre>
+<p>In this example, <code>job3</code> uses the <code>always()</code> conditional expression so that it always runs after <code>job1</code> and <code>job2</code> have completed, regardless of whether they were successful. For more information, see <a href="/en/actions/learn-github-actions/expressions#status-check-functions">Evaluate expressions in workflows and actions</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

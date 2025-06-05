@@ -1,0 +1,102 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Get started" href="/en/get-started">Get started</a><span>/</span>
+</li>
+<li>
+<a title="Learn to code" href="/en/get-started/learning-to-code">Learn to code</a><span>/</span>
+</li>
+<li><a title="Set up Copilot for learning" href="/en/get-started/learning-to-code/setting-up-copilot-for-learning-to-code">Set up Copilot for learning</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Setting up Copilot for learning to code</h1></div></div>
+<div><div><p>Configure Copilot to help you learn coding concepts and actively build your programming skills.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#can-copilot-help-me-learn-to-code"><div><span>Can Copilot help me learn to code?</span></div></a></li>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#step-1-disable-code-completion"><div><span>Step 1: Disable code completion</span></div></a></li>
+<li><a href="#step-2-add-learning-instructions"><div><span>Step 2: Add learning instructions</span></div></a></li>
+<li><a href="#step-3-use-copilot-chat-to-learn"><div><span>Step 3: Use Copilot Chat to learn</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#can-copilot-help-me-learn-to-code">Can Copilot help me learn to code?</a></h2>
+<p>Yes! Copilot can adapt to meet your changing needs throughout your coding journey. When you're an experienced developer, you'll use Copilot as a coding assistant. While you're learning to code, it's more beneficial as a <strong>supportive companion</strong>.</p>
+<p>In this guide, you’ll learn how to set up Copilot to act as a <strong>tutor</strong> that will help you build a deep understanding of programming concepts, rather than relying on it to write your code for you. To optimize your learning, follow these steps for each repository you work on!</p>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<p>This guide assumes that you'll use Copilot in VS Code. To get set up, see <a href="https://code.visualstudio.com/docs/copilot/setup-simplified">Set up Copilot in VS Code</a> in the Visual Studio Code documentation.</p>
+<h2><a href="#step-1-disable-code-completion">Step 1: Disable code completion</a></h2>
+<p>First, let's disable code completion. This will give you the opportunity to deepen your understanding of programming concepts by writing more code yourself.</p>
+<ol>
+<li>
+<p>In VS Code, open your project.</p>
+</li>
+<li>
+<p>Create a folder in the root directory called <code>.vscode</code>.</p>
+</li>
+<li>
+<p>Inside <code>.vscode</code>, create a file called <code>settings.json</code>.</p>
+</li>
+<li>
+<p>Add the following text to the file:</p>
+<div>
+<header><span>JSON</span><pre>{
+    "github.copilot.enable": {
+        "*": false
+    }
+}
+</pre></header><pre><code><span>{</span>
+    <span>"github.copilot.enable"</span><span>:</span> <span>{</span>
+        <span>"*"</span><span>:</span> <span><span>false</span></span>
+    <span>}</span>
+<span>}</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Save the file. Copilot code completion is now disabled for this project in VS Code.</p>
+</li>
+</ol>
+<h2><a href="#step-2-add-learning-instructions">Step 2: Add learning instructions</a></h2>
+<p>Now, let's provide Copilot Chat with instructions to act like a tutor that supports your learning.</p>
+<ol>
+<li>
+<p>In the root folder of your project, create a file called <code>copilot-instructions.md</code>.</p>
+</li>
+<li>
+<p>Add the following text, or customize it for your personal learning goals:</p>
+<div>
+<header><span>Markdown</span><pre>I am learning to code. You are to act as a tutor; assume I am a beginning coder. Teach me coding concepts and best practices, but do not provide solutions. Explain code conceptually and help me understand what is happening in the code without giving answers.
+
+Do not provide code snippets, even if I ask you for implementation advice in my prompts. Teach me all the basic coding concepts in your answers. And help me understand the overarching approach that you are suggesting.
+
+Whenever possible, share links to relevant external documentation and sources of truth.
+
+At the end of every response, add "Always check the correctness of AI-generated responses."
+</pre></header><pre><code>I am learning to code. You are to act as a tutor; assume I am a beginning coder. Teach me coding concepts and best practices, but do not provide solutions. Explain code conceptually and help me understand what is happening in the code without giving answers.
+
+Do not provide code snippets, even if I ask you for implementation advice in my prompts. Teach me all the basic coding concepts in your answers. And help me understand the overarching approach that you are suggesting.
+
+Whenever possible, share links to relevant external documentation and sources of truth.
+
+At the end of every response, add "Always check the correctness of AI-generated responses."
+</code></pre>
+</div>
+</li>
+<li>
+<p>Save the file. Copilot will use these instructions when you ask questions in Copilot Chat.</p>
+</li>
+</ol>
+<h2><a href="#step-3-use-copilot-chat-to-learn">Step 3: Use Copilot Chat to learn</a></h2>
+<p>You're ready to start building real coding skills with Copilot's help!</p>
+<p>Throughout your work on the project, engage in a long-running conversation with <strong>Copilot Chat</strong>. Treat it as your <strong>personal tutor</strong>, asking questions as they arise and using it to navigate challenges or clarify concepts.</p>
+<a href="vscode://GitHub.Copilot-Chat">
+<span>Open Copilot Chat in VS Code</span> </a><br><br>
+<p>Copilot Chat is especially helpful for debugging your code. For step-by-step guidance, see <a href="/en/get-started/learning-to-code/learning-to-debug-with-github-copilot">Learning to debug with GitHub Copilot</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

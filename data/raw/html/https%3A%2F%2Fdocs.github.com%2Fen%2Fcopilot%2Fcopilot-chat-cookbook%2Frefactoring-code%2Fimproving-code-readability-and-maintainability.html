@@ -1,0 +1,246 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Copilot Chat Cookbook" href="/en/copilot/copilot-chat-cookbook">Copilot Chat Cookbook</a><span>/</span>
+</li>
+<li>
+<a title="Refactoring code" href="/en/copilot/copilot-chat-cookbook/refactoring-code">Refactoring code</a><span>/</span>
+</li>
+<li><a title="Improve code readability" href="/en/copilot/copilot-chat-cookbook/refactoring-code/improving-code-readability-and-maintainability">Improve code readability</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Improving code readability and maintainability</h1></div></div>
+<div><div><p>Copilot Chat can suggest ways to make your code easier to understand and maintain.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#improving-variable-names"><div><span>Improving variable names</span></div></a></li>
+<li><a href="#avoiding-sequential-conditional-checks"><div><span>Avoiding sequential conditional checks</span></div></a></li>
+<li><a href="#reducing-nested-logic"><div><span>Reducing nested logic</span></div></a></li>
+<li><a href="#splitting-up-large-methods"><div><span>Splitting up large methods</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>Code with poor readability is difficult for other developers to maintain and extend. Copilot Chat can help in a number of ways. For example, by:</p>
+<ul>
+<li><a href="#improving-variable-names">Suggesting improvements to variable names</a></li>
+<li><a href="#avoiding-sequential-conditional-checks">Avoiding sequential conditional checks</a></li>
+<li><a href="#reducing-nested-logic">Reducing nested logic</a></li>
+<li><a href="#splitting-up-large-methods">Splitting large methods into smaller, more readable ones</a></li>
+</ul>
+<p>Documenting your code is another way to improve the maintainability of your code. For information about using Copilot Chat to help you add useful comments to your code, see the example prompts in <a href="/en/copilot/copilot-chat-cookbook/documenting-code">Documenting code</a>.</p>
+<div>
+<p> The responses shown in this article are examples. Copilot Chat responses are non-deterministic, so you may get different responses from the ones shown here.</p>
+</div>
+<h2><a href="#improving-variable-names">Improving variable names</a></h2>
+<p>Descriptive variable names and parameter names make it easier to understand their purpose.</p>
+<h3><a href="#example-scenario">Example scenario</a></h3>
+<p>This JavaScript code logs a message about a person's age to the console. The abstract parameter names make it difficult to understand the purpose of the code.</p>
+<pre><code><span>function</span> <span>logPersonsAge</span>(<span>a, b, c</span>) {
+  <span>if</span> (c) {
+    <span>console</span>.<span>log</span>(a + <span>" is "</span> + b + <span>" years old."</span>);
+  } <span>else</span> {
+    <span>console</span>.<span>log</span>(a + <span>" does not want to reveal their age."</span>);
+  }
+}
+</code></pre>
+<h3><a href="#example-prompt">Example prompt</a></h3>
+<p>In the editor, select the function you want to change, then ask Copilot Chat:</p>
+<p><code>Improve the variable names in this function</code></p>
+<h3><a href="#example-response">Example response</a></h3>
+<p>Copilot suggests descriptive variable names.</p>
+<pre><code><span>function</span> <span>logPersonAge</span>(<span>name, age, revealAge</span>) {
+  <span>if</span> (revealAge) {
+    <span>console</span>.<span>log</span>(name + <span>" is "</span> + age + <span>" years old."</span>);
+  } <span>else</span> {
+    <span>console</span>.<span>log</span>(name + <span>" does not want to reveal their age."</span>);
+  }
+}
+</code></pre>
+<h2><a href="#avoiding-sequential-conditional-checks">Avoiding sequential conditional checks</a></h2>
+<p><code>if...else</code> chains can be difficult to read, especially when they are long.</p>
+<h3><a href="#example-scenario-1">Example scenario</a></h3>
+<p>This Python code prints the sound that various animals make, if defined, or "Unknown animal" if the animal type is not recognized. However, the chain of <code>if...else</code> statements makes the code inefficient and cumbersome.</p>
+<pre><code><span>class</span> <span>Animal</span>:
+    <span>def</span> <span>speak</span>(<span>self</span>):
+        <span>pass</span>
+
+<span>class</span> <span>Dog</span>(<span>Animal</span>):
+    <span>def</span> <span>speak</span>(<span>self</span>):
+        <span>return</span> <span>"Woof!"</span>
+
+<span>class</span> <span>Cat</span>(<span>Animal</span>):
+    <span>def</span> <span>speak</span>(<span>self</span>):
+        <span>return</span> <span>"Meow!"</span>
+
+<span>class</span> <span>Bird</span>(<span>Animal</span>):
+    <span>def</span> <span>speak</span>(<span>self</span>):
+        <span>return</span> <span>"Tweet!"</span>
+
+<span>def</span> <span>animal_sound</span>(<span>animal_type</span>):
+    <span>if</span> animal_type == <span>"dog"</span>:
+        <span>return</span> Dog().speak()
+    <span>elif</span> animal_type == <span>"cat"</span>:
+        <span>return</span> Cat().speak()
+    <span>elif</span> animal_type == <span>"bird"</span>:
+        <span>return</span> Bird().speak()
+    <span>else</span>:
+        <span>return</span> <span>"Unknown animal"</span>
+
+<span>print</span>(animal_sound(<span>"dog"</span>))
+<span>print</span>(animal_sound(<span>"cat"</span>))
+<span>print</span>(animal_sound(<span>"bird"</span>))
+<span>print</span>(animal_sound(<span>"fish"</span>))
+</code></pre>
+<h3><a href="#example-prompt-1">Example prompt</a></h3>
+<p><code>Simplify this code. Avoid using if/else chains but retain all function return values.</code></p>
+<h3><a href="#example-response-1">Example response</a></h3>
+<p>Copilot suggests using a dictionary to map the animal types to their corresponding classes.</p>
+<pre><code><span>class</span> <span>Animal</span>:
+    <span>def</span> <span>speak</span>(<span>self</span>):
+        <span>pass</span>
+
+<span>class</span> <span>Dog</span>(<span>Animal</span>):
+    <span>def</span> <span>speak</span>(<span>self</span>):
+        <span>return</span> <span>"Woof!"</span>
+
+<span>class</span> <span>Cat</span>(<span>Animal</span>):
+    <span>def</span> <span>speak</span>(<span>self</span>):
+        <span>return</span> <span>"Meow!"</span>
+
+<span>class</span> <span>Bird</span>(<span>Animal</span>):
+    <span>def</span> <span>speak</span>(<span>self</span>):
+        <span>return</span> <span>"Tweet!"</span>
+
+<span>def</span> <span>animal_sound</span>(<span>animal_type</span>):
+    animals = {
+        <span>"dog"</span>: Dog,
+        <span>"cat"</span>: Cat,
+        <span>"bird"</span>: Bird
+    }
+    animal_class = animals.get(animal_type, Animal)
+    <span>return</span> animal_class().speak() <span>if</span> animal_class != Animal <span>else</span> <span>"Unknown animal"</span>
+
+<span>print</span>(animal_sound(<span>"dog"</span>))
+<span>print</span>(animal_sound(<span>"cat"</span>))
+<span>print</span>(animal_sound(<span>"bird"</span>))
+<span>print</span>(animal_sound(<span>"fish"</span>))
+</code></pre>
+<h2><a href="#reducing-nested-logic">Reducing nested logic</a></h2>
+<p>Deeply nested structures can make the code hard to follow, making it difficult to modify or extend the logic of the code in future.</p>
+<h3><a href="#example-scenario-2">Example scenario</a></h3>
+<p>This Ruby code prints information about a user account based on three parameters. The use of nested <code>if...else</code> statements makes the code unnecessarily complex.</p>
+<pre><code><span>def</span> <span>determine_access</span>(<span>user_role, has_permission, is_active</span>)
+  <span>if</span> user_role == <span>"admin"</span>
+    <span>if</span> has_permission
+      <span>if</span> is_active
+        <span>"Active admin account with full access."</span>
+      <span>else</span>
+        <span>"Inactive admin account."</span>
+      <span>end</span>
+    <span>else</span>
+      <span>"Admin account lacks necessary permissions."</span>
+    <span>end</span>
+  <span>else</span>
+    <span>"Access denied."</span>
+  <span>end</span>
+<span>end</span>
+
+puts determine_access(<span>"admin"</span>, <span>true</span>, <span>true</span>)
+puts determine_access(<span>"admin"</span>, <span>true</span>, <span>false</span>)
+puts determine_access(<span>"admin"</span>, <span>false</span>, <span>true</span>)
+puts determine_access(<span>"user"</span>, <span>true</span>, <span>true</span>)
+</code></pre>
+<h3><a href="#example-prompt-2">Example prompt</a></h3>
+<p><code>Rewrite this code to avoid the nested if/else statements</code></p>
+<h3><a href="#example-response-2">Example response</a></h3>
+<p>Copilot suggests using guard clauses to handle the conditions early and return the appropriate messages.</p>
+<pre><code><span>def</span> <span>determine_access</span>(<span>user_role, has_permission, is_active</span>)
+  <span>return</span> <span>"Access denied."</span> <span>unless</span> user_role == <span>"admin"</span>
+  <span>return</span> <span>"Admin account lacks necessary permissions."</span> <span>unless</span> has_permission
+  <span>return</span> <span>"Inactive admin account."</span> <span>unless</span> is_active
+
+  <span>"Active admin account with full access."</span>
+<span>end</span>
+
+puts determine_access(<span>"admin"</span>, <span>true</span>, <span>true</span>)
+puts determine_access(<span>"admin"</span>, <span>true</span>, <span>false</span>)
+puts determine_access(<span>"admin"</span>, <span>false</span>, <span>true</span>)
+puts determine_access(<span>"user"</span>, <span>true</span>, <span>true</span>)
+</code></pre>
+<h2><a href="#splitting-up-large-methods">Splitting up large methods</a></h2>
+<p>It can be difficult to grasp exactly what a method or function does if it is too long, making it difficult to maintain. Methods or functions that perform multiple tasks may not be reusable in other contexts. It may also be difficult to test each task in isolation.</p>
+<h3><a href="#example-scenario-3">Example scenario</a></h3>
+<p>This Java method processes a customer order and prints a message. It performs multiple tasks in a single method.</p>
+<pre><code><span>public</span> <span>void</span> <span>processOrder</span><span>(Order order)</span> {
+  <span>if</span> (order == <span>null</span> || order.getItems().isEmpty()) {
+    <span>throw</span> <span>new</span> <span>IllegalArgumentException</span>(<span>"Order is invalid."</span>);
+  }
+
+  <span>double</span> <span>totalPrice</span> <span>=</span> <span>0.0</span>;
+  <span>for</span> (Item item : order.getItems()) {
+    totalPrice += item.getPrice() * item.getQuantity();
+  }
+  order.setTotalPrice(totalPrice);
+
+  <span>if</span> (totalPrice &gt; <span>0</span>) {
+    order.setStatus(<span>"Processed"</span>);
+  } <span>else</span> {
+    order.setStatus(<span>"Pending"</span>);
+  }
+
+  System.out.println(<span>"Order for customer "</span> + order.getCustomerName() + <span>" has been processed. Total price: "</span> + totalPrice);
+}
+</code></pre>
+<h3><a href="#example-prompt-3">Example prompt</a></h3>
+<p><code>How could the processOrder method be refactored to be more useful and easier to maintain</code></p>
+<h3><a href="#example-response-3">Example response</a></h3>
+<p>Copilot suggests breaking this method down into smaller, more focused methods.</p>
+<pre><code><span>public</span> <span>void</span> <span>processOrder</span><span>(Order order)</span> {
+    validateOrder(order);
+    <span>double</span> <span>totalPrice</span> <span>=</span> calculateTotalPrice(order);
+    updateOrderStatus(order, totalPrice);
+    printOrderSummary(order, totalPrice);
+}
+
+<span>private</span> <span>void</span> <span>validateOrder</span><span>(Order order)</span> {
+    <span>if</span> (order == <span>null</span> || order.getItems().isEmpty()) {
+        <span>throw</span> <span>new</span> <span>IllegalArgumentException</span>(<span>"Order is invalid."</span>);
+    }
+}
+
+<span>private</span> <span>double</span> <span>calculateTotalPrice</span><span>(Order order)</span> {
+    <span>double</span> <span>totalPrice</span> <span>=</span> <span>0.0</span>;
+    <span>for</span> (Item item : order.getItems()) {
+        totalPrice += item.getPrice() * item.getQuantity();
+    }
+    order.setTotalPrice(totalPrice);
+    <span>return</span> totalPrice;
+}
+
+<span>private</span> <span>void</span> <span>updateOrderStatus</span><span>(Order order, <span>double</span> totalPrice)</span> {
+    <span>if</span> (totalPrice &gt; <span>0</span>) {
+        order.setStatus(<span>"Processed"</span>);
+    } <span>else</span> {
+        order.setStatus(<span>"Pending"</span>);
+    }
+}
+
+<span>private</span> <span>void</span> <span>printOrderSummary</span><span>(Order order, <span>double</span> totalPrice)</span> {
+    System.out.println(<span>"Order for customer "</span> + order.getCustomerName() + <span>" has been processed. Total price: "</span> + totalPrice);
+}
+</code></pre>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/copilot/using-github-copilot/prompt-engineering-for-github-copilot">Prompt engineering for Copilot Chat</a></li>
+<li><a href="/en/copilot/using-github-copilot/best-practices-for-using-github-copilot">Best practices for using GitHub Copilot</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

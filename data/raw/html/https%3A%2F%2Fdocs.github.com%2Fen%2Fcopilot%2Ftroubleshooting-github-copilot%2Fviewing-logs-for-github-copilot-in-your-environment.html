@@ -1,0 +1,234 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Troubleshooting" href="/en/copilot/troubleshooting-github-copilot">Troubleshooting</a><span>/</span>
+</li>
+<li><a title="View logs" href="/en/copilot/troubleshooting-github-copilot/viewing-logs-for-github-copilot-in-your-environment">View logs</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Viewing logs for GitHub Copilot in your environment</h1></div></div>
+<div>
+<div><p>View logs to troubleshoot GitHub Copilot-related errors in your IDE.</p></div>
+<div>
+<h2>Tool navigation</h2>
+<nav><ul>
+<li><a href="?tool=jetbrains"><span>JetBrains IDEs</span></a></li>
+<li><a href="?tool=vimneovim"><span>Vim/Neovim</span></a></li>
+<li><a href="?tool=visualstudio"><span>Visual Studio</span></a></li>
+<li><a href="?tool=vscode"><span>Visual Studio Code</span></a></li>
+<li><a href="?tool=xcode"><span>Xcode</span></a></li>
+</ul></nav>
+</div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#collecting-log-files"><div><span>Collecting log files</span></div></a></li>
+<li><a href="#enabling-debug-mode"><div><span>Enabling debug mode</span></div></a></li>
+<li><a href="#viewing-network-connectivity-diagnostics-logs"><div><span>Viewing network connectivity diagnostics logs</span></div></a></li>
+<li><a href="#troubleshooting-certificate-related-errors"><div><span>Troubleshooting certificate-related errors</span></div></a></li>
+<li><a href="#viewing-logs-in-visual-studio"><div><span>Viewing logs in Visual Studio</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+<li><a href="#viewing-and-collecting-log-files"><div><span>Viewing and collecting log files</span></div></a></li>
+<li><a href="#viewing-network-connectivity-diagnostics-logs-1"><div><span>Viewing network connectivity diagnostics logs</span></div></a></li>
+<li><a href="#viewing-electron-logs"><div><span>Viewing Electron logs</span></div></a></li>
+<li><a href="#further-reading-1"><div><span>Further reading</span></div></a></li>
+<li><a href="#checking-if-github-copilot-is-operational"><div><span>Checking if GitHub Copilot is operational</span></div></a></li>
+<li><a href="#collecting-log-files-1"><div><span>Collecting log files</span></div></a></li>
+<li><a href="#enabling-verbose-logs"><div><span>Enabling verbose logs</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<h2><a href="#collecting-log-files">Collecting log files</a></h2>
+<p>The location of the log files depends on the JetBrains IDE you are using. For more information, see <a href="/en/copilot/configuring-github-copilot/configuring-github-copilot-in-your-environment?tool=jetbrains">Configuring GitHub Copilot in your environment</a>.</p>
+<p>These steps describe how to view and collect the log files for the following JetBrains IDEs:</p>
+<ul>
+<li>IntelliJ IDEA</li>
+<li>Android Studio</li>
+<li>GoLand</li>
+<li>PhpStorm</li>
+<li>PyCharm</li>
+<li>RubyMine</li>
+<li>WebStorm</li>
+</ul>
+<p>The GitHub Copilot extension logs to the IDEA log location for IntelliJ plugins.</p>
+<ol>
+<li>In your JetBrains IDE, open the <strong>Help</strong> menu.</li>
+<li>Go to <strong>Show Log in Finder</strong>.</li>
+<li>Open the <code>idea.log</code> in your preferred editor and look for any errors related to GitHub or GitHub Copilot.</li>
+</ol>
+<p>For more information, see the <a href="https://intellij-support.jetbrains.com/hc/en-us/articles/207241085-Locating-IDE-log-files">Locating IDE log files</a> in the IntelliJ documentation.</p>
+<h3><a href="#collect-log-files-from-rider">Collect log files from Rider</a></h3>
+<ol>
+<li>In Rider, open the <strong>Help</strong> menu.</li>
+<li>Go to <strong>Diagnostic Tools</strong>.</li>
+<li>Go to <strong>Show Log in</strong>.</li>
+<li>Open the <code>idea.log</code> in your preferred editor and look for any errors related to GitHub or GitHub Copilot.</li>
+</ol>
+<h2><a href="#enabling-debug-mode">Enabling debug mode</a></h2>
+<p>If you find the log file doesn't contain enough information to resolve an issue, it may help to enable debug logging temporarily. This can be especially helpful for debugging network-related issues.</p>
+<ol>
+<li>
+<p>In the menu bar, click <strong>Help</strong>, select <strong>Diagnostic Tools</strong>, and click <strong>Debug Log Settings...</strong>.</p>
+<div><picture><source><img src="/assets/cb-339281/images/help/copilot/jetbrains-debug-log.png" alt='Screenshot of the menu bar in a JetBrains IDE. The "Help" menu and "Diagnostic Tools" submenu are expanded and "Debug Log Settings" is highlighted.' width="699" height="819"></source></picture></div>
+</li>
+<li>
+<p>In the "Custom Debug Log Configuration" window, add a new line with the following content, then click <strong>OK</strong>.</p>
+<div>
+<header><span>Text</span><pre>#com.github.copilot:trace
+</pre></header><pre><code>#com.github.copilot:trace
+</code></pre>
+</div>
+</li>
+<li>
+<p>Keep using your IDE until you encounter the issue again, then collect the log file as described in <a href="#collecting-log-files">Collecting log files</a>.</p>
+</li>
+<li>
+<p>When you have the information you need, disable debug mode by removing <code>#com.github.copilot:trace</code> from the "Custom Debug Log Configuration" window.</p>
+</li>
+</ol>
+<h2><a href="#viewing-network-connectivity-diagnostics-logs">Viewing network connectivity diagnostics logs</a></h2>
+<p>If you encounter problems connecting to GitHub Copilot due to network restrictions, firewalls, or your proxy setup, use the following troubleshooting steps.</p>
+<ol>
+<li>In the menu bar, click <strong>Tools</strong>, select <strong>GitHub Copilot</strong>, and click <strong>Log Diagnostics</strong>.</li>
+<li>The <code>idea.log</code> file should open in the JetBrains IDE with the diagnostics output. Alternatively, you can open the <code>idea.log</code> file in your preferred editor.</li>
+<li>Check the section on <strong>Reachability</strong> to determine if GitHub Copilot can access the necessary services.</li>
+</ol>
+<h2><a href="#troubleshooting-certificate-related-errors">Troubleshooting certificate-related errors</a></h2>
+<p>If you're using a custom certificate, ensure the certificate is installed correctly in the operating system, see <a href="/en/copilot/troubleshooting-github-copilot/troubleshooting-network-errors-for-github-copilot">Troubleshooting network errors for GitHub Copilot</a>. Then use the following troubleshooting steps.</p>
+<ol>
+<li>In the menu bar, click <strong>Tools</strong>, select <strong>GitHub Copilot</strong>, and click <strong>Log CA Certificates</strong>.</li>
+<li>The <code>idea.log</code> file should open in the JetBrains IDE with the trusted CA certificates logged in PEM format. You may need to refresh the <code>idea.log</code> file to view all of the output. Alternatively, you can open the <code>idea.log</code> file in your preferred editor.</li>
+<li>Check to see if the expected custom certificate is included in the certificate list output.</li>
+</ol>
+</div>
+<div>
+<h2><a href="#viewing-logs-in-visual-studio">Viewing logs in Visual Studio</a></h2>
+<p>The log files for the GitHub Copilot extension are stored in the standard log location for Visual Studio extensions.</p>
+<ol>
+<li>Open the <strong>View</strong> menu in Visual Studio.</li>
+<li>Click <strong>Output</strong>.</li>
+<li>On the right of the Output view pane, select <strong>GitHub Copilot</strong> from the dropdown menu.</li>
+</ol>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li>
+<a href="https://learn.microsoft.com/en-us/visualstudio/ide/reference/log-devenv-exe?view=vs-2022">Log all activity to the log file for troubleshooting</a> in the Visual Studio documentation</li>
+</ul>
+</div>
+<div>
+<h2><a href="#viewing-and-collecting-log-files">Viewing and collecting log files</a></h2>
+<p>The log files for the GitHub Copilot extension are stored in the standard log location for Visual Studio Code extensions. The log files are useful for diagnosing connection issues.</p>
+<ol>
+<li>Open the <strong>View</strong> menu in Visual Studio Code.</li>
+<li>Click <strong>Output</strong>.</li>
+<li>On the right of the Output view pane, select <strong>GitHub Copilot</strong> from the dropdown menu.</li>
+</ol>
+<p>Alternatively, you can open the log folder for Visual Studio Code extensions in your system's file explorer. This is useful if you need to forward the log files to the support team.</p>
+<ol>
+<li>Open the VS Code Command Palette
+<ul>
+<li>For Mac:
+<ul>
+<li>Use: <kbd>Shift</kbd>+<kbd>Command</kbd>+<kbd>P</kbd>
+</li>
+</ul>
+</li>
+<li>For Windows or Linux:
+<ul>
+<li>Use: <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Type "Logs", and then select <strong>Developer: Open Extension Logs Folder</strong> from the list.</li>
+</ol>
+<h2><a href="#viewing-network-connectivity-diagnostics-logs-1">Viewing network connectivity diagnostics logs</a></h2>
+<p>If you encounter problems connecting to GitHub Copilot due to network restrictions, firewalls, or your proxy setup, use the following troubleshooting steps.</p>
+<ol>
+<li>Open the VS Code Command Palette
+<ul>
+<li>For Mac:
+<ul>
+<li>Use: <kbd>Shift</kbd>+<kbd>Command</kbd>+<kbd>P</kbd>
+</li>
+</ul>
+</li>
+<li>For Windows or Linux:
+<ul>
+<li>Use: <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Type "Diagnostics", and then select <strong>GitHub Copilot: Collect Diagnostics</strong> from the list. This opens a new editor with the relevant information that you can inspect yourself or share with the support team.</li>
+<li>Check the section on <strong>Reachability</strong> to determine if GitHub Copilot can actually access the necessary services.</li>
+</ol>
+<h2><a href="#viewing-electron-logs">Viewing Electron logs</a></h2>
+<p>In rare cases, errors might not be propagated to the corresponding error handlers and are not logged in the regular locations. If you encounter errors and there is nothing in the logs, you may try to see the logs from the process running VS Code and the extension.</p>
+<ol>
+<li>
+<p>Open the VS Code Command Palette</p>
+<ul>
+<li>For Mac:
+<ul>
+<li>Use: <kbd>Shift</kbd>+<kbd>Command</kbd>+<kbd>P</kbd>
+</li>
+</ul>
+</li>
+<li>For Windows or Linux:
+<ul>
+<li>Use <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Type "Toggle", and then select <strong>Developer: Toggle Developer Tools</strong> from the list.</p>
+</li>
+<li>
+<p>In the Developer Tools window, select the <strong>Console</strong> tab to see any errors or warnings.</p>
+<div><picture><source><img src="/assets/cb-29810/images/help/copilot/vsc-electron-logs.png" alt="Screenshot of the Developer Tools window in Visual Studio Code. The console tab is outlined in dark orange."></source></picture></div>
+</li>
+</ol>
+<h2><a href="#further-reading-1">Further reading</a></h2>
+<ul>
+<li><a href="/en/copilot/troubleshooting-github-copilot/troubleshooting-network-errors-for-github-copilot">Troubleshooting network errors for GitHub Copilot</a></li>
+<li>
+<a href="https://code.visualstudio.com/docs/setup/network">Network Connections in Visual Studio Code</a> in the Visual Studio Code documentation</li>
+</ul>
+</div>
+<div>
+<h2><a href="#checking-if-github-copilot-is-operational">Checking if GitHub Copilot is operational</a></h2>
+<p>To check if GitHub Copilot is operational, run the following command in Vim/Neovim:</p>
+<pre><code>:Copilot status
+</code></pre>
+</div>
+<div>
+<h2><a href="#collecting-log-files-1">Collecting log files</a></h2>
+<p>The log files for the GitHub Copilot extension for Xcode are stored in <code>~/Library/Logs/GitHubCopilot/</code>. The most recent file is named <code>github-copilot-for-xcode.log</code>.</p>
+<ol>
+<li>Open the GitHub Copilot for Xcode application.</li>
+<li>At the top of the application window, click <strong>Advanced</strong>.</li>
+<li>In the "Logging" section, click <strong>Open Copilot Log Folder</strong>.</li>
+</ol>
+<h2><a href="#enabling-verbose-logs">Enabling verbose logs</a></h2>
+<p>You can enable verbose logging to help troubleshoot issues with the GitHub Copilot extension for Xcode.</p>
+<ol>
+<li>Open the GitHub Copilot for Xcode application.</li>
+<li>At the top of the application window, click <strong>Advanced</strong>.</li>
+<li>In the "Logging" section, next to "Verbose Logging", toggle the switch to the right.</li>
+</ol>
+</div>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

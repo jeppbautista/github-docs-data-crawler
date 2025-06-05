@@ -1,0 +1,55 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Organizations" href="/en/organizations">Organizations</a><span>/</span>
+</li>
+<li>
+<a title="Manage programmatic access" href="/en/organizations/managing-programmatic-access-to-your-organization">Manage programmatic access</a><span>/</span>
+</li>
+<li><a title="Review token access" href="/en/organizations/managing-programmatic-access-to-your-organization/reviewing-and-revoking-personal-access-tokens-in-your-organization">Review token access</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Reviewing and revoking personal access tokens in your organization</h1></div></div>
+<div><div><p>Organization owners can review the fine-grained personal access tokens that can access their organization. They can also revoke access of specific fine-grained personal access tokens.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-reviewing-and-revoking-fine-grained-personal-access-tokens"><div><span>About reviewing and revoking fine-grained personal access tokens</span></div></a></li>
+<li><a href="#reviewing-and-revoking-fine-grained-personal-access-tokens"><div><span>Reviewing and revoking fine-grained personal access tokens</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-reviewing-and-revoking-fine-grained-personal-access-tokens">About reviewing and revoking fine-grained personal access tokens</a></h2>
+<p>Organization owners can view all fine-grained personal access tokens that can access resources owned by the organization. Organization owners can also revoke access by fine-grained personal access tokens. When a fine-grained personal access token is revoked, SSH keys created by the token will continue to work and the token will still be able to read public resources within the organization.</p>
+<p>When a token is revoked, the user who created the token will receive an email notification.</p>
+<p>Organization owners can only view and revoke fine-grained personal access tokens in this UI, not personal access tokens (classic). Unless the organization has restricted access by personal access tokens (classic), any personal access token (classic) can access organization resources until the token expires. For more information about restricting access by personal access tokens (classic), see <a href="/en/organizations/managing-programmatic-access-to-your-organization/setting-a-personal-access-token-policy-for-your-organization">Setting a personal access token policy for your organization</a>.</p>
+<p>Organization owners can also use the REST API to review and revoke fine-grained personal access tokens. These endpoints can only be called by GitHub Apps, and cannot be called with personal access tokens or OAuth apps. For more information, see <a href="/en/rest/orgs/orgs#list-fine-grained-personal-access-tokens-with-access-to-organization-resources">REST API endpoints for organizations</a>.</p>
+<h2><a href="#reviewing-and-revoking-fine-grained-personal-access-tokens">Reviewing and revoking fine-grained personal access tokens</a></h2>
+<ol>
+<li>In the upper-right corner of GitHub, select your profile photo, then click </li>
+<li>Next to the organization, click <strong>Settings</strong>.</li>
+<li>In the left sidebar, under <strong>Active tokens</strong>. Any fine-grained personal access tokens that can access your organization will be displayed.</li>
+<li>Click the name of the token that you want review or revoke.</li>
+<li>Review the access and permissions that the token has.</li>
+<li>To revoke access by the token to the organization, click <strong>Revoke</strong>.</li>
+</ol>
+<p>Alternatively, you can revoke multiple tokens at once:</p>
+<ol>
+<li>In the upper-right corner of GitHub, select your profile photo, then click </li>
+<li>Next to the organization, click <strong>Settings</strong>.</li>
+<li>In the left sidebar, under <strong>Active tokens</strong>. Any fine-grained personal access tokens that can access your organization will be displayed.</li>
+<li>Optionally, use filters to only display certain tokens.
+<ul>
+<li>Use the <strong>Owner</strong> dropdown to filter the tokens by the member who created the token.</li>
+<li>Use the <strong>Repository</strong> dropdown to filter the tokens by repository access.</li>
+<li>Use the <strong>Permissions</strong> dropdown to filter the tokens by permission.</li>
+</ul>
+</li>
+<li>Select each token that you want to revoke.</li>
+<li>Select the <strong>tokens selected...</strong> dropdown menu and click <strong>Revoke...</strong>.</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

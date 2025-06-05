@@ -1,0 +1,139 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="CodeQL CLI" href="/en/code-security/codeql-cli">CodeQL CLI</a><span>/</span>
+</li>
+<li>
+<a title="CodeQL CLI manual" href="/en/code-security/codeql-cli/codeql-cli-manual">CodeQL CLI manual</a><span>/</span>
+</li>
+<li><a title="test extract" href="/en/code-security/codeql-cli/codeql-cli-manual/test-extract">test extract</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>test extract</h1></div></div>
+<div>
+<div><p>[Plumbing] Build a dataset for a test directory.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div>
+<p>CodeQL is available for the following repository types:</p>
+<ul>
+<li>Public repositories on GitHub.com, see <a href="https://github.com/github/codeql-cli-binaries/blob/main/LICENSE.md">GitHub CodeQL Terms and Conditions</a>
+</li>
+<li>Organization-owned repositories on GitHub Team with <a href="/en/get-started/learning-about-github/about-github-advanced-security">GitHub Code Security</a> enabled</li>
+</ul>
+</div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#synopsis"><div><span>Synopsis</span></div></a></li>
+<li><a href="#description"><div><span>Description</span></div></a></li>
+<li><a href="#options"><div><span>Options</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<p>
+This content describes the most recent release of the CodeQL CLI. For more information about this release, see <a href="https://github.com/github/codeql-cli-binaries/releases">https://github.com/github/codeql-cli-binaries/releases</a>.</p>
+<p>To see details of the options available for this command in an earlier release, run the command with the <span><code>--help</code></span> option in your terminal.</p>
+</div>
+<h2><a href="#synopsis">Synopsis</a></h2>
+<div>
+<header><span>Shell</span><pre>codeql test extract [--source-root=&lt;dir&gt;] &lt;options&gt;... -- &lt;testDirectory&gt;
+</pre></header><pre><code>codeql test extract [--source-root=&lt;dir&gt;] &lt;options&gt;... -- &lt;testDirectory&gt;
+</code></pre>
+</div>
+<h2><a href="#description">Description</a></h2>
+<p>[Plumbing] Build a dataset for a test directory.</p>
+<p>Build a database for a specified test directory, without actually
+running any test queries. Outputs the path to the raw QL dataset to
+execute test queries against.</p>
+<h2><a href="#options">Options</a></h2>
+<h3><a href="#primary-options">Primary Options</a></h3>
+<h4><a href="#testdirectory"><code>&lt;testDirectory&gt;</code></a></h4>
+<p>[Mandatory] The path to the test directory.</p>
+<h4><a href="#--databasedir"><code>--database=&lt;dir&gt;</code></a></h4>
+<p>Override the location of the database being created. By default it will
+be a subdirectory whose name is derived from the name of the test
+directory itself with '.testproj' appended.</p>
+<h4><a href="#-s---source-rootdir"><code>-s, --source-root=&lt;dir&gt;</code></a></h4>
+<p>[Advanced] The root source code directory, if different from the test
+directory.</p>
+<h4><a href="#--search-pathdirdir"><code>--search-path=&lt;dir&gt;[:&lt;dir&gt;...]</code></a></h4>
+<p>A list of directories under which extractor packs may be found. The
+directories can either be the extractor packs themselves or directories
+that contain extractors as immediate subdirectories.</p>
+<p>If the path contains multiple directory trees, their order defines
+precedence between them: if the target language is matched in more than
+one of the directory trees, the one given first wins.</p>
+<p>The extractors bundled with the CodeQL toolchain itself will always be
+found, but if you need to use separately distributed extractors you need
+to give this option (or, better yet, set up <code>--search-path</code> in a
+per-user configuration file).</p>
+<p>(Note: On Windows the path separator is <code>;</code>).</p>
+<h4><a href="#--cleanup"><code>--cleanup</code></a></h4>
+<p>Remove the test database instead of creating it.</p>
+<h4><a href="#--no-show-extractor-output"><code>--[no-]show-extractor-output</code></a></h4>
+<p>[Advanced] Show the output from extractor scripts that create test
+databases. This can be useful while developing or editing test cases.
+Beware that it can cause duplicated or malformed output if you use this
+with multiple threads!</p>
+<h4><a href="#--no-check-undefined-labels"><code>--[no-]check-undefined-labels</code></a></h4>
+<p>[Advanced] Report errors for undefined labels.</p>
+<h4><a href="#--no-check-unused-labels"><code>--[no-]check-unused-labels</code></a></h4>
+<p>[Advanced] Report errors for unused labels.</p>
+<h4><a href="#--no-check-repeated-labels"><code>--[no-]check-repeated-labels</code></a></h4>
+<p>[Advanced] Report errors for repeated labels.</p>
+<h4><a href="#--no-check-redefined-labels"><code>--[no-]check-redefined-labels</code></a></h4>
+<p>[Advanced] Report errors for redefined labels.</p>
+<h4><a href="#--no-check-use-before-definition"><code>--[no-]check-use-before-definition</code></a></h4>
+<p>[Advanced] Report errors for labels used before they're defined.</p>
+<h4><a href="#--no-fail-on-trap-errors"><code>--[no-]fail-on-trap-errors</code></a></h4>
+<p>[Advanced] Exit non-zero if an error occurs during trap import.</p>
+<h4><a href="#--no-include-location-in-star"><code>--[no-]include-location-in-star</code></a></h4>
+<p>[Advanced] Construct entity IDs that encode the location in the TRAP
+file they came from. Can be useful for debugging of TRAP generators, but
+takes up a lot of space in the dataset.</p>
+<h4><a href="#--no-linkage-aware-import"><code>--[no-]linkage-aware-import</code></a></h4>
+<p>[Advanced] Controls whether <a href="/en/code-security/codeql-cli/codeql-cli-manual/dataset-import">codeql dataset import</a> is linkage-aware <em>(default)</em> or not. On projects where this part of database creation
+consumes too much memory, disabling this option may help them progress
+at the expense of database completeness.</p>
+<p>Available since <code>v2.15.3</code>.</p>
+<h4><a href="#--formatfmt"><code>--format=&lt;fmt&gt;</code></a></h4>
+<p>Select output format, either <code>text</code> <em>(default)</em> or <code>json</code>.</p>
+<h3><a href="#common-options">Common options</a></h3>
+<h4><a href="#-h---help"><code>-h, --help</code></a></h4>
+<p>Show this help text.</p>
+<h4><a href="#-jopt"><code>-J=&lt;opt&gt;</code></a></h4>
+<p>[Advanced] Give option to the JVM running the command.</p>
+<p>(Beware that options containing spaces will not be handled correctly.)</p>
+<h4><a href="#-v---verbose"><code>-v, --verbose</code></a></h4>
+<p>Incrementally increase the number of progress messages printed.</p>
+<h4><a href="#-q---quiet"><code>-q, --quiet</code></a></h4>
+<p>Incrementally decrease the number of progress messages printed.</p>
+<h4><a href="#--verbositylevel"><code>--verbosity=&lt;level&gt;</code></a></h4>
+<p>[Advanced] Explicitly set the verbosity level to one of errors,
+warnings, progress, progress+, progress++, progress+++. Overrides <code>-v</code>
+and <code>-q</code>.</p>
+<h4><a href="#--logdirdir"><code>--logdir=&lt;dir&gt;</code></a></h4>
+<p>[Advanced] Write detailed logs to one or more files in the given
+directory, with generated names that include timestamps and the name of
+the running subcommand.</p>
+<p>(To write a log file with a name you have full control over, instead
+give <code>--log-to-stderr</code> and redirect stderr as desired.)</p>
+<h4><a href="#--common-cachesdir"><code>--common-caches=&lt;dir&gt;</code></a></h4>
+<p>[Advanced] Controls the location of cached data on disk that will
+persist between several runs of the CLI, such as downloaded QL packs and
+compiled query plans. If not set explicitly, this defaults to a
+directory named <code>.codeql</code> in the user's home directory; it will be
+created if it doesn't already exist.</p>
+<p>Available since <code>v2.15.2</code>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

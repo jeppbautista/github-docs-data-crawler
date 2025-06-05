@@ -1,0 +1,180 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Self-hosted runners" href="/en/actions/hosting-your-own-runners">Self-hosted runners</a><span>/</span>
+</li>
+<li>
+<a title="Actions Runner Controller" href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller">Actions Runner Controller</a><span>/</span>
+</li>
+<li><a title="Troubleshoot" href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/troubleshooting-actions-runner-controller-errors">Troubleshoot</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Troubleshooting Actions Runner Controller errors</h1></div></div>
+<div><div><p>Learn how to troubleshoot Actions Runner Controller errors.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#logging"><div><span>Logging</span></div></a></li>
+<li><a href="#resources-labels"><div><span>Resources labels</span></div></a></li>
+<li><a href="#checking-the-logs-of-the-controller-and-runner-set-listener"><div><span>Checking the logs of the controller and runner set listener</span></div></a></li>
+<li><a href="#using-the-charts-from-the-master-branch"><div><span>Using the charts from the master branch</span></div></a></li>
+<li><a href="#troubleshooting-the-listener-pod"><div><span>Troubleshooting the listener pod</span></div></a></li>
+<li><a href="#runner-pods-are-recreated-after-a-canceled-workflow-run"><div><span>Runner pods are recreated after a canceled workflow run</span></div></a></li>
+<li><a href="#error-name-must-have-up-to-n-characters"><div><span>Error: Name must have up to n characters</span></div></a></li>
+<li><a href="#error-access-to-the-path-homerunner_work_tool-is-denied"><div><span>Error: Access to the path /home/runner/_work/_tool is denied</span></div></a></li>
+<li><a href="#error-failed-to-get-access-token-for-github-app-auth-401-unauthorized"><div><span>Error: failed to get access token for GitHub App auth: 401 Unauthorized</span></div></a></li>
+<li><a href="#legal-notice"><div><span>Legal notice</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p><a href="#legal-notice">Legal notice</a></p>
+<h2><a href="#logging">Logging</a></h2>
+<p>The Actions Runner Controller (ARC) resources, which include the controller, listener, and runners, write logs to standard output (<code>stdout</code>). We recommend you implement a logging solution to collect and store these logs. Having logs available can help you or GitHub support with troubleshooting and debugging. For more information, see <a href="https://kubernetes.io/docs/concepts/cluster-administration/logging/">Logging Architecture</a> in the Kubernetes documentation.</p>
+<h2><a href="#resources-labels">Resources labels</a></h2>
+<p>Labels are added to the resources created by Actions Runner Controller, which include the controller, listener, and runner pods. You can use these labels to filter resources and to help with troubleshooting.</p>
+<h3><a href="#controller-pod">Controller pod</a></h3>
+<p>The following labels are applied to the controller pod.</p>
+<pre><code><span>app.kubernetes.io/component=controller-manager</span>
+<span>app.kubernetes.io/instance=&lt;controller</span> <span>installation</span> <span>name&gt;</span>
+<span>app.kubernetes.io/name=gha-runner-scale-set-controller</span>
+<span>app.kubernetes.io/part-of=gha-runner-scale-set-controller</span>
+<span>app.kubernetes.io/version=&lt;chart</span> <span>version&gt;</span>
+</code></pre>
+<h3><a href="#listener-pod">Listener pod</a></h3>
+<p>The following labels are applied to listener pods.</p>
+<pre><code><span>actions.github.com/enterprise=</span> <span># Will be populated if githubConfigUrl is an enterprise URL</span>
+<span>actions.github.com/organization=</span> <span># Will be populated if githubConfigUrl is an organization URL</span>
+<span>actions.github.com/repository=</span> <span># Will be populated if githubConfigUrl is a repository URL</span>
+<span>actions.github.com/scale-set-name=</span> <span># Runners scale set name</span>
+<span>actions.github.com/scale-set-namespace=</span> <span># Runners namespace</span>
+<span>app.kubernetes.io/component=runner-scale-set-listener</span>
+<span>app.kubernetes.io/part-of=gha-runner-scale-set</span>
+<span>app.kubernetes.io/version=</span> <span># Chart version</span>
+</code></pre>
+<h3><a href="#runner-pod">Runner pod</a></h3>
+<p>The following labels are applied to runner pods.</p>
+<pre><code><span>actions-ephemeral-runner=</span> <span># True | False</span>
+<span>actions.github.com/organization=</span> <span># Will be populated if githubConfigUrl is an organization URL</span>
+<span>actions.github.com/scale-set-name=</span> <span># Runners scale set name</span>
+<span>actions.github.com/scale-set-namespace=</span> <span># Runners namespace</span>
+<span>app.kubernetes.io/component=runner</span>
+<span>app.kubernetes.io/part-of=gha-runner-scale-set</span>
+<span>app.kubernetes.io/version=</span> <span># Chart version</span>
+</code></pre>
+<h2><a href="#checking-the-logs-of-the-controller-and-runner-set-listener">Checking the logs of the controller and runner set listener</a></h2>
+<p>To check the logs of the controller pod, you can use the following command.</p>
+<div>
+<header><span>Bash</span><pre>kubectl logs -n &lt;CONTROLLER_NAMESPACE&gt; -l app.kubernetes.io/name=gha-runner-scale-set-controller
+</pre></header><pre><code>kubectl logs -n &lt;CONTROLLER_NAMESPACE&gt; -l app.kubernetes.io/name=gha-runner-scale-set-controller
+</code></pre>
+</div>
+<p>To check the logs of the runner set listener, you can use the following command.</p>
+<div>
+<header><span>Bash</span><pre>kubectl logs -n &lt;CONTROLLER_NAMESPACE&gt; -l auto-scaling-runner-set-namespace=arc-systems -l auto-scaling-runner-set-name=arc-runner-set
+</pre></header><pre><code>kubectl logs -n &lt;CONTROLLER_NAMESPACE&gt; -l auto-scaling-runner-set-namespace=arc-systems -l auto-scaling-runner-set-name=arc-runner-set
+</code></pre>
+</div>
+<h2><a href="#using-the-charts-from-the-master-branch">Using the charts from the <code>master</code> branch</a></h2>
+<p>We recommend you use the charts from the latest release instead of the <code>master</code> branch. The <code>master</code> branch is highly unstable, and we cannot guarantee that the charts in the <code>master</code> branch will work at any given time.</p>
+<h2><a href="#troubleshooting-the-listener-pod">Troubleshooting the listener pod</a></h2>
+<p>If the controller pod is running, but the listener pod is not, inspect the logs of the controller first and see if there are any errors. If there are no errors and the runner set listener pod is still not running, ensure the controller pod has access to the Kubernetes API server in your cluster.</p>
+<p>If you have a proxy configured or you're using a sidecar proxy that's automatically injected, such as <a href="https://istio.io/">Istio</a>, ensure it's configured to allow traffic from the controller container (manager) to the Kubernetes API server.</p>
+<p>If you have installed the autoscaling runner set, but the listener pod is not created, verify that the <code>githubConfigSecret</code> you provided is correct and that the <code>githubConfigUrl</code> you provided is accurate. See <a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/authenticating-to-the-github-api">Authenticating to the GitHub API</a> and <a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/deploying-runner-scale-sets-with-actions-runner-controller">Deploying runner scale sets with Actions Runner Controller</a> for more information.</p>
+<h2><a href="#runner-pods-are-recreated-after-a-canceled-workflow-run">Runner pods are recreated after a canceled workflow run</a></h2>
+<p>Once a workflow run is canceled, the following events happen.</p>
+<ul>
+<li>The cancellation signal is sent to the runners directly.</li>
+<li>The runner application terminates, which also terminates the runner pods.</li>
+<li>On the next poll, the cancellation signal is received by the listener.</li>
+</ul>
+<p>There might be a slight delay between when the runners receive the signal and when the listener receives the signal. When runner pods start terminating, the listener tries to bring up new runners to match the desired number of runners according to the state it's in. However, when the listener receives the cancellation signal, it will act to reduce the number of runners. Eventually the listener will scale back down to the desired number of runners. In the meantime, you may see extra runners.</p>
+<h2><a href="#error-name-must-have-up-to-n-characters">Error: <code>Name must have up to n characters</code></a></h2>
+<p>ARC uses the generated names of certain resources as labels for other resources. Because of this requirement, ARC limits resource names to 63 characters.</p>
+<p>Because part of the resource name is defined by you, ARC imposes a limit on the number of characters you can use for the installation name and namespace.</p>
+<pre><code>Error: INSTALLATION FAILED: execution error at (gha-runner-scale-set/templates/autoscalingrunnerset.yaml:5:5): Name must have up to 45 characters
+
+Error: INSTALLATION FAILED: execution error at (gha-runner-scale-set/templates/autoscalingrunnerset.yaml:8:5): Namespace must have up to 63 characters
+</code></pre>
+<h2><a href="#error-access-to-the-path-homerunner_work_tool-is-denied">Error: <code>Access to the path /home/runner/_work/_tool is denied</code></a></h2>
+<p>You may see this error if you're using Kubernetes mode with persistent volumes. This error occurs if the runner container is running with a non-root user and is causing a permissions mismatch with the mounted volume.</p>
+<p>To fix this, you can do one of the following things.</p>
+<ul>
+<li>
+<p>Use a volume type that supports <code>securityContext.fsGroup</code>. <code>hostPath</code> volumes do not support this property, whereas <code>local</code> volumes and other types of volumes do support it. Update the <code>fsGroup</code> of your runner pod to match the GID of the runner. You can do this by updating the <code>gha-runner-scale-set</code> helm chart values to include the following. Replace <code>VERSION</code> with the version of the <code>actions-runner</code> container image you want to use.</p>
+<div>
+<header><span>YAML</span><pre>spec:
+    securityContext:
+        fsGroup: 123
+    containers:
+    - name: runner
+    image: ghcr.io/actions/actions-runner:latest
+    command: ["/home/runner/run.sh"]
+</pre></header><pre><code><span>spec:</span>
+    <span>securityContext:</span>
+        <span>fsGroup:</span> <span>123</span>
+    <span>containers:</span>
+    <span>-</span> <span>name:</span> <span>runner</span>
+    <span>image:</span> <span>ghcr.io/actions/actions-runner:latest</span>
+    <span>command:</span> [<span>"/home/runner/run.sh"</span>]
+</code></pre>
+</div>
+</li>
+<li>
+<p>If updating the <code>securityContext</code> of your runner pod is not a viable solution, you can work around the issue by using <code>initContainers</code> to change the mounted volume's ownership, as follows.</p>
+<div>
+<header><span>YAML</span><pre>template:
+spec:
+    initContainers:
+    - name: kube-init
+    image: ghcr.io/actions/actions-runner:latest
+    command: ["sudo", "chown", "-R", "1001:123", "/home/runner/_work"]
+    volumeMounts:
+        - name: work
+        mountPath: /home/runner/_work
+    containers:
+    - name: runner
+    image: ghcr.io/actions/actions-runner:latest
+    command: ["/home/runner/run.sh"]
+</pre></header><pre><code><span>template:</span>
+<span>spec:</span>
+    <span>initContainers:</span>
+    <span>-</span> <span>name:</span> <span>kube-init</span>
+    <span>image:</span> <span>ghcr.io/actions/actions-runner:latest</span>
+    <span>command:</span> [<span>"sudo"</span>, <span>"chown"</span>, <span>"-R"</span>, <span>"1001:123"</span>, <span>"/home/runner/_work"</span>]
+    <span>volumeMounts:</span>
+        <span>-</span> <span>name:</span> <span>work</span>
+        <span>mountPath:</span> <span>/home/runner/_work</span>
+    <span>containers:</span>
+    <span>-</span> <span>name:</span> <span>runner</span>
+    <span>image:</span> <span>ghcr.io/actions/actions-runner:latest</span>
+    <span>command:</span> [<span>"/home/runner/run.sh"</span>]
+</code></pre>
+</div>
+</li>
+</ul>
+<h2><a href="#error-failed-to-get-access-token-for-github-app-auth-401-unauthorized">Error: <code>failed to get access token for GitHub App auth: 401 Unauthorized</code></a></h2>
+<p>A <code>401 Unauthorized</code> error when attempting to obtain an access token for a GitHub App could be a result of a Network Time Protocol (NTP) drift. Ensure that your Kubernetes system is accurately syncing with an NTP server and that there isn't a significant time drift. There is more leeway if your system time is behind GitHub's time, but if the environment is more than a few seconds ahead, 401 errors will occur when using GitHub App.</p>
+<h2><a href="#legal-notice">Legal notice</a></h2>
+<p>Portions have been adapted from <a href="https://github.com/actions/actions-runner-controller/">https://github.com/actions/actions-runner-controller/</a> under the Apache-2.0 license:</p>
+<pre><code>Copyright 2019 Moto Ishizawa
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</code></pre>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,209 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Supply chain security" href="/en/code-security/supply-chain-security">Supply chain security</a><span>/</span>
+</li>
+<li>
+<a title="Understand your supply chain" href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain">Understand your supply chain</a><span>/</span>
+</li>
+<li><a title="Dependency submission API" href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/using-the-dependency-submission-api">Dependency submission API</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Using the dependency submission API</h1></div></div>
+<div><div><p>You can use the dependency submission API to submit dependencies for projects, such as the dependencies resolved when a project is built or compiled.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-the-dependency-submission-api"><div><span>About the dependency submission API</span></div></a></li>
+<li><a href="#submitting-dependencies-at-build-time"><div><span>Submitting dependencies at build-time</span></div></a></li>
+<li><a href="#submitting-sboms-as-snapshots"><div><span>Submitting SBOMs as snapshots</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-the-dependency-submission-api">About the dependency submission API</a></h2>
+<p>You can use the REST API to submit dependencies for a project. This enables you to add dependencies, such as those resolved when software is compiled or built, to GitHub's dependency graph feature, providing a more complete picture of all of your project's dependencies.</p>
+<p>The dependency graph shows any dependencies you submit using the API in addition to any dependencies that are identified from manifest or lock files in the repository (for example, a <code>package-lock.json</code> file in a JavaScript project). For more information about viewing the dependency graph, see <a href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/exploring-the-dependencies-of-a-repository#viewing-the-dependency-graph">Exploring the dependencies of a repository</a>.</p>
+<p>Submitted dependencies will receive Dependabot alerts and Dependabot security updates for any known vulnerabilities. You will only get Dependabot alerts for dependencies that are from one of the supported ecosystems for the GitHub Advisory Database. For more information about these ecosystems, see <a href="/en/code-security/security-advisories/global-security-advisories/about-the-github-advisory-database#github-reviewed-advisories">About the GitHub Advisory database</a>. For transitive dependencies submitted via the dependency submission API, Dependabot will automatically open pull requests to update the parent dependency, if an update is available.</p>
+<p>Submitted dependencies will be shown in dependency review, but are <em>not</em> available in your organization's dependency insights.</p>
+<div>
+<p>
+The dependency review API and the dependency submission API work together. This means that the dependency review API will include dependencies submitted via the dependency submission API.</p>
+</div>
+<p>Dependencies are submitted to the dependency submission API in the form of a snapshot. A snapshot is a set of dependencies associated with a commit SHA and other metadata, that reflects the current state of your repository for a commit. Snapshots can be generated from the dependencies detected at build time. For technical details on using the dependency submission API over the network, see <a href="/en/rest/dependency-graph/dependency-submission">REST API endpoints for dependency submission</a>.</p>
+<h2><a href="#submitting-dependencies-at-build-time">Submitting dependencies at build-time</a></h2>
+<p>You can use the dependency submission API in a GitHub Actions workflow to submit dependencies for your project when your project is built.</p>
+<h3><a href="#using-pre-made-actions">Using pre-made actions</a></h3>
+<p>The simplest way to use the dependency submission API is by adding a pre-made action to your repository that will gather and convert the list of dependencies to the required snapshot format and submit the list to the API.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Ecosystem</th>
+<th>Action</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Go</td>
+<td><a href="https://github.com/marketplace/actions/go-dependency-submission">Go Dependency Submission</a></td>
+</tr>
+<tr>
+<td>Gradle</td>
+<td><a href="https://github.com/marketplace/actions/build-with-gradle#the-dependency-submission-action">Gradle Dependency Submission</a></td>
+</tr>
+<tr>
+<td>Maven</td>
+<td><a href="https://github.com/marketplace/actions/maven-dependency-tree-dependency-submission">Maven Dependency Tree Dependency Submission</a></td>
+</tr>
+<tr>
+<td>Mill</td>
+<td><a href="https://github.com/marketplace/actions/mill-dependency-submission">Mill Dependency Submission</a></td>
+</tr>
+<tr>
+<td>Mix (Elixir)</td>
+<td><a href="https://github.com/marketplace/actions/mix-dependency-submission">Mix Dependency Submission</a></td>
+</tr>
+<tr>
+<td>Scala</td>
+<td><a href="https://github.com/marketplace/actions/sbt-dependency-submission">Sbt Dependency Submission</a></td>
+</tr>
+<tr>
+<td>NuGet and others</td>
+<td><a href="https://github.com/marketplace/actions/component-detection-dependency-submission-action">Component Detection dependency submission action</a></td>
+</tr>
+</tbody>
+</table>
+<div>
+<p>
+For the Component Detection dependency submission action, other supported ecosystems include Vcpkg, Conan, Conda, Crates, as well as NuGet.</p>
+</div>
+<p>For example, the following <a href="https://github.com/actions/go-dependency-submission">Go Dependency Submission</a> workflow calculates the dependencies for a Go build-target (a Go file with a <code>main</code> function) and submits the list to the dependency submission API.</p>
+<pre><code><span>name:</span> <span>Go</span> <span>Dependency</span> <span>Submission</span>
+<span>on:</span>
+  <span>push:</span>
+    <span>branches:</span>
+      <span>-</span> <span>main</span>
+
+<span># The API requires write permission on the repository to submit dependencies</span>
+<span>permissions:</span>
+  <span>contents:</span> <span>write</span>
+
+<span># Environment variables to configure Go and Go modules. Customize as necessary</span>
+<span>env:</span>
+  <span>GOPROXY:</span> <span>''</span> <span># A Go Proxy server to be used</span>
+  <span>GOPRIVATE:</span> <span>''</span> <span># A list of modules are considered private and not requested from GOPROXY</span>
+<span>jobs:</span>
+  <span>go-action-detection:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>'Checkout Repository'</span>
+        <span>uses:</span> <span>actions/checkout@v4</span>
+
+      <span>-</span> <span>uses:</span> <span>actions/setup-go@v5</span>
+        <span>with:</span>
+          <span>go-version:</span> <span>"&gt;=1.18.0"</span>
+
+      <span>-</span> <span>name:</span> <span>Run</span> <span>snapshot</span> <span>action</span>
+        <span>uses:</span> <span>actions/go-dependency-submission@v1</span>
+        <span>with:</span>
+            <span># Required: Define the repo path to the go.mod file used by the</span>
+            <span># build target</span>
+            <span>go-mod-path:</span> <span>go-example/go.mod</span>
+            <span>#</span>
+            <span># Optional. Define the repo path of a build target,</span>
+            <span># a file with a `main()` function.</span>
+            <span># If undefined, this action will collect all dependencies</span>
+            <span># used by all build targets for the module. This may</span>
+            <span># include Go dependencies used by tests and tooling.</span>
+            <span>go-build-target:</span> <span>go-example/cmd/octocat.go</span>
+</code></pre>
+<p>For more information about these actions, see <a href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/dependency-graph-supported-package-ecosystems#package-ecosystems-supported-via-dependency-submission-actions">Dependency graph supported package ecosystems</a>.</p>
+<h3><a href="#creating-your-own-action">Creating your own action</a></h3>
+<p>Alternatively, you can write your own action to submit dependencies for your project at build-time. Your workflow should:</p>
+<ol>
+<li>Generate a list of dependencies for your project.</li>
+<li>Translate the list of dependencies into the snapshot format accepted by the dependency submission API. For more information about the format, see the body parameters for the "Create a repository snapshot" API endpoint in <a href="/en/rest/dependency-graph/dependency-submission">REST API endpoints for dependency submission</a>.</li>
+<li>Submit the formatted list of dependencies to the dependency submission API.</li>
+</ol>
+<p>GitHub maintains the <a href="https://github.com/github/dependency-submission-toolkit">Dependency Submission Toolkit</a>, a TypeScript library to help you build your own GitHub Action for submitting dependencies to the dependency submission API. For more information about writing an action, see <a href="/en/actions/creating-actions">Sharing automations</a>.</p>
+<h2><a href="#submitting-sboms-as-snapshots">Submitting SBOMs as snapshots</a></h2>
+<p>If you have external tools which create or manage Software Bills of Materials (SBOMs), you can also submit those SBOMs to the dependency submission API. The snapshot data format is very similar to the standard SPDX and CycloneDX SBOM formats, and there are several tools which can generate or translate formats for use as snapshots.</p>
+<div>
+<p> The <a href="https://github.com/marketplace/actions/spdx-dependency-submission-action">SPDX Dependency Submission Action</a> and the <a href="https://github.com/marketplace/actions/anchore-sbom-action">Anchore SBOM Action</a> can be used to both generate a SBOM and submit it to the dependency submission API.</p>
+</div>
+<p>For example, the following <a href="https://github.com/marketplace/actions/spdx-dependency-submission-action">SPDX Dependency Submission Action</a> workflow calculates the dependencies for a repository, generates an exportable SBOM in SPDX 2.2 format, and submits it to the dependency submission API.</p>
+<pre><code>
+<span>name:</span> <span>SBOM</span> <span>upload</span>
+
+<span>on:</span>
+  <span>workflow_dispatch:</span>
+  <span>push:</span>
+    <span>branches:</span> [<span>"main"</span>]
+
+<span>jobs:</span>
+  <span>SBOM-upload:</span>
+
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>permissions:</span>
+      <span>id-token:</span> <span>write</span>
+      <span>contents:</span> <span>write</span>
+
+    <span>steps:</span>
+    <span>-</span> <span>uses:</span> <span>actions/checkout@v4</span>
+    <span>-</span> <span>name:</span> <span>Generate</span> <span>SBOM</span>
+      <span># generation command documentation: https://github.com/microsoft/sbom-tool#sbom-generation</span>
+      <span>run:</span> <span>|
+        curl -Lo $RUNNER_TEMP/sbom-tool https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64
+        chmod +x $RUNNER_TEMP/sbom-tool
+        $RUNNER_TEMP/sbom-tool generate -b . -bc . -pn $ -pv 1.0.0 -ps OwnerName -nsb https://sbom.mycompany.com -V Verbose
+</span>    <span>-</span> <span>uses:</span> <span>actions/upload-artifact@v4</span>
+      <span>with:</span>
+        <span>name:</span> <span>sbom</span>
+        <span>path:</span> <span>_manifest/spdx_2.2</span>
+    <span>-</span> <span>name:</span> <span>SBOM</span> <span>upload</span>
+      <span>uses:</span> <span>advanced-security/spdx-dependency-submission-action@5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e</span>
+      <span>with:</span>
+        <span>filePath:</span> <span>"_manifest/spdx_2.2/"</span>
+</code></pre>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

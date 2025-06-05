@@ -1,0 +1,133 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Prebuilding your codespaces" href="/en/codespaces/prebuilding-your-codespaces">Prebuilding your codespaces</a><span>/</span>
+</li>
+<li><a title="Manage prebuilds" href="/en/codespaces/prebuilding-your-codespaces/managing-prebuilds">Manage prebuilds</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Managing prebuilds</h1></div></div>
+<div>
+<div><p>You can review, modify, and delete the prebuild configurations for your repository.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div>
+<p>Repository-level settings for GitHub Codespaces are available for all repositories owned by personal accounts. <br><br></p>
+<p>For repositories owned by organizations, repository-level settings for GitHub Codespaces are available for organizations on GitHub Team and GitHub Enterprise plans. To access the settings, the organization or its parent enterprise must have added a payment method and set a spending limit for GitHub Codespaces. For more information, see <a href="/en/codespaces/managing-codespaces-for-your-organization/choosing-who-owns-and-pays-for-codespaces-in-your-organization">Choosing who owns and pays for codespaces in your organization</a> and <a href="/en/get-started/learning-about-github/githubs-plans">GitHub’s plans</a>.</p>
+</div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-managing-prebuilds"><div><span>About managing prebuilds</span></div></a></li>
+<li><a href="#viewing-the-progress-of-prebuilds"><div><span>Viewing the progress of prebuilds</span></div></a></li>
+<li><a href="#editing-a-prebuild-configuration"><div><span>Editing a prebuild configuration</span></div></a></li>
+<li><a href="#disabling-a-prebuild-configuration"><div><span>Disabling a prebuild configuration</span></div></a></li>
+<li><a href="#deleting-a-prebuild-configuration"><div><span>Deleting a prebuild configuration</span></div></a></li>
+<li><a href="#manually-trigger-prebuilds"><div><span>Manually trigger prebuilds</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-managing-prebuilds">About managing prebuilds</a></h2>
+<p>The prebuilds that you configure for a repository are created and updated using a GitHub Actions workflow, managed by the GitHub Codespaces service.</p>
+<p>Depending on the settings in a prebuild configuration, the workflow to update the prebuild may be triggered by these events:</p>
+<ul>
+<li>Creating or updating the prebuild configuration</li>
+<li>Pushing a commit or a pull request to a branch that's configured to have prebuilds</li>
+<li>Changing any of the dev container configuration files</li>
+<li>A schedule that you've defined in the prebuild configuration</li>
+<li>Manually triggering the workflow</li>
+</ul>
+<p>The settings in the prebuild configuration determine which events automatically trigger an update of the prebuild. See <a href="/en/codespaces/prebuilding-your-codespaces/configuring-prebuilds#configuring-prebuilds">Configuring prebuilds</a>.</p>
+<p>People with admin access to a repository can check the progress of prebuilds, edit, and delete prebuild configurations.</p>
+<p>To locate all repositories that are hosting a prebuild configuration, you must obtain a copy of your usage report by following the steps for <a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/viewing-your-github-codespaces-usage">Viewing your GitHub Codespaces usage</a>.</p>
+<h2><a href="#viewing-the-progress-of-prebuilds">Viewing the progress of prebuilds</a></h2>
+<p>You can view the current status of the latest workflow run for each prebuild configuration you've set up on the GitHub Codespaces page of your repository settings. For example, "Currently running" or "Last run 1 hour ago."</p>
+<p>To see the log output for the latest prebuild workflow run, click <strong>See output</strong>.</p>
+<p><picture><source><img src="/assets/cb-48318/images/help/codespaces/prebuilds-see-output.png" alt='Screenshot of the "Prebuild configuration" page. Two prebuild configurations are listed. The "See output" button for one configuration is highlighted.' width="720" height="295"></source></picture></p>
+<p>This displays the output of the most recent run of the workflow in the <strong>Actions</strong> tab.</p>
+<p><picture><source><img src="/assets/cb-112161/images/help/codespaces/prebuilds-log-output.png" alt='Screenshot of the prebuild workflow output in the "Actions" tab of GitHub.' width="720" height="333"></source></picture></p>
+<p>Alternatively, to view all prebuild workflow runs associated with the specified branch, select the <strong>View runs</strong>.</p>
+<p><picture><source><img src="/assets/cb-26915/images/help/codespaces/prebuilds-view-runs.png" alt='Screenshot of the options dropdown menu for a configuration, shown by clicking a button labeled with three dots. The "View runs" option is selected.' width="720" height="181"></source></picture></p>
+<p>This displays the workflow run history for prebuilds for the associated branch.</p>
+<p><picture><source><img src="/assets/cb-91872/images/help/codespaces/prebuilds-workflow-runs.png" alt='Screenshot of the "Codespaces Prebuilds" list showing a run history for prebuild workflows.'></source></picture></p>
+<h2><a href="#editing-a-prebuild-configuration">Editing a prebuild configuration</a></h2>
+<ol>
+<li>
+<p>On the Codespaces page of your repository settings, click the ellipsis to the right of the prebuild configuration you want to edit.</p>
+</li>
+<li>
+<p>In the dropdown menu, click <strong>Edit</strong>.</p>
+<div><picture><source><img src="/assets/cb-27186/images/help/codespaces/prebuilds-edit.png" alt='Screenshot of the options dropdown menu for a configuration, displayed by clicking a button labeled with three dots. The "Edit" option is selected.' width="720" height="195"></source></picture></div>
+</li>
+<li>
+<p>Make the required changes to the prebuild configuration, then click <strong>Update</strong>.</p>
+<p>If the dev container configuration for the repository specifies permissions for accessing other repositories, you will be shown an authorization page. For more information on how this is specified in the <code>devcontainer.json</code> file, see <a href="/en/codespaces/managing-your-codespaces/managing-repository-access-for-your-codespaces">Managing access to other repositories within your codespace</a>.</p>
+<p>Click </p>
+<div><picture><source><img src="/assets/cb-95634/images/help/codespaces/prebuild-authorization-page.png" alt="Screenshot of an authorization page for a prebuild configuration. Three permissions are listed in this request." width="720" height="533"></source></picture></div>
+<p>Click <strong>Authorize and continue</strong> to grant these permissions for creation of prebuilds. Alternatively, you can click <strong>Continue without authorizing</strong> but, if you do so, codespaces created from the resulting prebuilds may not work properly.</p>
+<div>
+<p>
+Users who create codespaces using this prebuild will also be asked to grant these permissions.</p>
+</div>
+</li>
+</ol>
+<h2><a href="#disabling-a-prebuild-configuration">Disabling a prebuild configuration</a></h2>
+<p>To pause the update of prebuilds for a configuration, you can disable workflow runs for the configuration. Disabling the workflow runs for a prebuild configuration does not delete any previously created prebuilds for that configuration and, as a result, codespaces will continue to be generated from an existing prebuild.</p>
+<p>Disabling the workflow runs for a prebuild configuration is useful if you need to investigate prebuild creation failures.</p>
+<ol>
+<li>
+<p>On the Codespaces page of your repository settings, click the ellipsis to the right of the prebuild configuration you want to disable.</p>
+</li>
+<li>
+<p>In the dropdown menu, click <strong>Disable runs</strong>.</p>
+<div><picture><source><img src="/assets/cb-33546/images/help/codespaces/prebuilds-disable.png" alt='Screenshot of the prebuild configuration dropdown menu, shown by clicking a button labeled with three dots. The "Disable runs" option is selected.' width="720" height="229"></source></picture></div>
+</li>
+<li>
+<p>To confirm that you want to disable this configuration, click <strong>OK</strong>.</p>
+</li>
+</ol>
+<h2><a href="#deleting-a-prebuild-configuration">Deleting a prebuild configuration</a></h2>
+<div>
+<p>
+You can find a list of the repositories that contain a prebuild by obtaining a copy of your “<a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/viewing-your-github-codespaces-usage">usage report</a>.”</p>
+</div>
+<p>Deleting a prebuild configuration also deletes all previously created prebuilds for that configuration. As a result, shortly after you delete a configuration, prebuilds generated by that configuration will no longer be available when you create a new codespace.</p>
+<p>After you delete a prebuild configuration, workflow runs for that configuration that have been queued or started will still run. They will be listed in the workflow run history, along with previously completed workflow runs.</p>
+<ol>
+<li>
+<p>On the Codespaces page of your repository settings, click the ellipsis to the right of the prebuild configuration you want to delete.</p>
+</li>
+<li>
+<p>In the dropdown menu, click <strong>Delete</strong>.</p>
+<div><picture><source><img src="/assets/cb-36637/images/help/codespaces/prebuilds-delete.png" alt='Screenshot of the prebuild configuration dropdown menu, displayed by clicking a button labeled with three dots. The "Delete" option is selected.' width="720" height="271"></source></picture></div>
+</li>
+<li>
+<p>Click <strong>OK</strong> to confirm the deletion.</p>
+</li>
+</ol>
+<h2><a href="#manually-trigger-prebuilds">Manually trigger prebuilds</a></h2>
+<p>It may be useful to manually trigger a workflow run for a prebuild configuration. Generally, this is only necessary if you are debugging a problem with the workflow for a prebuild configuration.</p>
+<ol>
+<li>
+<p>On the Codespaces page of your repository settings, click the ellipsis to the right of the prebuild configuration whose workflow you want to trigger.</p>
+</li>
+<li>
+<p>In the dropdown menu, click <strong>Manually trigger</strong>.</p>
+<div><picture><source><img src="/assets/cb-30904/images/help/codespaces/prebuilds-manually-trigger.png" alt='Screenshot of the prebuild configuration dropdown menu, shown by clicking a button labeled with three dots. The "Manually trigger" option is selected.'></source></picture></div>
+</li>
+</ol>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/codespaces/troubleshooting/troubleshooting-prebuilds">Troubleshooting prebuilds</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

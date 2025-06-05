@@ -1,0 +1,82 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Manage Copilot" href="/en/copilot/managing-copilot">Manage Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Manage for organization" href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization">Manage for organization</a><span>/</span>
+</li>
+<li>
+<a title="Manage access" href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/managing-access-to-github-copilot-in-your-organization">Manage access</a><span>/</span>
+</li>
+<li><a title="Manage network access" href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/managing-access-to-github-copilot-in-your-organization/managing-github-copilot-access-to-your-organizations-network">Manage network access</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Managing GitHub Copilot access to your organization's network</h1></div></div>
+<div>
+<div><p>Learn how to use subscription-based network routing to control Copilot access to your network.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Organization owners</p></div></div>
+<div><div><p>Copilot Business</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-copilot-subscription-based-network-routing"><div><span>About Copilot subscription-based network routing</span></div></a></li>
+<li><a href="#important-steps-to-ensure-continued-access-to-copilot"><div><span>Important steps to ensure continued access to Copilot</span></div></a></li>
+<li><a href="#configuring-copilot-subscription-based-network-routing-for-your-organization"><div><span>Configuring Copilot subscription-based network routing for your organization</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-copilot-subscription-based-network-routing">About Copilot subscription-based network routing</a></h2>
+<p>As an organization owner, you can use your network firewall to explicitly allow access to GitHub Copilot Business, and/or block access to GitHub Copilot Pro or GitHub Copilot Free. This allows you to control which GitHub Copilot plans your members can use within your network.</p>
+<p>Configuring Copilot subscription-based network routing will affect the following Copilot features:</p>
+<ul>
+<li>Code completion in Visual Studio Code, Visual Studio, JetBrains IDEs, and Vim/NeoVim</li>
+<li>Copilot Chat in Visual Studio Code, Visual Studio, and JetBrains IDEs</li>
+<li>Copilot Chat on GitHub</li>
+<li>GitHub Mobile Apps</li>
+<li>Copilot in the CLI</li>
+</ul>
+<p>Copilot subscription-based network routing is enabled for all users. This ensures that users access Copilot through an endpoint that is specific to their Copilot plan. Only Copilot Business users will be able to connect to the Copilot Business endpoint and only Copilot Enterprise users will be able to connect to the Copilot Enterprise endpoint.</p>
+<h2><a href="#important-steps-to-ensure-continued-access-to-copilot">Important steps to ensure continued access to Copilot</a></h2>
+<p>You should ensure that your firewall allows access to all of the hostnames listed in <a href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/configuring-your-proxy-server-or-firewall-for-copilot">Configuring your proxy server or firewall for Copilot</a>.</p>
+<h2><a href="#configuring-copilot-subscription-based-network-routing-for-your-organization">Configuring Copilot subscription-based network routing for your organization</a></h2>
+<p>Organization owners can add the endpoints for Copilot Business or Copilot Enterprise to their allow-list. This will ensure that members can only access Copilot through the allowed endpoint.</p>
+<ol>
+<li>
+<p>Ensure your members have updated to at least the minimum version of their Copilot client listed below.</p>
+<ul>
+<li>For Visual Studio Code, use Copilot Chat version 0.17 or later.</li>
+<li>For JetBrains IDEs, use Copilot version 1.5.6.5692 or later.</li>
+<li>For Visual Studio, use version VS 2022 17.11 or later.</li>
+</ul>
+</li>
+<li>
+<p>Update your corporate network firewall to include one, or both, of these paths in your allowlist:</p>
+<ul>
+<li>
+<p>For a Copilot Business plan, add <code>*.business.githubcopilot.com</code></p>
+</li>
+<li>
+<p>For a Copilot Enterprise plan, add <code>*.enterprise.githubcopilot.com</code></p>
+</li>
+</ul>
+<div>
+<p> The <code>*</code> indicates a wildcard character. A wildcard is necessary as there are multiple subdomains required for Copilot to function correctly.</p>
+</div>
+</li>
+<li>
+<p>Update your corporate network firewall to include <code>*.individual.githubcopilot.com</code> in your blocklist.</p>
+</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

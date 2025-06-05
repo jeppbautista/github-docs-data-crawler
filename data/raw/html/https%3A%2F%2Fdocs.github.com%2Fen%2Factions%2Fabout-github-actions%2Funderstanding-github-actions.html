@@ -1,0 +1,73 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="About GitHub Actions" href="/en/actions/about-github-actions">About GitHub Actions</a><span>/</span>
+</li>
+<li><a title="Understand GitHub Actions" href="/en/actions/about-github-actions/understanding-github-actions">Understand GitHub Actions</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Understanding GitHub Actions</h1></div></div>
+<div><div><p>Learn the basics of GitHub Actions, including core concepts and essential terminology.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#overview"><div><span>Overview</span></div></a></li>
+<li><a href="#the-components-of-github-actions"><div><span>The components of GitHub Actions</span></div></a></li>
+<li><a href="#next-steps"><div><span>Next steps</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#overview">Overview</a></h2>
+<p>GitHub Actions is a continuous integration and continuous delivery (CI/CD) platform that allows you to automate your build, test, and deployment pipeline. You can create workflows that build and test every pull request to your repository, or deploy merged pull requests to production.</p>
+<p>GitHub Actions goes beyond just DevOps and lets you run workflows when other events happen in your repository. For example, you can run a workflow to automatically add the appropriate labels whenever someone creates a new issue in your repository.</p>
+<p>GitHub provides Linux, Windows, and macOS virtual machines to run your workflows, or you can host your own self-hosted runners in your own data center or cloud infrastructure.</p>
+<h2><a href="#the-components-of-github-actions">The components of GitHub Actions</a></h2>
+<p>You can configure a GitHub Actions <strong>workflow</strong> to be triggered when an <strong>event</strong> occurs in your repository, such as a pull request being opened or an issue being created. Your workflow contains one or more <strong>jobs</strong> which can run in sequential order or in parallel. Each job will run inside its own virtual machine <strong>runner</strong>, or inside a container, and has one or more <strong>steps</strong> that either run a script that you define or run an <strong>action</strong>, which is a reusable extension that can simplify your workflow.</p>
+<p><picture><source><img src="/assets/cb-25535/images/help/actions/overview-actions-simple.png" alt="Diagram of an event triggering Runner 1 to run Job 1, which triggers Runner 2 to run Job 2. Each of the jobs is broken into multiple steps." width="720" height="252"></source></picture></p>
+<h3><a href="#workflows">Workflows</a></h3>
+<p>A <strong>workflow</strong> is a configurable automated process that will run one or more jobs. Workflows are defined by a YAML file checked in to your repository and will run when triggered by an event in your repository, or they can be triggered manually, or at a defined schedule.</p>
+<p>Workflows are defined in the <code>.github/workflows</code> directory in a repository. A repository can have multiple workflows, each of which can perform a different set of tasks such as:</p>
+<ul>
+<li>Building and testing pull requests</li>
+<li>Deploying your application every time a release is created</li>
+<li>Adding a label whenever a new issue is opened</li>
+</ul>
+<p>You can reference a workflow within another workflow. For more information, see <a href="/en/actions/using-workflows/reusing-workflows">Reusing workflows</a>.</p>
+<p>For more information, see <a href="/en/actions/using-workflows">Writing workflows</a>.</p>
+<h3><a href="#events">Events</a></h3>
+<p>An <strong>event</strong> is a specific activity in a repository that triggers a <strong>workflow</strong> run. For example, an activity can originate from GitHub when someone creates a pull request, opens an issue, or pushes a commit to a repository. You can also trigger a workflow to run on a <a href="/en/actions/using-workflows/events-that-trigger-workflows#schedule">schedule</a>, by <a href="/en/rest/repos/repos#create-a-repository-dispatch-event">posting to a REST API</a>, or manually.</p>
+<p>For a complete list of events that can be used to trigger workflows, see <a href="/en/actions/using-workflows/events-that-trigger-workflows">Events that trigger workflows</a>.</p>
+<h3><a href="#jobs">Jobs</a></h3>
+<p>A <strong>job</strong> is a set of <strong>steps</strong> in a workflow that is executed on the same <strong>runner</strong>. Each step is either a shell script that will be executed, or an <strong>action</strong> that will be run. Steps are executed in order and are dependent on each other. Since each step is executed on the same runner, you can share data from one step to another. For example, you can have a step that builds your application followed by a step that tests the application that was built.</p>
+<p>You can configure a job's dependencies with other jobs; by default, jobs have no dependencies and run in parallel. When a job takes a dependency on another job, it waits for the dependent job to complete before running.</p>
+<p>For example, you might configure multiple build jobs for different architectures without any job dependencies and a packaging job that depends on those builds. The build jobs run in parallel, and once they complete successfully, the packaging job runs.</p>
+<p>For more information, see <a href="/en/actions/using-jobs">Choosing what your workflow does</a>.</p>
+<h3><a href="#actions">Actions</a></h3>
+<p>An <strong>action</strong> is a custom application for the GitHub Actions platform that performs a complex but frequently repeated task. Use an action to help reduce the amount of repetitive code that you write in your <strong>workflow</strong> files. An action can pull your Git repository from GitHub, set up the correct toolchain for your build environment, or set up the authentication to your cloud provider.</p>
+<p>You can write your own actions, or you can find actions to use in your workflows in the GitHub Marketplace.</p>
+<p>For more information on actions, see <a href="/en/actions/creating-actions">Sharing automations</a>.</p>
+<h3><a href="#runners">Runners</a></h3>
+<p>A <strong>runner</strong> is a server that runs your workflows when they're triggered. Each runner can run a single <strong>job</strong> at a time.
+GitHub provides Ubuntu Linux, Microsoft Windows, and macOS runners to run your <strong>workflows</strong>. Each workflow run executes in a fresh, newly-provisioned virtual machine.</p>
+<p>GitHub also offers larger runners, which are available in larger configurations. For more information, see <a href="/en/actions/using-github-hosted-runners/using-larger-runners">Using larger runners</a>.</p>
+<p>If you need a different operating system or require a specific hardware configuration, you can host your own runners.</p>
+<p>For more information about self-hosted runners, see <a href="/en/actions/hosting-your-own-runners">Hosting your own runners</a>.</p>
+<h2><a href="#next-steps">Next steps</a></h2>
+<p>GitHub Actions can help you automate nearly every aspect of your application development processes. Ready to get started? Here are some helpful resources for taking your next steps with GitHub Actions:</p>
+<ul>
+<li>To create a GitHub Actions workflow, see <a href="/en/actions/learn-github-actions/using-starter-workflows">Using workflow templates</a>.</li>
+<li>For continuous integration (CI) workflows, see <a href="/en/actions/automating-builds-and-tests">Building and testing</a>.</li>
+<li>For building and publishing packages, see <a href="/en/actions/publishing-packages">Publishing packages</a>.</li>
+<li>For deploying projects, see <a href="/en/actions/deployment">Use cases and examples</a>.</li>
+<li>For automating tasks and processes on GitHub, see <a href="/en/actions/managing-issues-and-pull-requests">Managing projects</a>.</li>
+<li>For examples that demonstrate more complex features of GitHub Actions, see <a href="/en/actions/examples">Use cases and examples</a>. These detailed examples explain how to test your code on a runner, access the GitHub CLI, and use advanced features such as concurrency and test matrices.</li>
+<li>To certify your proficiency in automating workflows and accelerating development with GitHub Actions, earn a GitHub Actions certificate with GitHub Certifications. For more information, see <a href="/en/get-started/showcase-your-expertise-with-github-certifications/about-github-certifications">About GitHub Certifications</a>.</li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

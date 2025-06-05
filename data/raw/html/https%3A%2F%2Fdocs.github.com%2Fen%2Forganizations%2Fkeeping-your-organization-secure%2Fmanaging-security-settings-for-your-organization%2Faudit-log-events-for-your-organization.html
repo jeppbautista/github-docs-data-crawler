@@ -1,0 +1,3978 @@
+<html><body><div>
+<main><div><div>
+<div>
+<div><nav><ul>
+<li>
+<a title="Organizations" href="/en/organizations">Organizations</a><span>/</span>
+</li>
+<li>
+<a title="Organization security" href="/en/organizations/keeping-your-organization-secure">Organization security</a><span>/</span>
+</li>
+<li>
+<a title="Manage security settings" href="/en/organizations/keeping-your-organization-secure/managing-security-settings-for-your-organization">Manage security settings</a><span>/</span>
+</li>
+<li><a title="Audit log events" href="/en/organizations/keeping-your-organization-secure/managing-security-settings-for-your-organization/audit-log-events-for-your-organization">Audit log events</a></li>
+</ul></nav></div>
+<div><h1>Audit log events for your organization</h1></div>
+</div>
+<div><div><p>Learn about audit log events recorded for your organization.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-audit-log-events-for-your-organization"><div><span>About audit log events for your organization</span></div></a></li>
+<li><a href="#account"><div><span>account</span></div></a></li>
+<li><a href="#actions_cache"><div><span>actions_cache</span></div></a></li>
+<li><a href="#advisory_credit"><div><span>advisory_credit</span></div></a></li>
+<li><a href="#artifact"><div><span>artifact</span></div></a></li>
+<li><a href="#auto_approve_personal_access_token_requests"><div><span>auto_approve_personal_access_token_requests</span></div></a></li>
+<li><a href="#billing"><div><span>billing</span></div></a></li>
+<li><a href="#checks"><div><span>checks</span></div></a></li>
+<li><a href="#code_scanning"><div><span>code_scanning</span></div></a></li>
+<li><a href="#codespaces"><div><span>codespaces</span></div></a></li>
+<li><a href="#commit_comment"><div><span>commit_comment</span></div></a></li>
+<li><a href="#copilot"><div><span>copilot</span></div></a></li>
+<li><a href="#custom_property_definition"><div><span>custom_property_definition</span></div></a></li>
+<li><a href="#custom_property_value"><div><span>custom_property_value</span></div></a></li>
+<li><a href="#dependabot_alerts"><div><span>dependabot_alerts</span></div></a></li>
+<li><a href="#dependabot_alerts_new_repos"><div><span>dependabot_alerts_new_repos</span></div></a></li>
+<li><a href="#dependabot_repository_access"><div><span>dependabot_repository_access</span></div></a></li>
+<li><a href="#dependabot_security_updates"><div><span>dependabot_security_updates</span></div></a></li>
+<li><a href="#dependabot_security_updates_new_repos"><div><span>dependabot_security_updates_new_repos</span></div></a></li>
+<li><a href="#dependency_graph"><div><span>dependency_graph</span></div></a></li>
+<li><a href="#dependency_graph_new_repos"><div><span>dependency_graph_new_repos</span></div></a></li>
+<li><a href="#discussion_post"><div><span>discussion_post</span></div></a></li>
+<li><a href="#discussion_post_reply"><div><span>discussion_post_reply</span></div></a></li>
+<li><a href="#enterprise_announcement"><div><span>enterprise_announcement</span></div></a></li>
+<li><a href="#enterprise_installation"><div><span>enterprise_installation</span></div></a></li>
+<li><a href="#environment"><div><span>environment</span></div></a></li>
+<li><a href="#git"><div><span>git</span></div></a></li>
+<li><a href="#hook"><div><span>hook</span></div></a></li>
+<li><a href="#integration"><div><span>integration</span></div></a></li>
+<li><a href="#integration_installation"><div><span>integration_installation</span></div></a></li>
+<li><a href="#integration_installation_request"><div><span>integration_installation_request</span></div></a></li>
+<li><a href="#ip_allow_list"><div><span>ip_allow_list</span></div></a></li>
+<li><a href="#ip_allow_list_entry"><div><span>ip_allow_list_entry</span></div></a></li>
+<li><a href="#issue_comment"><div><span>issue_comment</span></div></a></li>
+<li><a href="#issue"><div><span>issue</span></div></a></li>
+<li><a href="#issue_type"><div><span>issue_type</span></div></a></li>
+<li><a href="#issues"><div><span>issues</span></div></a></li>
+<li><a href="#marketplace_agreement_signature"><div><span>marketplace_agreement_signature</span></div></a></li>
+<li><a href="#marketplace_listing"><div><span>marketplace_listing</span></div></a></li>
+<li><a href="#members_can_create_pages"><div><span>members_can_create_pages</span></div></a></li>
+<li><a href="#members_can_create_private_pages"><div><span>members_can_create_private_pages</span></div></a></li>
+<li><a href="#members_can_create_public_pages"><div><span>members_can_create_public_pages</span></div></a></li>
+<li><a href="#members_can_delete_repos"><div><span>members_can_delete_repos</span></div></a></li>
+<li><a href="#members_can_view_dependency_insights"><div><span>members_can_view_dependency_insights</span></div></a></li>
+<li><a href="#migration"><div><span>migration</span></div></a></li>
+<li><a href="#network_configuration"><div><span>network_configuration</span></div></a></li>
+<li><a href="#oauth_application"><div><span>oauth_application</span></div></a></li>
+<li><a href="#org"><div><span>org</span></div></a></li>
+<li><a href="#org_credential_authorization"><div><span>org_credential_authorization</span></div></a></li>
+<li><a href="#org_secret_scanning_automatic_validity_checks"><div><span>org_secret_scanning_automatic_validity_checks</span></div></a></li>
+<li><a href="#org_secret_scanning_custom_pattern"><div><span>org_secret_scanning_custom_pattern</span></div></a></li>
+<li><a href="#org_secret_scanning_generic_secrets"><div><span>org_secret_scanning_generic_secrets</span></div></a></li>
+<li><a href="#org_secret_scanning_non_provider_patterns"><div><span>org_secret_scanning_non_provider_patterns</span></div></a></li>
+<li><a href="#org_secret_scanning_push_protection_bypass_list"><div><span>org_secret_scanning_push_protection_bypass_list</span></div></a></li>
+<li><a href="#organization_default_label"><div><span>organization_default_label</span></div></a></li>
+<li><a href="#organization_domain"><div><span>organization_domain</span></div></a></li>
+<li><a href="#organization_projects_change"><div><span>organization_projects_change</span></div></a></li>
+<li><a href="#organization_role"><div><span>organization_role</span></div></a></li>
+<li><a href="#organization_wide_project_base_role"><div><span>organization_wide_project_base_role</span></div></a></li>
+<li><a href="#packages"><div><span>packages</span></div></a></li>
+<li><a href="#pages_protected_domain"><div><span>pages_protected_domain</span></div></a></li>
+<li><a href="#payment_method"><div><span>payment_method</span></div></a></li>
+<li><a href="#personal_access_token"><div><span>personal_access_token</span></div></a></li>
+<li><a href="#prebuild_configuration"><div><span>prebuild_configuration</span></div></a></li>
+<li><a href="#private_repository_forking"><div><span>private_repository_forking</span></div></a></li>
+<li><a href="#profile_picture"><div><span>profile_picture</span></div></a></li>
+<li><a href="#project"><div><span>project</span></div></a></li>
+<li><a href="#project_base_role"><div><span>project_base_role</span></div></a></li>
+<li><a href="#project_collaborator"><div><span>project_collaborator</span></div></a></li>
+<li><a href="#project_field"><div><span>project_field</span></div></a></li>
+<li><a href="#project_view"><div><span>project_view</span></div></a></li>
+<li><a href="#protected_branch"><div><span>protected_branch</span></div></a></li>
+<li><a href="#public_key"><div><span>public_key</span></div></a></li>
+<li><a href="#pull_request"><div><span>pull_request</span></div></a></li>
+<li><a href="#pull_request_review_comment"><div><span>pull_request_review_comment</span></div></a></li>
+<li><a href="#pull_request_review"><div><span>pull_request_review</span></div></a></li>
+<li><a href="#repo"><div><span>repo</span></div></a></li>
+<li><a href="#repository_advisory"><div><span>repository_advisory</span></div></a></li>
+<li><a href="#repository_branch_protection_evaluation"><div><span>repository_branch_protection_evaluation</span></div></a></li>
+<li><a href="#repository_code_security"><div><span>repository_code_security</span></div></a></li>
+<li><a href="#repository_content_analysis"><div><span>repository_content_analysis</span></div></a></li>
+<li><a href="#repository_dependency_graph"><div><span>repository_dependency_graph</span></div></a></li>
+<li><a href="#repository_image"><div><span>repository_image</span></div></a></li>
+<li><a href="#repository_invitation"><div><span>repository_invitation</span></div></a></li>
+<li><a href="#repository_limit"><div><span>repository_limit</span></div></a></li>
+<li><a href="#repository_projects_change"><div><span>repository_projects_change</span></div></a></li>
+<li><a href="#repository_ruleset"><div><span>repository_ruleset</span></div></a></li>
+<li><a href="#repository_secret_scanning_automatic_validity_checks"><div><span>repository_secret_scanning_automatic_validity_checks</span></div></a></li>
+<li><a href="#repository_secret_scanning_custom_pattern"><div><span>repository_secret_scanning_custom_pattern</span></div></a></li>
+<li><a href="#repository_secret_scanning_custom_pattern_push_protection"><div><span>repository_secret_scanning_custom_pattern_push_protection</span></div></a></li>
+<li><a href="#repository_secret_scanning"><div><span>repository_secret_scanning</span></div></a></li>
+<li><a href="#repository_secret_scanning_generic_secrets"><div><span>repository_secret_scanning_generic_secrets</span></div></a></li>
+<li><a href="#repository_secret_scanning_non_provider_patterns"><div><span>repository_secret_scanning_non_provider_patterns</span></div></a></li>
+<li><a href="#repository_secret_scanning_push_protection_bypass_list"><div><span>repository_secret_scanning_push_protection_bypass_list</span></div></a></li>
+<li><a href="#repository_secret_scanning_push_protection"><div><span>repository_secret_scanning_push_protection</span></div></a></li>
+<li><a href="#repository_security_configuration"><div><span>repository_security_configuration</span></div></a></li>
+<li><a href="#repository_visibility_change"><div><span>repository_visibility_change</span></div></a></li>
+<li><a href="#repository_vulnerability_alert"><div><span>repository_vulnerability_alert</span></div></a></li>
+<li><a href="#repository_vulnerability_alerts"><div><span>repository_vulnerability_alerts</span></div></a></li>
+<li><a href="#repository_vulnerability_alerts_auto_dismissal"><div><span>repository_vulnerability_alerts_auto_dismissal</span></div></a></li>
+<li><a href="#required_status_check"><div><span>required_status_check</span></div></a></li>
+<li><a href="#restrict_notification_delivery"><div><span>restrict_notification_delivery</span></div></a></li>
+<li><a href="#role"><div><span>role</span></div></a></li>
+<li><a href="#secret_scanning_alert"><div><span>secret_scanning_alert</span></div></a></li>
+<li><a href="#secret_scanning_closure_request"><div><span>secret_scanning_closure_request</span></div></a></li>
+<li><a href="#secret_scanning"><div><span>secret_scanning</span></div></a></li>
+<li><a href="#secret_scanning_new_repos"><div><span>secret_scanning_new_repos</span></div></a></li>
+<li><a href="#secret_scanning_push_protection"><div><span>secret_scanning_push_protection</span></div></a></li>
+<li><a href="#secret_scanning_push_protection_request"><div><span>secret_scanning_push_protection_request</span></div></a></li>
+<li><a href="#secret_scanning_scan"><div><span>secret_scanning_scan</span></div></a></li>
+<li><a href="#security_configuration"><div><span>security_configuration</span></div></a></li>
+<li><a href="#security_configuration_default"><div><span>security_configuration_default</span></div></a></li>
+<li><a href="#security_configuration_policy"><div><span>security_configuration_policy</span></div></a></li>
+<li><a href="#sponsors"><div><span>sponsors</span></div></a></li>
+<li><a href="#ssh_certificate_authority"><div><span>ssh_certificate_authority</span></div></a></li>
+<li><a href="#ssh_certificate_requirement"><div><span>ssh_certificate_requirement</span></div></a></li>
+<li><a href="#staff"><div><span>staff</span></div></a></li>
+<li><a href="#team"><div><span>team</span></div></a></li>
+<li><a href="#team_discussions"><div><span>team_discussions</span></div></a></li>
+<li><a href="#team_sync_tenant"><div><span>team_sync_tenant</span></div></a></li>
+<li><a href="#vulnerability_alert_rule"><div><span>vulnerability_alert_rule</span></div></a></li>
+<li><a href="#workflows"><div><span>workflows</span></div></a></li>
+</ul></nav>
+</div>
+<div><div>
+<div>
+<blockquote>
+<ul>
+<li>This article contains the events that may appear in your organization's audit log. For the events that can appear in a user account's security log, see <a href="/en/authentication/keeping-your-account-and-data-secure/security-log-events">Security log events</a>.</li>
+<li>Webhooks might be a good alternative to the audit log or API polling for certain use cases. Webhooks are a way for GitHub to notify your server when specific events occur for a repository, organization, or enterprise. Compared to the API or searching the audit log, webhooks can be more efficient if you just want to learn and possibly log when certain events occur on your enterprise, organization, or repository. See <a href="/en/webhooks">Webhooks documentation</a>.</li>
+</ul>
+</blockquote>
+<h2><a href="#about-audit-log-events-for-your-organization">About audit log events for your organization</a></h2>
+<p>The name for each audit log entry is composed of a category of events, followed by an operation type. For example, the <code>repo.create</code> entry refers to the <code>create</code> operation on the <code>repo</code> category. The reference information in this article is grouped by categories.</p>
+</div>
+<div>
+<h2><a href="#account">account</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody><tr>
+<td><code>account.plan_change</code></td>
+<td>The account's plan changed.</td>
+</tr></tbody>
+</table>
+<h2><a href="#actions_cache">actions_cache</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody><tr>
+<td><code>actions_cache.delete</code></td>
+<td>A GitHub Actions cache was deleted using the REST API.</td>
+</tr></tbody>
+</table>
+<h2><a href="#advisory_credit">advisory_credit</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>advisory_credit.accept</code></td>
+<td>Credit was accepted for a security advisory.</td>
+</tr>
+<tr>
+<td><code>advisory_credit.create</code></td>
+<td>Someone was added to the credit section of a security advisory.</td>
+</tr>
+<tr>
+<td><code>advisory_credit.decline</code></td>
+<td>Credit was declined for a security advisory.</td>
+</tr>
+<tr>
+<td><code>advisory_credit.destroy</code></td>
+<td>Someone was removed from the credit section of a security advisory.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#artifact">artifact</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody><tr>
+<td><code>artifact.destroy</code></td>
+<td>A workflow run artifact was manually deleted.</td>
+</tr></tbody>
+</table>
+<h2><a href="#auto_approve_personal_access_token_requests">auto_approve_personal_access_token_requests</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>auto_approve_personal_access_token_requests.disable</code></td>
+<td>Triggered when the organization must approve fine-grained personal access tokens before the tokens can access organization resources. See also: personal_access_token.auto_approve_grant_requests_disabled</td>
+</tr>
+<tr>
+<td><code>auto_approve_personal_access_token_requests.enable</code></td>
+<td>Triggered when fine-grained personal access tokens can access organization resources without prior approval. See also: personal_access_token.auto_approve_grant_requests_enabled</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#billing">billing</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>billing.change_billing_type</code></td>
+<td>The way the account pays for GitHub was changed.</td>
+</tr>
+<tr>
+<td><code>billing.change_email</code></td>
+<td>The billing email address changed.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#checks">checks</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>checks.auto_trigger_disabled</code></td>
+<td>Automatic creation of check suites was disabled on a repository in the organization or enterprise.</td>
+</tr>
+<tr>
+<td><code>checks.auto_trigger_enabled</code></td>
+<td>Automatic creation of check suites was enabled on a repository in the organization or enterprise.</td>
+</tr>
+<tr>
+<td><code>checks.delete_logs</code></td>
+<td>Logs in a check suite were deleted.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#code_scanning">code_scanning</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>code_scanning.alert_appeared_in_branch</code></td>
+<td>Existing code scanning alerts appeared in a branch.</td>
+</tr>
+<tr>
+<td><code>code_scanning.alert_closed_became_fixed</code></td>
+<td>Code scanning alerts were fixed.</td>
+</tr>
+<tr>
+<td><code>code_scanning.alert_closed_became_outdated</code></td>
+<td>Code scanning alerts were closed as outdated (all configurations they were detected in were deleted).</td>
+</tr>
+<tr>
+<td><code>code_scanning.alert_closed_by_user</code></td>
+<td>Code scanning alerts were manually dismissed.</td>
+</tr>
+<tr>
+<td><code>code_scanning.alert_closure_approved</code></td>
+<td>Dismissal of code scanning alerts was approved.</td>
+</tr>
+<tr>
+<td><code>code_scanning.alert_closure_denied</code></td>
+<td>Dismissal of code scanning alerts was denied.</td>
+</tr>
+<tr>
+<td><code>code_scanning.alert_closure_requested</code></td>
+<td>Dismissal of code scanning alerts was requested.</td>
+</tr>
+<tr>
+<td><code>code_scanning.alert_created</code></td>
+<td>Code scanning alerts were seen for the first time.</td>
+</tr>
+<tr>
+<td><code>code_scanning.alert_reappeared</code></td>
+<td>Code scanning alerts that were previously fixed reappeared.</td>
+</tr>
+<tr>
+<td><code>code_scanning.alert_reopened_by_user</code></td>
+<td>Code scanning alerts that were previously dismissed were reopened.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#codespaces">codespaces</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>codespaces.allow_permissions</code></td>
+<td>A codespace using custom permissions from its devcontainer.json file was launched.</td>
+</tr>
+<tr>
+<td><code>codespaces.attempted_to_create_from_prebuild</code></td>
+<td>An attempt to create a codespace from a prebuild was made.</td>
+</tr>
+<tr>
+<td><code>codespaces.business_enablement_updated</code></td>
+<td>Enterprise setting for Codespaces ownership was updated.</td>
+</tr>
+<tr>
+<td><code>codespaces.connect</code></td>
+<td>Credentials for a codespace were refreshed.</td>
+</tr>
+<tr>
+<td><code>codespaces.create</code></td>
+<td>A codespace was created</td>
+</tr>
+<tr>
+<td><code>codespaces.destroy</code></td>
+<td>A user deleted a codespace.</td>
+</tr>
+<tr>
+<td><code>codespaces.export_environment</code></td>
+<td>A codespace was exported to a branch on GitHub.</td>
+</tr>
+<tr>
+<td><code>codespaces.policy_group_created</code></td>
+<td>Policies were applied to codespaces in an organization or enterprise.</td>
+</tr>
+<tr>
+<td><code>codespaces.policy_group_deleted</code></td>
+<td>Policies were removed from codespaces in an organization or enterprise.</td>
+</tr>
+<tr>
+<td><code>codespaces.policy_group_updated</code></td>
+<td>Policies were updated for codespaces in an organization or enterprise.</td>
+</tr>
+<tr>
+<td><code>codespaces.restore</code></td>
+<td>A codespace was restored.</td>
+</tr>
+<tr>
+<td><code>codespaces.start_environment</code></td>
+<td>A codespace was started.</td>
+</tr>
+<tr>
+<td><code>codespaces.suspend_environment</code></td>
+<td>A codespace was stopped.</td>
+</tr>
+<tr>
+<td><code>codespaces.trusted_repositories_access_update</code></td>
+<td>A personal account's access and security setting for Codespaces were updated.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#commit_comment">commit_comment</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>commit_comment.destroy</code></td>
+<td>A commit comment was deleted.</td>
+</tr>
+<tr>
+<td><code>commit_comment.update</code></td>
+<td>A commit comment was updated.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#copilot">copilot</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>copilot.access_revoked</code></td>
+<td>Copilot access was revoked for the organization or enterprise due to its Copilot subscription ending, an issue with billing the entity, the entity being marked spammy, or the entity being suspended.</td>
+</tr>
+<tr>
+<td><code>copilot.cfb_org_settings_changed</code></td>
+<td>Copilot feature settings were changed at the organization level.</td>
+</tr>
+<tr>
+<td><code>copilot.cfb_seat_added</code></td>
+<td>A Copilot Business or Copilot Enterprise seat was added for a user and they have received access to GitHub Copilot. This can occur as the result of directly assigning a seat for a user, assigning a seat for a team, or setting the organization to allow access for all members.</td>
+</tr>
+<tr>
+<td><code>copilot.cfb_seat_assignment_created</code></td>
+<td>A Copilot Business or Copilot Enterprise seat assignment was newly created for a user or a team, and seats are being created.</td>
+</tr>
+<tr>
+<td><code>copilot.cfb_seat_assignment_refreshed</code></td>
+<td>A seat assignment that was previously pending cancellation was re-assigned and the user will retain access to Copilot.</td>
+</tr>
+<tr>
+<td><code>copilot.cfb_seat_assignment_reused</code></td>
+<td>A Copilot Business or Copilot Enterprise seat assignment was re-created for a user who already had a seat with no pending cancellation date, and the user will retain access to Copilot.</td>
+</tr>
+<tr>
+<td><code>copilot.cfb_seat_assignment_unassigned</code></td>
+<td>A user or team's Copilot Business or Copilot Enterprise seat assignment was unassigned, and the user(s) will lose access to Copilot at the end of the current billing cycle.</td>
+</tr>
+<tr>
+<td><code>copilot.cfb_seat_cancelled</code></td>
+<td>A user's Copilot Business or Copilot Enterprise seat was canceled, and the user no longer has access to Copilot.</td>
+</tr>
+<tr>
+<td><code>copilot.cfb_seat_cancelled_by_staff</code></td>
+<td>A user's Copilot Business or Copilot Enterprise seat was canceled manually by GitHub staff, and the user no longer has access to Copilot.</td>
+</tr>
+<tr>
+<td><code>copilot.cfb_seat_management_changed</code></td>
+<td>The seat management setting was changed at the organization level to either enable or disable Copilot access for all members of the organization, or to enable Copilot access for selected members or teams.</td>
+</tr>
+<tr>
+<td><code>copilot.content_exclusion_changed</code></td>
+<td>The excluded paths for GitHub Copilot were updated.</td>
+</tr>
+<tr>
+<td><code>copilot.custom_instructions_created</code></td>
+<td>Copilot custom instructions were created for the organization.</td>
+</tr>
+<tr>
+<td><code>copilot.custom_instructions_updated</code></td>
+<td>Copilot custom instructions were updated for the organization.</td>
+</tr>
+<tr>
+<td><code>copilot.knowledge_base_created</code></td>
+<td>A knowledge base was created in the organization.</td>
+</tr>
+<tr>
+<td><code>copilot.knowledge_base_deleted</code></td>
+<td>A knowledge base was deleted from the organization.</td>
+</tr>
+<tr>
+<td><code>copilot.knowledge_base_updated</code></td>
+<td>A knowledge base was updated in the organization.</td>
+</tr>
+<tr>
+<td><code>copilot.plan_changed</code></td>
+<td>The plan for GitHub Copilot was updated.</td>
+</tr>
+<tr>
+<td><code>copilot.plan_downgrade_scheduled</code></td>
+<td>The plan for GitHub Copilot was scheduled to be downgraded.</td>
+</tr>
+<tr>
+<td><code>copilot.swe_agent_repo_disabled</code></td>
+<td>Specific repositories were disabled from using Copilot coding agent.</td>
+</tr>
+<tr>
+<td><code>copilot.swe_agent_repo_enabled</code></td>
+<td>Specific repositories were enabled to use Copilot coding agent.</td>
+</tr>
+<tr>
+<td><code>copilot.swe_agent_repo_enablement_updated</code></td>
+<td>Copilot coding agent access was updated for the organization's or user's repositories.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#custom_property_definition">custom_property_definition</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>custom_property_definition.create</code></td>
+<td>A new custom property definition was created.</td>
+</tr>
+<tr>
+<td><code>custom_property_definition.destroy</code></td>
+<td>A custom property definition was deleted.</td>
+</tr>
+<tr>
+<td><code>custom_property_definition.update</code></td>
+<td>A custom property definition was updated.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#custom_property_value">custom_property_value</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>custom_property_value.create</code></td>
+<td>A repository's custom property value was manually set for the first time.</td>
+</tr>
+<tr>
+<td><code>custom_property_value.destroy</code></td>
+<td>A repository's custom property value was deleted.</td>
+</tr>
+<tr>
+<td><code>custom_property_value.update</code></td>
+<td>A repository's custom property value was updated.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#dependabot_alerts">dependabot_alerts</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>dependabot_alerts.disable</code></td>
+<td>Dependabot alerts were disabled for all existing repositories.</td>
+</tr>
+<tr>
+<td><code>dependabot_alerts.enable</code></td>
+<td>Dependabot alerts were enabled for all existing repositories.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#dependabot_alerts_new_repos">dependabot_alerts_new_repos</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>dependabot_alerts_new_repos.disable</code></td>
+<td>Dependabot alerts were disabled for all new repositories.</td>
+</tr>
+<tr>
+<td><code>dependabot_alerts_new_repos.enable</code></td>
+<td>Dependabot alerts were enabled for all new repositories.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#dependabot_repository_access">dependabot_repository_access</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>dependabot_repository_access.default_access_level_updated</code></td>
+<td>The default repository access for Dependabot was updated.</td>
+</tr>
+<tr>
+<td><code>dependabot_repository_access.repositories_updated</code></td>
+<td>The repositories that Dependabot can access were updated.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#dependabot_security_updates">dependabot_security_updates</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>dependabot_security_updates.disable</code></td>
+<td>Dependabot security updates were disabled for all existing repositories.</td>
+</tr>
+<tr>
+<td><code>dependabot_security_updates.enable</code></td>
+<td>Dependabot security updates were enabled for all existing repositories.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#dependabot_security_updates_new_repos">dependabot_security_updates_new_repos</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>dependabot_security_updates_new_repos.disable</code></td>
+<td> Dependabot security updates were disabled for all new repositories.</td>
+</tr>
+<tr>
+<td><code>dependabot_security_updates_new_repos.enable</code></td>
+<td>Dependabot security updates were enabled for all new repositories.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#dependency_graph">dependency_graph</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>dependency_graph.disable</code></td>
+<td>The dependency graph was disabled for all existing repositories.</td>
+</tr>
+<tr>
+<td><code>dependency_graph.enable</code></td>
+<td>The dependency graph was enabled for all existing repositories.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#dependency_graph_new_repos">dependency_graph_new_repos</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>dependency_graph_new_repos.disable</code></td>
+<td>The dependency graph was disabled for all new repositories.</td>
+</tr>
+<tr>
+<td><code>dependency_graph_new_repos.enable</code></td>
+<td>The dependency graph was enabled for all new repositories.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#discussion_post">discussion_post</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>discussion_post.destroy</code></td>
+<td>Triggered when a team discussion post is deleted.</td>
+</tr>
+<tr>
+<td><code>discussion_post.update</code></td>
+<td>Triggered when a team discussion post is edited.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#discussion_post_reply">discussion_post_reply</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>discussion_post_reply.destroy</code></td>
+<td>Triggered when a reply to a team discussion post is deleted.</td>
+</tr>
+<tr>
+<td><code>discussion_post_reply.update</code></td>
+<td>Triggered when a reply to a team discussion post is edited.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#enterprise_announcement">enterprise_announcement</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>enterprise_announcement.create</code></td>
+<td>A global announcement banner was created for the enterprise.</td>
+</tr>
+<tr>
+<td><code>enterprise_announcement.destroy</code></td>
+<td>A global announcement banner was removed from the enterprise.</td>
+</tr>
+<tr>
+<td><code>enterprise_announcement.update</code></td>
+<td>A global announcement banner was updated for the enterprise.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#enterprise_installation">enterprise_installation</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>enterprise_installation.create</code></td>
+<td>The GitHub App associated with a GitHub Connect connection was created.</td>
+</tr>
+<tr>
+<td><code>enterprise_installation.destroy</code></td>
+<td>The GitHub App associated with a GitHub Connect connection was deleted.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#environment">environment</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>environment.add_protection_rule</code></td>
+<td>A GitHub Actions deployment protection rule was created via the API.</td>
+</tr>
+<tr>
+<td><code>environment.create_actions_secret</code></td>
+<td>A secret was created for a GitHub Actions environment.</td>
+</tr>
+<tr>
+<td><code>environment.create_actions_variable</code></td>
+<td>A variable was created for a GitHub Actions environment.</td>
+</tr>
+<tr>
+<td><code>environment.delete</code></td>
+<td>An environment was deleted.</td>
+</tr>
+<tr>
+<td><code>environment.remove_actions_secret</code></td>
+<td>A secret was deleted for a GitHub Actions environment.</td>
+</tr>
+<tr>
+<td><code>environment.remove_actions_variable</code></td>
+<td>A variable was deleted for a GitHub Actions environment.</td>
+</tr>
+<tr>
+<td><code>environment.remove_protection_rule</code></td>
+<td>A GitHub Actions deployment protection rule was deleted via the API.</td>
+</tr>
+<tr>
+<td><code>environment.update_actions_secret</code></td>
+<td>A secret was updated for a GitHub Actions environment.</td>
+</tr>
+<tr>
+<td><code>environment.update_actions_variable</code></td>
+<td>A variable was updated for a GitHub Actions environment.</td>
+</tr>
+<tr>
+<td><code>environment.update_protection_rule</code></td>
+<td>A GitHub Actions deployment protection rule was updated via the API.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#git">git</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>git.clone</code></td>
+<td>A repository was cloned.</td>
+</tr>
+<tr>
+<td><code>git.fetch</code></td>
+<td>Changes were fetched from a repository.</td>
+</tr>
+<tr>
+<td><code>git.push</code></td>
+<td>Changes were pushed to a repository.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#hook">hook</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>hook.active_changed</code></td>
+<td>A hook's active status was updated.</td>
+</tr>
+<tr>
+<td><code>hook.config_changed</code></td>
+<td>A hook's configuration was changed.</td>
+</tr>
+<tr>
+<td><code>hook.create</code></td>
+<td>A new hook was added.</td>
+</tr>
+<tr>
+<td><code>hook.destroy</code></td>
+<td>A hook was deleted.</td>
+</tr>
+<tr>
+<td><code>hook.events_changed</code></td>
+<td>A hook's configured events were changed.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#integration">integration</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>integration.create</code></td>
+<td>A GitHub App was created.</td>
+</tr>
+<tr>
+<td><code>integration.destroy</code></td>
+<td>A GitHub App was deleted.</td>
+</tr>
+<tr>
+<td><code>integration.manager_added</code></td>
+<td>A member of an enterprise or organization was added as a GitHub App manager.</td>
+</tr>
+<tr>
+<td><code>integration.manager_removed</code></td>
+<td>A member of an enterprise or organization was removed from being a GitHub App manager.</td>
+</tr>
+<tr>
+<td><code>integration.remove_client_secret</code></td>
+<td>A client secret for a GitHub App was removed.</td>
+</tr>
+<tr>
+<td><code>integration.revoke_all_tokens</code></td>
+<td>All user tokens for a GitHub App were requested to be revoked.</td>
+</tr>
+<tr>
+<td><code>integration.revoke_tokens</code></td>
+<td>Token(s) for a GitHub App were revoked.</td>
+</tr>
+<tr>
+<td><code>integration.suspend</code></td>
+<td>A GitHub App was suspended.</td>
+</tr>
+<tr>
+<td><code>integration.transfer</code></td>
+<td>Ownership of a GitHub App was transferred to another user or organization.</td>
+</tr>
+<tr>
+<td><code>integration.unsuspend</code></td>
+<td>A GitHub App was unsuspended.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#integration_installation">integration_installation</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>integration_installation.create</code></td>
+<td>A GitHub App was installed.</td>
+</tr>
+<tr>
+<td><code>integration_installation.destroy</code></td>
+<td>A GitHub App was uninstalled.</td>
+</tr>
+<tr>
+<td><code>integration_installation.repositories_added</code></td>
+<td>Repositories were added to a GitHub App.</td>
+</tr>
+<tr>
+<td><code>integration_installation.repositories_removed</code></td>
+<td>Repositories were removed from a GitHub App.</td>
+</tr>
+<tr>
+<td><code>integration_installation.suspend</code></td>
+<td>A GitHub App was suspended.</td>
+</tr>
+<tr>
+<td><code>integration_installation.unsuspend</code></td>
+<td>A GitHub App was unsuspended.</td>
+</tr>
+<tr>
+<td><code>integration_installation.version_updated</code></td>
+<td>Permissions for a GitHub App were updated.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#integration_installation_request">integration_installation_request</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>integration_installation_request.close</code></td>
+<td>A request to install a GitHub App was either approved or denied by an owner, or canceled by the member who opened the request.</td>
+</tr>
+<tr>
+<td><code>integration_installation_request.create</code></td>
+<td>A member requested that an owner install a GitHub App.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#ip_allow_list">ip_allow_list</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>ip_allow_list.disable</code></td>
+<td>An IP allow list was disabled.</td>
+</tr>
+<tr>
+<td><code>ip_allow_list.disable_for_installed_apps</code></td>
+<td>An IP allow list was disabled for installed GitHub Apps.</td>
+</tr>
+<tr>
+<td><code>ip_allow_list.enable</code></td>
+<td>An IP allow list was enabled.</td>
+</tr>
+<tr>
+<td><code>ip_allow_list.enable_for_installed_apps</code></td>
+<td>An IP allow list was enabled for installed GitHub Apps.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#ip_allow_list_entry">ip_allow_list_entry</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>ip_allow_list_entry.create</code></td>
+<td>An IP address was added to an IP allow list.</td>
+</tr>
+<tr>
+<td><code>ip_allow_list_entry.destroy</code></td>
+<td>An IP address was deleted from an IP allow list.</td>
+</tr>
+<tr>
+<td><code>ip_allow_list_entry.update</code></td>
+<td>An IP address or its description was changed.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#issue_comment">issue_comment</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>issue_comment.destroy</code></td>
+<td>A comment on an issue was deleted from the repository.</td>
+</tr>
+<tr>
+<td><code>issue_comment.update</code></td>
+<td>A comment on an issue (other than the initial one) changed.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#issue">issue</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>issue.destroy</code></td>
+<td>An issue was deleted from the repository.</td>
+</tr>
+<tr>
+<td><code>issue.pinned</code></td>
+<td>An issue was pinned to a repository.</td>
+</tr>
+<tr>
+<td><code>issue.transfer</code></td>
+<td>An issue was transferred to another repository.</td>
+</tr>
+<tr>
+<td><code>issue.unpinned</code></td>
+<td>An issue was unpinned from a repository.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#issue_type">issue_type</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>issue_type.create</code></td>
+<td>An issue type was created.</td>
+</tr>
+<tr>
+<td><code>issue_type.destroy</code></td>
+<td>An issue type was deleted.</td>
+</tr>
+<tr>
+<td><code>issue_type.update</code></td>
+<td>An issue type was updated.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#issues">issues</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>issues.deletes_disabled</code></td>
+<td>The ability for enterprise members to delete issues was disabled  Members cannot delete issues in any organizations in an enterprise.</td>
+</tr>
+<tr>
+<td><code>issues.deletes_enabled</code></td>
+<td>The ability for enterprise members to delete issues was enabled  Members can delete issues in any organizations in an enterprise.</td>
+</tr>
+<tr>
+<td><code>issues.deletes_policy_cleared</code></td>
+<td>An enterprise owner cleared the policy setting for allowing members to delete issues in an enterprise.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#marketplace_agreement_signature">marketplace_agreement_signature</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody><tr>
+<td><code>marketplace_agreement_signature.create</code></td>
+<td>The GitHub Marketplace Developer Agreement was signed.</td>
+</tr></tbody>
+</table>
+<h2><a href="#marketplace_listing">marketplace_listing</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>marketplace_listing.approve</code></td>
+<td>A listing was approved for inclusion in GitHub Marketplace.</td>
+</tr>
+<tr>
+<td><code>marketplace_listing.change_category</code></td>
+<td>A category for a listing for an app in GitHub Marketplace was changed.</td>
+</tr>
+<tr>
+<td><code>marketplace_listing.create</code></td>
+<td>A listing for an app in GitHub Marketplace was created.</td>
+</tr>
+<tr>
+<td><code>marketplace_listing.delist</code></td>
+<td>A listing was removed from GitHub Marketplace.</td>
+</tr>
+<tr>
+<td><code>marketplace_listing.redraft</code></td>
+<td>A listing was sent back to draft state.</td>
+</tr>
+<tr>
+<td><code>marketplace_listing.reject</code></td>
+<td>A listing was not accepted for inclusion in GitHub Marketplace.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#members_can_create_pages">members_can_create_pages</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>members_can_create_pages.disable</code></td>
+<td>The ability for members to publish GitHub Pages sites was disabled.</td>
+</tr>
+<tr>
+<td><code>members_can_create_pages.enable</code></td>
+<td>The ability for members to publish GitHub Pages sites was enabled.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#members_can_create_private_pages">members_can_create_private_pages</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>members_can_create_private_pages.disable</code></td>
+<td>The ability for members to publish private GitHub Pages was disabled  Members cannot publish private GitHub Pages in an organization.</td>
+</tr>
+<tr>
+<td><code>members_can_create_private_pages.enable</code></td>
+<td>The ability for members to publish private GitHub Pages was enabled  Members can publish private GitHub Pages in an organization.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#members_can_create_public_pages">members_can_create_public_pages</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>members_can_create_public_pages.disable</code></td>
+<td>The ability for members to publish public GitHub Pages was disabled  Members cannot publish public GitHub Pages in an organization.</td>
+</tr>
+<tr>
+<td><code>members_can_create_public_pages.enable</code></td>
+<td>The ability for members to publish public GitHub Pages was enabled  Members can publish public GitHub Pages in an organization.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#members_can_delete_repos">members_can_delete_repos</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>members_can_delete_repos.clear</code></td>
+<td>An enterprise owner cleared the policy setting for deleting or transferring repositories in any organizations in an enterprise.</td>
+</tr>
+<tr>
+<td><code>members_can_delete_repos.disable</code></td>
+<td>The ability for enterprise members to delete repositories was disabled  Members cannot delete or transfer repositories in any organizations in an enterprise.</td>
+</tr>
+<tr>
+<td><code>members_can_delete_repos.enable</code></td>
+<td>The ability for enterprise members to delete repositories was enabled  Members can delete or transfer repositories in any organizations in an enterprise.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#members_can_view_dependency_insights">members_can_view_dependency_insights</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>members_can_view_dependency_insights.clear</code></td>
+<td>An enterprise owner cleared the policy setting for viewing dependency insights in any organizations in an enterprise.</td>
+</tr>
+<tr>
+<td><code>members_can_view_dependency_insights.disable</code></td>
+<td>The ability for enterprise members to view dependency insights was disabled. Members cannot view dependency insights in any organizations in an enterprise.</td>
+</tr>
+<tr>
+<td><code>members_can_view_dependency_insights.enable</code></td>
+<td>The ability for enterprise members to view dependency insights was enabled. Members can view dependency insights in any organizations in an enterprise.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#migration">migration</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>migration.create</code></td>
+<td>A migration file was created for transferring data from a source location (such as a GitHub.com organization or a GitHub Enterprise Server instance) to a target GitHub Enterprise Server instance.</td>
+</tr>
+<tr>
+<td><code>migration.destroy_file</code></td>
+<td>A migration file for transferring data from a source location (such as a GitHub.com organization or a GitHub Enterprise Server instance) to a target GitHub Enterprise Server instance was deleted.</td>
+</tr>
+<tr>
+<td><code>migration.download</code></td>
+<td>A migration file for transferring data from a source location (such as a GitHub.com organization or a GitHub Enterprise Server instance) to a target GitHub Enterprise Server instance was downloaded.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#network_configuration">network_configuration</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>network_configuration.create</code></td>
+<td>A network configuration for a hosted compute service was created.</td>
+</tr>
+<tr>
+<td><code>network_configuration.delete</code></td>
+<td>A network configuration for a hosted compute service was deleted.</td>
+</tr>
+<tr>
+<td><code>network_configuration.update</code></td>
+<td>A network configuration for a hosted compute service was updated.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#oauth_application">oauth_application</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>oauth_application.create</code></td>
+<td>An OAuth application was created.</td>
+</tr>
+<tr>
+<td><code>oauth_application.destroy</code></td>
+<td>An OAuth application was deleted.</td>
+</tr>
+<tr>
+<td><code>oauth_application.generate_client_secret</code></td>
+<td>An OAuth application's secret key was generated.</td>
+</tr>
+<tr>
+<td><code>oauth_application.remove_client_secret</code></td>
+<td>An OAuth application's secret key was deleted.</td>
+</tr>
+<tr>
+<td><code>oauth_application.reset_secret</code></td>
+<td>The secret key for an OAuth application was reset.</td>
+</tr>
+<tr>
+<td><code>oauth_application.revoke_all_tokens</code></td>
+<td>All user tokens for an OAuth application were requested to be revoked.</td>
+</tr>
+<tr>
+<td><code>oauth_application.revoke_tokens</code></td>
+<td>Token(s) for an OAuth application were revoked.</td>
+</tr>
+<tr>
+<td><code>oauth_application.transfer</code></td>
+<td>An OAuth application was transferred from one account to another.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#org">org</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>org.accept_business_invitation</code></td>
+<td>An invitation sent to an organization to join an enterprise was accepted.</td>
+</tr>
+<tr>
+<td><code>org.add_billing_manager</code></td>
+<td>A billing manager was added to an organization.</td>
+</tr>
+<tr>
+<td><code>org.add_disallowed_two_factor_method</code></td>
+<td>An organization prevented access to resources by users with the given two-factor method.</td>
+</tr>
+<tr>
+<td><code>org.add_member</code></td>
+<td>A user joined an organization.</td>
+</tr>
+<tr>
+<td><code>org.add_outside_collaborator</code></td>
+<td>An outside collaborator was added to a repository.</td>
+</tr>
+<tr>
+<td><code>org.advanced_security_disabled_for_new_repos</code></td>
+<td>GitHub Advanced Security was disabled for new repositories in an organization.</td>
+</tr>
+<tr>
+<td><code>org.advanced_security_disabled_on_all_repos</code></td>
+<td>GitHub Advanced Security was disabled for all repositories in an organization.</td>
+</tr>
+<tr>
+<td><code>org.advanced_security_enabled_for_new_repos</code></td>
+<td>GitHub Advanced Security was enabled for new repositories in an organization.</td>
+</tr>
+<tr>
+<td><code>org.advanced_security_enabled_on_all_repos</code></td>
+<td>GitHub Advanced Security was enabled for all repositories in an organization.</td>
+</tr>
+<tr>
+<td><code>org.advanced_security_entity_policy_update</code></td>
+<td>An enterprise owner updated the GitHub Advanced Security access policy for repositories owned by the organization.</td>
+</tr>
+<tr>
+<td><code>org.advanced_security_policy_selected_member_disabled</code></td>
+<td>An enterprise owner prevented GitHub Advanced Security features from being enabled for repositories owned by the organization.</td>
+</tr>
+<tr>
+<td><code>org.advanced_security_policy_selected_member_enabled</code></td>
+<td>An enterprise owner allowed GitHub Advanced Security features to be enabled for repositories owned by the organization.</td>
+</tr>
+<tr>
+<td><code>org.allow_third_party_access_requests_from_outside_collaborators_disabled</code></td>
+<td>Third-party application access for outside collaborators was disabled for the organization.</td>
+</tr>
+<tr>
+<td><code>org.allow_third_party_access_requests_from_outside_collaborators_enabled</code></td>
+<td>Third-party application access for outside collaborators was enabled for the organization.</td>
+</tr>
+<tr>
+<td><code>org.archive</code></td>
+<td>The organization was archived.</td>
+</tr>
+<tr>
+<td><code>org.audit_log_export</code></td>
+<td>An export of the organization audit log was created. If the export included a query, the log will list the query used and the number of audit log entries matching that query.</td>
+</tr>
+<tr>
+<td><code>org.audit_log_git_event_export</code></td>
+<td>An export of the organization's Git events was created.</td>
+</tr>
+<tr>
+<td><code>org.block_user</code></td>
+<td>An organization owner blocked a user from accessing the organization's repositories.</td>
+</tr>
+<tr>
+<td><code>org.cancel_business_invitation</code></td>
+<td>An invitation for an organization to join an enterprise was revoked</td>
+</tr>
+<tr>
+<td><code>org.cancel_invitation</code></td>
+<td>An invitation sent to a user to join an organization was revoked.</td>
+</tr>
+<tr>
+<td><code>org.clear_disallowed_two_factor_methods</code></td>
+<td>Cleared two-factor authentication restrictions for an organization.</td>
+</tr>
+<tr>
+<td><code>org.code_scanning_autofix_disabled</code></td>
+<td>Autofix for code scanning alerts was disabled for an organization.</td>
+</tr>
+<tr>
+<td><code>org.code_scanning_autofix_enabled</code></td>
+<td>Autofix for code scanning alerts was enabled for an organization.</td>
+</tr>
+<tr>
+<td><code>org.code_scanning_autofix_third_party_tools_disabled</code></td>
+<td>Autofix for third party tools for code scanning alerts was disabled for an organization.</td>
+</tr>
+<tr>
+<td><code>org.code_scanning_autofix_third_party_tools_enabled</code></td>
+<td>Autofix for third party tools for code scanning alerts was enabled for an organization.</td>
+</tr>
+<tr>
+<td><code>org.codeql_disabled</code></td>
+<td>Code scanning using the default setup was disabled for an organization.</td>
+</tr>
+<tr>
+<td><code>org.codeql_enabled</code></td>
+<td>Code scanning using the default setup was enabled for an organization.</td>
+</tr>
+<tr>
+<td><code>org.codespaces_access_updated</code></td>
+<td>Access to use Codespaces on internal and private repositories was updated for an organization.</td>
+</tr>
+<tr>
+<td><code>org.codespaces_ownership_updated</code></td>
+<td>Ownership and payment for codespaces was updated for an organization.</td>
+</tr>
+<tr>
+<td><code>org.codespaces_team_access_allowed</code></td>
+<td>A team has been allowed to use Codespaces for an organization.</td>
+</tr>
+<tr>
+<td><code>org.codespaces_team_access_revoked</code></td>
+<td>A team has been prevented from using Codespaces for an organization.</td>
+</tr>
+<tr>
+<td><code>org.codespaces_trusted_repo_access_granted</code></td>
+<td>GitHub Codespaces was granted trusted repository access to all other repositories in an organization.</td>
+</tr>
+<tr>
+<td><code>org.codespaces_trusted_repo_access_revoked</code></td>
+<td>GitHub Codespaces trusted repository access to all other repositories in an organization was revoked.</td>
+</tr>
+<tr>
+<td><code>org.codespaces_user_access_allowed</code></td>
+<td>A user has been allowed to use Codespaces for an organization.</td>
+</tr>
+<tr>
+<td><code>org.codespaces_user_access_revoked</code></td>
+<td>A user has been prevented from using Codespaces for an organization.</td>
+</tr>
+<tr>
+<td><code>org.config.disable_collaborators_only</code></td>
+<td>The interaction limit for collaborators only for an organization was disabled.</td>
+</tr>
+<tr>
+<td><code>org.config.disable_contributors_only</code></td>
+<td>The interaction limit for prior contributors only for an organization was disabled.</td>
+</tr>
+<tr>
+<td><code>org.config.disable_sockpuppet_disallowed</code></td>
+<td>The interaction limit for existing users only for an organization was disabled.</td>
+</tr>
+<tr>
+<td><code>org.config.enable_collaborators_only</code></td>
+<td>The interaction limit for collaborators only for an organization was enabled.</td>
+</tr>
+<tr>
+<td><code>org.config.enable_contributors_only</code></td>
+<td>The interaction limit for prior contributors only for an organization was enabled.</td>
+</tr>
+<tr>
+<td><code>org.config.enable_sockpuppet_disallowed</code></td>
+<td>The interaction limit for existing users only for an organization was enabled.</td>
+</tr>
+<tr>
+<td><code>org.confirm_business_invitation</code></td>
+<td>An invitation for an organization to join an enterprise was confirmed.</td>
+</tr>
+<tr>
+<td><code>org.connect_usage_metrics_export</code></td>
+<td>Server statistics were exported for the organization.</td>
+</tr>
+<tr>
+<td><code>org.create</code></td>
+<td>An organization was created.</td>
+</tr>
+<tr>
+<td><code>org.create_actions_secret</code></td>
+<td>A GitHub Actions secret was created for an organization.</td>
+</tr>
+<tr>
+<td><code>org.create_actions_variable</code></td>
+<td>A GitHub Actions variable was created for an organization.</td>
+</tr>
+<tr>
+<td><code>org.create_integration_secret</code></td>
+<td>A Codespaces or Dependabot secret was created for an organization.</td>
+</tr>
+<tr>
+<td><code>org.delete</code></td>
+<td>An organization was deleted by a user or staff.</td>
+</tr>
+<tr>
+<td><code>org.disable_member_team_creation_permission</code></td>
+<td>Team creation was limited to owners.</td>
+</tr>
+<tr>
+<td><code>org.disable_oauth_app_restrictions</code></td>
+<td>Third-party application access restrictions for an organization were disabled.</td>
+</tr>
+<tr>
+<td><code>org.disable_reader_discussion_creation_permission</code></td>
+<td>An organization owner limited discussion creation to users with at least triage permission in an organization.</td>
+</tr>
+<tr>
+<td><code>org.disable_saml</code></td>
+<td>SAML single sign-on was disabled for an organization.</td>
+</tr>
+<tr>
+<td><code>org.disable_source_ip_disclosure</code></td>
+<td>Display of IP addresses within audit log events for the organization was disabled.</td>
+</tr>
+<tr>
+<td><code>org.disable_two_factor_requirement</code></td>
+<td>A two-factor authentication requirement was disabled for the organization.</td>
+</tr>
+<tr>
+<td><code>org.display_commenter_full_name_disabled</code></td>
+<td>An organization owner disabled the display of a commenter's full name in an organization. Members cannot see a comment author's full name.</td>
+</tr>
+<tr>
+<td><code>org.display_commenter_full_name_enabled</code></td>
+<td>An organization owner enabled the display of a commenter's full name in an organization. Members can see a comment author's full name.</td>
+</tr>
+<tr>
+<td><code>org.enable_member_team_creation_permission</code></td>
+<td>Team creation by members was allowed.</td>
+</tr>
+<tr>
+<td><code>org.enable_oauth_app_restrictions</code></td>
+<td>Third-party application access restrictions for an organization were enabled.</td>
+</tr>
+<tr>
+<td><code>org.enable_reader_discussion_creation_permission</code></td>
+<td>An organization owner allowed users with read access to create discussions in an organization</td>
+</tr>
+<tr>
+<td><code>org.enable_saml</code></td>
+<td>SAML single sign-on was enabled for the organization.</td>
+</tr>
+<tr>
+<td><code>org.enable_source_ip_disclosure</code></td>
+<td>Display of IP addresses within audit log events for the organization was enabled.</td>
+</tr>
+<tr>
+<td><code>org.enable_two_factor_requirement</code></td>
+<td>Two-factor authentication is now required for the organization.</td>
+</tr>
+<tr>
+<td><code>org.integration_manager_added</code></td>
+<td>An organization owner granted a member access to manage all GitHub Apps owned by an organization.</td>
+</tr>
+<tr>
+<td><code>org.integration_manager_removed</code></td>
+<td>An organization owner removed access to manage all GitHub Apps owned by an organization from an organization member.</td>
+</tr>
+<tr>
+<td><code>org.invite_member</code></td>
+<td>A new user was invited to join an organization.</td>
+</tr>
+<tr>
+<td><code>org.invite_to_business</code></td>
+<td>An organization was invited to join an enterprise.</td>
+</tr>
+<tr>
+<td><code>org.members_can_update_protected_branches.disable</code></td>
+<td>The ability for enterprise members to update protected branches was disabled. Only enterprise owners can update protected branches.</td>
+</tr>
+<tr>
+<td><code>org.members_can_update_protected_branches.enable</code></td>
+<td>The ability for enterprise members to update protected branches was enabled. Members of an organization can update protected branches.</td>
+</tr>
+<tr>
+<td><code>org.oauth_app_access_approved</code></td>
+<td>Access to an organization was granted for an OAuth App.</td>
+</tr>
+<tr>
+<td><code>org.oauth_app_access_denied</code></td>
+<td>Access was disabled for an OAuth App that was previously approved.</td>
+</tr>
+<tr>
+<td><code>org.oauth_app_access_requested</code></td>
+<td>An organization member requested that an owner grant an OAuth App access to an organization.</td>
+</tr>
+<tr>
+<td><code>org.recovery_code_failed</code></td>
+<td>An organization owner failed to sign into a organization with an external identity provider (IdP) using a recovery code.</td>
+</tr>
+<tr>
+<td><code>org.recovery_code_used</code></td>
+<td>An organization owner successfully signed into an organization with an external identity provider (IdP) using a recovery code.</td>
+</tr>
+<tr>
+<td><code>org.recovery_codes_downloaded</code></td>
+<td>An organization owner downloaded the organization's SSO recovery codes.</td>
+</tr>
+<tr>
+<td><code>org.recovery_codes_generated</code></td>
+<td>An organization owner generated the organization's SSO recovery codes.</td>
+</tr>
+<tr>
+<td><code>org.recovery_codes_printed</code></td>
+<td>An organization owner printed the organization's SSO recovery codes.</td>
+</tr>
+<tr>
+<td><code>org.recovery_codes_viewed</code></td>
+<td>An organization owner viewed the organization's SSO recovery codes.</td>
+</tr>
+<tr>
+<td><code>org.register_self_hosted_runner</code></td>
+<td>A new self-hosted runner was registered.</td>
+</tr>
+<tr>
+<td><code>org.remove_actions_secret</code></td>
+<td>A GitHub Actions secret was removed from an organization.</td>
+</tr>
+<tr>
+<td><code>org.remove_actions_variable</code></td>
+<td>A GitHub Actions variable was removed from an organization.</td>
+</tr>
+<tr>
+<td><code>org.remove_billing_manager</code></td>
+<td>A billing manager was removed from an organization, either manually or due to a two-factor authentication requirement.</td>
+</tr>
+<tr>
+<td><code>org.remove_disallowed_two_factor_method</code></td>
+<td>Removed a two-factor authentication method restriction for an organization.</td>
+</tr>
+<tr>
+<td><code>org.remove_integration_secret</code></td>
+<td>A Codespaces or Dependabot secret was removed from an organization.</td>
+</tr>
+<tr>
+<td><code>org.remove_member</code></td>
+<td>A member was removed from an organization, either manually or due to a two-factor authentication requirement.</td>
+</tr>
+<tr>
+<td><code>org.remove_outside_collaborator</code></td>
+<td>An outside collaborator was removed from an organization, either manually or due to a two-factor authentication requirement.</td>
+</tr>
+<tr>
+<td><code>org.remove_self_hosted_runner</code></td>
+<td>A self-hosted runner was removed.</td>
+</tr>
+<tr>
+<td><code>org.rename</code></td>
+<td>An organization was renamed.</td>
+</tr>
+<tr>
+<td><code>org.required_workflow_create</code></td>
+<td>Triggered when a required workflow is created.</td>
+</tr>
+<tr>
+<td><code>org.required_workflow_delete</code></td>
+<td>Triggered when a required workflow is deleted.</td>
+</tr>
+<tr>
+<td><code>org.required_workflow_update</code></td>
+<td>Triggered when a required workflow is updated.</td>
+</tr>
+<tr>
+<td><code>org.restore_member</code></td>
+<td>An organization member was restored.</td>
+</tr>
+<tr>
+<td><code>org.revoke_external_identity</code></td>
+<td>A member's linked identity was revoked.</td>
+</tr>
+<tr>
+<td><code>org.revoke_sso_session</code></td>
+<td>A member's SAML session was revoked.</td>
+</tr>
+<tr>
+<td><code>org.runner_group_created</code></td>
+<td>A self-hosted runner group was created.</td>
+</tr>
+<tr>
+<td><code>org.runner_group_removed</code></td>
+<td>A self-hosted runner group was removed.</td>
+</tr>
+<tr>
+<td><code>org.runner_group_renamed</code></td>
+<td>A self-hosted runner group was renamed.</td>
+</tr>
+<tr>
+<td><code>org.runner_group_runner_removed</code></td>
+<td>The REST API was used to remove a self-hosted runner from a group.</td>
+</tr>
+<tr>
+<td><code>org.runner_group_runners_added</code></td>
+<td>A self-hosted runner was added to a group.</td>
+</tr>
+<tr>
+<td><code>org.runner_group_runners_updated</code></td>
+<td>A runner group's list of members was updated.</td>
+</tr>
+<tr>
+<td><code>org.runner_group_updated</code></td>
+<td>The configuration of a self-hosted runner group was changed.</td>
+</tr>
+<tr>
+<td><code>org.runner_group_visiblity_updated</code></td>
+<td>The visibility of a self-hosted runner group was updated via the REST API.</td>
+</tr>
+<tr>
+<td><code>org.secret_scanning_custom_pattern_push_protection_disabled</code></td>
+<td>Push protection for a custom pattern for secret scanning was disabled for an organization.</td>
+</tr>
+<tr>
+<td><code>org.secret_scanning_custom_pattern_push_protection_enabled</code></td>
+<td>Push protection for a custom pattern for secret scanning was enabled for an organization.</td>
+</tr>
+<tr>
+<td><code>org.secret_scanning_push_protection_custom_message_disabled</code></td>
+<td>The custom message triggered by an attempted push to a push-protected repository was disabled for an organization.</td>
+</tr>
+<tr>
+<td><code>org.secret_scanning_push_protection_custom_message_enabled</code></td>
+<td>The custom message triggered by an attempted push to a push-protected repository was enabled for an organization.</td>
+</tr>
+<tr>
+<td><code>org.secret_scanning_push_protection_custom_message_updated</code></td>
+<td>The custom message triggered by an attempted push to a push-protected repository was updated for an organization.</td>
+</tr>
+<tr>
+<td><code>org.secret_scanning_push_protection_disable</code></td>
+<td>Push protection for secret scanning was disabled.</td>
+</tr>
+<tr>
+<td><code>org.secret_scanning_push_protection_enable</code></td>
+<td>Push protection for secret scanning was enabled.</td>
+</tr>
+<tr>
+<td><code>org.secret_scanning_push_protection_new_repos_disable</code></td>
+<td>Push protection for secret scanning was disabled for all new repositories in the organization.</td>
+</tr>
+<tr>
+<td><code>org.secret_scanning_push_protection_new_repos_enable</code></td>
+<td>Push protection for secret scanning was enabled for all new repositories in the organization.</td>
+</tr>
+<tr>
+<td><code>org.security_center_export_code_scanning_metrics</code></td>
+<td>A CSV export was requested on the CodeQL pull request alerts page.</td>
+</tr>
+<tr>
+<td><code>org.security_center_export_coverage</code></td>
+<td>A CSV export was requested on the Coverage page.</td>
+</tr>
+<tr>
+<td><code>org.security_center_export_overview_dashboard</code></td>
+<td>A CSV export was requested on the Overview Dashboard page.</td>
+</tr>
+<tr>
+<td><code>org.security_center_export_risk</code></td>
+<td>A CSV export was requested on the Risk page.</td>
+</tr>
+<tr>
+<td><code>org.self_hosted_runner_offline</code></td>
+<td>The runner application was stopped. This event is not available in the web interface, only via the REST API, audit log streaming, or JSON/CSV exports.</td>
+</tr>
+<tr>
+<td><code>org.self_hosted_runner_online</code></td>
+<td>The runner application was started. This event is not available in the web interface, only via the REST API, audit log streaming, or JSON/CSV exports.</td>
+</tr>
+<tr>
+<td><code>org.self_hosted_runner_updated</code></td>
+<td>The runner application was updated. This event is not included in the JSON/CSV export.</td>
+</tr>
+<tr>
+<td><code>org.set_actions_fork_pr_approvals_policy</code></td>
+<td>The setting for requiring approvals for workflows from public forks was changed for an organization.</td>
+</tr>
+<tr>
+<td><code>org.set_actions_private_fork_pr_approvals_policy</code></td>
+<td>The policy for requiring approval for fork pull request workflows from collaborators without write access to private repos was changed for an organization.</td>
+</tr>
+<tr>
+<td><code>org.set_actions_retention_limit</code></td>
+<td>The retention period for GitHub Actions artifacts and logs in an organization was changed.</td>
+</tr>
+<tr>
+<td><code>org.set_default_workflow_permissions</code></td>
+<td>The default permissions granted to the GITHUB_TOKEN when running workflows were changed for an organization.</td>
+</tr>
+<tr>
+<td><code>org.set_fork_pr_workflows_policy</code></td>
+<td>The policy for workflows on private repository forks was changed.</td>
+</tr>
+<tr>
+<td><code>org.set_workflow_permission_can_approve_pr</code></td>
+<td>The policy for allowing GitHub Actions to create and approve pull requests was changed for an organization.</td>
+</tr>
+<tr>
+<td><code>org.sso_response</code></td>
+<td>A SAML single sign-on (SSO) response was generated when a member attempted to authenticate with your organization. This event is not available in the web interface, only via the REST API, audit log streaming, or JSON/CSV exports.</td>
+</tr>
+<tr>
+<td><code>org.transfer</code></td>
+<td>An organization was transferred between enterprise accounts.</td>
+</tr>
+<tr>
+<td><code>org.transfer_outgoing</code></td>
+<td>An organization was transferred between enterprise accounts.</td>
+</tr>
+<tr>
+<td><code>org.unarchive</code></td>
+<td>The organization was unarchived.</td>
+</tr>
+<tr>
+<td><code>org.unblock_user</code></td>
+<td>A user was unblocked from an organization.</td>
+</tr>
+<tr>
+<td><code>org.update_actions_secret</code></td>
+<td>A GitHub Actions secret was updated for an organization.</td>
+</tr>
+<tr>
+<td><code>org.update_actions_settings</code></td>
+<td>An organization owner or site administrator updated GitHub Actions policy settings for an organization.</td>
+</tr>
+<tr>
+<td><code>org.update_actions_variable</code></td>
+<td>A GitHub Actions variable was updated for an organization.</td>
+</tr>
+<tr>
+<td><code>org.update_default_repository_permission</code></td>
+<td>The default repository permission level for organization members was changed.</td>
+</tr>
+<tr>
+<td><code>org.update_integration_secret</code></td>
+<td>A Codespaces or Dependabot secret was updated for an organization.</td>
+</tr>
+<tr>
+<td><code>org.update_member</code></td>
+<td>A person's role was changed from owner to member or member to owner.</td>
+</tr>
+<tr>
+<td><code>org.update_member_repository_creation_permission</code></td>
+<td>The create repository permission for organization members was changed.</td>
+</tr>
+<tr>
+<td><code>org.update_member_repository_invitation_permission</code></td>
+<td>An organization owner changed the policy setting for organization members inviting outside collaborators to repositories.</td>
+</tr>
+<tr>
+<td><code>org.update_new_repository_default_branch_setting</code></td>
+<td>The name of the default branch was changed for new repositories in the organization.</td>
+</tr>
+<tr>
+<td><code>org.update_saml_provider_settings</code></td>
+<td>An organization's SAML provider settings were updated.</td>
+</tr>
+<tr>
+<td><code>org.update_terms_of_service</code></td>
+<td>An organization changed between the Standard Terms of Service and the GitHub Customer Agreement.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#org_credential_authorization">org_credential_authorization</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>org_credential_authorization.deauthorize</code></td>
+<td>A member removed the SSO (SAML or OIDC) authorization from a credential that had access to your organization.</td>
+</tr>
+<tr>
+<td><code>org_credential_authorization.grant</code></td>
+<td>A member authorized credentials for use with SAML or OIDC single sign-on.</td>
+</tr>
+<tr>
+<td><code>org_credential_authorization.revoke</code></td>
+<td>An owner revoked authorized credentials.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#org_secret_scanning_automatic_validity_checks">org_secret_scanning_automatic_validity_checks</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>org_secret_scanning_automatic_validity_checks.disabled</code></td>
+<td>Automatic partner validation checks have been disabled at the organization level</td>
+</tr>
+<tr>
+<td><code>org_secret_scanning_automatic_validity_checks.enabled</code></td>
+<td>Automatic partner validation checks have been enabled at the organization level</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#org_secret_scanning_custom_pattern">org_secret_scanning_custom_pattern</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>org_secret_scanning_custom_pattern.create</code></td>
+<td>A custom pattern was created for secret scanning in an organization.</td>
+</tr>
+<tr>
+<td><code>org_secret_scanning_custom_pattern.delete</code></td>
+<td>A custom pattern was removed from secret scanning in an organization.</td>
+</tr>
+<tr>
+<td><code>org_secret_scanning_custom_pattern.publish</code></td>
+<td>A custom pattern was published for secret scanning in an organization.</td>
+</tr>
+<tr>
+<td><code>org_secret_scanning_custom_pattern.update</code></td>
+<td>Changes to a custom pattern were saved and a dry run was executed for secret scanning in an organization.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#org_secret_scanning_generic_secrets">org_secret_scanning_generic_secrets</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>org_secret_scanning_generic_secrets.disabled</code></td>
+<td>Generic secrets have been disabled at the organization level</td>
+</tr>
+<tr>
+<td><code>org_secret_scanning_generic_secrets.enabled</code></td>
+<td>Generic secrets have been enabled at the organization level</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#org_secret_scanning_non_provider_patterns">org_secret_scanning_non_provider_patterns</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>org_secret_scanning_non_provider_patterns.disabled</code></td>
+<td>Secret scanning for non-provider patterns was disabled at the organization level.</td>
+</tr>
+<tr>
+<td><code>org_secret_scanning_non_provider_patterns.enabled</code></td>
+<td>Secret scanning for non-provider patterns was enabled at the organization level.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#org_secret_scanning_push_protection_bypass_list">org_secret_scanning_push_protection_bypass_list</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>org_secret_scanning_push_protection_bypass_list.add</code></td>
+<td>A role or team was added to the push protection bypass list at the organization level.</td>
+</tr>
+<tr>
+<td><code>org_secret_scanning_push_protection_bypass_list.disable</code></td>
+<td>Push protection settings for "Users who can bypass push protection for secret scanning" changed from "Specific roles or teams" to "Anyone with write access" at the organization level.</td>
+</tr>
+<tr>
+<td><code>org_secret_scanning_push_protection_bypass_list.enable</code></td>
+<td>Push protection settings for "Users who can bypass push protection for secret scanning" changed from "Anyone with write access" to "Specific roles or teams" at the organization level.</td>
+</tr>
+<tr>
+<td><code>org_secret_scanning_push_protection_bypass_list.remove</code></td>
+<td>A role or team was removed from the push protection bypass list at the organization level.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#organization_default_label">organization_default_label</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>organization_default_label.create</code></td>
+<td>A default label was created for repositories in an organization.</td>
+</tr>
+<tr>
+<td><code>organization_default_label.destroy</code></td>
+<td>A default label was deleted for repositories in an organization.</td>
+</tr>
+<tr>
+<td><code>organization_default_label.update</code></td>
+<td>A default label was edited for repositories in an organization.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#organization_domain">organization_domain</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>organization_domain.approve</code></td>
+<td>A domain was approved for an organization.</td>
+</tr>
+<tr>
+<td><code>organization_domain.create</code></td>
+<td>A domain was added to an organization.</td>
+</tr>
+<tr>
+<td><code>organization_domain.destroy</code></td>
+<td>A domain was removed from an organization.</td>
+</tr>
+<tr>
+<td><code>organization_domain.verify</code></td>
+<td>A domain was verified for an organization.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#organization_projects_change">organization_projects_change</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>organization_projects_change.clear</code></td>
+<td>An enterprise owner cleared the policy setting for organization-wide project boards in an enterprise.</td>
+</tr>
+<tr>
+<td><code>organization_projects_change.disable</code></td>
+<td>Organization projects were disabled for all organizations in an enterprise.</td>
+</tr>
+<tr>
+<td><code>organization_projects_change.enable</code></td>
+<td>Organization projects were enabled for all organizations in an enterprise.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#organization_role">organization_role</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>organization_role.assign</code></td>
+<td>An organization role was assigned to a user or team.</td>
+</tr>
+<tr>
+<td><code>organization_role.create</code></td>
+<td>A custom organization role was created in an organization.</td>
+</tr>
+<tr>
+<td><code>organization_role.destroy</code></td>
+<td>A custom organization role was deleted in an organization.</td>
+</tr>
+<tr>
+<td><code>organization_role.revoke</code></td>
+<td>A user or team was unassigned an organization role.</td>
+</tr>
+<tr>
+<td><code>organization_role.update</code></td>
+<td>A custom organization role was edited in an organization.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#organization_wide_project_base_role">organization_wide_project_base_role</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody><tr>
+<td><code>organization_wide_project_base_role.update</code></td>
+<td>An organization's default project base role was updated.</td>
+</tr></tbody>
+</table>
+<h2><a href="#packages">packages</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>packages.package_deleted</code></td>
+<td>An entire package was deleted.</td>
+</tr>
+<tr>
+<td><code>packages.package_published</code></td>
+<td>A package was published or republished to an organization.</td>
+</tr>
+<tr>
+<td><code>packages.package_version_deleted</code></td>
+<td>A specific package version was deleted.</td>
+</tr>
+<tr>
+<td><code>packages.package_version_published</code></td>
+<td>A specific package version was published or republished to a package.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#pages_protected_domain">pages_protected_domain</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>pages_protected_domain.create</code></td>
+<td>A GitHub Pages verified domain was created for an organization or enterprise.</td>
+</tr>
+<tr>
+<td><code>pages_protected_domain.delete</code></td>
+<td>A GitHub Pages verified domain was deleted from an organization or enterprise.</td>
+</tr>
+<tr>
+<td><code>pages_protected_domain.verify</code></td>
+<td>A GitHub Pages domain was verified for an organization or enterprise.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#payment_method">payment_method</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>payment_method.create</code></td>
+<td>A new payment method was added, such as a new credit card or PayPal account.</td>
+</tr>
+<tr>
+<td><code>payment_method.remove</code></td>
+<td>A payment method was removed.</td>
+</tr>
+<tr>
+<td><code>payment_method.update</code></td>
+<td>An existing payment method was updated.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#personal_access_token">personal_access_token</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>personal_access_token.access_granted</code></td>
+<td>A fine-grained personal access token was granted access to resources.</td>
+</tr>
+<tr>
+<td><code>personal_access_token.access_restriction_disabled</code></td>
+<td>The configured restriction for access to resources via personal access tokens was disabled.</td>
+</tr>
+<tr>
+<td><code>personal_access_token.access_restriction_enabled</code></td>
+<td>The configured restriction for access to resources via personal access tokens was enabled.</td>
+</tr>
+<tr>
+<td><code>personal_access_token.access_revoked</code></td>
+<td>A fine-grained personal access token was revoked. The token can still read public organization resources.</td>
+</tr>
+<tr>
+<td><code>personal_access_token.auto_approve_grant_requests_disabled</code></td>
+<td>Triggered when fine-grained personal access tokens can access organization resources without prior approval.</td>
+</tr>
+<tr>
+<td><code>personal_access_token.auto_approve_grant_requests_enabled</code></td>
+<td>Triggered when the organization must approve fine-grained personal access tokens before the tokens can access organization resources.</td>
+</tr>
+<tr>
+<td><code>personal_access_token.expiration_limit_set</code></td>
+<td>A personal access token expiration limit was set.</td>
+</tr>
+<tr>
+<td><code>personal_access_token.expiration_limit_unset</code></td>
+<td>A personal access token expiration limit was unset.</td>
+</tr>
+<tr>
+<td><code>personal_access_token.request_cancelled</code></td>
+<td>A pending request for a fine-grained personal access token to access organization resources was canceled.</td>
+</tr>
+<tr>
+<td><code>personal_access_token.request_created</code></td>
+<td>Triggered when a fine-grained personal access token was created to access organization resources and the organization requires approval before the token can access organization resources.</td>
+</tr>
+<tr>
+<td><code>personal_access_token.request_denied</code></td>
+<td>A request for a fine-grained personal access token to access organization resources was denied.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#prebuild_configuration">prebuild_configuration</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>prebuild_configuration.create</code></td>
+<td>A GitHub Codespaces prebuild configuration for a repository was created.</td>
+</tr>
+<tr>
+<td><code>prebuild_configuration.destroy</code></td>
+<td>A GitHub Codespaces prebuild configuration for a repository was deleted.</td>
+</tr>
+<tr>
+<td><code>prebuild_configuration.run_triggered</code></td>
+<td>A user initiated a run of a GitHub Codespaces prebuild configuration for a repository branch.</td>
+</tr>
+<tr>
+<td><code>prebuild_configuration.update</code></td>
+<td>A GitHub Codespaces prebuild configuration for a repository was edited.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#private_repository_forking">private_repository_forking</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>private_repository_forking.clear</code></td>
+<td>An enterprise owner cleared the policy setting for allowing forks of private and internal repositories, for a repository, organization or enterprise.</td>
+</tr>
+<tr>
+<td><code>private_repository_forking.disable</code></td>
+<td>An enterprise owner disabled the policy setting for allowing forks of private and internal repositories, for a repository, organization or enterprise. Private and internal repositories are never allowed to be forked.</td>
+</tr>
+<tr>
+<td><code>private_repository_forking.enable</code></td>
+<td>An enterprise owner enabled the policy setting for allowing forks of private and internal repositories, for a repository, organization or enterprise. Private and internal repositories are always allowed to be forked.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#profile_picture">profile_picture</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody><tr>
+<td><code>profile_picture.update</code></td>
+<td>A profile picture was updated.</td>
+</tr></tbody>
+</table>
+<h2><a href="#project">project</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>project.access</code></td>
+<td>A project board visibility was changed.</td>
+</tr>
+<tr>
+<td><code>project.close</code></td>
+<td>A project board was closed.</td>
+</tr>
+<tr>
+<td><code>project.create</code></td>
+<td>A project board was created.</td>
+</tr>
+<tr>
+<td><code>project.delete</code></td>
+<td>A project board was deleted.</td>
+</tr>
+<tr>
+<td><code>project.link</code></td>
+<td>A repository was linked to a project board.</td>
+</tr>
+<tr>
+<td><code>project.open</code></td>
+<td>A project board was reopened.</td>
+</tr>
+<tr>
+<td><code>project.rename</code></td>
+<td>A project board was renamed.</td>
+</tr>
+<tr>
+<td><code>project.unlink</code></td>
+<td>A repository was unlinked from a project board.</td>
+</tr>
+<tr>
+<td><code>project.update_org_permission</code></td>
+<td>The project's base-level permission for all organization members was changed or removed.</td>
+</tr>
+<tr>
+<td><code>project.update_team_permission</code></td>
+<td>A team's project board permission level was changed or when a team was added or removed from a project board.</td>
+</tr>
+<tr>
+<td><code>project.update_user_permission</code></td>
+<td>A user was added to or removed from a project board or had their permission level changed.</td>
+</tr>
+<tr>
+<td><code>project.visibility_private</code></td>
+<td>A project's visibility was changed from public to private.</td>
+</tr>
+<tr>
+<td><code>project.visibility_public</code></td>
+<td>A project's visibility was changed from private to public.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#project_base_role">project_base_role</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody><tr>
+<td><code>project_base_role.update</code></td>
+<td>A project's base role was updated.</td>
+</tr></tbody>
+</table>
+<h2><a href="#project_collaborator">project_collaborator</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>project_collaborator.add</code></td>
+<td>A collaborator was added to a project.</td>
+</tr>
+<tr>
+<td><code>project_collaborator.remove</code></td>
+<td>A collaborator was removed from a project.</td>
+</tr>
+<tr>
+<td><code>project_collaborator.update</code></td>
+<td>A project collaborator's permission level was changed.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#project_field">project_field</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>project_field.create</code></td>
+<td>A field was created in a project board.</td>
+</tr>
+<tr>
+<td><code>project_field.delete</code></td>
+<td>A field was deleted in a project board.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#project_view">project_view</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>project_view.create</code></td>
+<td>A view was created in a project board.</td>
+</tr>
+<tr>
+<td><code>project_view.delete</code></td>
+<td>A view was deleted in a project board.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#protected_branch">protected_branch</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>protected_branch.authorized_users_teams</code></td>
+<td>The users, teams, or integrations allowed to bypass a branch protection were changed.</td>
+</tr>
+<tr>
+<td><code>protected_branch.branch_allowances</code></td>
+<td>A protected branch allowance was given to a specific user, team or integration.</td>
+</tr>
+<tr>
+<td><code>protected_branch.create</code></td>
+<td>Branch protection was enabled on a branch.</td>
+</tr>
+<tr>
+<td><code>protected_branch.destroy</code></td>
+<td>Branch protection was disabled on a branch.</td>
+</tr>
+<tr>
+<td><code>protected_branch.dismiss_stale_reviews</code></td>
+<td>Enforcement of dismissing stale pull requests was updated on a branch.</td>
+</tr>
+<tr>
+<td><code>protected_branch.dismissal_restricted_users_teams</code></td>
+<td>Enforcement of restricting users and/or teams who can dismiss reviews was updated on a branch.</td>
+</tr>
+<tr>
+<td><code>protected_branch.policy_override</code></td>
+<td>A branch protection requirement was overridden by a repository administrator.</td>
+</tr>
+<tr>
+<td><code>protected_branch.rejected_ref_update</code></td>
+<td>A branch update attempt was rejected.</td>
+</tr>
+<tr>
+<td><code>protected_branch.update_admin_enforced</code></td>
+<td>Branch protection was enforced for repository administrators.</td>
+</tr>
+<tr>
+<td><code>protected_branch.update_allow_deletions_enforcement_level</code></td>
+<td>Branch deletion was enabled or disabled for a protected branch.</td>
+</tr>
+<tr>
+<td><code>protected_branch.update_allow_force_pushes_enforcement_level</code></td>
+<td>Force pushes were enabled or disabled for a branch.</td>
+</tr>
+<tr>
+<td><code>protected_branch.update_ignore_approvals_from_contributors</code></td>
+<td>Ignoring of approvals from contributors to a pull request was enabled or disabled for a branch.</td>
+</tr>
+<tr>
+<td><code>protected_branch.update_linear_history_requirement_enforcement_level</code></td>
+<td>Required linear commit history was enabled or disabled for a branch.</td>
+</tr>
+<tr>
+<td><code>protected_branch.update_lock_allows_fetch_and_merge</code></td>
+<td>Fork syncing was enabled or disabled for a read-only branch</td>
+</tr>
+<tr>
+<td><code>protected_branch.update_lock_branch_enforcement_level</code></td>
+<td>The enforcement of a branch lock was updated.</td>
+</tr>
+<tr>
+<td><code>protected_branch.update_merge_queue_enforcement_level</code></td>
+<td>Enforcement of the merge queue was modified for a branch.</td>
+</tr>
+<tr>
+<td><code>protected_branch.update_name</code></td>
+<td>A branch name pattern was updated for a branch.</td>
+</tr>
+<tr>
+<td><code>protected_branch.update_pull_request_reviews_enforcement_level</code></td>
+<td>Enforcement of required pull request reviews was updated for a branch. Can be 0 (deactivated), 1 (non-admins), or 2 (everyone).</td>
+</tr>
+<tr>
+<td><code>protected_branch.update_require_code_owner_review</code></td>
+<td>Enforcement of required code owner review was updated for a branch.</td>
+</tr>
+<tr>
+<td><code>protected_branch.update_require_last_push_approval</code></td>
+<td>Someone other than the person who pushed the last code-modifying commit to the branch must approve pull requests for the branch.</td>
+</tr>
+<tr>
+<td><code>protected_branch.update_required_approving_review_count</code></td>
+<td>Enforcement of the required number of approvals before merging was updated on a branch.</td>
+</tr>
+<tr>
+<td><code>protected_branch.update_required_status_checks_enforcement_level</code></td>
+<td>Enforcement of required status checks was updated for a branch.</td>
+</tr>
+<tr>
+<td><code>protected_branch.update_signature_requirement_enforcement_level</code></td>
+<td>Enforcement of required commit signing was updated for a branch.</td>
+</tr>
+<tr>
+<td><code>protected_branch.update_strict_required_status_checks_policy</code></td>
+<td>Enforcement of required status checks was updated for a branch.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#public_key">public_key</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>public_key.create</code></td>
+<td>An SSH key was added to a user account or a deploy key was added to a repository.</td>
+</tr>
+<tr>
+<td><code>public_key.delete</code></td>
+<td>An SSH key was removed from a user account or a deploy key was removed from a repository.</td>
+</tr>
+<tr>
+<td><code>public_key.unverification_failure</code></td>
+<td>A user account's SSH key or a repository's deploy key was unable to be unverified.</td>
+</tr>
+<tr>
+<td><code>public_key.unverify</code></td>
+<td>A user account's SSH key or a repository's deploy key was unverified.</td>
+</tr>
+<tr>
+<td><code>public_key.update</code></td>
+<td>A user account's SSH key or a repository's deploy key was updated.</td>
+</tr>
+<tr>
+<td><code>public_key.verification_failure</code></td>
+<td>A user account's SSH key or a repository's deploy key was unable to be verified.</td>
+</tr>
+<tr>
+<td><code>public_key.verify</code></td>
+<td>A user account's SSH key or a repository's deploy key was verified.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#pull_request">pull_request</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>pull_request.close</code></td>
+<td>A pull request was closed without being merged.</td>
+</tr>
+<tr>
+<td><code>pull_request.converted_to_draft</code></td>
+<td>A pull request was converted to a draft.</td>
+</tr>
+<tr>
+<td><code>pull_request.create</code></td>
+<td>A pull request was created.</td>
+</tr>
+<tr>
+<td><code>pull_request.create_review_request</code></td>
+<td>A review was requested on a pull request.</td>
+</tr>
+<tr>
+<td><code>pull_request.in_progress</code></td>
+<td>A pull request was marked as in progress.</td>
+</tr>
+<tr>
+<td><code>pull_request.indirect_merge</code></td>
+<td>A pull request was considered merged because the pull request's commits were merged into the target branch.</td>
+</tr>
+<tr>
+<td><code>pull_request.merge</code></td>
+<td>A pull request was merged.</td>
+</tr>
+<tr>
+<td><code>pull_request.ready_for_review</code></td>
+<td>A pull request was marked as ready for review.</td>
+</tr>
+<tr>
+<td><code>pull_request.remove_review_request</code></td>
+<td>A review request was removed from a pull request.</td>
+</tr>
+<tr>
+<td><code>pull_request.reopen</code></td>
+<td>A pull request was reopened after previously being closed.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#pull_request_review_comment">pull_request_review_comment</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>pull_request_review_comment.create</code></td>
+<td>A review comment was added to a pull request.</td>
+</tr>
+<tr>
+<td><code>pull_request_review_comment.delete</code></td>
+<td>A review comment on a pull request was deleted.</td>
+</tr>
+<tr>
+<td><code>pull_request_review_comment.update</code></td>
+<td>A review comment on a pull request was changed.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#pull_request_review">pull_request_review</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>pull_request_review.delete</code></td>
+<td>A review on a pull request was deleted.</td>
+</tr>
+<tr>
+<td><code>pull_request_review.dismiss</code></td>
+<td>A review on a pull request was dismissed.</td>
+</tr>
+<tr>
+<td><code>pull_request_review.submit</code></td>
+<td>A review on a pull request was submitted.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repo">repo</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repo.access</code></td>
+<td>The visibility of a repository changed.</td>
+</tr>
+<tr>
+<td><code>repo.actions_enabled</code></td>
+<td>GitHub Actions was enabled for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.add_member</code></td>
+<td>A collaborator was added to a repository.</td>
+</tr>
+<tr>
+<td><code>repo.add_topic</code></td>
+<td>A topic was added to a repository.</td>
+</tr>
+<tr>
+<td><code>repo.advanced_security_disabled</code></td>
+<td>GitHub Advanced Security was disabled for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.advanced_security_enabled</code></td>
+<td>GitHub Advanced Security was enabled for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.archived</code></td>
+<td>A repository was archived.</td>
+</tr>
+<tr>
+<td><code>repo.change_merge_setting</code></td>
+<td>Pull request merge options were changed for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.code_scanning_analysis_deleted</code></td>
+<td>Code scanning analysis for a repository was deleted.</td>
+</tr>
+<tr>
+<td><code>repo.code_scanning_autofix_disabled</code></td>
+<td>Autofix for code scanning alerts was disabled for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.code_scanning_autofix_enabled</code></td>
+<td>Autofix for code scanning alerts was enabled for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.code_scanning_autofix_third_party_tools_disabled</code></td>
+<td>Autofix for third party tools for code scanning alerts was disabled for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.code_scanning_autofix_third_party_tools_enabled</code></td>
+<td>Autofix for third party tools for code scanning alerts was enabled for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.code_scanning_configuration_for_branch_deleted</code></td>
+<td>A code scanning configuration for a branch of a repository was deleted.</td>
+</tr>
+<tr>
+<td><code>repo.code_scanning_delegated_alert_dismissal_disabled</code></td>
+<td>Prevention of direct alert dismissal for code scanning was disabled for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.code_scanning_delegated_alert_dismissal_enabled</code></td>
+<td>Prevention of direct alert dismissal for code scanning was enabled for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.codeql_disabled</code></td>
+<td>Code scanning using the default setup was disabled for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.codeql_enabled</code></td>
+<td>Code scanning using the default setup was enabled for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.codeql_updated</code></td>
+<td>Code scanning using the default setup was updated for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.codespaces_trusted_repo_access_granted</code></td>
+<td>GitHub Codespaces was granted trusted repository access to this repository.</td>
+</tr>
+<tr>
+<td><code>repo.codespaces_trusted_repo_access_revoked</code></td>
+<td>GitHub Codespaces trusted repository access to this repository was revoked.</td>
+</tr>
+<tr>
+<td><code>repo.config.disable_collaborators_only</code></td>
+<td>The interaction limit for collaborators only was disabled.</td>
+</tr>
+<tr>
+<td><code>repo.config.disable_contributors_only</code></td>
+<td>The interaction limit for prior contributors only was disabled in a repository.</td>
+</tr>
+<tr>
+<td><code>repo.config.disable_sockpuppet_disallowed</code></td>
+<td>The interaction limit for existing users only was disabled in a repository.</td>
+</tr>
+<tr>
+<td><code>repo.config.enable_collaborators_only</code></td>
+<td>The interaction limit for collaborators only was enabled in a repository  Users that are not collaborators or organization members were unable to interact with a repository for a set duration.</td>
+</tr>
+<tr>
+<td><code>repo.config.enable_contributors_only</code></td>
+<td>The interaction limit for prior contributors only was enabled in a repository  Users that are not prior contributors, collaborators or organization members were unable to interact with a repository for a set duration.</td>
+</tr>
+<tr>
+<td><code>repo.config.enable_sockpuppet_disallowed</code></td>
+<td>The interaction limit for existing users was enabled in a repository  New users aren't able to interact with a repository for a set duration  Existing users of the repository, contributors, collaborators or organization members are able to interact with a repository.</td>
+</tr>
+<tr>
+<td><code>repo.create</code></td>
+<td>A repository was created.</td>
+</tr>
+<tr>
+<td><code>repo.create_actions_secret</code></td>
+<td>A GitHub Actions secret was created for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.create_actions_variable</code></td>
+<td>A GitHub Actions variable was created for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.create_integration_secret</code></td>
+<td>A Codespaces or Dependabot secret was created for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.destroy</code></td>
+<td>A repository was deleted.</td>
+</tr>
+<tr>
+<td><code>repo.download_zip</code></td>
+<td>A source code archive of a repository was downloaded as a ZIP file.</td>
+</tr>
+<tr>
+<td><code>repo.pages_cname</code></td>
+<td>A GitHub Pages custom domain was modified in a repository.</td>
+</tr>
+<tr>
+<td><code>repo.pages_create</code></td>
+<td>A GitHub Pages site was created.</td>
+</tr>
+<tr>
+<td><code>repo.pages_destroy</code></td>
+<td>A GitHub Pages site was deleted.</td>
+</tr>
+<tr>
+<td><code>repo.pages_https_redirect_disabled</code></td>
+<td>HTTPS redirects were disabled for a GitHub Pages site.</td>
+</tr>
+<tr>
+<td><code>repo.pages_https_redirect_enabled</code></td>
+<td>HTTPS redirects were enabled for a GitHub Pages site.</td>
+</tr>
+<tr>
+<td><code>repo.pages_private</code></td>
+<td>A GitHub Pages site visibility was changed to private.</td>
+</tr>
+<tr>
+<td><code>repo.pages_public</code></td>
+<td>A GitHub Pages site visibility was changed to public.</td>
+</tr>
+<tr>
+<td><code>repo.pages_soft_delete</code></td>
+<td>A GitHub Pages site was soft-deleted because its owner's plan changed.</td>
+</tr>
+<tr>
+<td><code>repo.pages_soft_delete_restore</code></td>
+<td>A GitHub Pages site that was previously soft-deleted was restored.</td>
+</tr>
+<tr>
+<td><code>repo.pages_source</code></td>
+<td>A GitHub Pages source was modified.</td>
+</tr>
+<tr>
+<td><code>repo.register_self_hosted_runner</code></td>
+<td>A new self-hosted runner was registered.</td>
+</tr>
+<tr>
+<td><code>repo.remove_actions_secret</code></td>
+<td>A GitHub Actions secret was deleted for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.remove_actions_variable</code></td>
+<td>A GitHub Actions variable was deleted for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.remove_integration_secret</code></td>
+<td>A Codespaces or Dependabot secret was deleted for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.remove_member</code></td>
+<td>A collaborator was removed from a repository.</td>
+</tr>
+<tr>
+<td><code>repo.remove_self_hosted_runner</code></td>
+<td>A self-hosted runner was removed.</td>
+</tr>
+<tr>
+<td><code>repo.remove_topic</code></td>
+<td>A topic was removed from a repository.</td>
+</tr>
+<tr>
+<td><code>repo.rename</code></td>
+<td>A repository was renamed.</td>
+</tr>
+<tr>
+<td><code>repo.self_hosted_runner_offline</code></td>
+<td>The runner application was stopped. This event is not available in the web interface, only via the REST API, audit log streaming, or JSON/CSV exports.</td>
+</tr>
+<tr>
+<td><code>repo.self_hosted_runner_online</code></td>
+<td>The runner application was started. This event is not available in the web interface, only via the REST API, audit log streaming, or JSON/CSV exports.</td>
+</tr>
+<tr>
+<td><code>repo.self_hosted_runner_updated</code></td>
+<td>The runner application was updated. This event is not included in the JSON/CSV export.</td>
+</tr>
+<tr>
+<td><code>repo.set_actions_fork_pr_approvals_policy</code></td>
+<td>The setting for requiring approvals for workflows from public forks was changed for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.set_actions_private_fork_pr_approvals_policy</code></td>
+<td>The policy for requiring approval for fork pull request workflows from collaborators without write access to private repos was changed for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.set_actions_retention_limit</code></td>
+<td>The retention period for GitHub Actions artifacts and logs in a repository was changed.</td>
+</tr>
+<tr>
+<td><code>repo.set_default_workflow_permissions</code></td>
+<td>The default permissions granted to the GITHUB_TOKEN when running workflows were changed for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.set_fork_pr_workflows_policy</code></td>
+<td>Triggered when the policy for workflows on private repository forks is changed.</td>
+</tr>
+<tr>
+<td><code>repo.set_workflow_permission_can_approve_pr</code></td>
+<td>The policy for allowing GitHub Actions to create and approve pull requests was changed for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.staff_unlock</code></td>
+<td>An enterprise owner or GitHub staff (with permission from a repository administrator) temporarily unlocked the repository.</td>
+</tr>
+<tr>
+<td><code>repo.transfer</code></td>
+<td>A user accepted a request to receive a transferred repository.</td>
+</tr>
+<tr>
+<td><code>repo.transfer_outgoing</code></td>
+<td>A repository was transferred to another repository network.</td>
+</tr>
+<tr>
+<td><code>repo.transfer_start</code></td>
+<td>A user sent a request to transfer a repository to another user or organization.</td>
+</tr>
+<tr>
+<td><code>repo.unarchived</code></td>
+<td>A repository was unarchived.</td>
+</tr>
+<tr>
+<td><code>repo.update_actions_access_settings</code></td>
+<td>The setting to control how a repository was used by GitHub Actions workflows in other repositories was changed.</td>
+</tr>
+<tr>
+<td><code>repo.update_actions_secret</code></td>
+<td>A GitHub Actions secret was updated for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.update_actions_settings</code></td>
+<td>A repository administrator changed GitHub Actions policy settings for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.update_actions_variable</code></td>
+<td>A GitHub Actions variable was updated for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.update_default_branch</code></td>
+<td>The default branch for a repository was changed.</td>
+</tr>
+<tr>
+<td><code>repo.update_integration_secret</code></td>
+<td>A Codespaces or Dependabot secret was updated for a repository.</td>
+</tr>
+<tr>
+<td><code>repo.update_member</code></td>
+<td>A user's permission to a repository was changed.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_advisory">repository_advisory</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_advisory.close</code></td>
+<td>Someone closed a security advisory.</td>
+</tr>
+<tr>
+<td><code>repository_advisory.cve_request</code></td>
+<td>Someone requested a CVE (Common Vulnerabilities and Exposures) number from GitHub for a draft security advisory.</td>
+</tr>
+<tr>
+<td><code>repository_advisory.github_broadcast</code></td>
+<td>GitHub made a security advisory public in the GitHub Advisory Database.</td>
+</tr>
+<tr>
+<td><code>repository_advisory.github_withdraw</code></td>
+<td>GitHub withdrew a security advisory that was published in error.</td>
+</tr>
+<tr>
+<td><code>repository_advisory.open</code></td>
+<td>Someone opened a draft security advisory.</td>
+</tr>
+<tr>
+<td><code>repository_advisory.publish</code></td>
+<td>Someone published a security advisory.</td>
+</tr>
+<tr>
+<td><code>repository_advisory.reopen</code></td>
+<td>Someone reopened as draft security advisory.</td>
+</tr>
+<tr>
+<td><code>repository_advisory.update</code></td>
+<td>Someone edited a draft or published security advisory.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_branch_protection_evaluation">repository_branch_protection_evaluation</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_branch_protection_evaluation.disable</code></td>
+<td>Branch protections were disabled for the repository.</td>
+</tr>
+<tr>
+<td><code>repository_branch_protection_evaluation.enable</code></td>
+<td>Branch protections were enabled for this repository.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_code_security">repository_code_security</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_code_security.disable</code></td>
+<td>Code security was disabled for a repository.</td>
+</tr>
+<tr>
+<td><code>repository_code_security.enable</code></td>
+<td>Code security was enabled for a repository.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_content_analysis">repository_content_analysis</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_content_analysis.disable</code></td>
+<td>Data use settings were disabled for a private repository.</td>
+</tr>
+<tr>
+<td><code>repository_content_analysis.enable</code></td>
+<td>Data use settings were enabled for a private repository.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_dependency_graph">repository_dependency_graph</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_dependency_graph.disable</code></td>
+<td>The dependency graph was disabled for a private repository.</td>
+</tr>
+<tr>
+<td><code>repository_dependency_graph.enable</code></td>
+<td>The dependency graph was enabled for a private repository.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_image">repository_image</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_image.create</code></td>
+<td>An image to represent a repository was uploaded.</td>
+</tr>
+<tr>
+<td><code>repository_image.destroy</code></td>
+<td>An image to represent a repository was deleted.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_invitation">repository_invitation</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_invitation.accept</code></td>
+<td>An invitation to join a repository was accepted.</td>
+</tr>
+<tr>
+<td><code>repository_invitation.cancel</code></td>
+<td>An invitation to join a repository was canceled.</td>
+</tr>
+<tr>
+<td><code>repository_invitation.create</code></td>
+<td>An invitation to join a repository was sent.</td>
+</tr>
+<tr>
+<td><code>repository_invitation.reject</code></td>
+<td>An invitation to join a repository was declined.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_limit">repository_limit</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_limit.reached</code></td>
+<td>An organization has reached their repository limit.</td>
+</tr>
+<tr>
+<td><code>repository_limit.warning</code></td>
+<td>An organization is approaching their repository limit.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_projects_change">repository_projects_change</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_projects_change.clear</code></td>
+<td>The repository projects policy was removed for an organization, or all organizations in the enterprise  Organization owners can now control their repository projects settings.</td>
+</tr>
+<tr>
+<td><code>repository_projects_change.disable</code></td>
+<td>Repository projects were disabled for a repository, all repositories in an organization, or all organizations in an enterprise.</td>
+</tr>
+<tr>
+<td><code>repository_projects_change.enable</code></td>
+<td>Repository projects were enabled for a repository, all repositories in an organization, or all organizations in an enterprise.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_ruleset">repository_ruleset</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_ruleset.create</code></td>
+<td>A repository ruleset was created.</td>
+</tr>
+<tr>
+<td><code>repository_ruleset.destroy</code></td>
+<td>A repository ruleset was deleted.</td>
+</tr>
+<tr>
+<td><code>repository_ruleset.update</code></td>
+<td>A repository ruleset was edited.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_secret_scanning_automatic_validity_checks">repository_secret_scanning_automatic_validity_checks</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_secret_scanning_automatic_validity_checks.disabled</code></td>
+<td>Automatic partner validation checks have been disabled at the repository level</td>
+</tr>
+<tr>
+<td><code>repository_secret_scanning_automatic_validity_checks.enabled</code></td>
+<td>Automatic partner validation checks have been enabled at the repository level</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_secret_scanning_custom_pattern">repository_secret_scanning_custom_pattern</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_secret_scanning_custom_pattern.create</code></td>
+<td>A custom pattern was created for secret scanning in a repository.</td>
+</tr>
+<tr>
+<td><code>repository_secret_scanning_custom_pattern.delete</code></td>
+<td>A custom pattern was removed from secret scanning in a repository.</td>
+</tr>
+<tr>
+<td><code>repository_secret_scanning_custom_pattern.publish</code></td>
+<td>A custom pattern was published for secret scanning in a repository.</td>
+</tr>
+<tr>
+<td><code>repository_secret_scanning_custom_pattern.update</code></td>
+<td>Changes to a custom pattern were saved and a dry run was executed for secret scanning in a repository.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_secret_scanning_custom_pattern_push_protection">repository_secret_scanning_custom_pattern_push_protection</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_secret_scanning_custom_pattern_push_protection.disabled</code></td>
+<td>Push protection for a custom pattern for secret scanning was disabled for your repository.</td>
+</tr>
+<tr>
+<td><code>repository_secret_scanning_custom_pattern_push_protection.enabled</code></td>
+<td>Push protection for a custom pattern for secret scanning was enabled for your repository.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_secret_scanning">repository_secret_scanning</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_secret_scanning.disable</code></td>
+<td>Secret scanning was disabled for a repository.</td>
+</tr>
+<tr>
+<td><code>repository_secret_scanning.enable</code></td>
+<td>Secret scanning was enabled for a repository.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_secret_scanning_generic_secrets">repository_secret_scanning_generic_secrets</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_secret_scanning_generic_secrets.disabled</code></td>
+<td>Generic secrets have been disabled at the repository level</td>
+</tr>
+<tr>
+<td><code>repository_secret_scanning_generic_secrets.enabled</code></td>
+<td>Generic secrets have been enabled at the repository level</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_secret_scanning_non_provider_patterns">repository_secret_scanning_non_provider_patterns</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_secret_scanning_non_provider_patterns.disabled</code></td>
+<td>Secret scanning for non-provider patterns was disabled at the repository level.</td>
+</tr>
+<tr>
+<td><code>repository_secret_scanning_non_provider_patterns.enabled</code></td>
+<td>Secret scanning for non-provider patterns was enabled at the repository level.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_secret_scanning_push_protection_bypass_list">repository_secret_scanning_push_protection_bypass_list</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_secret_scanning_push_protection_bypass_list.add</code></td>
+<td>A role or team was added to the push protection bypass list at the repository level.</td>
+</tr>
+<tr>
+<td><code>repository_secret_scanning_push_protection_bypass_list.disable</code></td>
+<td>Push protection settings for "Users who can bypass push protection for secret scanning" changed from "Specific roles or teams" to "Anyone with write access" at the repository level.</td>
+</tr>
+<tr>
+<td><code>repository_secret_scanning_push_protection_bypass_list.enable</code></td>
+<td>Push protection settings for "Users who can bypass push protection for secret scanning" changed from "Anyone with write access" to "Specific roles or teams" at the repository level.</td>
+</tr>
+<tr>
+<td><code>repository_secret_scanning_push_protection_bypass_list.remove</code></td>
+<td>A role or team was removed from the push protection bypass list at the repository level.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_secret_scanning_push_protection">repository_secret_scanning_push_protection</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_secret_scanning_push_protection.disable</code></td>
+<td>Secret scanning push protection was disabled for a repository.</td>
+</tr>
+<tr>
+<td><code>repository_secret_scanning_push_protection.enable</code></td>
+<td>Secret scanning push protection was enabled for a repository.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_security_configuration">repository_security_configuration</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_security_configuration.applied</code></td>
+<td>A code security configuration was applied to a repository.</td>
+</tr>
+<tr>
+<td><code>repository_security_configuration.failed</code></td>
+<td>A code security configuration failed to attach to the repository.</td>
+</tr>
+<tr>
+<td><code>repository_security_configuration.removed</code></td>
+<td>A code security configuration was removed from a repository.</td>
+</tr>
+<tr>
+<td><code>repository_security_configuration.removed_by_settings_change</code></td>
+<td>A code security configuration was removed due to a change in repository or enterprise settings.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_visibility_change">repository_visibility_change</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_visibility_change.clear</code></td>
+<td>The repository visibility change setting was cleared for an organization or enterprise.</td>
+</tr>
+<tr>
+<td><code>repository_visibility_change.disable</code></td>
+<td>The ability for enterprise members to update a repository's visibility was disabled. Members are unable to change repository visibilities in an organization, or all organizations in an enterprise.</td>
+</tr>
+<tr>
+<td><code>repository_visibility_change.enable</code></td>
+<td>The ability for enterprise members to update a repository's visibility was enabled. Members are able to change repository visibilities in an organization, or all organizations in an enterprise.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_vulnerability_alert">repository_vulnerability_alert</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_vulnerability_alert.auto_dismiss</code></td>
+<td>A Dependabot alert was automatically dismissed because its metadata matches an enabled Dependabot rule.</td>
+</tr>
+<tr>
+<td><code>repository_vulnerability_alert.auto_reopen</code></td>
+<td>A previously auto-dismissed Dependabot alert was automatically reopened because its metadata no longer matches an enabled Dependabot rule.</td>
+</tr>
+<tr>
+<td><code>repository_vulnerability_alert.create</code></td>
+<td>GitHub created a Dependabot alert because the repository uses a vulnerable dependency.</td>
+</tr>
+<tr>
+<td><code>repository_vulnerability_alert.dismiss</code></td>
+<td>A Dependabot alert was manually dismissed.</td>
+</tr>
+<tr>
+<td><code>repository_vulnerability_alert.reintroduce</code></td>
+<td>A Dependabot alert was automatically reopened because the repository resumed use of a vulnerable dependency.</td>
+</tr>
+<tr>
+<td><code>repository_vulnerability_alert.reopen</code></td>
+<td>A Dependabot alert was manually reopened.</td>
+</tr>
+<tr>
+<td><code>repository_vulnerability_alert.resolve</code></td>
+<td>Changes were pushed to update and resolve a Dependabot alert in a project dependency.</td>
+</tr>
+<tr>
+<td><code>repository_vulnerability_alert.withdraw</code></td>
+<td>A Dependabot alert was withdrawn.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_vulnerability_alerts">repository_vulnerability_alerts</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_vulnerability_alerts.authorized_users_teams</code></td>
+<td>The list of people or teams authorized to receive Dependabot alerts for the repository was updated.</td>
+</tr>
+<tr>
+<td><code>repository_vulnerability_alerts.disable</code></td>
+<td>Dependabot alerts was disabled.</td>
+</tr>
+<tr>
+<td><code>repository_vulnerability_alerts.enable</code></td>
+<td>Dependabot alerts was enabled.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#repository_vulnerability_alerts_auto_dismissal">repository_vulnerability_alerts_auto_dismissal</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>repository_vulnerability_alerts_auto_dismissal.disable</code></td>
+<td>Automatic dismissal of low-impact Dependabot alerts was disabled for the repository.</td>
+</tr>
+<tr>
+<td><code>repository_vulnerability_alerts_auto_dismissal.enable</code></td>
+<td>Automatic dismissal of low-impact Dependabot alerts was enabled for the repository.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#required_status_check">required_status_check</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>required_status_check.create</code></td>
+<td>A status check was marked as required for a protected branch.</td>
+</tr>
+<tr>
+<td><code>required_status_check.destroy</code></td>
+<td>A status check was no longer marked as required for a protected branch.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#restrict_notification_delivery">restrict_notification_delivery</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>restrict_notification_delivery.disable</code></td>
+<td>Email notification restrictions for an organization or enterprise were disabled.</td>
+</tr>
+<tr>
+<td><code>restrict_notification_delivery.enable</code></td>
+<td>Email notification restrictions for an organization or enterprise were enabled.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#role">role</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>role.create</code></td>
+<td>A new custom repository role was created.</td>
+</tr>
+<tr>
+<td><code>role.destroy</code></td>
+<td>A custom repository role was deleted.</td>
+</tr>
+<tr>
+<td><code>role.update</code></td>
+<td>A custom repository role was edited.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#secret_scanning_alert">secret_scanning_alert</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>secret_scanning_alert.create</code></td>
+<td>GitHub detected a secret and created a secret scanning alert.</td>
+</tr>
+<tr>
+<td><code>secret_scanning_alert.public_leak</code></td>
+<td>A secret scanning alert was leaked in a public repo.</td>
+</tr>
+<tr>
+<td><code>secret_scanning_alert.reopen</code></td>
+<td>A secret scanning alert was reopened.</td>
+</tr>
+<tr>
+<td><code>secret_scanning_alert.report</code></td>
+<td>A leaked secret was reported to the secret's provider by secret scanning.</td>
+</tr>
+<tr>
+<td><code>secret_scanning_alert.resolve</code></td>
+<td>A secret scanning alert was resolved.</td>
+</tr>
+<tr>
+<td><code>secret_scanning_alert.revoke</code></td>
+<td>A secret scanning alert was revoked.</td>
+</tr>
+<tr>
+<td><code>secret_scanning_alert.validate</code></td>
+<td>A secret scanning alert was validated.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#secret_scanning_closure_request">secret_scanning_closure_request</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>secret_scanning_closure_request.approve</code></td>
+<td>A request to close a secret scanning alert was approved by a user.</td>
+</tr>
+<tr>
+<td><code>secret_scanning_closure_request.deny</code></td>
+<td>A request to close a secret scanning alert was denied by a user.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#secret_scanning">secret_scanning</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>secret_scanning.disable</code></td>
+<td>Secret scanning was disabled for all existing repositories.</td>
+</tr>
+<tr>
+<td><code>secret_scanning.enable</code></td>
+<td>Secret scanning was enabled for all existing repositories.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#secret_scanning_new_repos">secret_scanning_new_repos</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>secret_scanning_new_repos.disable</code></td>
+<td>Secret scanning was disabled for all new repositories.</td>
+</tr>
+<tr>
+<td><code>secret_scanning_new_repos.enable</code></td>
+<td>Secret scanning was enabled for all new repositories.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#secret_scanning_push_protection">secret_scanning_push_protection</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody><tr>
+<td><code>secret_scanning_push_protection.bypass</code></td>
+<td>Triggered when a user bypasses the push protection on a secret detected by secret scanning.</td>
+</tr></tbody>
+</table>
+<h2><a href="#secret_scanning_push_protection_request">secret_scanning_push_protection_request</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>secret_scanning_push_protection_request.approve</code></td>
+<td>A request to bypass secret scanning push protection was approved by a user.</td>
+</tr>
+<tr>
+<td><code>secret_scanning_push_protection_request.deny</code></td>
+<td>A request to bypass secret scanning push protection was denied by a user.</td>
+</tr>
+<tr>
+<td><code>secret_scanning_push_protection_request.request</code></td>
+<td>A user requested to bypass secret scanning push protection.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#secret_scanning_scan">secret_scanning_scan</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody><tr>
+<td><code>secret_scanning_scan.completed</code></td>
+<td>A secret scanning scan has completed on this repository.</td>
+</tr></tbody>
+</table>
+<h2><a href="#security_configuration">security_configuration</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>security_configuration.create</code></td>
+<td>A security configuration was created</td>
+</tr>
+<tr>
+<td><code>security_configuration.delete</code></td>
+<td>A security configuration was deleted</td>
+</tr>
+<tr>
+<td><code>security_configuration.update</code></td>
+<td>A security configuration was updated</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#security_configuration_default">security_configuration_default</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>security_configuration_default.delete</code></td>
+<td>A default security configuration setting for new repositories was removed.</td>
+</tr>
+<tr>
+<td><code>security_configuration_default.update</code></td>
+<td>A default security configuration setting for new repositories was updated.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#security_configuration_policy">security_configuration_policy</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody><tr>
+<td><code>security_configuration_policy.update</code></td>
+<td>A security configuration policy was updated</td>
+</tr></tbody>
+</table>
+<h2><a href="#sponsors">sponsors</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>sponsors.agreement_sign</code></td>
+<td>A GitHub Sponsors agreement was signed on behalf of an organization.</td>
+</tr>
+<tr>
+<td><code>sponsors.custom_amount_settings_change</code></td>
+<td>Custom amounts for GitHub Sponsors were enabled or disabled, or the suggested custom amount was changed.</td>
+</tr>
+<tr>
+<td><code>sponsors.fiscal_host_change</code></td>
+<td>The fiscal host for a GitHub Sponsors listing was updated.</td>
+</tr>
+<tr>
+<td><code>sponsors.invoiced_agreement_sign</code></td>
+<td>An agreement for invoiced billing for GitHub Sponsors was signed.</td>
+</tr>
+<tr>
+<td><code>sponsors.repo_funding_links_file_action</code></td>
+<td>The FUNDING file in a repository was changed.</td>
+</tr>
+<tr>
+<td><code>sponsors.sponsor_sponsorship_cancel</code></td>
+<td>A sponsorship was canceled.</td>
+</tr>
+<tr>
+<td><code>sponsors.sponsor_sponsorship_create</code></td>
+<td>A sponsorship was created, by sponsoring an account.</td>
+</tr>
+<tr>
+<td><code>sponsors.sponsor_sponsorship_payment_complete</code></td>
+<td>After you sponsor an account and a payment has been processed, the sponsorship payment was marked as complete.</td>
+</tr>
+<tr>
+<td><code>sponsors.sponsor_sponsorship_preference_change</code></td>
+<td>The option to receive email updates from a sponsored account was changed.</td>
+</tr>
+<tr>
+<td><code>sponsors.sponsor_sponsorship_tier_change</code></td>
+<td>A sponsorship was upgraded or downgraded.</td>
+</tr>
+<tr>
+<td><code>sponsors.sponsored_developer_approve</code></td>
+<td>A GitHub Sponsors account was approved.</td>
+</tr>
+<tr>
+<td><code>sponsors.sponsored_developer_create</code></td>
+<td>A GitHub Sponsors account was created.</td>
+</tr>
+<tr>
+<td><code>sponsors.sponsored_developer_disable</code></td>
+<td>A GitHub Sponsors account was disabled.</td>
+</tr>
+<tr>
+<td><code>sponsors.sponsored_developer_profile_update</code></td>
+<td>The profile for GitHub Sponsors account was edited.</td>
+</tr>
+<tr>
+<td><code>sponsors.sponsored_developer_redraft</code></td>
+<td>A GitHub Sponsors account was returned to draft state from approved state.</td>
+</tr>
+<tr>
+<td><code>sponsors.sponsored_developer_request_approval</code></td>
+<td>An application for GitHub Sponsors was submitted for approval.</td>
+</tr>
+<tr>
+<td><code>sponsors.sponsored_developer_tier_description_update</code></td>
+<td>The description for a sponsorship tier was changed.</td>
+</tr>
+<tr>
+<td><code>sponsors.sponsors_patreon_user_create</code></td>
+<td>A Patreon account was linked to a user account for use with GitHub Sponsors.</td>
+</tr>
+<tr>
+<td><code>sponsors.sponsors_patreon_user_destroy</code></td>
+<td>A Patreon account for use with GitHub Sponsors was unlinked from a user account.</td>
+</tr>
+<tr>
+<td><code>sponsors.update_tier_repository</code></td>
+<td>A GitHub Sponsors tier changed access for a repository.</td>
+</tr>
+<tr>
+<td><code>sponsors.update_tier_welcome_message</code></td>
+<td>The welcome message for a GitHub Sponsors tier for an organization was updated.</td>
+</tr>
+<tr>
+<td><code>sponsors.withdraw_agreement_signature</code></td>
+<td>A signature was withdrawn from a GitHub Sponsors agreement that applies to an organization.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#ssh_certificate_authority">ssh_certificate_authority</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>ssh_certificate_authority.create</code></td>
+<td>An SSH certificate authority for an organization or enterprise was created.</td>
+</tr>
+<tr>
+<td><code>ssh_certificate_authority.destroy</code></td>
+<td>An SSH certificate authority for an organization or enterprise was deleted.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#ssh_certificate_requirement">ssh_certificate_requirement</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>ssh_certificate_requirement.disable</code></td>
+<td>The requirement for members to use SSH certificates to access an organization resources was disabled.</td>
+</tr>
+<tr>
+<td><code>ssh_certificate_requirement.enable</code></td>
+<td>The requirement for members to use SSH certificates to access an organization resources was enabled.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#staff">staff</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>staff.set_domain_token_expiration</code></td>
+<td>The verification code expiry time for an organization or enterprise domain was set.</td>
+</tr>
+<tr>
+<td><code>staff.unverify_domain</code></td>
+<td>An organization or enterprise domain was unverified.</td>
+</tr>
+<tr>
+<td><code>staff.verify_domain</code></td>
+<td>An organization or enterprise domain was verified.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#team">team</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>team.add_member</code></td>
+<td>A member of an organization was added to a team.</td>
+</tr>
+<tr>
+<td><code>team.add_repository</code></td>
+<td>A team was given access and permissions to a repository.</td>
+</tr>
+<tr>
+<td><code>team.change_parent_team</code></td>
+<td>A child team was created or a child team's parent was changed.</td>
+</tr>
+<tr>
+<td><code>team.change_privacy</code></td>
+<td>A team's privacy level was changed.</td>
+</tr>
+<tr>
+<td><code>team.create</code></td>
+<td>A new team is created.</td>
+</tr>
+<tr>
+<td><code>team.demote_maintainer</code></td>
+<td>A user was demoted from a team maintainer to a team member.</td>
+</tr>
+<tr>
+<td><code>team.destroy</code></td>
+<td>A team was deleted.</td>
+</tr>
+<tr>
+<td><code>team.promote_maintainer</code></td>
+<td>A user was promoted from a team member to a team maintainer.</td>
+</tr>
+<tr>
+<td><code>team.remove_member</code></td>
+<td>An organization member was removed from a team.</td>
+</tr>
+<tr>
+<td><code>team.remove_repository</code></td>
+<td>A repository was removed from a team's control.</td>
+</tr>
+<tr>
+<td><code>team.rename</code></td>
+<td>A team's name was changed.</td>
+</tr>
+<tr>
+<td><code>team.update_repository_permission</code></td>
+<td>A team's permission to a repository was changed.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#team_discussions">team_discussions</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>team_discussions.clear</code></td>
+<td>An organization owner cleared the setting to allow team discussions for an organization or enterprise.</td>
+</tr>
+<tr>
+<td><code>team_discussions.disable</code></td>
+<td>Team discussions were disabled for an organization.</td>
+</tr>
+<tr>
+<td><code>team_discussions.enable</code></td>
+<td>Team discussions were enabled for an organization.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#team_sync_tenant">team_sync_tenant</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>team_sync_tenant.disabled</code></td>
+<td>Team synchronization with a tenant was disabled.</td>
+</tr>
+<tr>
+<td><code>team_sync_tenant.enabled</code></td>
+<td>Team synchronization with a tenant was enabled.</td>
+</tr>
+<tr>
+<td><code>team_sync_tenant.update_okta_credentials</code></td>
+<td>The Okta credentials for team synchronization with a tenant were changed.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#vulnerability_alert_rule">vulnerability_alert_rule</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>vulnerability_alert_rule.create</code></td>
+<td>A Dependabot rule was created.</td>
+</tr>
+<tr>
+<td><code>vulnerability_alert_rule.delete</code></td>
+<td>A Dependabot rule was deleted.</td>
+</tr>
+<tr>
+<td><code>vulnerability_alert_rule.disable</code></td>
+<td>A Dependabot rule was disabled for a single repository or disabled by default for an organization.</td>
+</tr>
+<tr>
+<td><code>vulnerability_alert_rule.enable</code></td>
+<td>A Dependabot rule was enabled for a single repository or enabled by default for an organization.</td>
+</tr>
+<tr>
+<td><code>vulnerability_alert_rule.force_disable</code></td>
+<td>A Dependabot rule was enabled for an organization and cannot be disabled for its repositories.</td>
+</tr>
+<tr>
+<td><code>vulnerability_alert_rule.force_enable</code></td>
+<td>A Dependabot rule was disabled for an organization and cannot be enabled for its repositories.</td>
+</tr>
+<tr>
+<td><code>vulnerability_alert_rule.update</code></td>
+<td>A Dependabot rule's conditions, actions, or metadata changed.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#workflows">workflows</a></h2>
+<table>
+<thead><tr>
+<th>Action</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>workflows.approve_workflow_job</code></td>
+<td>A workflow job was approved.</td>
+</tr>
+<tr>
+<td><code>workflows.cancel_workflow_run</code></td>
+<td>A workflow run was cancelled.</td>
+</tr>
+<tr>
+<td><code>workflows.completed_workflow_run</code></td>
+<td>A workflow status changed to completed. This event is not available in the web interface, only via the REST API, audit log streaming, or JSON/CSV exports.</td>
+</tr>
+<tr>
+<td><code>workflows.created_workflow_run</code></td>
+<td>A workflow run was create. This event is not available in the web interface, only via the REST API, audit log streaming, or JSON/CSV exports.</td>
+</tr>
+<tr>
+<td><code>workflows.delete_workflow_run</code></td>
+<td>A workflow run was deleted.</td>
+</tr>
+<tr>
+<td><code>workflows.disable_workflow</code></td>
+<td>A workflow was disabled.</td>
+</tr>
+<tr>
+<td><code>workflows.enable_workflow</code></td>
+<td>A workflow was enabled, after previously being disabled by disable_workflow.</td>
+</tr>
+<tr>
+<td><code>workflows.pin_workflow</code></td>
+<td>A workflow was pinned.</td>
+</tr>
+<tr>
+<td><code>workflows.prepared_workflow_job</code></td>
+<td>A workflow job was started. Includes the list of secrets that were provided to the job. This event is not available in the web interface, only via the REST API, audit log streaming, or JSON/CSV exports.</td>
+</tr>
+<tr>
+<td><code>workflows.reject_workflow_job</code></td>
+<td>A workflow job was rejected.</td>
+</tr>
+<tr>
+<td><code>workflows.rerun_workflow_run</code></td>
+<td>A workflow run was re-run.</td>
+</tr>
+<tr>
+<td><code>workflows.unpin_workflow</code></td>
+<td>A workflow was unpinned after previously being pinned.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></div>
+</div></div></main>
+</div></body></html>

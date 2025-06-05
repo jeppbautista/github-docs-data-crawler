@@ -1,0 +1,71 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Dependabot" href="/en/code-security/dependabot">Dependabot</a><span>/</span>
+</li>
+<li>
+<a title="Dependabot version updates" href="/en/code-security/dependabot/dependabot-version-updates">Dependabot version updates</a><span>/</span>
+</li>
+<li><a title="Dependabot version updates" href="/en/code-security/dependabot/dependabot-version-updates/about-dependabot-version-updates">Dependabot version updates</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>About Dependabot version updates</h1></div></div>
+<div>
+<div><p>You can use Dependabot to keep the packages you use updated to the latest versions.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div>
+<p>Dependabot version updates is available for the following repositories:</p>
+<ul>
+<li>All repositories on GitHub</li>
+</ul>
+</div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-dependabot-version-updates"><div><span>About Dependabot version updates</span></div></a></li>
+<li><a href="#frequency-of-dependabot-pull-requests"><div><span>Frequency of Dependabot pull requests</span></div></a></li>
+<li><a href="#about-automatic-deactivation-of-dependabot-updates"><div><span>About automatic deactivation of Dependabot updates</span></div></a></li>
+<li><a href="#about-notifications-for-dependabot-version-updates"><div><span>About notifications for Dependabot version updates</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-dependabot-version-updates">About Dependabot version updates</a></h2>
+<p>Dependabot takes the effort out of maintaining your dependencies. You can use it to ensure that your repository automatically keeps up with the latest releases of the packages and applications it depends on.</p>
+<p>For information on the supported repositories and ecosystems, see <a href="/en/code-security/dependabot/ecosystems-supported-by-dependabot/supported-ecosystems-and-repositories">Dependabot supported ecosystems and repositories</a>.</p>
+<p>You enable Dependabot version updates by checking a <code>dependabot.yml</code> configuration file into your repository. The configuration file specifies the location of the manifest, or of other package definition files, stored in your repository. Dependabot uses this information to check for outdated packages and applications. Dependabot determines if there is a new version of a dependency by looking at the semantic versioning (<a href="https://semver.org/">semver</a>) of the dependency to decide whether it should update to that version. For certain package managers, Dependabot version updates also supports vendoring. Vendored (or cached) dependencies are dependencies that are checked in to a specific directory in a repository rather than referenced in a manifest. Vendored dependencies are available at build time even if package servers are unavailable. Dependabot version updates can be configured to check vendored dependencies for new versions and update them if necessary.</p>
+<p>When Dependabot identifies an outdated dependency, it raises a pull request to update the manifest to the latest version of the dependency. For vendored dependencies, Dependabot raises a pull request to replace the outdated dependency with the new version directly. You check that your tests pass, review the changelog and release notes included in the pull request summary, and then merge it. For more information, see <a href="/en/code-security/dependabot/dependabot-version-updates/configuring-dependabot-version-updates">Configuring Dependabot version updates</a>.</p>
+<p>If you enable <em>security updates</em>, Dependabot also raises pull requests to update vulnerable dependencies. For more information, see <a href="/en/code-security/dependabot/dependabot-security-updates/about-dependabot-security-updates">About Dependabot security updates</a>.</p>
+<p>When Dependabot raises pull requests, these pull requests could be for <em>security</em> or <em>version</em> updates:</p>
+<ul>
+<li>
+<em>Dependabot security updates</em> are automated pull requests that help you update dependencies with known vulnerabilities.</li>
+<li>
+<em>Dependabot version updates</em> are automated pull requests that keep your dependencies updated, even when they don’t have any vulnerabilities. To check the status of version updates, navigate to the <strong>Insights</strong> tab of your repository, then select <strong>Dependency Graph</strong>, and Dependabot.</li>
+</ul>
+<p>Dependabot signs its own commits by default, even if commit signing is not a requirement for the repository. For more information about verified commits, see <a href="/en/authentication/managing-commit-signature-verification/about-commit-signature-verification">About commit signature verification</a>.</p>
+<p>Pull requests opened by Dependabot can trigger workflows that run actions. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/automating-dependabot-with-github-actions">Automating Dependabot with GitHub Actions</a>.</p>
+<p>If you enable Dependabot on a new repository and have GitHub Actions enabled, Dependabot will run on GitHub Actions by default.</p>
+<p>If you enable Dependabot on a new repository and have GitHub Actions disabled, Dependabot will run on the legacy application in GitHub to perform Dependabot updates. This doesn't provide as good performance, visibility, or control of Dependabot updates jobs as GitHub Actions does. If you want to use Dependabot with GitHub Actions, you must ensure that your repository enables GitHub Actions, then enable "Dependabot on Actions runners" from the repository's "Advanced Security" settings page. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/about-dependabot-on-github-actions-runners">About Dependabot on GitHub Actions runners</a>.</p>
+<p>Dependabot and all related features are covered by <a href="/en/site-policy/github-terms/github-terms-of-service">GitHub's Terms of Service</a>.</p>
+<h2><a href="#frequency-of-dependabot-pull-requests">Frequency of Dependabot pull requests</a></h2>
+<p>You specify how often to check each ecosystem for new versions in the configuration file: daily, weekly, or monthly.</p>
+<p>When you first enable version updates, you may have many dependencies that are outdated and some may be many versions behind the latest version. Dependabot checks for outdated dependencies as soon as it's enabled. You may see new pull requests for version updates within minutes of adding the configuration file, depending on the number of manifest files for which you configure updates. Dependabot will also run an update on subsequent changes to the configuration file.</p>
+<p>To keep pull requests manageable and easy to review, Dependabot raises a maximum of five pull requests to start bringing dependencies up to the latest version. If you merge some of these first pull requests before the next scheduled update, remaining pull requests will be opened on the next update, up to that maximum. You can change the maximum number of open pull requests by setting the <a href="/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference#open-pull-requests-limit"><code>open-pull-requests-limit</code> configuration option</a>.</p>
+<p>To further reduce the number of pull requests you may be seeing, you can use the <a href="/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference#groups"><code>groups</code></a> configuration option to group sets of dependencies together (per package ecosystem). Dependabot then raises a single pull request to update as many dependencies as possible in the group to the latest versions at the same time. For more information, see <a href="/en/code-security/dependabot/dependabot-version-updates/optimizing-pr-creation-version-updates">Optimizing the creation of pull requests for Dependabot version updates</a>.</p>
+<p>If you've enabled security updates, you'll sometimes see extra pull requests for security updates. These are triggered by a Dependabot alert for a dependency on your default branch. Dependabot automatically raises a pull request to update the vulnerable dependency.</p>
+<p>Sometimes, due to a misconfiguration or an incompatible version, you might see that a Dependabot run has failed. After 15 failed runs, Dependabot version updates will skip subsequent scheduled runs until you manually trigger a check for updates from the dependency graph. Dependabot security updates will still run as usual.</p>
+<h2><a href="#about-automatic-deactivation-of-dependabot-updates">About automatic deactivation of Dependabot updates</a></h2>
+<p>When maintainers of a repository stop interacting with Dependabot pull requests, Dependabot temporarily pauses its updates and lets you know, see <a href="/en/code-security/dependabot/troubleshooting-dependabot/dependabot-updates-stopped">Dependabot update pull requests no longer generated</a>.</p>
+<h2><a href="#about-notifications-for-dependabot-version-updates">About notifications for Dependabot version updates</a></h2>
+<p>You can filter your notifications on GitHub to show notifications for pull requests created by Dependabot. For more information, see <a href="/en/account-and-profile/managing-subscriptions-and-notifications-on-github/viewing-and-triaging-notifications/managing-notifications-from-your-inbox">Managing notifications from your inbox</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

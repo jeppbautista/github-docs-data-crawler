@@ -1,0 +1,68 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Prebuilding your codespaces" href="/en/codespaces/prebuilding-your-codespaces">Prebuilding your codespaces</a><span>/</span>
+</li>
+<li><a title="About prebuilds" href="/en/codespaces/prebuilding-your-codespaces/about-github-codespaces-prebuilds">About prebuilds</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>About GitHub Codespaces prebuilds</h1></div></div>
+<div>
+<div><p>GitHub Codespaces prebuilds help to speed up the creation of new codespaces for large or complex repositories.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div>
+<p>You create and configure prebuilds in your repository's settings. Repository-level settings for GitHub Codespaces are available for all repositories owned by personal accounts. <br><br></p>
+<p>For repositories owned by organizations, repository-level settings for GitHub Codespaces are available for organizations on GitHub Team and GitHub Enterprise plans. To access the settings, the organization or its parent enterprise must have added a payment method and set a spending limit for GitHub Codespaces. For more information, see <a href="/en/codespaces/managing-codespaces-for-your-organization/choosing-who-owns-and-pays-for-codespaces-in-your-organization">Choosing who owns and pays for codespaces in your organization</a> and <a href="/en/get-started/learning-about-github/githubs-plans">GitHub’s plans</a>.</p>
+</div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#overview"><div><span>Overview</span></div></a></li>
+<li><a href="#the-prebuild-process"><div><span>The prebuild process</span></div></a></li>
+<li><a href="#about-pushing-changes-to-prebuild-enabled-branches"><div><span>About pushing changes to prebuild-enabled branches</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#overview">Overview</a></h2>
+<p>A prebuild assembles the main components of a codespace for a particular combination of repository, branch, and <code>devcontainer.json</code> configuration file. It provides a quick way to create a new codespace. For complex and/or large repositories in particular, you can create a new codespace more quickly by using a prebuild.</p>
+<p>If it currently takes more than 2 minutes to create a codespace for a repository, you are likely to benefit from using prebuilds. This is because, with a prebuild, any source code, editor extensions, project dependencies, commands, and configurations have already been downloaded, installed, and applied before you create a codespace.</p>
+<p>By default, whenever you push changes to your repository, GitHub Codespaces uses GitHub Actions to automatically update your prebuilds.</p>
+<p>When prebuilds are available for a particular branch of a repository, a particular dev container configuration file, and for your region, you'll see the "<a href="/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository#creating-a-codespace-for-a-repository">Creating a codespace for a repository</a>.</p>
+<p><picture><source><img src="/assets/cb-49456/images/help/codespaces/choose-custom-machine-type.png" alt='Screenshot of a list of available machine types: 2, 4, 8, 16, and 32 core, all labeled "Prebuild ready."' width="1440" height="569"></source></picture></p>
+<p>When you create a codespace from a template on the "Your codespaces" page, GitHub may automatically use a prebuild to speed up creation time. For more information on templates, see <a href="/en/codespaces/developing-in-a-codespace/creating-a-codespace-from-a-template">Creating a codespace from a template</a>.</p>
+<div>
+<p>
+Each prebuild that's created consumes storage space that will either incur a billable charge or, for repositories owned by your personal GitHub account, will use some of your monthly included storage. For more information, see <a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/about-billing-for-github-codespaces#about-billing-for-codespaces-prebuilds">About billing for GitHub Codespaces</a>.</p>
+</div>
+<h2><a href="#the-prebuild-process">The prebuild process</a></h2>
+<p>To create a prebuild, you set up a prebuild configuration. When you save the configuration, a GitHub Actions workflow runs to create each of the required prebuilds; one workflow per prebuild. Workflows also run whenever the prebuilds for your configuration need to be updated. This can happen at scheduled intervals, on pushes to a prebuild-enabled repository, or when you change the dev container configuration. For more information, see <a href="/en/codespaces/prebuilding-your-codespaces/configuring-prebuilds#configuring-prebuilds">Configuring prebuilds</a>.</p>
+<p>When a prebuild configuration workflow runs, GitHub creates a temporary codespace, performing setup operations up to and including any <code>onCreateCommand</code> and <code>updateContentCommand</code> commands in the <code>devcontainer.json</code> file. No <code>postCreateCommand</code> commands are run during the creation of a prebuild. For more information about these commands, see the <a href="https://code.visualstudio.com/docs/remote/devcontainerjson-reference#_devcontainerjson-properties"><code>devcontainer.json</code> reference</a> in the VS Code documentation. A snapshot of the generated container is then taken and stored.</p>
+<p>As with other GitHub Actions workflows, running a prebuild configuration workflow will either consume some of the GitHub Actions minutes included with your account, if you have any, or it will incur charges for GitHub Actions minutes. Storage of codespace prebuilds is billed in the same way as storage of active or stopped codespaces. For more information, see <a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/about-billing-for-github-codespaces#about-billing-for-codespaces-prebuilds">About billing for GitHub Codespaces</a>.</p>
+<p>When you create a codespace from a prebuild, GitHub downloads the existing container snapshot from storage and deploys it on a fresh virtual machine, completing the remaining commands specified in the dev container configuration. Since many operations have already been performed, such as cloning the repository, creating a codespace from a prebuild can be substantially quicker than creating one without a prebuild. This is true where the repository is large and/or <code>onCreateCommand</code> commands take a long time to run.</p>
+<h2><a href="#about-pushing-changes-to-prebuild-enabled-branches">About pushing changes to prebuild-enabled branches</a></h2>
+<p>By default, each push to a branch that has a prebuild configuration results in a GitHub-managed GitHub Actions workflow run to update the prebuild. The prebuild workflow has a concurrency limit of one workflow run at a time for a given prebuild configuration, unless changes were made that affect the dev container configuration for the associated repository. For more information, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers">Introduction to dev containers</a>. If a run is already in progress, the workflow run that was queued most recently will run next, after the current run completes.</p>
+<p>With the prebuild set to be updated on each push, it means that if there are very frequent pushes to your repository, prebuild updates will occur at least as often as it takes to run the prebuild workflow. That is, if your workflow run typically takes one hour to complete, prebuilds will be created for your repository roughly hourly, if the run succeeds, or more often if there were pushes that change the dev container configuration on the branch.</p>
+<p>For example, let's imagine 5 pushes are made, in quick succession, against a branch that has a prebuild configuration. In this situation:</p>
+<ul>
+<li>
+<p>A workflow run is started for the first push, to update the prebuild.</p>
+</li>
+<li>
+<p>If the 4 remaining pushes do not affect the dev container configuration, the workflow runs for these are queued in a "pending" state.</p>
+<p>If any of the remaining 4 pushes change the dev container configuration, then the service will not skip that one and will immediately run the prebuild creation workflow, updating the prebuild accordingly if it succeeds.</p>
+</li>
+<li>
+<p>Once the first run completes, workflow runs for pushes 2, 3, and 4 will be canceled, and the last queued workflow (for push 5) will run and update the prebuild.</p>
+</li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

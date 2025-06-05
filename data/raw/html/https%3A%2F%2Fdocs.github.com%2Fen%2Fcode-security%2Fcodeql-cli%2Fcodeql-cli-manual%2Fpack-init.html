@@ -1,0 +1,99 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="CodeQL CLI" href="/en/code-security/codeql-cli">CodeQL CLI</a><span>/</span>
+</li>
+<li>
+<a title="CodeQL CLI manual" href="/en/code-security/codeql-cli/codeql-cli-manual">CodeQL CLI manual</a><span>/</span>
+</li>
+<li><a title="pack init" href="/en/code-security/codeql-cli/codeql-cli-manual/pack-init">pack init</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>pack init</h1></div></div>
+<div>
+<div><p>Initializes a qlpack in the specified directory.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div>
+<p>CodeQL is available for the following repository types:</p>
+<ul>
+<li>Public repositories on GitHub.com, see <a href="https://github.com/github/codeql-cli-binaries/blob/main/LICENSE.md">GitHub CodeQL Terms and Conditions</a>
+</li>
+<li>Organization-owned repositories on GitHub Team with <a href="/en/get-started/learning-about-github/about-github-advanced-security">GitHub Code Security</a> enabled</li>
+</ul>
+</div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#synopsis"><div><span>Synopsis</span></div></a></li>
+<li><a href="#description"><div><span>Description</span></div></a></li>
+<li><a href="#options"><div><span>Options</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<p>
+This content describes the most recent release of the CodeQL CLI. For more information about this release, see <a href="https://github.com/github/codeql-cli-binaries/releases">https://github.com/github/codeql-cli-binaries/releases</a>.</p>
+<p>To see details of the options available for this command in an earlier release, run the command with the <span><code>--help</code></span> option in your terminal.</p>
+</div>
+<h2><a href="#synopsis">Synopsis</a></h2>
+<div>
+<header><span>Shell</span><pre>codeql pack init [--dir=&lt;dir&gt;] [--extractor=&lt;extractor&gt;] &lt;options&gt;... -- &lt;package-name&gt;
+</pre></header><pre><code>codeql pack init [--dir=&lt;dir&gt;] [--extractor=&lt;extractor&gt;] &lt;options&gt;... -- &lt;package-name&gt;
+</code></pre>
+</div>
+<h2><a href="#description">Description</a></h2>
+<p>Initializes a qlpack in the specified directory.</p>
+<p>The pack will be created in a child directory of the specified
+directory.</p>
+<p>Available since <code>v2.6.0</code>.</p>
+<h2><a href="#options">Options</a></h2>
+<h3><a href="#primary-options">Primary Options</a></h3>
+<h4><a href="#package-name"><code>&lt;package-name&gt;</code></a></h4>
+<p>[Mandatory] The scope and name of the pack to create. Scope is only
+required if this pack is to be published.</p>
+<h4><a href="#--versionsemver"><code>--version=&lt;semver&gt;</code></a></h4>
+<p>Initial version of the pack.</p>
+<h4><a href="#-d---dirdir"><code>-d, --dir=&lt;dir&gt;</code></a></h4>
+<p>The directory to create the pack in. Defaults to current working
+directory.</p>
+<h4><a href="#-e---extractorextractor"><code>-e, --extractor=&lt;extractor&gt;</code></a></h4>
+<p>The extractor to use for this qlpack. Only useful if this pack contains
+tests.</p>
+<h3><a href="#common-options">Common options</a></h3>
+<h4><a href="#-h---help"><code>-h, --help</code></a></h4>
+<p>Show this help text.</p>
+<h4><a href="#-jopt"><code>-J=&lt;opt&gt;</code></a></h4>
+<p>[Advanced] Give option to the JVM running the command.</p>
+<p>(Beware that options containing spaces will not be handled correctly.)</p>
+<h4><a href="#-v---verbose"><code>-v, --verbose</code></a></h4>
+<p>Incrementally increase the number of progress messages printed.</p>
+<h4><a href="#-q---quiet"><code>-q, --quiet</code></a></h4>
+<p>Incrementally decrease the number of progress messages printed.</p>
+<h4><a href="#--verbositylevel"><code>--verbosity=&lt;level&gt;</code></a></h4>
+<p>[Advanced] Explicitly set the verbosity level to one of errors,
+warnings, progress, progress+, progress++, progress+++. Overrides <code>-v</code>
+and <code>-q</code>.</p>
+<h4><a href="#--logdirdir"><code>--logdir=&lt;dir&gt;</code></a></h4>
+<p>[Advanced] Write detailed logs to one or more files in the given
+directory, with generated names that include timestamps and the name of
+the running subcommand.</p>
+<p>(To write a log file with a name you have full control over, instead
+give <code>--log-to-stderr</code> and redirect stderr as desired.)</p>
+<h4><a href="#--common-cachesdir"><code>--common-caches=&lt;dir&gt;</code></a></h4>
+<p>[Advanced] Controls the location of cached data on disk that will
+persist between several runs of the CLI, such as downloaded QL packs and
+compiled query plans. If not set explicitly, this defaults to a
+directory named <code>.codeql</code> in the user's home directory; it will be
+created if it doesn't already exist.</p>
+<p>Available since <code>v2.15.2</code>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

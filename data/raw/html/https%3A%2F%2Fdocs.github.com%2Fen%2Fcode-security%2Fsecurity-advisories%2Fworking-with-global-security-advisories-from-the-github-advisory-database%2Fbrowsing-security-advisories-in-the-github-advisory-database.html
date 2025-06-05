@@ -1,0 +1,244 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Security advisories" href="/en/code-security/security-advisories">Security advisories</a><span>/</span>
+</li>
+<li>
+<a title="Global security advisories" href="/en/code-security/security-advisories/working-with-global-security-advisories-from-the-github-advisory-database">Global security advisories</a><span>/</span>
+</li>
+<li><a title="Browse Advisory Database" href="/en/code-security/security-advisories/working-with-global-security-advisories-from-the-github-advisory-database/browsing-security-advisories-in-the-github-advisory-database">Browse Advisory Database</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Browsing security advisories in the GitHub Advisory Database</h1></div></div>
+<div>
+<div><p>You can browse the GitHub Advisory Database to find CVEs and GitHub-originated advisories affecting the open source world.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p><strong>Anyone</strong> can browse the GitHub Advisory Database.</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#accessing-an-advisory-in-the-github-advisory-database"><div><span>Accessing an advisory in the GitHub Advisory Database</span></div></a></li>
+<li><a href="#editing-an-advisory-in-the-github-advisory-database"><div><span>Editing an advisory in the GitHub Advisory Database</span></div></a></li>
+<li><a href="#searching-the-github-advisory-database"><div><span>Searching the GitHub Advisory Database</span></div></a></li>
+<li><a href="#viewing-your-vulnerable-repositories"><div><span>Viewing your vulnerable repositories</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#accessing-an-advisory-in-the-github-advisory-database">Accessing an advisory in the GitHub Advisory Database</a></h2>
+<p>You can access any advisory in the GitHub Advisory Database.</p>
+<ol>
+<li>
+<p>Navigate to <a href="https://github.com/advisories">https://github.com/advisories</a>.</p>
+</li>
+<li>
+<p>Optionally, to filter the list of advisories, use the search field or the drop-down menus at the top of the list.</p>
+<div>
+<p>
+You can use the sidebar on the left to explore GitHub-reviewed and unreviewed advisories separately, or to filter by ecosystem.</p>
+</div>
+</li>
+<li>
+<p>Click an advisory to view details. By default, you will see GitHub-reviewed advisories for security vulnerabilities. To show malware advisories, use <code>type:malware</code> in the search bar.</p>
+</li>
+</ol>
+<p>The database is also accessible using the GraphQL API. By default, queries will return GitHub-reviewed advisories for security vulnerabilities unless you specify <code>type:malware</code>. For more information, see the <a href="/en/webhooks-and-events/webhooks/webhook-events-and-payloads#security_advisory">Webhook events and payloads</a>.</p>
+<p>Additionally, you can access the GitHub Advisory Database using the REST API. For more information, see <a href="/en/rest/security-advisories/global-advisories">REST API endpoints for global security advisories</a>.</p>
+<h2><a href="#editing-an-advisory-in-the-github-advisory-database">Editing an advisory in the GitHub Advisory Database</a></h2>
+<p>You can suggest improvements to any advisory in the GitHub Advisory Database. For more information, see <a href="/en/code-security/security-advisories/working-with-global-security-advisories-from-the-github-advisory-database/editing-security-advisories-in-the-github-advisory-database">Editing security advisories in the GitHub Advisory Database</a>.</p>
+<h2><a href="#searching-the-github-advisory-database">Searching the GitHub Advisory Database</a></h2>
+<p>You can search the database, and use qualifiers to narrow your search. For example, you can search for advisories created on a certain date, in a specific ecosystem, or in a particular library.</p>
+<p>Date formatting must follow the <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO8601</a> standard, which is <code>YYYY-MM-DD</code> (year-month-day). You can also add optional time information <code>THH:MM:SS+00:00</code> after the date, to search by the hour, minute, and second. That's <code>T</code>, followed by <code>HH:MM:SS</code> (hour-minutes-seconds), and a UTC offset (<code>+00:00</code>).</p>
+<p>When you search for a date, you can use greater than, less than, and range qualifiers to further filter results. For more information, see <a href="/en/search-github/getting-started-with-searching-on-github/understanding-the-search-syntax">Understanding the search syntax</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Qualifier</th>
+<th>Example</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>type:reviewed</code></td>
+<td>
+<a href="https://github.com/advisories?query=type%3Areviewed"><code>type:reviewed</code></a> will show GitHub-reviewed advisories for security vulnerabilities.</td>
+</tr>
+<tr>
+<td><code>type:malware</code></td>
+<td>
+<a href="https://github.com/advisories?query=type%3Amalware"><code>type:malware</code></a> will show malware advisories.</td>
+</tr>
+<tr>
+<td><code>type:unreviewed</code></td>
+<td>
+<a href="https://github.com/advisories?query=type%3Aunreviewed"><code>type:unreviewed</code></a> will show unreviewed advisories.</td>
+</tr>
+<tr>
+<td><code>GHSA-ID</code></td>
+<td>
+<a href="https://github.com/advisories?query=GHSA-49wp-qq6x-g2rf"><code>GHSA-49wp-qq6x-g2rf</code></a> will show the advisory with this GitHub Advisory Database ID.</td>
+</tr>
+<tr>
+<td><code>CVE-ID</code></td>
+<td>
+<a href="https://github.com/advisories?query=CVE-2020-28482"><code>CVE-2020-28482</code></a> will show the advisory with this CVE ID number.</td>
+</tr>
+<tr>
+<td><code>ecosystem:ECOSYSTEM</code></td>
+<td>
+<a href="https://github.com/advisories?utf8=%E2%9C%93&amp;query=ecosystem%3Anpm"><code>ecosystem:npm</code></a> will show only advisories affecting npm packages.</td>
+</tr>
+<tr>
+<td><code>severity:LEVEL</code></td>
+<td>
+<a href="https://github.com/advisories?utf8=%E2%9C%93&amp;query=severity%3Ahigh"><code>severity:high</code></a> will show only advisories with a high severity level.</td>
+</tr>
+<tr>
+<td><code>affects:LIBRARY</code></td>
+<td>
+<a href="https://github.com/advisories?utf8=%E2%9C%93&amp;query=affects%3Alodash"><code>affects:lodash</code></a> will show only advisories affecting the lodash library.</td>
+</tr>
+<tr>
+<td><code>cwe:ID</code></td>
+<td>
+<a href="https://github.com/advisories?query=cwe%3A352"><code>cwe:352</code></a> will show only advisories with this CWE number.</td>
+</tr>
+<tr>
+<td><code>credit:USERNAME</code></td>
+<td>
+<a href="https://github.com/advisories?query=credit%3Aoctocat"><code>credit:octocat</code></a> will show only advisories credited to the "octocat" user account.</td>
+</tr>
+<tr>
+<td><code>sort:created-asc</code></td>
+<td>
+<a href="https://github.com/advisories?utf8=%E2%9C%93&amp;query=sort%3Acreated-asc"><code>sort:created-asc</code></a> will sort by the oldest advisories first.</td>
+</tr>
+<tr>
+<td><code>sort:created-desc</code></td>
+<td>
+<a href="https://github.com/advisories?utf8=%E2%9C%93&amp;query=sort%3Acreated-desc"><code>sort:created-desc</code></a> will sort by the newest advisories first.</td>
+</tr>
+<tr>
+<td><code>sort:updated-asc</code></td>
+<td>
+<a href="https://github.com/advisories?utf8=%E2%9C%93&amp;query=sort%3Aupdated-asc"><code>sort:updated-asc</code></a> will sort by the least recently updated first.</td>
+</tr>
+<tr>
+<td><code>sort:updated-desc</code></td>
+<td>
+<a href="https://github.com/advisories?utf8=%E2%9C%93&amp;query=sort%3Aupdated-desc"><code>sort:updated-desc</code></a> will sort by the most recently updated first.</td>
+</tr>
+<tr>
+<td><code>is:withdrawn</code></td>
+<td>
+<a href="https://github.com/advisories?utf8=%E2%9C%93&amp;query=is%3Awithdrawn"><code>is:withdrawn</code></a> will show only advisories that have been withdrawn.</td>
+</tr>
+<tr>
+<td><code>created:YYYY-MM-DD</code></td>
+<td>
+<a href="https://github.com/advisories?utf8=%E2%9C%93&amp;query=created%3A2021-01-13"><code>created:2021-01-13</code></a> will show only advisories created on this date.</td>
+</tr>
+<tr>
+<td><code>updated:YYYY-MM-DD</code></td>
+<td>
+<a href="https://github.com/advisories?utf8=%E2%9C%93&amp;query=updated%3A2021-01-13"><code>updated:2021-01-13</code></a> will show only advisories updated on this date.</td>
+</tr>
+</tbody>
+</table>
+<p>A <code>GHSA-ID</code> qualifier is a unique ID that we at GitHub automatically assign to every advisory in the GitHub Advisory Database. For more information about these identifiers, see <a href="/en/code-security/security-advisories/working-with-global-security-advisories-from-the-github-advisory-database/about-the-github-advisory-database#about-ghsa-ids">About the GitHub Advisory Database</a>.</p>
+<h2><a href="#viewing-your-vulnerable-repositories">Viewing your vulnerable repositories</a></h2>
+<p>For any GitHub-reviewed advisory in the GitHub Advisory Database, you can see which of your repositories are affected by that security vulnerability or malware. To see a vulnerable repository, you must have access to Dependabot alerts for that repository. For more information, see <a href="/en/code-security/dependabot/dependabot-alerts/about-dependabot-alerts#access-to-dependabot-alerts">About Dependabot alerts</a>.</p>
+<ol>
+<li>Navigate to <a href="https://github.com/advisories">https://github.com/advisories</a>.</li>
+<li>Click an advisory.</li>
+<li>At the top of the advisory page, click <strong>Dependabot alerts</strong>.
+<div><picture><source><img src="/assets/cb-46651/images/help/security/advisory-database-dependabot-alerts.png" alt='Screenshot of a "global security advisory". The "Dependabot alerts" button is highlighted with an orange outline.' width="720" height="184"></source></picture></div>
+</li>
+<li>Optionally, to filter the list, use the search bar or the drop-down menus. The "Organization" drop-down menu allows you to filter the Dependabot alerts per owner (organization or user).</li>
+<li>For more details about the advisory, and for advice on how to fix the vulnerable repository, click the repository name.</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

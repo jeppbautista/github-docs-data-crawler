@@ -1,0 +1,210 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Copilot Chat Cookbook" href="/en/copilot/copilot-chat-cookbook">Copilot Chat Cookbook</a><span>/</span>
+</li>
+<li>
+<a title="Refactoring code" href="/en/copilot/copilot-chat-cookbook/refactoring-code">Refactoring code</a><span>/</span>
+</li>
+<li><a title="Fix database deadlocks" href="/en/copilot/copilot-chat-cookbook/refactoring-code/fixing-database-deadlocks-or-data-integrity-issues">Fix database deadlocks</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Fixing database deadlocks or data integrity issues</h1></div></div>
+<div><div><p>Copilot Chat can help you avoid code that causes slow or blocked database operations, or tables with missing or incorrect data.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#avoiding-simultaneous-updates-on-interdependent-rows"><div><span>Avoiding simultaneous updates on interdependent rows</span></div></a></li>
+<li><a href="#avoiding-non-index-searches"><div><span>Avoiding non-index searches</span></div></a></li>
+<li><a href="#avoiding-long-running-transactions"><div><span>Avoiding long-running transactions</span></div></a></li>
+<li><a href="#avoiding-data-integrity-issues"><div><span>Avoiding data integrity issues</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>Complex database operations–particularly those involving transactions–can lead to deadlocks or data inconsistencies that are hard to debug.</p>
+<p>Copilot Chat can help by identifying points in a transaction where locking or deadlocks could occur, and can suggest best practices for transaction isolation or deadlock resolution, such as adjusting locking strategies or handling deadlock exceptions gracefully.</p>
+<div>
+<p> The responses shown in this article are examples. Copilot Chat responses are non-deterministic, so you may get different responses from the ones shown here.</p>
+</div>
+<h2><a href="#avoiding-simultaneous-updates-on-interdependent-rows">Avoiding simultaneous updates on interdependent rows</a></h2>
+<p>When two or more transactions attempt to update the same rows in a database table, but in different orders, it can cause a circular wait condition.</p>
+<h3><a href="#example-scenario">Example scenario</a></h3>
+<p>The following SQL snippet updates one row of a table, then performs an operation that takes several seconds, then updates another row in the same table. This is problematic because the transaction locks the <code>id = 1</code> row for several seconds before the transaction completes, releasing the lock. If another transaction starts during this time that performs a similar operation, but locks the <code>id = 2</code> row first, so that it can update the row, and then attempts to lock the <code>id = 1</code> row, then both transactions will be left waiting for the other to complete, resulting in deadlock.</p>
+<pre><code><span>BEGIN</span> TRANSACTION;
+<span>UPDATE</span> my_table <span>SET</span> <span>value</span> <span>=</span> <span>'Some value'</span> <span>WHERE</span> id <span>=</span> <span>301</span>;
+<span>-- Simulate a process taking 5 seconds:</span>
+WAITFOR DELAY <span>'00:00:05'</span>;
+<span>UPDATE</span> my_table <span>SET</span> <span>value</span> <span>=</span> <span>'Another value'</span> <span>WHERE</span> id <span>=</span> <span>127</span>;
+<span>COMMIT</span> TRANSACTION;
+</code></pre>
+<h3><a href="#example-prompt-1">Example prompt 1</a></h3>
+<p>You can check whether there are any problems with this transaction.</p>
+<p>In the editor, select the transaction code, then ask Copilot Chat:</p>
+<p><code>Is this transaction good?</code></p>
+<h3><a href="#example-response-1">Example response 1</a></h3>
+<p>Copilot tells you that "the transaction in your SQL code is generally fine," but lists some things you may want to consider: lock duration, error handling, and concurrency. It mentions that "the transaction holds locks for an extended period, potentially leading to blocking or deadlocks." The response also includes revised code that adds error handling.</p>
+<p>In this case, you decide not to add error handling. Right now you want to address the potential for deadlocks.</p>
+<h3><a href="#example-prompt-2">Example prompt 2</a></h3>
+<p>Enter this follow-up prompt:</p>
+<p><code>How can I rewrite this code to reduce the chance of deadlock to a minimum while not adversely affecting performance. Tell me anything else I can do to avoid a deadlock. Note: I don't want to add error handling at this time.</code></p>
+<h3><a href="#example-response-2">Example response 2</a></h3>
+<p>Copilot gives the following advice:</p>
+<blockquote>
+<ul>
+<li>
+<strong>Order of Access:</strong> Ensure that all transactions access tables and rows in the same order.</li>
+<li>
+<strong>Keep Transactions Short:</strong> Minimize the time a transaction holds locks.</li>
+<li>
+<strong>Use Appropriate Isolation Levels:</strong> Use the lowest isolation level that meets your requirements.</li>
+</ul>
+<p>Here is a revised version of your code:</p>
+</blockquote>
+<pre><code><span>BEGIN</span> TRANSACTION;
+<span>-- Update the rows in a consistent order</span>
+<span>UPDATE</span> my_table <span>SET</span> <span>value</span> <span>=</span> <span>'Another value'</span> <span>WHERE</span> id <span>=</span> <span>127</span>;
+<span>UPDATE</span> my_table <span>SET</span> <span>value</span> <span>=</span> <span>'Some value'</span> <span>WHERE</span> id <span>=</span> <span>301</span>;
+<span>-- Simulate a process taking 5 seconds:</span>
+WAITFOR DELAY <span>'00:00:05'</span>;
+<span>COMMIT</span> TRANSACTION;
+</code></pre>
+<h2><a href="#avoiding-non-index-searches">Avoiding non-index searches</a></h2>
+<p>Searching table columns that have not been indexed will typically result in a full table scan. This can be very slow and resource-intensive, increasing the likelihood of performance bottlenecks.</p>
+<h3><a href="#example-scenario-1">Example scenario</a></h3>
+<p>The following SQL will result in a full table scan if <code>some_column</code> is not indexed:</p>
+<pre><code><span>BEGIN</span> TRANSACTION;
+<span>SELECT</span> <span>*</span> <span>FROM</span> my_table <span>WHERE</span> some_column <span>=</span> <span>'some_value'</span>;
+<span>-- More actions here, then:</span>
+<span>COMMIT</span> TRANSACTION;
+</code></pre>
+<h3><a href="#example-prompt">Example prompt</a></h3>
+<p>Asking Copilot the following question will usually reveal the potential problem.</p>
+<p><code>How can I optimize this transaction?</code></p>
+<h3><a href="#example-response">Example response</a></h3>
+<p>Copilot gives some advice, and mentions that the column should be indexed:</p>
+<blockquote>
+<p>To optimize the transaction, you should ensure that the transaction is as short as possible to reduce locking and improve performance. Here are a few tips:</p>
+<ol>
+<li>
+<strong>Minimize the work done in the transaction:</strong> Only include the necessary operations within the transaction.</li>
+<li>
+<strong>Use appropriate indexes:</strong> Ensure that the columns used in the WHERE clause are indexed.</li>
+<li>
+<strong>Avoid long-running transactions:</strong> Keep the transaction duration short to avoid locking issues.</li>
+</ol>
+</blockquote>
+<p>The suggested code in the response includes the SQL command for indexing the column:</p>
+<pre><code>`<span>CREATE</span> INDEX idx_some_column <span>ON</span> my_table(some_column);`
+</code></pre>
+<h2><a href="#avoiding-long-running-transactions">Avoiding long-running transactions</a></h2>
+<p>It's important to avoid long-running queries and transactions, where possible, as these can severely degrade performance and cause bottlenecks for other operations. Additionally, they can consume significant memory and log space, making your application more prone to failure in high-load environments.</p>
+<h3><a href="#example-scenario-2">Example scenario</a></h3>
+<p>The following SQL creates new rows in <code>target_table</code>, containing data from selected fields of rows in <code>source_table</code> where various conditions are met. If <code>source_table</code> is extremely large this may result in a long-running transaction.</p>
+<pre><code><span>BEGIN</span> TRANSACTION;
+
+<span>INSERT</span> <span>INTO</span> target_table (first_name, last_name, email, dept, role, hire_date)
+<span>SELECT</span> first_name, last_name, email, department, job_title, start_date
+<span>FROM</span> source_table
+<span>WHERE</span> (department <span>=</span> <span>'Engineering'</span> <span>AND</span> (salary <span>&gt;</span> <span>95000</span> <span>OR</span> grade <span>&gt;</span> <span>5</span>))
+  <span>OR</span> (department <span>=</span> <span>'Marketing'</span> <span>AND</span> performance_rating <span>=</span> <span>'Excellent'</span>);
+
+<span>COMMIT</span>;
+</code></pre>
+<h3><a href="#example-prompt-3">Example prompt</a></h3>
+<p>You can ask Copilot whether it's possible to avoid long-running transactions.</p>
+<p><code>source_table is an extremely large table. Without altering the table, how can I ensure this SQL doesn't become a long-running query, that blocks other operations?</code></p>
+<h3><a href="#example-response-3">Example response</a></h3>
+<p>Copilot suggests the following strategies:</p>
+<ul>
+<li>
+<strong>Batch Processing:</strong> Process the data in smaller batches instead of a single large transaction. This can be done using a loop with a limit and offset.</li>
+<li>
+<strong>Indexing:</strong> Ensure that the columns used in the <code>WHERE</code> clause (<code>department</code>, <code>salary</code>, <code>grade</code>, and <code>performance_rating</code>) are indexed to speed up the query.</li>
+<li>
+<strong>Locking:</strong> Use row-level locking to avoid locking the entire table.</li>
+</ul>
+<p>It supplies the following example of how you can implement batch processing. This SQL processes the data in batches of 1000 rows at a time, reducing the load on the database and preventing long-running transactions.</p>
+<pre><code><span>DECLARE</span> <span>@BatchSize</span> <span>INT</span> <span>=</span> <span>1000</span>;
+<span>DECLARE</span> <span>@Offset</span> <span>INT</span> <span>=</span> <span>0</span>;
+<span>DECLARE</span> <span>@RowCount</span> <span>INT</span>;
+
+<span>SET</span> <span>@RowCount</span> <span>=</span> <span>@BatchSize</span>;
+
+WHILE <span>@RowCount</span> <span>=</span> <span>@BatchSize</span>
+<span>BEGIN</span>
+    <span>BEGIN</span> TRANSACTION;
+
+    <span>INSERT</span> <span>INTO</span> target_table (first_name, last_name, email, dept, role, hire_date)
+    <span>SELECT</span> first_name, last_name, email, department, job_title, start_date
+    <span>FROM</span> source_table
+    <span>WHERE</span> (department <span>=</span> <span>'Engineering'</span> <span>AND</span> salary <span>&gt;</span> <span>95000</span>)
+       <span>OR</span> (department <span>=</span> <span>'Engineering'</span> <span>AND</span> years_of_experience <span>&gt;</span> <span>5</span>)
+       <span>OR</span> (department <span>=</span> <span>'Marketing'</span> <span>AND</span> performance_rating <span>=</span> <span>'Excellent'</span>);
+    <span>ORDER</span> <span>BY</span> primary_key_column
+    <span>OFFSET</span> <span>@Offset</span> <span>ROWS</span> <span>FETCH</span> NEXT <span>@BatchSize</span> <span>ROWS</span> <span>ONLY</span>;
+
+    <span>SET</span> <span>@RowCount</span> <span>=</span> @<span>@ROWCOUNT</span>;
+    <span>SET</span> <span>@Offset</span> <span>=</span> <span>@Offset</span> <span>+</span> <span>@BatchSize</span>;
+
+    <span>COMMIT</span>;
+<span>END</span>;
+</code></pre>
+<p>Copilot tells you to replace <code>primary_key_column</code> in the suggested code with the name of the actual primary key column of <code>source_table</code>.</p>
+<h2><a href="#avoiding-data-integrity-issues">Avoiding data integrity issues</a></h2>
+<p>It's important that the information in your databases remains accurate, consistent, and complete. Poorly designed queries can result in missing or incorrect data.</p>
+<h3><a href="#example-scenario-3">Example scenario</a></h3>
+<p>The following SQL transaction deletes an employee record and creates a deletion log. However, it's possible for the <code>DELETE</code> operation to succeed and the <code>INSERT</code> operation to fail, in which case there is no log record for the deletion.</p>
+<pre><code><span>BEGIN</span> TRANSACTION;
+
+<span>DELETE</span> <span>FROM</span> employees
+<span>WHERE</span> employee_id <span>=</span> <span>101</span>;
+
+<span>INSERT</span> <span>INTO</span> deletion_log (employee_id, deletion_date, reason)
+<span>VALUES</span> (<span>101</span>, GETDATE(), <span>'Voluntary Resignation'</span>);
+
+<span>COMMIT</span> TRANSACTION;
+</code></pre>
+<h3><a href="#example-prompt-4">Example prompt</a></h3>
+<p><code>How can I ensure that the DELETE and INSERT operations are only performed if both succeed?</code></p>
+<p>Copilot tells you that you achieve this by using a transaction with error handling. It gives the following example using SQL Server's <code>TRY...CATCH</code> construct:</p>
+<pre><code><span>BEGIN</span> TRY
+    <span>BEGIN</span> TRANSACTION;
+
+    <span>DELETE</span> <span>FROM</span> employees
+    <span>WHERE</span> employee_id <span>=</span> <span>101</span>;
+
+    <span>INSERT</span> <span>INTO</span> deletion_log (employee_id, deletion_date, reason)
+    <span>VALUES</span> (<span>101</span>, GETDATE(), <span>'Voluntary Resignation'</span>);
+
+    <span>COMMIT</span> TRANSACTION;
+<span>END</span> TRY
+<span>BEGIN</span> CATCH
+    <span>ROLLBACK</span> TRANSACTION;
+    <span>-- Handle the error, e.g., log it or re-throw</span>
+    <span>DECLARE</span> <span>@ErrorMessage</span> NVARCHAR(<span>4000</span>);
+    <span>DECLARE</span> <span>@ErrorSeverity</span> <span>INT</span>;
+    <span>DECLARE</span> <span>@ErrorState</span> <span>INT</span>;
+
+    <span>SELECT</span>
+        <span>@ErrorMessage</span> <span>=</span> ERROR_MESSAGE(),
+        <span>@ErrorSeverity</span> <span>=</span> ERROR_SEVERITY(),
+        <span>@ErrorState</span> <span>=</span> ERROR_STATE();
+
+    RAISERROR (<span>@ErrorMessage</span>, <span>@ErrorSeverity</span>, <span>@ErrorState</span>);
+<span>END</span> CATCH;
+</code></pre>
+<p>The suggested code ensures that if either the <code>DELETE</code> or <code>INSERT</code> operation fails, the transaction is rolled back and no changes are made to the database.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/copilot/using-github-copilot/prompt-engineering-for-github-copilot">Prompt engineering for Copilot Chat</a></li>
+<li><a href="/en/copilot/using-github-copilot/best-practices-for-using-github-copilot">Best practices for using GitHub Copilot</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

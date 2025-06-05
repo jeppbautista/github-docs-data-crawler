@@ -1,0 +1,481 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Use GitHub Copilot" href="/en/copilot/using-github-copilot">Use GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Copilot Chat" href="/en/copilot/using-github-copilot/copilot-chat">Copilot Chat</a><span>/</span>
+</li>
+<li><a title="Chat in GitHub" href="/en/copilot/using-github-copilot/copilot-chat/asking-github-copilot-questions-in-github">Chat in GitHub</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Asking GitHub Copilot questions in GitHub</h1></div></div>
+<div><div><p>You can use GitHub Copilot Chat in GitHub to answer general questions about software development, or specific questions about the issues or code in a repository.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#overview"><div><span>Overview</span></div></a></li>
+<li><a href="#powered-by-skills"><div><span>Powered by skills</span></div></a></li>
+<li><a href="#customizing-copilot-chat-responses"><div><span>Customizing Copilot Chat responses</span></div></a></li>
+<li><a href="#ai-models-for-copilot-chat"><div><span>AI models for Copilot Chat</span></div></a></li>
+<li><a href="#submitting-a-question-to-copilot-chat"><div><span>Submitting a question to Copilot Chat</span></div></a></li>
+<li><a href="#asking-copilot-chat-questions-in-different-contexts"><div><span>Asking Copilot Chat questions in different contexts</span></div></a></li>
+<li><a href="#asking-copilot-chat-questions-in-a-repository"><div><span>Asking Copilot Chat questions in a repository</span></div></a></li>
+<li><a href="#asking-copilot-chat-questions-about-a-specific-file-or-symbol"><div><span>Asking Copilot Chat questions about a specific file or symbol</span></div></a></li>
+<li><a href="#asking-copilot-chat-questions-about-specific-pieces-of-code"><div><span>Asking Copilot Chat questions about specific pieces of code</span></div></a></li>
+<li><a href="#asking-questions-about-alerts-from-github-advanced-security-products"><div><span>Asking questions about alerts from GitHub Advanced Security products</span></div></a></li>
+<li><a href="#asking-questions-about-a-specific-pull-request"><div><span>Asking questions about a specific pull request</span></div></a></li>
+<li><a href="#asking-a-question-about-a-specific-issue-or-discussion"><div><span>Asking a question about a specific issue or discussion</span></div></a></li>
+<li><a href="#asking-a-question-about-a-specific-commit"><div><span>Asking a question about a specific commit</span></div></a></li>
+<li><a href="#using-images-in-copilot-chat"><div><span>Using images in Copilot Chat</span></div></a></li>
+<li><a href="#accessing-copilot-chat-from-the-search-bar"><div><span>Accessing Copilot Chat from the search bar</span></div></a></li>
+<li><a href="#accessing-copilot-chat-from-the-dashboard"><div><span>Accessing Copilot Chat from the dashboard</span></div></a></li>
+<li><a href="#extending-copilot-chat-in-github"><div><span>Extending Copilot Chat in GitHub</span></div></a></li>
+<li><a href="#sharing-copilot-chat-conversations"><div><span>Sharing Copilot Chat conversations</span></div></a></li>
+<li><a href="#sharing-feedback-about-github-copilot-chat-in-github"><div><span>Sharing feedback about GitHub Copilot Chat in GitHub</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#overview">Overview</a></h2>
+<p>GitHub Copilot Chat in GitHub is a chat interface that lets you ask and receive answers to coding-related questions on the GitHub website.</p>
+<p>Copilot Chat can help you with a variety of coding-related tasks, like offering you code suggestions, providing natural language descriptions of a piece of code's functionality and purpose, generating unit tests for your code, and proposing fixes for bugs in your code. For more information, see <a href="/en/copilot/github-copilot-chat/copilot-chat-in-github/about-github-copilot-chat-in-githubcom">Asking GitHub Copilot questions in GitHub</a>.</p>
+<p>On GitHub, you can use Copilot Chat to ask different questions in different contexts. For example, you can ask about a specific repository, a specific issue, or a specific pull request. You can also ask general questions about software development, or about a specific programming language.</p>
+<h3><a href="#limitations">Limitations</a></h3>
+<p>The quality of the results from Copilot Chat may, in some situations, be degraded if very large files, or a large number of files, are used as a context for a question.</p>
+<h3><a href="#viewing-and-editing-generated-files-within-copilot-chat">Viewing and editing generated files within Copilot Chat</a></h3>
+<div>
+<p>
+This feature is currently in public preview and subject to change.</p>
+</div>
+<p>When you ask a question, Copilot may generate one or more files as part of its response. In the Copilot Chat panel, the files are displayed inline, within the chat response. In immersive view (that is, at <a href="https://github.com/copilot">https://github.com/copilot</a>), the generated files are displayed in a side panel. You can view and edit the files in the panel, or download them to your computer.</p>
+<p>For example, asking <code>Generate a simple calculator using HTML, CSS, and JavaScript</code> may generate multiple files, such as <code>index.html</code>, <code>styles.css</code>, and <code>script.js</code>.</p>
+<p>In immersive view, you can also preview how some file formats, such as Markdown, render by toggling to the "Preview" tab in the side panel.</p>
+<h2><a href="#powered-by-skills">Powered by skills</a></h2>
+<p>When using the GPT-4o and Claude models, Copilot has access to a collection of skills to fetch data from GitHub, which are dynamically selected based on the question you ask. You can tell which skill Copilot used by clicking </p>
+<p><picture><source><img src="/assets/cb-63699/images/help/copilot/chat-show-skill.png" alt="Screenshot of the Copilot chat panel with the status information expanded and the skill that was used highlighted with an orange outline." width="631" height="456"></source></picture></p>
+<p>You can explicitly ask GitHub Copilot Chat in GitHub to use a particular skill - for example, <code>Use the Bing skill to find the latest GPT4 model from OpenAI</code>.</p>
+<p>You can generate a list of currently available skills by asking Copilot: <code>What skills are available?</code></p>
+<h2><a href="#customizing-copilot-chat-responses">Customizing Copilot Chat responses</a></h2>
+<p>GitHub Copilot can provide chat responses that are tailored to the way your team works, the tools you use, the specifics of your project, or your personal preferences, if you provide it with enough context to do so. Instead of repeating instructions in each prompt, you can create and save instructions for Copilot Chat to customize what responses you receive.</p>
+<p>There are two types of custom instructions you can add for Copilot Chat:</p>
+<ul>
+<li>Repository instructions: You can create a custom instructions file for a repository, so that all prompts asked in the context of the repository automatically include the instructions you've defined</li>
+<li>Personal instructions: You can add personal instructions so that all the chat responses you, as a user, receive are tailored to your preferences</li>
+</ul>
+<p>For more information, see <a href="/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot">Adding repository custom instructions for GitHub Copilot</a> and <a href="/en/copilot/customizing-copilot/adding-personal-custom-instructions-for-github-copilot">Adding personal custom instructions for GitHub Copilot</a>.</p>
+<h2><a href="#ai-models-for-copilot-chat">AI models for Copilot Chat</a></h2>
+<p>You can change the large language model that Copilot uses to generate responses to chat prompts, including premium models with advanced capabilities. You may find that different models perform better, or provide more useful responses, depending on the type of questions you ask. For more information see <a href="/en/copilot/using-github-copilot/ai-models/changing-the-ai-model-for-copilot-chat">Changing the AI model for Copilot Chat</a>.</p>
+<h2><a href="#submitting-a-question-to-copilot-chat">Submitting a question to Copilot Chat</a></h2>
+<p>You can open Copilot Chat from any page on GitHub. Certain questions may require you to be in a specific context, such as a repository, issue, or pull request. The following procedure describes how to ask a general software related question, and demonstrates the core functionality of Copilot Chat on GitHub. For more information on other scenarios, see <a href="/en/copilot/using-github-copilot/asking-github-copilot-questions-in-github#asking-copilot-chat-questions-in-different-contexts">Asking Copilot Chat questions in different contexts</a>.</p>
+<p>Depending on the question you ask, and your enterprise and organization settings, Copilot may respond using information based on the results of a Bing search. By using Bing search, Copilot can answer a broad range of tech-related questions with up-to-date details based on information currently available on the internet. For information on how to enable or disable Bing search integration, see <a href="/en/copilot/managing-copilot/managing-copilot-as-an-individual-subscriber/managing-copilot-policies-as-an-individual-subscriber#enabling-or-disabling-web-search-for-github-copilot-chat">Managing Copilot policies as an individual subscriber</a> and <a href="/en/copilot/managing-copilot/managing-copilot-for-your-enterprise/managing-policies-and-features-for-copilot-in-your-enterprise">Managing policies and features for Copilot in your enterprise</a>.</p>
+<ol>
+<li>
+<p>At the top right of any page on GitHub, click <strong>Immersive</strong> in the dropdown menu.</p>
+<div><picture><source><img src="/assets/cb-21908/images/help/copilot/copilot-immersive-button.png" alt="Screenshot of the 'Immersive' button, highlighted with a dark orange outline." width="507" height="238"></source></picture></div>
+</li>
+<li>
+<p>At the bottom of the page, in the "Ask Copilot" box, type a question and press <kbd>Enter</kbd>.</p>
+<p>Some examples of general questions you could ask are:</p>
+<ul>
+<li><code>What are the advantages of the Go programming language?</code></li>
+<li><code>What is Agile software development?</code></li>
+<li><code>What is the most popular JavaScript framework?</code></li>
+<li><code>Give me some examples of regular expressions.</code></li>
+<li><code>Write a bash script to output today's date.</code></li>
+</ul>
+</li>
+<li>
+<p>Optionally, after submitting a question, you can click </p>
+</li>
+<li>
+<p>If Copilot uses a Bing search to answer your question, "Using web search results for 'SEARCH QUERY'" is displayed above the response. Click this to see the search results that Copilot used to answer your question.</p>
+</li>
+<li>
+<p>Within a conversation thread, you can ask follow-up questions. Copilot will answer within the context of the conversation. For example, you could type "tell me more" to get Copilot to expand on its last comment.</p>
+<p>You can use your initial question as a foundation for follow-up questions. A detailed foundational prompt can help Copilot provide more relevant answers to your follow-up questions. For more information, see <a href="https://github.blog/2023-10-09-prompting-github-copilot-chat-to-become-your-personal-ai-assistant-for-accessibility/">Prompting GitHub Copilot Chat to become your personal AI assistant for accessibility</a> on the GitHub Blog.</p>
+</li>
+<li>
+<p>To start a new conversation, click </p>
+</li>
+<li>
+<p>To see a list of your previous conversations, click </p>
+</li>
+</ol>
+<h3><a href="#regenerating-a-response-with-a-different-model">Regenerating a response with a different model</a></h3>
+<div>
+<p>
+This feature is currently in public preview and is subject to change.</p>
+</div>
+<p>After Copilot responds to your question, you can regenerate the same prompt using a different model by clicking the retry icon (</p>
+<p>You can switch between responses to compare the results from different models.</p>
+<p>For help deciding which model to use, see <a href="/en/copilot/using-github-copilot/ai-models/choosing-the-right-ai-model-for-your-task">Choosing the right AI model for your task</a>.</p>
+<h3><a href="#using-subthreads-in-a-conversation">Using subthreads in a conversation</a></h3>
+<div>
+<p>
+Subthreading in Copilot Chat is currently in public preview and is subject to change.</p>
+</div>
+<p>Subthreads are branches of a conversation that are created from a point in a conversation where you asked a question. Subthreads offer more control and flexibility for exploring aspects of a topic, or new topics, all within the same thread.</p>
+<p>You can create and navigate through subthreads in Copilot Chat's immersive view. In the Copilot Chat panel, if you open a conversation that contains subthreads, only the most recently edited subthread is displayed.</p>
+<p>You can create a subthread in immersive mode by either editing or retrying any of your questions in the conversation.</p>
+<p>To edit a question:</p>
+<ol>
+<li>
+<p>Hover over the question you want to edit.</p>
+</li>
+<li>
+<p>Click the </p>
+<div><picture><source><img src="/assets/cb-12010/images/help/copilot/subthread-edit-button.png" alt="Screenshot of the 'Edit message' button, highlighted with a dark orange outline." width="377" height="115"></source></picture></div>
+</li>
+<li>
+<p>Edit the question, then click <strong>Send</strong>.</p>
+</li>
+</ol>
+<div>
+<p>
+You can only edit the text of a question. You can't edit any attachments.</p>
+</div>
+<p>To retry a question:</p>
+<ol>
+<li>
+<p>Hover over the response to a question you want to retry. Resubmitting a question to Copilot may generate a different response.</p>
+</li>
+<li>
+<p>Click the </p>
+<div><picture><source><img src="/assets/cb-13323/images/help/copilot/subthread-retry-button.png" alt="Screenshot of the 'Retry' button, highlighted with a dark orange outline." width="274" height="98"></source></picture></div>
+</li>
+</ol>
+<p>The response to your edited or retried question is displayed in a new subthread.</p>
+<p>To navigate between subthreads:</p>
+<ul>
+<li>
+<p>If you have retried a question, a retry counter is displayed under the response, alongside the retry button.</p>
+<p><picture><source><img src="/assets/cb-15825/images/help/copilot/subthread-retry-counter.png" alt="Screenshot of the retry counter, highlighted with a dark orange outline." width="354" height="99"></source></picture></p>
+<p>Click </p>
+</li>
+<li>
+<p>If you have edited a question, an edit counter is added below the question.</p>
+<p><picture><source><img src="/assets/cb-8983/images/help/copilot/subthread-edit-counter.png" alt="Screenshot of the edit counter, highlighted with a dark orange outline." width="441" height="80"></source></picture></p>
+<p>Hover over the counter to display the edit and navigation buttons, then click </p>
+</li>
+</ul>
+<h2><a href="#asking-copilot-chat-questions-in-different-contexts">Asking Copilot Chat questions in different contexts</a></h2>
+<p>You can ask Copilot Chat different types of questions depending on where you are on GitHub. For example, to ask a question about a specific repository, you must be in the context of that repository. The following sections describe how to access the different contexts.</p>
+<p>For examples of the types of questions you can ask in different contexts, see <a href="/en/copilot/using-github-copilot/example-use-cases/example-prompts-for-copilot-chat?tool=webui">Getting started with prompts for Copilot Chat</a>.</p>
+<h2><a href="#asking-copilot-chat-questions-in-a-repository">Asking Copilot Chat questions in a repository</a></h2>
+<p>To ask a question about a specific repository, you must be viewing the repository on GitHub.</p>
+<ol>
+<li>
+<p>Navigate to a repository on GitHub.</p>
+</li>
+<li>
+<p>At the top right of the page, click the </p>
+<p>Copilot Chat will open a new conversation, with the repository you are viewing selected as the context for your question.</p>
+<div><picture><source><img src="/assets/cb-74269/images/help/copilot/copilot-chat-in-repository.png" alt="Screenshot of the Copilot chat panel opened inside a repository. The specified repository is highlighted with a dark orange outline." width="400" height="369"></source></picture></div>
+</li>
+<li>
+<p>At the bottom of the panel, in the "Ask Copilot" box, type a question and press <kbd>Enter</kbd>.</p>
+<div>
+<p>Copilot's ability to answer natural language questions in a repository context is improved when the repository has been indexed for semantic code search. The indexing status of the repository is displayed when you start a conversation that has a repository context. For more information, see <a href="/en/enterprise-cloud@latest/copilot/managing-copilot/managing-github-copilot-in-your-organization/managing-github-copilot-features-in-your-organization/indexing-repositories-for-copilot-chat">Indexing repositories for Copilot Chat</a>.</p>
+</div>
+</li>
+</ol>
+<h2><a href="#asking-copilot-chat-questions-about-a-specific-file-or-symbol">Asking Copilot Chat questions about a specific file or symbol</a></h2>
+<p>You can ask Copilot about a specific file, folder, or symbol within a repository.</p>
+<div>
+<p> A "symbol" is a named entity in code. This could be a variable, function, class, module, or any other identifier that's part of a codebase.</p>
+</div>
+<ol>
+<li>
+<p>At the top right of the page, click the </p>
+</li>
+<li>
+<p>To select a repository for context, click </p>
+<div><picture><source><img src="/assets/cb-2975/images/help/copilot/chat-paperclip-icon.png" alt='Screenshot of the "Attach files or symbols" button, highlighted with a dark orange outline.'></source></picture></div>
+</li>
+<li>
+<p>Once the repository has been attached, click </p>
+</li>
+<li>
+<p>Search for and select one or more files, folders, or symbols.</p>
+</li>
+<li>
+<p>In the "Ask Copilot" box, type a question and press <kbd>Enter</kbd>.</p>
+<p>Copilot replies in the chat panel.</p>
+<div>
+<p>Copilot's ability to answer natural language questions like these in a repository context is optimized when the semantic code search index for the repository is up to date. For more information, see <a href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/managing-github-copilot-features-in-your-organization/indexing-repositories-for-copilot-chat">Indexing repositories for Copilot Chat</a>.</p>
+</div>
+</li>
+</ol>
+<h2><a href="#asking-copilot-chat-questions-about-specific-pieces-of-code">Asking Copilot Chat questions about specific pieces of code</a></h2>
+<p>You can chat with Copilot about a file in your repository, or about specific lines of code within a file.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to a repository and open a file.</p>
+</li>
+<li>
+<p>Do one of the following:</p>
+<ul>
+<li>
+<p>To ask a question about the entire file, click the Copilot icon (</p>
+<div><picture><source><img src="/assets/cb-2977/images/help/copilot/copilot-button-for-file.png" alt="Screenshot of the Copilot button, highlighted with a dark orange outline, at the top of the file view." width="538" height="126"></source></picture></div>
+</li>
+<li>
+<p>To ask a question about specific lines within the file:</p>
+<ol>
+<li>Select the lines by clicking the line number for the first line you want to select, holding down <kbd>Shift</kbd> and clicking the line number for the last line you want to select.</li>
+<li>To ask your own question about the selected lines, click the Copilot icon (</li>
+<li>To ask a predefined question, click the downward-pointing button beside the Copilot icon, then choose one of the options.</li>
+</ol>
+<div><picture><source><img src="/assets/cb-25002/images/help/copilot/copilot-buttons-inline-code.png" alt="Screenshot of the Copilot buttons, highlighted with a dark orange outline, to the right of some selected code." width="1440" height="190"></source></picture></div>
+</li>
+</ul>
+</li>
+<li>
+<p>If you clicked the Copilot icon, type a question in the "Ask Copilot" box at the bottom of the chat panel and press <kbd>Enter</kbd>.</p>
+<p>Copilot responds to your request in the panel.</p>
+<div><picture><source><img src="/assets/cb-128785/images/help/copilot/copilot-sample-chat-response.png" alt='Screenshot of a response to the question "What does the function at the selected lines do?"' width="1440" height="1043"></source></picture></div>
+</li>
+</ol>
+<h2><a href="#asking-questions-about-alerts-from-github-advanced-security-products">Asking questions about alerts from GitHub Advanced Security products</a></h2>
+<p>Copilot allows you to use natural language questions to ask about security alerts in repositories in your organization when these alerts are generated by GitHub Advanced Security features (code scanning, secret scanning, and Dependabot alerts).</p>
+<ol>
+<li>
+<p>At the top right of any page on GitHub, click <strong>Immersive</strong> in the dropdown menu.</p>
+<div><picture><source><img src="/assets/cb-21908/images/help/copilot/copilot-immersive-button.png" alt="Screenshot of the 'Immersive' button, highlighted with a dark orange outline." width="507" height="238"></source></picture></div>
+</li>
+<li>
+<p>To select a repository for context, click </p>
+<div><picture><source><img src="/assets/cb-2975/images/help/copilot/chat-paperclip-icon.png" alt='Screenshot of the "Attach files or symbols" button, highlighted with a dark orange outline.'></source></picture></div>
+</li>
+<li>
+<p>In the "Search repositories" box, type the name of the repository you want to ask about, then click the repository in the list of search results.</p>
+</li>
+<li>
+<p>In the "Ask Copilot" box, type a question and press <kbd>Enter</kbd>.</p>
+<p><a></a></p>
+<div>
+<p>Copilot's ability to answer natural language questions like these in a repository context is optimized when the semantic code search index for the repository is up to date. For more information, see <a href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/managing-github-copilot-features-in-your-organization/indexing-repositories-for-copilot-chat">Indexing repositories for Copilot Chat</a>.</p>
+</div>
+</li>
+</ol>
+<h2><a href="#asking-questions-about-a-specific-pull-request">Asking questions about a specific pull request</a></h2>
+<p>You can ask Copilot different questions about a pull request, from different views within the pull request. For example, you can ask Copilot to summarize a pull request, or explain what has changed within specific files or lines of code in a pull request.</p>
+<h3><a href="#get-a-summary-of-a-pull-request">Get a summary of a pull request</a></h3>
+<ol>
+<li>On GitHub, navigate to a pull request in a repository.</li>
+<li>At the top right of the page, click the </li>
+<li>If the panel contains a previous conversation you had with Copilot, click the </li>
+<li>At the bottom of the Copilot Chat panel, in the "Ask Copilot" box, type a question and press <kbd>Enter</kbd>.</li>
+</ol>
+<h3><a href="#ask-about-changes-to-a-specific-file-in-a-pull-request">Ask about changes to a specific file in a pull request</a></h3>
+<ol>
+<li>On GitHub, navigate to a pull request in a repository.</li>
+<li>Click the <strong>Files changed</strong> tab.</li>
+<li>Click <strong>Ask Copilot about this diff</strong>.</li>
+<li>Type a question in the "Ask Copilot" box at the bottom of the chat panel and press <kbd>Enter</kbd>.</li>
+</ol>
+<h3><a href="#ask-about-specific-lines-within-a-file-in-a-pull-request">Ask about specific lines within a file in a pull request</a></h3>
+<ol>
+<li>On GitHub, navigate to a pull request in a repository.</li>
+<li>Click the <strong>Files changed</strong> tab.</li>
+<li>Click the line number for the first line you want to select, then hold down <kbd>Shift</kbd> and click the line number for the last line you want to select.</li>
+<li>Ask Copilot a question, or choose from a list of predefined questions.
+<ul>
+<li>
+<em>To ask your own question about the selected lines</em>, to the right of your selection, click the </li>
+</ul>
+</li>
+</ol>
+<h3><a href="#ask-why-a-workflow-has-failed">Ask why a workflow has failed</a></h3>
+<ol>
+<li>On GitHub, navigate to a pull request in a repository.</li>
+<li>Scroll to the bottom of the page, then, next to one of the failing checks, click <strong>Details</strong>.</li>
+<li>At the top right of the page, click the </li>
+<li>If the panel contains a previous conversation you had with Copilot, click the </li>
+<li>At the bottom of the Copilot Chat panel, in the "Ask Copilot" box, ask Copilot why the pull request has failed and press <kbd>Enter</kbd>.</li>
+</ol>
+<p>Copilot will respond with information about why the pull request failed. Copilot may also provide suggestions for how to fix the issue.</p>
+<ol>
+<li>If Copilot has provided steps to fix the issue, you can follow the steps to resolve the problem.</li>
+</ol>
+<h2><a href="#asking-a-question-about-a-specific-issue-or-discussion">Asking a question about a specific issue or discussion</a></h2>
+<p>You can ask Copilot to summarize or answer questions about a specific issue or discussion.</p>
+<div>
+<p> The quality of Copilot Chat's responses may be degraded when working with issues or discussions that have very long bodies or a large number of comments. For example, this may occur if you ask Copilot to summarize a long-running discussion. Where this happens, Copilot will warn you so you can double check its output.</p>
+</div>
+<ol>
+<li>
+<p>Navigate to an issue or discussion on GitHub.</p>
+</li>
+<li>
+<p>At the top right of the page, click the </p>
+</li>
+<li>
+<p>If the panel contains a previous conversation you had with Copilot, click the </p>
+</li>
+<li>
+<p>At the bottom of the Copilot chat panel, in the "Ask Copilot" box, type a question and press <kbd>Enter</kbd>.</p>
+<p>Copilot responds to your request in the panel.</p>
+<div>
+<p> Instead of navigating to an issue or discussion in your browser to ask a question, you can include the relevant URL in your message. For example, <code>Summarize https://github.com/monalisa/octokit/issues/1</code>.</p>
+</div>
+</li>
+</ol>
+<h2><a href="#asking-a-question-about-a-specific-commit">Asking a question about a specific commit</a></h2>
+<p>You can ask Copilot to explain the changes in a commit.</p>
+<ol>
+<li>
+<p>Navigate to a commit on GitHub.</p>
+</li>
+<li>
+<p>At the top right of the page, click the </p>
+</li>
+<li>
+<p>If the panel contains a previous conversation you had with Copilot, click the </p>
+</li>
+<li>
+<p>At the bottom of the Copilot chat panel, in the "Ask Copilot" box, type a question and press <kbd>Enter</kbd>.</p>
+<div>
+<p>
+If you know the SHA for a commit, instead of navigating to the commit, you can ask Copilot about the commit from any page in the repository on GitHub by including the SHA in your message. For example, <code>What changed in commit a778e0eab?</code></p>
+</div>
+</li>
+<li>
+<p>Optionally, after submitting a question, you can click </p>
+</li>
+</ol>
+<h2><a href="#using-images-in-copilot-chat">Using images in Copilot Chat</a></h2>
+<div>
+<ul>
+<li>Attaching images to chat prompts is currently in public preview and is subject to change.</li>
+<li>You can only attach an image in the immersive view of Copilot Chat (<a href="https://github.com/copilot">https://github.com/copilot</a>), not in the chat panel.</li>
+</ul>
+</div>
+<p>You can attach an image to Copilot and then ask about the image. For example, you can attach:</p>
+<ul>
+<li>A screenshot of a code snippet and ask Copilot to explain the code.</li>
+<li>A mockup of the user interface for an application and ask Copilot to generate the code.</li>
+<li>A flowchart and ask Copilot to describe the processes shown in the image.</li>
+<li>A screenshot of a web page and ask Copilot to generate HTML for a similar page.</li>
+</ul>
+<div>
+<p>
+The following types of image file are supported: JPEG (<code>.jpg</code>, <code>.jpeg</code>), PNG (<code>.png</code>), GIF (<code>.gif</code>), or WEBP (<code>.webp</code>).</p>
+</div>
+<h3><a href="#attaching-an-image-to-your-chat-prompt">Attaching an image to your chat prompt</a></h3>
+<ol>
+<li>
+<p>Go to the immersive view of Copilot Chat (<a href="https://github.com/copilot">https://github.com/copilot</a>).</p>
+</li>
+<li>
+<p>If you see the AI model picker at the top of the page, select one of the models that supports adding images to prompts:</p>
+<ul>
+<li>GPT-4.1 (the default that's used if you don't see a model picker)</li>
+<li>GPT-4o</li>
+<li>Claude 3.5 Sonnet</li>
+<li>Claude 3.7 Sonnet</li>
+<li>Gemini 2.0 Flash</li>
+<li>Gemini 2.5 Pro</li>
+</ul>
+<div><picture><source><img src="/assets/cb-34214/images/help/copilot/model-picker-copilot-immersive.png" alt="Screenshot of the model picker with the list of models expanded." width="416" height="346"></source></picture></div>
+</li>
+<li>
+<p>Do one of the following:</p>
+<ul>
+<li>Copy an image and paste it into the prompt box at the bottom of the page.</li>
+<li>Click <strong>Image</strong>. Browse to the image file you want to attach, select it and click <strong>Open</strong>.</li>
+<li>Drag and drop an image file from your operating system's file explorer into the prompt box.</li>
+</ul>
+</li>
+<li>
+<p>Type your prompt into the chat view to accompany the image. For example, <code>explain this diagram</code>, <code>describe each of these images in detail</code>, <code>what does this error message mean</code>.</p>
+</li>
+</ol>
+<h2><a href="#accessing-copilot-chat-from-the-search-bar">Accessing Copilot Chat from the search bar</a></h2>
+<p>You can ask Copilot a question about an entire repository by typing your question in the main search box of the repository.</p>
+<ol>
+<li>
+<p>Navigate to a repository on GitHub.</p>
+</li>
+<li>
+<p>Press <kbd>/</kbd>, or click in the main search box at the top of the page.</p>
+</li>
+<li>
+<p>In the search box, after <code>repo:OWNER/REPO</code>, type the question you want to ask Copilot.</p>
+<p>For example, you could enter:</p>
+<ul>
+<li>What does this repo do?</li>
+<li>Where is authentication implemented in this codebase?</li>
+<li>How does license file detection work in this repo?</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Ask Copilot</strong>.</p>
+<div><picture><source><img src="/assets/cb-58192/images/help/copilot/ask-copilot-from-search-bar.png" alt='Screenshot of the main search box on GitHub. The drop-down option "Ask Copilot" is highlighted with an orange outline.' width="1440" height="399"></source></picture></div>
+<p>The GitHub Copilot Chat panel is displayed and Copilot responds to your request.</p>
+</li>
+<li>
+<p>Optionally, after submitting a question, you can click </p>
+</li>
+</ol>
+<h2><a href="#accessing-copilot-chat-from-the-dashboard">Accessing Copilot Chat from the dashboard</a></h2>
+<p>You can access Copilot's immersive view from the dashboard. The dashboard is your personalized overview of your activity on GitHub, seen when you visit <a href="https://github.com">https://github.com</a> while logged in.</p>
+<ol>
+<li>
+<p>Go to the dashboard at <a href="https://github.com">https://github.com</a>.</p>
+</li>
+<li>
+<p>In the "Ask Copilot" box, type a question and press <kbd>Enter</kbd>.</p>
+<div><picture><source><img src="/assets/cb-27868/images/help/copilot/copilot-chat-dashboard.png" alt='Screenshot of the dashboard with the "Ask Copilot" box highlighted with an orange outline.' width="400" height="162"></source></picture></div>
+<p>You will be taken to the immersive view where Copilot will respond to your request.</p>
+</li>
+</ol>
+<h2><a href="#extending-copilot-chat-in-github">Extending Copilot Chat in GitHub</a></h2>
+<p>GitHub Copilot Extensions integrate the power of external tools into Copilot Chat, helping you reduce context switching and receive responses with domain-specific context. You can install Copilot Extensions from the GitHub Marketplace or build private ones within your organization, then type <code>@</code> in a chat window to see a list of your available extensions. To use an extension, select the extension from the list or type the full slug name, then type your prompt.</p>
+<p>To learn more, see <a href="/en/copilot/using-github-copilot/using-extensions-to-integrate-external-tools-with-copilot-chat">Using extensions to integrate external tools with Copilot Chat</a>.</p>
+<h2><a href="#sharing-copilot-chat-conversations">Sharing Copilot Chat conversations</a></h2>
+<div>
+<p> This feature is currently in public preview and subject to change. During the public preview, this feature is only available to users without enterprise or team memberships.</p>
+</div>
+<p>You can share Copilot Chat conversations from the immersive view (<a href="https://github.com/copilot">https://github.com/copilot</a>). Shared conversations are public or private (i.e. permission-based), depending on the referenced content, for example, a conversation about a private repository. If you share a private conversation, the recipient must have the necessary permissions to view the content.</p>
+<p>Once you share a conversation, the conversation and future messages will be visible to anyone with the link.</p>
+<ol>
+<li>
+<p>In the top right of any page on GitHub, click the </p>
+</li>
+<li>
+<p>To view a conversation in immersive mode, click </p>
+</li>
+<li>
+<p>Once you submit your first prompt, a share button will appear in the upper right corner. Click </p>
+<div><picture><source><img src="/assets/cb-42459/images/help/copilot/chat-share-button.png" alt="Screenshot of the main search box on GitHub. The share button is highlighted with an orange outline." width="399" height="209"></source></picture></div>
+</li>
+<li>
+<p>To share the conversation, click <strong>Share</strong>. This will generate a link to the conversation.</p>
+</li>
+<li>
+<p>To copy the conversation link, click the </p>
+</li>
+</ol>
+<h2><a href="#sharing-feedback-about-github-copilot-chat-in-github">Sharing feedback about GitHub Copilot Chat in GitHub</a></h2>
+<div>
+<p> The ability to provide feedback to GitHub about Copilot pull request summaries is dependent on enterprise settings. For more information, see <a href="/en/enterprise-cloud@latest/copilot/managing-copilot/managing-copilot-for-your-enterprise/managing-policies-and-features-for-copilot-in-your-enterprise">Managing policies and features for Copilot in your enterprise</a>.</p>
+</div>
+<p>To give feedback about a particular Copilot Chat response, click either the thumbs up or thumbs down icon at the bottom of each chat response.</p>
+<p>To give feedback about Copilot Chat in general, click the ellipsis (<strong>...</strong>) at the top right of the chat panel, then click </p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li>
+<a href="/en/copilot/github-copilot-chat/copilot-chat-in-ides/using-github-copilot-chat-in-your-ide">Asking GitHub Copilot questions in your IDE</a>.</li>
+<li>
+<a href="/en/copilot/using-github-copilot/asking-github-copilot-questions-in-github-mobile">Asking GitHub Copilot questions in GitHub Mobile</a>.</li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

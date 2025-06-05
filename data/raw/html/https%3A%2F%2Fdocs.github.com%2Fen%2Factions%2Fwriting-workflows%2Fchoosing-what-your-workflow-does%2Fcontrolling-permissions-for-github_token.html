@@ -1,0 +1,253 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Write workflows" href="/en/actions/writing-workflows">Write workflows</a><span>/</span>
+</li>
+<li>
+<a title="Choose what workflows do" href="/en/actions/writing-workflows/choosing-what-your-workflow-does">Choose what workflows do</a><span>/</span>
+</li>
+<li><a title="Permissions for `GITHUB_TOKEN`" href="/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token">Permissions for `GITHUB_TOKEN`</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Controlling permissions for GITHUB_TOKEN</h1></div></div>
+<div><div><p>Modify the default permissions granted to <code>GITHUB_TOKEN</code>.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#overview"><div><span>Overview</span></div></a></li>
+<li><a href="#defining-access-for-the-github_token-permissions"><div><span>Defining access for the GITHUB_TOKEN permissions</span></div></a></li>
+<li><a href="#setting-the-github_token-permissions-for-all-jobs-in-a-workflow"><div><span>Setting the GITHUB_TOKEN permissions for all jobs in a workflow</span></div></a></li>
+<li><a href="#setting-the-github_token-permissions-for-a-specific-job"><div><span>Setting the GITHUB_TOKEN permissions for a specific job</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#overview">Overview</a></h2>
+<p>You can use <code>permissions</code> to modify the default permissions granted to the <code>GITHUB_TOKEN</code>, adding or removing access as required, so that you only allow the minimum required access. For more information, see <a href="/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token">Automatic token authentication</a>.</p>
+<p>You can use <code>permissions</code> either as a top-level key, to apply to all jobs in the workflow, or within specific jobs. When you add the <code>permissions</code> key within a specific job, all actions and run commands within that job that use the <code>GITHUB_TOKEN</code> gain the access rights you specify. For more information, see <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idpermissions"><code>jobs.&lt;job_id&gt;.permissions</code></a>.</p>
+<p>For each of the available permissions, shown in the table below, you can assign one of the access levels: <code>read</code> (if applicable), <code>write</code>, or <code>none</code>. <code>write</code> includes <code>read</code>. If you specify the access for any of these permissions, all of those that are not specified are set to <code>none</code>.</p>
+<p>Available permissions and details of what each allows an action to do:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Permission</th>
+<th>Allows an action using <code>GITHUB_TOKEN</code> to</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>actions</code></td>
+<td>Work with GitHub Actions. For example, <code>actions: write</code> permits an action to cancel a workflow run. For more information, see <a href="/en/rest/overview/permissions-required-for-github-apps?apiVersion=2022-11-28#repository-permissions-for-actions">Permissions required for GitHub Apps</a>.</td>
+</tr>
+<tr>
+<td><code>attestations</code></td>
+<td>Work with artifact attestations. For example, <code>attestations: write</code> permits an action to generate an artifact attestation for a build. For more information, see <a href="/en/actions/security-guides/using-artifact-attestations-to-establish-provenance-for-builds">Using artifact attestations to establish provenance for builds</a>
+</td>
+</tr>
+<tr>
+<td><code>checks</code></td>
+<td>Work with check runs and check suites. For example, <code>checks: write</code> permits an action to create a check run. For more information, see <a href="/en/rest/overview/permissions-required-for-github-apps?apiVersion=2022-11-28#repository-permissions-for-checks">Permissions required for GitHub Apps</a>.</td>
+</tr>
+<tr>
+<td><code>contents</code></td>
+<td>Work with the contents of the repository. For example, <code>contents: read</code> permits an action to list the commits, and <code>contents: write</code> allows the action to create a release. For more information, see <a href="/en/rest/overview/permissions-required-for-github-apps?apiVersion=2022-11-28#repository-permissions-for-contents">Permissions required for GitHub Apps</a>.</td>
+</tr>
+<tr>
+<td><code>deployments</code></td>
+<td>Work with deployments. For example, <code>deployments: write</code> permits an action to create a new deployment. For more information, see <a href="/en/rest/overview/permissions-required-for-github-apps?apiVersion=2022-11-28#repository-permissions-for-deployments">Permissions required for GitHub Apps</a>.</td>
+</tr>
+<tr>
+<td><code>discussions</code></td>
+<td>Work with GitHub Discussions. For example, <code>discussions: write</code> permits an action to close or delete a discussion. For more information, see <a href="/en/graphql/guides/using-the-graphql-api-for-discussions">Using the GraphQL API for Discussions</a>.</td>
+</tr>
+<tr>
+<td><code>id-token</code></td>
+<td>Fetch an OpenID Connect (OIDC) token. This requires <code>id-token: write</code>. For more information, see <a href="/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#updating-your-actions-for-oidc">About security hardening with OpenID Connect</a>
+</td>
+</tr>
+<tr>
+<td><code>issues</code></td>
+<td>Work with issues. For example, <code>issues: write</code> permits an action to add a comment to an issue. For more information, see <a href="/en/rest/overview/permissions-required-for-github-apps?apiVersion=2022-11-28#repository-permissions-for-issues">Permissions required for GitHub Apps</a>.</td>
+</tr>
+<tr>
+<td><code>models</code></td>
+<td>Generate AI inference responses with GitHub Models. For example, <code>models: read</code> permits an action to use the GitHub Models inference API. See <a href="/en/github-models/prototyping-with-ai-models">Prototyping with AI models</a>.</td>
+</tr>
+<tr>
+<td><code>packages</code></td>
+<td>Work with GitHub Packages. For example, <code>packages: write</code> permits an action to upload and publish packages on GitHub Packages. For more information, see <a href="/en/packages/learn-github-packages/about-permissions-for-github-packages#about-scopes-and-permissions-for-package-registries">About permissions for GitHub Packages</a>.</td>
+</tr>
+<tr>
+<td><code>pages</code></td>
+<td>Work with GitHub Pages. For example, <code>pages: write</code> permits an action to request a GitHub Pages build. For more information, see <a href="/en/rest/overview/permissions-required-for-github-apps?apiVersion=2022-11-28#repository-permissions-for-pages">Permissions required for GitHub Apps</a>.</td>
+</tr>
+<tr>
+<td><code>pull-requests</code></td>
+<td>Work with pull requests. For example, <code>pull-requests: write</code> permits an action to add a label to a pull request. For more information, see <a href="/en/rest/overview/permissions-required-for-github-apps?apiVersion=2022-11-28#repository-permissions-for-pull-requests">Permissions required for GitHub Apps</a>.</td>
+</tr>
+<tr>
+<td><code>security-events</code></td>
+<td>Work with GitHub code scanning and Dependabot alerts. For example, <code>security-events: read</code> permits an action to list the Dependabot alerts for the repository, and <code>security-events: write</code> allows an action to update the status of a code scanning alert. For more information, see <a href="/en/rest/overview/permissions-required-for-github-apps?apiVersion=2022-11-28#repository-permissions-for-code-scanning-alerts">Repository permissions for 'Code scanning alerts'</a> and <a href="/en/rest/overview/permissions-required-for-github-apps?apiVersion=2022-11-28#repository-permissions-for-dependabot-alerts">Repository permissions for 'Dependabot alerts'</a> in "Permissions required for GitHub Apps."</td>
+</tr>
+<tr>
+<td><code>statuses</code></td>
+<td>Work with commit statuses. For example, <code>statuses:read</code> permits an action to list the commit statuses for a given reference. For more information, see <a href="/en/rest/overview/permissions-required-for-github-apps?apiVersion=2022-11-28#repository-permissions-for-commit-statuses">Permissions required for GitHub Apps</a>.</td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#defining-access-for-the-github_token-permissions">Defining access for the <code>GITHUB_TOKEN</code> permissions</a></h2>
+<p>You can define the access that the <code>GITHUB_TOKEN</code> will permit by specifying <code>read</code>, <code>write</code>, or <code>none</code> as the value of the available permissions within the <code>permissions</code> key.</p>
+<pre><code><span>permissions:</span>
+  <span>actions:</span> <span>read|write|none</span>
+  <span>attestations:</span> <span>read|write|none</span>
+  <span>checks:</span> <span>read|write|none</span>
+  <span>contents:</span> <span>read|write|none</span>
+  <span>deployments:</span> <span>read|write|none</span>
+  <span>id-token:</span> <span>write|none</span>
+  <span>issues:</span> <span>read|write|none</span>
+  <span>models:</span> <span>read|none</span>
+  <span>discussions:</span> <span>read|write|none</span>
+  <span>packages:</span> <span>read|write|none</span>
+  <span>pages:</span> <span>read|write|none</span>
+  <span>pull-requests:</span> <span>read|write|none</span>
+  <span>security-events:</span> <span>read|write|none</span>
+  <span>statuses:</span> <span>read|write|none</span>
+</code></pre>
+<p>If you specify the access for any of these permissions, all of those that are not specified are set to <code>none</code>.</p>
+<p>You can use the following syntax to define one of <code>read-all</code> or <code>write-all</code> access for all of the available permissions:</p>
+<pre><code><span>permissions:</span> <span>read-all</span>
+</code></pre>
+<pre><code><span>permissions:</span> <span>write-all</span>
+</code></pre>
+<p>You can use the following syntax to disable permissions for all of the available permissions:</p>
+<pre><code><span>permissions:</span> {}
+</code></pre>
+<h3><a href="#changing-the-permissions-in-a-forked-repository">Changing the permissions in a forked repository</a></h3>
+<p>You can use the <code>permissions</code> key to add and remove read permissions for forked repositories, but typically you can't grant write access. The exception to this behavior is where an admin user has selected the <strong>Send write tokens to workflows from pull requests</strong> option in the GitHub Actions settings. For more information, see <a href="/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#enabling-workflows-for-private-repository-forks">Managing GitHub Actions settings for a repository</a>.</p>
+<h2><a href="#setting-the-github_token-permissions-for-all-jobs-in-a-workflow">Setting the <code>GITHUB_TOKEN</code> permissions for all jobs in a workflow</a></h2>
+<p>You can specify <code>permissions</code> at the top level of a workflow, so that the setting applies to all jobs in the workflow.</p>
+<h3><a href="#example-setting-the-github_token-permissions-for-an-entire-workflow">Example: Setting the <code>GITHUB_TOKEN</code> permissions for an entire workflow</a></h3>
+<p>This example shows permissions being set for the <code>GITHUB_TOKEN</code> that will apply to all jobs in the workflow. All permissions are granted read access.</p>
+<pre><code><span>name:</span> <span>"My workflow"</span>
+
+<span>on:</span> [ <span>push</span> ]
+
+<span>permissions:</span> <span>read-all</span>
+
+<span>jobs:</span>
+  <span>...</span>
+</code></pre>
+<h2><a href="#setting-the-github_token-permissions-for-a-specific-job">Setting the <code>GITHUB_TOKEN</code> permissions for a specific job</a></h2>
+<p>For a specific job, you can use <code>jobs.&lt;job_id&gt;.permissions</code> to modify the default permissions granted to the <code>GITHUB_TOKEN</code>, adding or removing access as required, so that you only allow the minimum required access. For more information, see <a href="/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token">Automatic token authentication</a>.</p>
+<p>By specifying the permission within a job definition, you can configure a different set of permissions for the <code>GITHUB_TOKEN</code> for each job, if required. Alternatively, you can specify the permissions for all jobs in the workflow. For information on defining permissions at the workflow level, see <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#permissions"><code>permissions</code></a>.</p>
+<h3><a href="#example-setting-the-github_token-permissions-for-one-job-in-a-workflow">Example: Setting the <code>GITHUB_TOKEN</code> permissions for one job in a workflow</a></h3>
+<p>This example shows permissions being set for the <code>GITHUB_TOKEN</code> that will only apply to the job named <code>stale</code>. Write access is granted for the <code>issues</code> and <code>pull-requests</code> permissions. All other permissions will have no access.</p>
+<pre><code><span>jobs:</span>
+  <span>stale:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+
+    <span>permissions:</span>
+      <span>issues:</span> <span>write</span>
+      <span>pull-requests:</span> <span>write</span>
+
+    <span>steps:</span>
+      <span>-</span> <span>uses:</span> <span>actions/stale@v9</span>
+</code></pre>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

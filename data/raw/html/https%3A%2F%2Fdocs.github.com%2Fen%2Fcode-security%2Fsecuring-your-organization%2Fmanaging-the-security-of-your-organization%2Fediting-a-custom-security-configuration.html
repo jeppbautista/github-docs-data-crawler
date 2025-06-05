@@ -1,0 +1,84 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Secure your organization" href="/en/code-security/securing-your-organization">Secure your organization</a><span>/</span>
+</li>
+<li>
+<a title="Manage organization security" href="/en/code-security/securing-your-organization/managing-the-security-of-your-organization">Manage organization security</a><span>/</span>
+</li>
+<li><a title="Edit custom configuration" href="/en/code-security/securing-your-organization/managing-the-security-of-your-organization/editing-a-custom-security-configuration">Edit custom configuration</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Editing a custom security configuration</h1></div></div>
+<div>
+<div><p>Change the enablement settings in your custom security configuration to better meet the security needs of your repositories.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Organization owners, security managers, and organization members with the <strong>admin</strong> role</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-editing-a-custom-security-configuration"><div><span>About editing a custom security configuration</span></div></a></li>
+<li><a href="#modifying-your-custom-security-configuration"><div><span>Modifying your custom security configuration</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-editing-a-custom-security-configuration">About editing a custom security configuration</a></h2>
+<p>After creating and applying a custom security configuration, you may need to edit the enablement settings for that configuration to better secure your repositories. Any changes you make to the enablement settings of a security configuration will automatically populate to all linked repositories.</p>
+<p>To determine if your custom security configuration is meeting your security needs, see <a href="/en/code-security/securing-your-organization/managing-the-security-of-your-organization/interpreting-security-findings">Interpreting security findings</a>.</p>
+<div>
+<p>
+The GitHub-recommended security configuration is managed by GitHub and cannot be edited. If you would like to customize your security enablement settings, you need to create a custom security configuration. For more information, see <a href="/en/code-security/securing-your-organization/enabling-security-features-in-your-organization/creating-a-custom-security-configuration">Creating a custom security configuration</a>.</p>
+</div>
+<h2><a href="#modifying-your-custom-security-configuration">Modifying your custom security configuration</a></h2>
+<ol>
+<li>
+<p>In the upper-right corner of GitHub, select your profile photo, then click </p>
+</li>
+<li>
+<p>Under your organization name, click <strong>Settings</strong>.</p>
+<div><picture><source><img src="/assets/cb-49309/images/help/discussions/org-settings-global-nav-update.png" alt="Screenshot of the tabs in an organization's profile. The &quot;Settings&quot; tab is outlined in dark orange." width="1440" height="106"></source></picture></div>
+</li>
+<li>
+<p>In the "Security" section of the sidebar, select the <strong>Configurations</strong>.</p>
+</li>
+<li>
+<p>Under "Security configurations", click the name of the custom security configuration you want to edit.</p>
+<div>
+<p>
+The default security configuration for an organization is only automatically applied to new repositories created in your organization. If a repository is transferred into your organization, you will still need to apply an appropriate security configuration to the repository manually.</p>
+</div>
+</li>
+<li>
+<p>Edit the name and description of your custom security configuration as desired.</p>
+</li>
+<li>
+<p>Edit the enablement settings of your custom security configuration as desired.</p>
+</li>
+<li>
+<p>In the "Policy" section, you can modify the configuration's enforcement status. Enforcing a configuration will block repository owners from changing features that are enabled or disabled by the configuration, but features that are not set aren't enforced. Next to "Enforce configuration", select <strong>Enforce</strong> or <strong>Don't enforce</strong> from the dropdown menu.</p>
+<div>
+<p>
+If a user in your organization attempts to change the enablement status of a feature in an enforced configuration using the REST API, the API call will appear to succeed, but no enablement statuses will change.</p>
+<p>Some situations can break the enforcement of security configurations for a repository. For example, the enablement of code scanning will not apply to a repository if:</p>
+<ul>
+<li>GitHub Actions is initially enabled on the repository, but is then disabled in the repository.</li>
+<li>GitHub Actions required by code scanning configurations are not available in the repository.</li>
+<li>The definition for which languages should not be analyzed using code scanning default setup is changed.</li>
+</ul>
+</div>
+</li>
+<li>
+<p>To apply your changes, click <strong>Update configuration</strong>.</p>
+</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

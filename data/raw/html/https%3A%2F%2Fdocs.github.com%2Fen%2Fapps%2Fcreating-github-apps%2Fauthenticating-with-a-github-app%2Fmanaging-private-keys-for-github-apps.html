@@ -1,0 +1,119 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Apps" href="/en/apps">Apps</a><span>/</span>
+</li>
+<li>
+<a title="Creating GitHub Apps" href="/en/apps/creating-github-apps">Creating GitHub Apps</a><span>/</span>
+</li>
+<li>
+<a title="Authenticate with a GitHub App" href="/en/apps/creating-github-apps/authenticating-with-a-github-app">Authenticate with a GitHub App</a><span>/</span>
+</li>
+<li><a title="Manage private keys" href="/en/apps/creating-github-apps/authenticating-with-a-github-app/managing-private-keys-for-github-apps">Manage private keys</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Managing private keys for GitHub Apps</h1></div></div>
+<div><div><p>You can manage private keys to authenticate with your GitHub App.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-private-keys-for-github-apps"><div><span>About private keys for GitHub Apps</span></div></a></li>
+<li><a href="#generating-private-keys"><div><span>Generating private keys</span></div></a></li>
+<li><a href="#verifying-private-keys"><div><span>Verifying private keys</span></div></a></li>
+<li><a href="#deleting-private-keys"><div><span>Deleting private keys</span></div></a></li>
+<li><a href="#storing-private-keys"><div><span>Storing private keys</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-private-keys-for-github-apps">About private keys for GitHub Apps</a></h2>
+<p>After you create a GitHub App, you'll need to generate a private key in order to make requests to the GitHub API as the application itself. For example, you need a private key to sign a JSON Web Token (JWT) in order to request an installation access token. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-json-web-token-jwt-for-a-github-app">Generating a JSON Web Token (JWT) for a GitHub App</a></p>
+<p>You can create up to 25 private keys for an app. You should use multiple keys in order to rotate keys without downtime in the event of a key compromise. If your application has 25 or more keys, you must delete some before you can create more.</p>
+<p>Private keys do not expire and instead need to be manually revoked. For more information about how to revoke or delete a private key, see <a href="#deleting-private-keys">Deleting private keys</a>.</p>
+<p>You must keep private keys for GitHub Apps secure. For more information, see <a href="#storing-private-keys">Storing private keys</a>.</p>
+<p>To verify that a private key matches a public key, see <a href="#verifying-private-keys">Verifying private keys</a>.</p>
+<h2><a href="#generating-private-keys">Generating private keys</a></h2>
+<p>To generate a private key:</p>
+<ol>
+<li>
+<p>In the upper-right corner of any page on GitHub, click your profile photo.</p>
+</li>
+<li>
+<p>Navigate to your account settings.</p>
+<ul>
+<li>For an app owned by a personal account, click <strong>Settings</strong>.</li>
+<li>For an app owned by an organization:
+<ol>
+<li>Click <strong>Your organizations</strong>.</li>
+<li>To the right of the organization, click <strong>Settings</strong>.</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p>In the left sidebar, click </p>
+</li>
+<li>
+<p>In the left sidebar, click <strong>GitHub Apps</strong>.</p>
+</li>
+<li>
+<p>Next to the GitHub App that you want to generate a private key for, click <strong>Edit</strong>.</p>
+</li>
+<li>
+<p>Under "Private keys", click <strong>Generate a private key</strong>.</p>
+</li>
+<li>
+<p>You will see a private key in PEM format downloaded to your computer. Make sure to store this file because GitHub only stores the public portion of the key. For more information about securely storing your key, see <a href="#storing-private-keys">Storing private keys</a>.</p>
+</li>
+</ol>
+<div>
+<p>
+If you're using a library that requires a specific file format, the PEM file you download will be in <code>PKCS#1 RSAPrivateKey</code> format.</p>
+</div>
+<h2><a href="#verifying-private-keys">Verifying private keys</a></h2>
+<p>GitHub generates a fingerprint for each private and public key pair using the SHA-256 hash function. You can verify that your private key matches the public key stored on GitHub by generating the fingerprint of your private key and comparing it to the fingerprint shown on GitHub.</p>
+<p>To verify a private key:</p>
+<ol>
+<li>
+<p>Find the fingerprint for the private and public key pair you want to verify in the "Private keys" section of the settings page for your GitHub App. For more information, see <a href="#generating-private-keys">Generating private keys</a>.</p>
+<div><picture><source><img src="/assets/cb-38464/images/github-apps/github-apps-private-key-fingerprint.png" alt="Screenshot of a private key in a GitHub App settings page. The fingerprint, the part of the private key after the colon, is outlined in dark orange." width="720" height="195"></source></picture></div>
+</li>
+<li>
+<p>Generate the fingerprint of your private key (PEM) locally by using the following command:</p>
+<pre><code>openssl rsa -in PATH_TO_PEM_FILE -pubout -outform DER | openssl sha256 -binary | openssl base64
+</code></pre>
+</li>
+<li>
+<p>Compare the results of the locally generated fingerprint to the fingerprint you see in GitHub.</p>
+</li>
+</ol>
+<h2><a href="#deleting-private-keys">Deleting private keys</a></h2>
+<p>You can remove a lost or compromised private key by deleting it, but you must regenerate a new key before you can delete the existing key.</p>
+<ol>
+<li>In the upper-right corner of any page on GitHub, click your profile photo.</li>
+<li>Navigate to your account settings.
+<ul>
+<li>For an app owned by a personal account, click <strong>Settings</strong>.</li>
+<li>For an app owned by an organization:
+<ol>
+<li>Click <strong>Your organizations</strong>.</li>
+<li>To the right of the organization, click <strong>Settings</strong>.</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>In the left sidebar, click </li>
+<li>In the left sidebar, click <strong>GitHub Apps</strong>.</li>
+<li>Next to the GitHub App that you want to delete a private key for, click <strong>Edit</strong>.</li>
+<li>Under "Private keys", to the right of the private key you want to delete, click <strong>Delete</strong>.</li>
+<li>When prompted, confirm you want to delete the private key by clicking <strong>Delete</strong>. If your GitHub App has only one key, you will need to generate a new key before deleting the old key. For more information, see <a href="#generating-private-keys">Generating private keys</a>.</li>
+</ol>
+<h2><a href="#storing-private-keys">Storing private keys</a></h2>
+<p>The private key is the single most valuable secret for a GitHub App. Consider storing the key in a key vault, such as <a href="https://azure.microsoft.com/en-gb/products/key-vault">Azure Key Vault</a>, and making it sign-only. This helps ensure that you can't lose the private key. Once the private key is uploaded to the key vault, it can never be read from there. It can only be used to sign things, and access to the private key is determined by your infrastructure rules.</p>
+<p>Alternatively, you can store the key as an environment variable. This is not as strong as storing the key in a key vault. If an attacker gains access to the environment, they can read the private key and gain persistent authentication as the GitHub App.</p>
+<p>You should not hard-code your private key in your app, even if your code is stored in a private repository.</p>
+<p>For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/best-practices-for-creating-a-github-app">Best practices for creating a GitHub App</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

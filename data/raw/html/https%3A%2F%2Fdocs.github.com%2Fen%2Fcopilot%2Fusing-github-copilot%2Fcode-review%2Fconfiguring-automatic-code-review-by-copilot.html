@@ -1,0 +1,167 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Use GitHub Copilot" href="/en/copilot/using-github-copilot">Use GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Code review" href="/en/copilot/using-github-copilot/code-review">Code review</a><span>/</span>
+</li>
+<li><a title="Automatic code review" href="/en/copilot/using-github-copilot/code-review/configuring-automatic-code-review-by-copilot">Automatic code review</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Configuring automatic code review by Copilot</h1></div></div>
+<div><div><p>Learn how to configure Copilot to automatically review pull requests.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-automatic-code-review"><div><span>About automatic code review</span></div></a></li>
+<li><a href="#configuring-automatic-code-review-for-all-pull-requests-you-create"><div><span>Configuring automatic code review for all pull requests you create</span></div></a></li>
+<li><a href="#configuring-automatic-code-review-for-a-single-repository"><div><span>Configuring automatic code review for a single repository</span></div></a></li>
+<li><a href="#configuring-automatic-code-review-for-repositories-in-an-organization"><div><span>Configuring automatic code review for repositories in an organization</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-automatic-code-review">About automatic code review</a></h2>
+<p>By default, Copilot will only review a pull request if it's assigned to the pull request in the same way you would assign a human reviewer. However:</p>
+<ul>
+<li>Individual users on the Copilot Pro or Copilot Pro+ plan can configure Copilot to automatically review all pull requests they create.</li>
+<li>Repository owners can configure Copilot to automatically review all pull requests in the repository that are created by people with access to Copilot.</li>
+<li>Organization owners can configure Copilot to automatically review all pull requests in some or all of the repositories in the organization where the pull request is created by a Copilot user.</li>
+</ul>
+<h3><a href="#triggering-an-automatic-pull-request-review">Triggering an automatic pull request review</a></h3>
+<p>After you configure automatic code review, Copilot will review pull requests in the following situations:</p>
+<ul>
+<li>
+<p>When a pull request is created as an "Open" pull request.</p>
+<p>A review is not triggered if the pull request is created as a "Draft" pull request.</p>
+</li>
+<li>
+<p>The first time a "Draft" pull request is switched to "Open".</p>
+</li>
+</ul>
+<div>
+<p>
+Copilot only automatically reviews a pull request once. If you make changes to the pull request after it has been automatically reviewed and you want Copilot to re-review the pull request, you must request this manually. To do this, click the <strong>Reviewers</strong> menu.</p>
+</div>
+<h3><a href="#limits-on-automatic-pull-request-reviews">Limits on automatic pull request reviews</a></h3>
+<p>Copilot code review is a premium feature with a per-person monthly quota. When Copilot carries out an automatic review, it uses one premium request from the quota of the user who created the pull request. For more information, see <a href="/en/copilot/using-github-copilot/code-review/using-copilot-code-review#code-review-monthly-quota">Using GitHub Copilot code review</a>.</p>
+<h2><a href="#configuring-automatic-code-review-for-all-pull-requests-you-create">Configuring automatic code review for all pull requests you create</a></h2>
+<div>
+<p>
+This is only available if you are on the Copilot Pro or Copilot Pro+ plan.</p>
+</div>
+<ol>
+<li>
+<p>In the upper-right corner of any page, click your profile photo, then click </p>
+</li>
+<li>
+<p>Locate the <strong>Automatic Copilot code review</strong> option and click the dropdown button.</p>
+<div><picture><source><img src="/assets/cb-86751/images/help/copilot/code-review/automatic-code-review-personal.png" alt='Screenshot of the "Automatic Copilot code review" setting with the dropdown menu displayed.' width="720" height="170"></source></picture></div>
+</li>
+<li>
+<p>In the dropdown menu, select <strong>Enabled</strong>.</p>
+</li>
+</ol>
+<h2><a href="#configuring-automatic-code-review-for-a-single-repository">Configuring automatic code review for a single repository</a></h2>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click <strong>Settings</strong>.</p>
+<div><picture><source><img src="/assets/cb-28260/images/help/repository/repo-actions-settings.png" alt='Screenshot of a repository header showing the tabs. The "Settings" tab is highlighted by a dark orange outline.' width="720" height="71"></source></picture></div>
+</li>
+<li>
+<p>In the left sidebar, under "Code and automation," click <strong>Rules</strong>, then click <strong>Rulesets</strong>.</p>
+<div><picture><source><img src="/assets/cb-80504/images/help/repository/rulesets-settings.png" alt='Screenshot of the sidebar of the "Settings" page for a repository. The "Rules" sub-menu is expanded, and the "Rulesets" option is outlined in orange.' width="343" height="550"></source></picture></div>
+</li>
+<li>
+<p>Click <strong>New ruleset</strong>.</p>
+</li>
+<li>
+<p>Click <strong>New branch ruleset</strong>.</p>
+</li>
+<li>
+<p>Under "Ruleset name," type a name for the ruleset.</p>
+</li>
+<li>
+<p>To activate the ruleset, under "Enforcement Status", select <strong>Active</strong>.</p>
+</li>
+<li>
+<p>Under "Target branches," click <strong>Add target</strong> and choose one of the options—for example, <strong>Include default branch</strong> or <strong>Include all branches</strong>.</p>
+</li>
+<li>
+<p>Under "Branch rules," select the <strong>Require a pull request before merging</strong> checkbox.</p>
+<p>This expands a set of subsidiary options.</p>
+</li>
+<li>
+<p>Select the <strong>Request pull request review from Copilot</strong> checkbox.</p>
+<div><picture><source><img src="/assets/cb-144409/images/help/copilot/code-review/automatic-code-review.png" alt='Screenshot of the "Request pull request review from Copilot" branch ruleset option.' width="720" height="623"></source></picture></div>
+</li>
+<li>
+<p>At the bottom of the page, click <strong>Create</strong>.</p>
+</li>
+</ol>
+<h2><a href="#configuring-automatic-code-review-for-repositories-in-an-organization">Configuring automatic code review for repositories in an organization</a></h2>
+<ol>
+<li>
+<p>In the upper-right corner of GitHub, select your profile photo, then click </p>
+</li>
+<li>
+<p>Next to the organization, click <strong>Settings</strong>.</p>
+</li>
+<li>
+<p>In the left sidebar, in the "Code, planning, and automation" section, click <strong>Rulesets</strong>.</p>
+<div><picture><source><img src="/assets/cb-32436/images/help/organizations/sidebar-repository-rulesets.png" alt="Screenshot of an organization's settings page. In the sidebar, a link labeled &quot;Rulesets&quot; is outlined in orange." width="502" height="900"></source></picture></div>
+</li>
+<li>
+<p>Click <strong>New ruleset</strong>.</p>
+</li>
+<li>
+<p>Click <strong>New branch ruleset</strong>.</p>
+</li>
+<li>
+<p>Under "Ruleset name," type a name for the ruleset.</p>
+</li>
+<li>
+<p>To activate the ruleset, under "Enforcement Status", select <strong>Active</strong>.</p>
+</li>
+<li>
+<p>Under "Target repositories," click <strong>Add target</strong> and choose either <strong>Include by pattern</strong> or <strong>Exclude by pattern</strong>.</p>
+</li>
+<li>
+<p>In the dialog box that's displayed, type a pattern that will match the names of repositories in your organization—for example, <code>*feature</code> to match all repositories with names that end in <code>feature</code>.</p>
+<p>For information about pattern-matching syntax, see <a href="/en/organizations/managing-organization-settings/creating-rulesets-for-repositories-in-your-organization#using-fnmatch-syntax">Creating rulesets for repositories in your organization</a>.</p>
+</li>
+<li>
+<p>In the dialog box, click <strong>Add inclusion pattern</strong> or <strong>Add exclusion pattern</strong>.</p>
+</li>
+<li>
+<p>Repeat the process for any additional patterns you want to add.</p>
+<div>
+<p>
+You can add multiple targeting criteria to the same ruleset. Exclusion patterns are applied after inclusion patterns. For example, you could include any repositories matching the pattern <code>*cat*</code>, and specifically exclude a repository matching the pattern <code>not-a-cat</code>.</p>
+</div>
+</li>
+<li>
+<p>Under "Target branches," click <strong>Add target</strong> and choose one of the target options.</p>
+</li>
+<li>
+<p>Under "Branch rules," select the <strong>Require a pull request before merging</strong> checkbox.</p>
+<p>This expands a set of subsidiary options.</p>
+</li>
+<li>
+<p>Select the <strong>Request pull request review from Copilot</strong> checkbox.</p>
+</li>
+<li>
+<p>At the bottom of the page, click <strong>Create</strong>.</p>
+</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

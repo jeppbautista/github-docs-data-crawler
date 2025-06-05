@@ -1,0 +1,998 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Organizations" href="/en/organizations">Organizations</a><span>/</span>
+</li>
+<li>
+<a title="Manage organization roles" href="/en/organizations/managing-peoples-access-to-your-organization-with-roles">Manage organization roles</a><span>/</span>
+</li>
+<li><a title="Roles in an organization" href="/en/organizations/managing-peoples-access-to-your-organization-with-roles/roles-in-an-organization">Roles in an organization</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Roles in an organization</h1></div></div>
+<div><div><p>Organization owners can assign roles to individuals and teams giving them different sets of permissions in the organization.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-roles"><div><span>About roles</span></div></a></li>
+<li><a href="#about-pre-defined-organization-roles"><div><span>About pre-defined organization roles</span></div></a></li>
+<li><a href="#about-organization-roles"><div><span>About organization roles</span></div></a></li>
+<li><a href="#permissions-for-organization-roles"><div><span>Permissions for organization roles</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-roles">About roles</a></h2>
+<p>To perform any actions on GitHub, such as creating a pull request in a repository or changing an organization's billing settings, a person must have sufficient access to the relevant account or resource. This access is controlled by permissions. A permission is the ability to perform a specific action. For example, the ability to delete an issue is a permission. A role is a set of permissions you can assign to individuals or teams.</p>
+<p>Repository-level roles give organization members, outside collaborators and teams of people varying levels of access to repositories. For more information, see <a href="/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization">Repository roles for an organization</a>.</p>
+<p>Team-level roles are roles that give permissions to manage a team. You can give any individual member of a team the team maintainer role, which gives the member a number of administrative permissions over a team. For more information, see <a href="/en/organizations/organizing-members-into-teams/assigning-the-team-maintainer-role-to-a-team-member">Assigning the team maintainer role to a team member</a>.</p>
+<p>Organization-level roles are sets of permissions that can be assigned to individuals or teams to manage an organization and the organization's repositories, teams, and settings. For more information about all the roles available at the organization level, see <a href="#about-organization-roles">About organization roles</a>.</p>
+<h2><a href="#about-pre-defined-organization-roles">About pre-defined organization roles</a></h2>
+<p>Pre-defined organization roles are roles that are available by default in every organization. You don't need to create them yourself. They can include both organization permissions that let the recipient manage the organization, as well as repository permissions that apply to all of the repositories in the organization. The following pre-defined roles are built into every organization based on common patterns of permissions organizations usually need.</p>
+<p>The current set of pre-defined roles are:</p>
+<ul>
+<li>
+<strong>All-repository read:</strong> Grants read access to all repositories in the organization.</li>
+<li>
+<strong>All-repository write:</strong> Grants write access to all repositories in the organization.</li>
+<li>
+<strong>All-repository triage:</strong> Grants triage access to all repositories in the organization.</li>
+<li>
+<strong>All-repository maintain:</strong> Grants maintenance access to all repositories in the organization.</li>
+<li>
+<strong>All-repository admin:</strong> Grants admin access to all repositories in the organization.</li>
+<li>
+<strong>CI/CD admin:</strong> Grants admin access to manage Actions policies, runners, runner groups, hosted compute network configurations, secrets, variables, and usage metrics for an organization.</li>
+<li>
+<strong>Security manager</strong>: Grants the ability to manage security policies, security alerts, and security configurations for an organization and all its repositories.</li>
+</ul>
+<p>For more information, see <a href="/en/organizations/managing-peoples-access-to-your-organization-with-roles/using-organization-roles">Using organization roles</a>.</p>
+<h2><a href="#about-organization-roles">About organization roles</a></h2>
+<p>You can assign people to a variety of organization-level roles to control your members' access to your organization and its resources. For more details about the individual permissions included in each role, see <a href="#permissions-for-organization-roles">Permissions for organization roles</a>.</p>
+<h3><a href="#organization-owners">Organization owners</a></h3>
+<p>Organization owners have complete administrative access to your organization. This role should be limited, but to no less than two people, in your organization. For more information, see <a href="/en/organizations/managing-peoples-access-to-your-organization-with-roles/maintaining-ownership-continuity-for-your-organization">Maintaining ownership continuity for your organization</a>.</p>
+<h3><a href="#organization-members">Organization members</a></h3>
+<p>The default, non-administrative role for people in an organization is the organization member. By default, organization members have a number of permissions, including the ability to create repositories and projects.</p>
+<h3><a href="#organization-moderators">Organization moderators</a></h3>
+<p>Moderators are organization members who, in addition to their permissions as members, are allowed to block and unblock non-member contributors, set interaction limits, and hide comments in public repositories owned by the organization. For more information, see <a href="/en/organizations/managing-peoples-access-to-your-organization-with-roles/managing-moderators-in-your-organization">Managing moderators in your organization</a>.</p>
+<h3><a href="#billing-managers">Billing managers</a></h3>
+<p>Billing managers are users who can manage the billing settings for your organization, such as payment information. This is a useful option if members of your organization don't usually have access to billing resources. For more information, see <a href="/en/organizations/managing-peoples-access-to-your-organization-with-roles/adding-a-billing-manager-to-your-organization">Adding a billing manager to your organization</a>.</p>
+<h3><a href="#security-managers">Security managers</a></h3>
+<p>The security manager role is an organization-level role that organization owners can assign to any member or team in the organization. When applied, it gives permission to view security alerts and manage settings for security features across your organization, as well as read permission for all repositories in the organization.</p>
+<p>If your organization has a security team, you can use the security manager role to give members of the team the least access they need to the organization. For more information, see <a href="/en/organizations/managing-peoples-access-to-your-organization-with-roles/managing-security-managers-in-your-organization">Managing security managers in your organization</a>.</p>
+<h3><a href="#github-app-managers">GitHub App managers</a></h3>
+<p>By default, only organization owners can manage the settings of GitHub App registrations owned by an organization. To allow additional users to manage GitHub App registrations owned by an organization, an owner can grant them GitHub App manager permissions.</p>
+<p>When you designate a user as a GitHub App manager in your organization, you can grant them access to manage the settings of some or all GitHub App registrations owned by the organization. The GitHub App manager role does not grant users access to install and uninstall GitHub Apps on an organization. For more information, see <a href="/en/organizations/managing-programmatic-access-to-your-organization/adding-and-removing-github-app-managers-in-your-organization">Adding and removing GitHub App managers in your organization</a>.</p>
+<h3><a href="#outside-collaborators">Outside collaborators</a></h3>
+<p>To keep your organization's data secure while allowing access to repositories, you can add outside collaborators. An outside collaborator is a person who has access to one or more organization repositories but is not explicitly a member of the organization, such as a consultant or temporary employee.</p>
+<h4><a href="#managing-outside-collaborators">Managing outside collaborators</a></h4>
+<p>To manage access to repositories for outside collaborators, see:</p>
+<ul>
+<li><a href="/en/organizations/managing-user-access-to-your-organizations-repositories/adding-outside-collaborators-to-repositories-in-your-organization">Adding outside collaborators to repositories in your organization</a></li>
+<li><a href="/en/organizations/managing-user-access-to-your-organizations-repositories/converting-an-organization-member-to-an-outside-collaborator">Converting an organization member to an outside collaborator</a></li>
+<li><a href="/en/organizations/managing-user-access-to-your-organizations-repositories/removing-an-outside-collaborator-from-an-organization-repository">Removing an outside collaborator from an organization repository</a></li>
+</ul>
+<h2><a href="#permissions-for-organization-roles">Permissions for organization roles</a></h2>
+<p>Some of the features listed below are limited to organizations using GitHub Enterprise Cloud. For more information about how you can try GitHub Enterprise Cloud for free, see <a href="/en/enterprise-cloud@latest/admin/overview/setting-up-a-trial-of-github-enterprise-cloud">Setting up a trial of GitHub Enterprise Cloud</a>.</p>
+<div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Organization permission</th>
+<th>Owners</th>
+<th>Members</th>
+<th>Moderators</th>
+<th>Billing managers</th>
+<th>Security managers</th>
+</tr></thead>
+<tbody>
+<tr>
+<th>Create repositories (see <a href="/en/organizations/managing-organization-settings/restricting-repository-creation-in-your-organization">Restricting repository creation in your organization</a>)</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>View and edit billing information</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Invite people to join the organization</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Edit and cancel invitations to join the organization</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Remove members from the organization</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Reinstate former members to the organization</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Add and remove people from <strong>all teams</strong>
+</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Promote organization members to <em>team maintainer</em>
+</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Configure code review assignments (see <a href="/en/organizations/organizing-members-into-teams/managing-code-review-settings-for-your-team">Managing code review settings for your team</a>)</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Set scheduled reminders (see <a href="/en/organizations/organizing-members-into-teams/managing-scheduled-reminders-for-your-team">Managing scheduled reminders for your team</a>)</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Add collaborators to <strong>all repositories</strong>
+</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Access the organization audit log</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Edit the organization's profile page (see <a href="/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/about-your-organizations-profile">About your organization's profile</a>)</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Delete <strong>all teams</strong>
+</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Delete the organization account, including all repositories</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Create teams (see <a href="/en/organizations/managing-organization-settings/setting-team-creation-permissions-in-your-organization">Setting team creation permissions in your organization</a>)</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="/en/organizations/organizing-members-into-teams/moving-a-team-in-your-organizations-hierarchy">Move teams in an organization's hierarchy</a></th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>See all organization members and teams</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>@mention any visible team</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Can be made a <em>team maintainer</em>
+</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Hide comments on writable commits, pull requests, and issues (see <a href="/en/communities/moderating-comments-and-conversations/managing-disruptive-comments#hiding-a-comment">Managing disruptive comments</a>)</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Hide comments on <em>all</em> commits, pull requests, and issues (see <a href="/en/communities/moderating-comments-and-conversations/managing-disruptive-comments#hiding-a-comment">Managing disruptive comments</a>)</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Block and unblock non-member contributors (see <a href="/en/communities/maintaining-your-safety-on-github/blocking-a-user-from-your-organization">Blocking a user from your organization</a>)</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Limit interactions for certain users in public repositories (see <a href="/en/communities/moderating-comments-and-conversations/limiting-interactions-in-your-organization">Limiting interactions in your organization</a>)</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Set a team profile picture in <strong>all teams</strong> (see <a href="/en/organizations/organizing-members-into-teams/setting-your-teams-profile-picture">Setting your team's profile picture</a>)</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Sponsor accounts and manage the organization's sponsorships (see <a href="/en/sponsors/sponsoring-open-source-contributors">Sponsoring open source contributors</a>)</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Manage email updates from sponsored accounts (see <a href="/en/organizations/managing-organization-settings/managing-updates-from-accounts-your-organization-sponsors">Managing updates from accounts your organization sponsors</a>)</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Attribute your sponsorships to another organization (see <a href="/en/sponsors/sponsoring-open-source-contributors/attributing-sponsorships-to-your-organization">Attributing sponsorships to your organization</a> for details )</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Manage the publication of GitHub Pages sites from repositories in the organization (see <a href="/en/organizations/managing-organization-settings/managing-the-publication-of-github-pages-sites-for-your-organization">Managing the publication of GitHub Pages sites for your organization</a>)</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Manage security and analysis settings (see <a href="/en/organizations/keeping-your-organization-secure/managing-security-settings-for-your-organization/managing-security-and-analysis-settings-for-your-organization">Managing security and analysis settings for your organization</a>)</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>View security overview for the organization (see <a href="/en/code-security/security-overview/about-security-overview">About security overview</a>)</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Transfer repositories</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Purchase, install, manage billing for, and cancel GitHub Marketplace apps</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>List apps in GitHub Marketplace</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Receive <a href="/en/code-security/dependabot/dependabot-alerts/about-dependabot-alerts">Dependabot alerts about insecure dependencies</a> for all of an organization's repositories</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Manage Dependabot security updates (see <a href="/en/code-security/dependabot/dependabot-security-updates/about-dependabot-security-updates">About Dependabot security updates</a>)</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="/en/organizations/managing-organization-settings/managing-the-forking-policy-for-your-organization">Manage the forking policy</a></th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="/en/communities/moderating-comments-and-conversations/limiting-interactions-in-your-organization">Limit activity in public repositories in an organization</a></th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Pull (read) <em>all repositories</em> in the organization</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Push (write) and clone (copy) <em>all repositories</em> in the organization</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Convert organization members to <a href="#outside-collaborators">outside collaborators</a>
+</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th><a href="/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/viewing-people-with-access-to-your-repository">View people with access to an organization repository</a></th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Manage the default branch name (see <a href="/en/organizations/managing-organization-settings/managing-the-default-branch-name-for-repositories-in-your-organization">Managing the default branch name for repositories in your organization</a>)</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Manage default labels (see <a href="/en/organizations/managing-organization-settings/managing-default-labels-for-repositories-in-your-organization">Managing default labels for repositories in your organization</a>)</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Manage pull request reviews in the organization (see <a href="/en/organizations/managing-organization-settings/managing-pull-request-reviews-in-your-organization">Managing pull request reviews in your organization</a>)</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Review and manage secret scanning bypass requests (see <a href="/en/code-security/secret-scanning/using-advanced-secret-scanning-and-push-protection-features/delegated-bypass-for-push-protection">Delegated bypass for push protection</a>)</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Review and manage secret scanning dismissal requests</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Review and manage code scanning dismissal requests</th>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization">Repository roles for an organization</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

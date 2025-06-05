@@ -1,0 +1,879 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Self-hosted runners" href="/en/actions/hosting-your-own-runners">Self-hosted runners</a><span>/</span>
+</li>
+<li>
+<a title="Manage self-hosted runners" href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners">Manage self-hosted runners</a><span>/</span>
+</li>
+<li><a title="Customize containers used by jobs" href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners/customizing-the-containers-used-by-jobs">Customize containers used by jobs</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Customizing the containers used by jobs</h1></div></div>
+<div><div><p>You can customize how your self-hosted runner invokes a container for a job.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-container-customization"><div><span>About container customization</span></div></a></li>
+<li><a href="#container-customization-commands"><div><span>Container customization commands</span></div></a></li>
+<li><a href="#generating-the-customization-script"><div><span>Generating the customization script</span></div></a></li>
+<li><a href="#triggering-the-customization-script"><div><span>Triggering the customization script</span></div></a></li>
+<li><a href="#troubleshooting"><div><span>Troubleshooting</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<p>
+This feature is currently in public preview and is subject to change.</p>
+</div>
+<h2><a href="#about-container-customization">About container customization</a></h2>
+<p>GitHub Actions allows you to run a job within a container, using the <code>container:</code> statement in your workflow file. For more information, see <a href="/en/actions/using-jobs/running-jobs-in-a-container">Running jobs in a container</a>. To process container-based jobs, the self-hosted runner creates a container for each job.</p>
+<p>GitHub Actions supports commands that let you customize the way your containers are created by the self-hosted runner. For example, you can use these commands to manage the containers through Kubernetes or Podman, and you can also customize the <code>docker run</code> or <code>docker create</code> commands used to invoke the container. The customization commands are run by a script, which is automatically triggered when a specific environment variable is set on the runner. For more information, see <a href="#triggering-the-customization-script">Triggering the customization script</a> below.</p>
+<p>This customization is only available for Linux-based self-hosted runners, and root user access is not required.</p>
+<h2><a href="#container-customization-commands">Container customization commands</a></h2>
+<p>GitHub Actions includes the following commands for container customization:</p>
+<ul>
+<li>
+<a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners/customizing-the-containers-used-by-jobs#prepare_job"><code>prepare_job</code></a>: Called when a job is started.</li>
+<li>
+<a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners/customizing-the-containers-used-by-jobs#cleanup_job"><code>cleanup_job</code></a>: Called at the end of a job.</li>
+<li>
+<a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners/customizing-the-containers-used-by-jobs#run_container_step"><code>run_container_step</code></a>: Called once for each container action in the job.</li>
+<li>
+<a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners/customizing-the-containers-used-by-jobs#run_script_step"><code>run_script_step</code></a>: Runs any step that is not a container action.</li>
+</ul>
+<p>Each of these customization commands must be defined in its own JSON file. The file name must match the command name, with the extension <code>.json</code>. For example, the <code>prepare_job</code> command is defined in <code>prepare_job.json</code>. These JSON files will then be run together on the self-hosted runner, as part of the main <code>index.js</code> script. This process is described in more detail in <a href="#generating-the-customization-script">Generating the customization script</a>.</p>
+<p>These commands also include configuration arguments, explained below in more detail.</p>
+<h3><a href="#prepare_job"><code>prepare_job</code></a></h3>
+<p>The <code>prepare_job</code> command is called when a job is started. GitHub Actions passes in any job or service containers the job has. This command will be called if you have any service or job containers in the job.</p>
+<p>GitHub Actions assumes that you will do the following tasks in the <code>prepare_job</code> command:</p>
+<ul>
+<li>Prune anything from previous jobs, if needed.</li>
+<li>Create a network, if needed.</li>
+<li>Pull the job and service containers.</li>
+<li>Start the job container.</li>
+<li>Start the service containers.</li>
+<li>Write to the response file any information that GitHub Actions will need:
+<ul>
+<li>Required: State whether the container is an <code>alpine</code> linux container (using the <code>isAlpine</code> boolean).</li>
+<li>Optional: Any context fields you want to set on the job context, otherwise they will be unavailable for users to use. For more information, see <a href="/en/actions/learn-github-actions/contexts#job-context">Accessing contextual information about workflow runs</a>.</li>
+</ul>
+</li>
+<li>Return <code>0</code> when the health checks have succeeded and the job/service containers are started.</li>
+</ul>
+<h4><a href="#arguments-for-prepare_job">Arguments for <code>prepare_job</code></a></h4>
+<ul>
+<li>
+<code>jobContainer</code>: <strong>Optional</strong>. An object containing information about the specified job container.
+<ul>
+<li>
+<code>image</code>: <strong>Required</strong>. A string containing the Docker image.</li>
+<li>
+<code>workingDirectory</code>: <strong>Required</strong>. A string containing the absolute path of the working directory.</li>
+<li>
+<code>createOptions</code>: <strong>Optional</strong>. The optional <em>create</em> options specified in the YAML. For more information, see <a href="/en/actions/using-jobs/running-jobs-in-a-container#example-running-a-job-within-a-container">Running jobs in a container</a>.</li>
+<li>
+<code>environmentVariables</code>: <strong>Optional</strong>. Sets a map of key environment variables.</li>
+<li>
+<code>userMountVolumes</code>: <strong>Optional</strong>. An array of user mount volumes set in the YAML. For more information, see <a href="/en/actions/using-jobs/running-jobs-in-a-container#example-running-a-job-within-a-container">Running jobs in a container</a>.
+<ul>
+<li>
+<code>sourceVolumePath</code>: <strong>Required</strong>. The source path to the volume that will be mounted into the Docker container.</li>
+<li>
+<code>targetVolumePath</code>: <strong>Required</strong>. The target path to the volume that will be mounted into the Docker container.</li>
+<li>
+<code>readOnly</code>: <strong>Required</strong>. Determines whether or not the mount should be read-only.</li>
+</ul>
+</li>
+<li>
+<code>systemMountVolumes</code>: <strong>Required</strong>. An array of mounts to mount into the container, same fields as above.
+<ul>
+<li>
+<code>sourceVolumePath</code>: <strong>Required</strong>. The source path to the volume that will be mounted into the Docker container.</li>
+<li>
+<code>targetVolumePath</code>: <strong>Required</strong>. The target path to the volume that will be mounted into the Docker container.</li>
+<li>
+<code>readOnly</code>: <strong>Required</strong>. Determines whether or not the mount should be read-only.</li>
+</ul>
+</li>
+<li>
+<code>registry</code> <strong>Optional</strong>. The Docker registry credentials for a private container registry.
+<ul>
+<li>
+<code>username</code>: <strong>Optional</strong>. The username of the registry account.</li>
+<li>
+<code>password</code>: <strong>Optional</strong>. The password to the registry account.</li>
+<li>
+<code>serverUrl</code>: <strong>Optional</strong>. The registry URL.</li>
+</ul>
+</li>
+<li>
+<code>portMappings</code>: <strong>Optional</strong>. A key value hash of <em>source:target</em> ports to map into the container.</li>
+</ul>
+</li>
+<li>
+<code>services</code>: <strong>Optional</strong>. An array of service containers to spin up.
+<ul>
+<li>
+<code>contextName</code>: <strong>Required</strong>. The name of the service in the Job context.</li>
+<li>
+<code>image</code>: <strong>Required</strong>. A string containing the Docker image.</li>
+<li>
+<code>createOptions</code>: <strong>Optional</strong>. The optional <em>create</em> options specified in the YAML. For more information, see <a href="/en/actions/using-jobs/running-jobs-in-a-container#example-running-a-job-within-a-container">Running jobs in a container</a>.</li>
+<li>
+<code>environmentVariables</code>: <strong>Optional</strong>. Sets a map of key environment variables.</li>
+<li>
+<code>userMountVolumes</code>: <strong>Optional</strong>. An array of mounts to mount into the container, same fields as above.
+<ul>
+<li>
+<code>sourceVolumePath</code>: <strong>Required</strong>. The source path to the volume that will be mounted into the Docker container.</li>
+<li>
+<code>targetVolumePath</code>: <strong>Required</strong>. The target path to the volume that will be mounted into the Docker container.</li>
+<li>
+<code>readOnly</code>: <strong>Required</strong>. Determines whether or not the mount should be read-only.</li>
+</ul>
+</li>
+<li>
+<code>registry</code> <strong>Optional</strong>. The Docker registry credentials for the private container registry.
+<ul>
+<li>
+<code>username</code>: <strong>Optional</strong>. The username of the registry account.</li>
+<li>
+<code>password</code>: <strong>Optional</strong>. The password to the registry account.</li>
+<li>
+<code>serverUrl</code>: <strong>Optional</strong>. The registry URL.</li>
+</ul>
+</li>
+<li>
+<code>portMappings</code>: <strong>Optional</strong>. A key value hash of <em>source:target</em> ports to map into the container.</li>
+</ul>
+</li>
+</ul>
+<h4><a href="#example-input-for-prepare_job">Example input for <code>prepare_job</code></a></h4>
+<div>
+<header><span>JSON</span><pre>{
+  "command": "prepare_job",
+  "responseFile": "/users/octocat/runner/_work/{guid}.json",
+  "state": {},
+  "args": {
+    "jobContainer": {
+      "image": "node:18"
+      "workingDirectory": "/__w/octocat-test2/octocat-test2",
+      "createOptions": "--cpus 1",
+      "environmentVariables": {
+        "NODE_ENV": "development"
+      },
+      "userMountVolumes": [
+        {
+          "sourceVolumePath": "my_docker_volume",
+          "targetVolumePath": "/volume_mount",
+          "readOnly": false
+        }
+      ],
+      "systemMountVolumes": [
+        {
+          "sourceVolumePath": "/home/octocat/git/runner/_layout/_work",
+          "targetVolumePath": "/__w",
+          "readOnly": false
+        },
+        {
+          "sourceVolumePath": "/home/octocat/git/runner/_layout/externals",
+          "targetVolumePath": "/__e",
+          "readOnly": true
+        },
+        {
+          "sourceVolumePath": "/home/octocat/git/runner/_layout/_work/_temp",
+          "targetVolumePath": "/__w/_temp",
+          "readOnly": false
+        },
+        {
+          "sourceVolumePath": "/home/octocat/git/runner/_layout/_work/_actions",
+          "targetVolumePath": "/__w/_actions",
+          "readOnly": false
+        },
+        {
+          "sourceVolumePath": "/home/octocat/git/runner/_layout/_work/_tool",
+          "targetVolumePath": "/__w/_tool",
+          "readOnly": false
+        },
+        {
+          "sourceVolumePath": "/home/octocat/git/runner/_layout/_work/_temp/_github_home",
+          "targetVolumePath": "/github/home",
+          "readOnly": false
+        },
+        {
+          "sourceVolumePath": "/home/octocat/git/runner/_layout/_work/_temp/_github_workflow",
+          "targetVolumePath": "/github/workflow",
+          "readOnly": false
+        }
+      ],
+      "registry": {
+        "username": "octocat",
+        "password": "examplePassword",
+        "serverUrl": "https://index.docker.io/v1"
+      },
+      "portMappings": { "80": "801" }
+    },
+    "services": [
+      {
+        "contextName": "redis",
+        "image": "redis",
+        "createOptions": "--cpus 1",
+        "environmentVariables": {},
+        "userMountVolumes": [],
+        "portMappings": { "80": "801" },
+        "registry": {
+          "username": "octocat",
+          "password": "examplePassword",
+          "serverUrl": "https://index.docker.io/v1"
+        }
+      }
+    ]
+  }
+}
+</pre></header><pre><code><span>{</span>
+  <span>"command"</span><span>:</span> <span>"prepare_job"</span><span>,</span>
+  <span>"responseFile"</span><span>:</span> <span>"/users/octocat/runner/_work/{guid}.json"</span><span>,</span>
+  <span>"state"</span><span>:</span> <span>{</span><span>}</span><span>,</span>
+  <span>"args"</span><span>:</span> <span>{</span>
+    <span>"jobContainer"</span><span>:</span> <span>{</span>
+      <span>"image"</span><span>:</span> <span>"node:18"</span>
+      <span>"workingDirectory"</span><span>:</span> <span>"/__w/octocat-test2/octocat-test2"</span><span>,</span>
+      <span>"createOptions"</span><span>:</span> <span>"--cpus 1"</span><span>,</span>
+      <span>"environmentVariables"</span><span>:</span> <span>{</span>
+        <span>"NODE_ENV"</span><span>:</span> <span>"development"</span>
+      <span>}</span><span>,</span>
+      <span>"userMountVolumes"</span><span>:</span> <span>[</span>
+        <span>{</span>
+          <span>"sourceVolumePath"</span><span>:</span> <span>"my_docker_volume"</span><span>,</span>
+          <span>"targetVolumePath"</span><span>:</span> <span>"/volume_mount"</span><span>,</span>
+          <span>"readOnly"</span><span>:</span> <span><span>false</span></span>
+        <span>}</span>
+      <span>]</span><span>,</span>
+      <span>"systemMountVolumes"</span><span>:</span> <span>[</span>
+        <span>{</span>
+          <span>"sourceVolumePath"</span><span>:</span> <span>"/home/octocat/git/runner/_layout/_work"</span><span>,</span>
+          <span>"targetVolumePath"</span><span>:</span> <span>"/__w"</span><span>,</span>
+          <span>"readOnly"</span><span>:</span> <span><span>false</span></span>
+        <span>}</span><span>,</span>
+        <span>{</span>
+          <span>"sourceVolumePath"</span><span>:</span> <span>"/home/octocat/git/runner/_layout/externals"</span><span>,</span>
+          <span>"targetVolumePath"</span><span>:</span> <span>"/__e"</span><span>,</span>
+          <span>"readOnly"</span><span>:</span> <span><span>true</span></span>
+        <span>}</span><span>,</span>
+        <span>{</span>
+          <span>"sourceVolumePath"</span><span>:</span> <span>"/home/octocat/git/runner/_layout/_work/_temp"</span><span>,</span>
+          <span>"targetVolumePath"</span><span>:</span> <span>"/__w/_temp"</span><span>,</span>
+          <span>"readOnly"</span><span>:</span> <span><span>false</span></span>
+        <span>}</span><span>,</span>
+        <span>{</span>
+          <span>"sourceVolumePath"</span><span>:</span> <span>"/home/octocat/git/runner/_layout/_work/_actions"</span><span>,</span>
+          <span>"targetVolumePath"</span><span>:</span> <span>"/__w/_actions"</span><span>,</span>
+          <span>"readOnly"</span><span>:</span> <span><span>false</span></span>
+        <span>}</span><span>,</span>
+        <span>{</span>
+          <span>"sourceVolumePath"</span><span>:</span> <span>"/home/octocat/git/runner/_layout/_work/_tool"</span><span>,</span>
+          <span>"targetVolumePath"</span><span>:</span> <span>"/__w/_tool"</span><span>,</span>
+          <span>"readOnly"</span><span>:</span> <span><span>false</span></span>
+        <span>}</span><span>,</span>
+        <span>{</span>
+          <span>"sourceVolumePath"</span><span>:</span> <span>"/home/octocat/git/runner/_layout/_work/_temp/_github_home"</span><span>,</span>
+          <span>"targetVolumePath"</span><span>:</span> <span>"/github/home"</span><span>,</span>
+          <span>"readOnly"</span><span>:</span> <span><span>false</span></span>
+        <span>}</span><span>,</span>
+        <span>{</span>
+          <span>"sourceVolumePath"</span><span>:</span> <span>"/home/octocat/git/runner/_layout/_work/_temp/_github_workflow"</span><span>,</span>
+          <span>"targetVolumePath"</span><span>:</span> <span>"/github/workflow"</span><span>,</span>
+          <span>"readOnly"</span><span>:</span> <span><span>false</span></span>
+        <span>}</span>
+      <span>]</span><span>,</span>
+      <span>"registry"</span><span>:</span> <span>{</span>
+        <span>"username"</span><span>:</span> <span>"octocat"</span><span>,</span>
+        <span>"password"</span><span>:</span> <span>"examplePassword"</span><span>,</span>
+        <span>"serverUrl"</span><span>:</span> <span>"https://index.docker.io/v1"</span>
+      <span>}</span><span>,</span>
+      <span>"portMappings"</span><span>:</span> <span>{</span> <span>"80"</span><span>:</span> <span>"801"</span> <span>}</span>
+    <span>}</span><span>,</span>
+    <span>"services"</span><span>:</span> <span>[</span>
+      <span>{</span>
+        <span>"contextName"</span><span>:</span> <span>"redis"</span><span>,</span>
+        <span>"image"</span><span>:</span> <span>"redis"</span><span>,</span>
+        <span>"createOptions"</span><span>:</span> <span>"--cpus 1"</span><span>,</span>
+        <span>"environmentVariables"</span><span>:</span> <span>{</span><span>}</span><span>,</span>
+        <span>"userMountVolumes"</span><span>:</span> <span>[</span><span>]</span><span>,</span>
+        <span>"portMappings"</span><span>:</span> <span>{</span> <span>"80"</span><span>:</span> <span>"801"</span> <span>}</span><span>,</span>
+        <span>"registry"</span><span>:</span> <span>{</span>
+          <span>"username"</span><span>:</span> <span>"octocat"</span><span>,</span>
+          <span>"password"</span><span>:</span> <span>"examplePassword"</span><span>,</span>
+          <span>"serverUrl"</span><span>:</span> <span>"https://index.docker.io/v1"</span>
+        <span>}</span>
+      <span>}</span>
+    <span>]</span>
+  <span>}</span>
+<span>}</span>
+</code></pre>
+</div>
+<h4><a href="#example-output-for-prepare_job">Example output for <code>prepare_job</code></a></h4>
+<p>This example output is the contents of the <code>responseFile</code> defined in the input above.</p>
+<div>
+<header><span>JSON</span><pre>{
+  "state": {
+    "network": "example_network_53269bd575972817b43f7733536b200c",
+    "jobContainer": "82e8219701fe096a35941d869cf3d71af1d943b5d8bdd718857fb87ac3042480",
+    "serviceContainers": {
+      "redis": "60972d9aa486605e66b0dad4abb678dc3d9116f536579e418176eedb8abb9105"
+    }
+  },
+  "context": {
+    "container": {
+      "id": "82e8219701fe096a35941d869cf3d71af1d943b5d8bdd718857fb87ac3042480",
+      "network": "example_network_53269bd575972817b43f7733536b200c"
+    },
+    "services": {
+      "redis": {
+        "id": "60972d9aa486605e66b0dad4abb678dc3d9116f536579e418176eedb8abb9105",
+        "ports": {
+          "8080": "8080"
+        },
+        "network": "example_network_53269bd575972817b43f7733536b200c"
+      }
+    },
+    "isAlpine": true
+  }
+}
+</pre></header><pre><code><span>{</span>
+  <span>"state"</span><span>:</span> <span>{</span>
+    <span>"network"</span><span>:</span> <span>"example_network_53269bd575972817b43f7733536b200c"</span><span>,</span>
+    <span>"jobContainer"</span><span>:</span> <span>"82e8219701fe096a35941d869cf3d71af1d943b5d8bdd718857fb87ac3042480"</span><span>,</span>
+    <span>"serviceContainers"</span><span>:</span> <span>{</span>
+      <span>"redis"</span><span>:</span> <span>"60972d9aa486605e66b0dad4abb678dc3d9116f536579e418176eedb8abb9105"</span>
+    <span>}</span>
+  <span>}</span><span>,</span>
+  <span>"context"</span><span>:</span> <span>{</span>
+    <span>"container"</span><span>:</span> <span>{</span>
+      <span>"id"</span><span>:</span> <span>"82e8219701fe096a35941d869cf3d71af1d943b5d8bdd718857fb87ac3042480"</span><span>,</span>
+      <span>"network"</span><span>:</span> <span>"example_network_53269bd575972817b43f7733536b200c"</span>
+    <span>}</span><span>,</span>
+    <span>"services"</span><span>:</span> <span>{</span>
+      <span>"redis"</span><span>:</span> <span>{</span>
+        <span>"id"</span><span>:</span> <span>"60972d9aa486605e66b0dad4abb678dc3d9116f536579e418176eedb8abb9105"</span><span>,</span>
+        <span>"ports"</span><span>:</span> <span>{</span>
+          <span>"8080"</span><span>:</span> <span>"8080"</span>
+        <span>}</span><span>,</span>
+        <span>"network"</span><span>:</span> <span>"example_network_53269bd575972817b43f7733536b200c"</span>
+      <span>}</span>
+    <span>}</span><span>,</span>
+    <span>"isAlpine"</span><span>:</span> <span><span>true</span></span>
+  <span>}</span>
+<span>}</span>
+</code></pre>
+</div>
+<h3><a href="#cleanup_job"><code>cleanup_job</code></a></h3>
+<p>The <code>cleanup_job</code> command is called at the end of a job. GitHub Actions assumes that you will do the following tasks in the <code>cleanup_job</code> command:</p>
+<ul>
+<li>Stop any running service or job containers (or the equivalent pod).</li>
+<li>Stop the network (if one exists).</li>
+<li>Delete any job or service containers (or the equivalent pod).</li>
+<li>Delete the network (if one exists).</li>
+<li>Cleanup anything else that was created for the job.</li>
+</ul>
+<h4><a href="#arguments-for-cleanup_job">Arguments for <code>cleanup_job</code></a></h4>
+<p>No arguments are provided for <code>cleanup_job</code>.</p>
+<h4><a href="#example-input-for-cleanup_job">Example input for <code>cleanup_job</code></a></h4>
+<div>
+<header><span>JSON</span><pre>{
+  "command": "cleanup_job",
+  "responseFile": null,
+  "state": {
+    "network": "example_network_53269bd575972817b43f7733536b200c",
+    "jobContainer": "82e8219701fe096a35941d869cf3d71af1d943b5d8bdd718857fb87ac3042480",
+    "serviceContainers": {
+      "redis": "60972d9aa486605e66b0dad4abb678dc3d9116f536579e418176eedb8abb9105"
+    }
+  },
+  "args": {}
+}
+</pre></header><pre><code><span>{</span>
+  <span>"command"</span><span>:</span> <span>"cleanup_job"</span><span>,</span>
+  <span>"responseFile"</span><span>:</span> <span><span>null</span></span><span>,</span>
+  <span>"state"</span><span>:</span> <span>{</span>
+    <span>"network"</span><span>:</span> <span>"example_network_53269bd575972817b43f7733536b200c"</span><span>,</span>
+    <span>"jobContainer"</span><span>:</span> <span>"82e8219701fe096a35941d869cf3d71af1d943b5d8bdd718857fb87ac3042480"</span><span>,</span>
+    <span>"serviceContainers"</span><span>:</span> <span>{</span>
+      <span>"redis"</span><span>:</span> <span>"60972d9aa486605e66b0dad4abb678dc3d9116f536579e418176eedb8abb9105"</span>
+    <span>}</span>
+  <span>}</span><span>,</span>
+  <span>"args"</span><span>:</span> <span>{</span><span>}</span>
+<span>}</span>
+</code></pre>
+</div>
+<h4><a href="#example-output-for-cleanup_job">Example output for <code>cleanup_job</code></a></h4>
+<p>No output is expected for <code>cleanup_job</code>.</p>
+<h3><a href="#run_container_step"><code>run_container_step</code></a></h3>
+<p>The <code>run_container_step</code> command is called once for each container action in your job. GitHub Actions assumes that you will do the following tasks in the <code>run_container_step</code> command:</p>
+<ul>
+<li>Pull or build the required container (or fail if you cannot).</li>
+<li>Run the container action and return the exit code of the container.</li>
+<li>Stream any step logs output to stdout and stderr.</li>
+<li>Cleanup the container after it executes.</li>
+</ul>
+<h4><a href="#arguments-for-run_container_step">Arguments for <code>run_container_step</code></a></h4>
+<ul>
+<li>
+<code>image</code>: <strong>Optional</strong>. A string containing the docker image. Otherwise a dockerfile must be provided.</li>
+<li>
+<code>dockerfile</code>: <strong>Optional</strong>. A string containing the path to the dockerfile, otherwise an image must be provided.</li>
+<li>
+<code>entryPointArgs</code>: <strong>Optional</strong>. A list containing the entry point args.</li>
+<li>
+<code>entryPoint</code>: <strong>Optional</strong>. The container entry point to use if the default image entrypoint should be overwritten.</li>
+<li>
+<code>workingDirectory</code>: <strong>Required</strong>. A string containing the absolute path of the working directory.</li>
+<li>
+<code>createOptions</code>: <strong>Optional</strong>. The optional <em>create</em> options specified in the YAML. For more information, see <a href="/en/actions/using-jobs/running-jobs-in-a-container#example-running-a-job-within-a-container">Running jobs in a container</a>.</li>
+<li>
+<code>environmentVariables</code>: <strong>Optional</strong>. Sets a map of key environment variables.</li>
+<li>
+<code>prependPath</code>: <strong>Optional</strong>. An array of additional paths to prepend to the <code>$PATH</code> variable.</li>
+<li>
+<code>userMountVolumes</code>: <strong>Optional</strong>. an array of user mount volumes set in the YAML. For more information, see <a href="/en/actions/using-jobs/running-jobs-in-a-container#example-running-a-job-within-a-container">Running jobs in a container</a>.
+<ul>
+<li>
+<code>sourceVolumePath</code>: <strong>Required</strong>. The source path to the volume that will be mounted into the Docker container.</li>
+<li>
+<code>targetVolumePath</code>: <strong>Required</strong>. The target path to the volume that will be mounted into the Docker container.</li>
+<li>
+<code>readOnly</code>: <strong>Required</strong>. Determines whether or not the mount should be read-only.</li>
+</ul>
+</li>
+<li>
+<code>systemMountVolumes</code>: <strong>Required</strong>. An array of mounts to mount into the container, using the same fields as above.
+<ul>
+<li>
+<code>sourceVolumePath</code>: <strong>Required</strong>. The source path to the volume that will be mounted into the Docker container.</li>
+<li>
+<code>targetVolumePath</code>: <strong>Required</strong>. The target path to the volume that will be mounted into the Docker container.</li>
+<li>
+<code>readOnly</code>: <strong>Required</strong>. Determines whether or not the mount should be read-only.</li>
+</ul>
+</li>
+<li>
+<code>registry</code> <strong>Optional</strong>. The Docker registry credentials for a private container registry.
+<ul>
+<li>
+<code>username</code>: <strong>Optional</strong>. The username of the registry account.</li>
+<li>
+<code>password</code>: <strong>Optional</strong>. The password to the registry account.</li>
+<li>
+<code>serverUrl</code>: <strong>Optional</strong>. The registry URL.</li>
+</ul>
+</li>
+<li>
+<code>portMappings</code>: <strong>Optional</strong>. A key value hash of the <em>source:target</em> ports to map into the container.</li>
+</ul>
+<h4><a href="#example-input-for-image">Example input for image</a></h4>
+<p>If you're using a Docker image, you can specify the image name in the <code>"image":</code> parameter.</p>
+<div>
+<header><span>JSON</span><pre>{
+  "command": "run_container_step",
+  "responseFile": null,
+  "state": {
+    "network": "example_network_53269bd575972817b43f7733536b200c",
+    "jobContainer": "82e8219701fe096a35941d869cf3d71af1d943b5d8bdd718857fb87ac3042480",
+    "serviceContainers": {
+      "redis": "60972d9aa486605e66b0dad4abb678dc3d9116f536579e418176eedb8abb9105"
+    }
+  },
+  "args": {
+    "image": "node:18",
+    "dockerfile": null,
+    "entryPointArgs": ["-f", "/dev/null"],
+    "entryPoint": "tail",
+    "workingDirectory": "/__w/octocat-test2/octocat-test2",
+    "createOptions": "--cpus 1",
+    "environmentVariables": {
+      "NODE_ENV": "development"
+    },
+    "prependPath": ["/foo/bar", "bar/foo"],
+    "userMountVolumes": [
+      {
+        "sourceVolumePath": "my_docker_volume",
+        "targetVolumePath": "/volume_mount",
+        "readOnly": false
+      }
+    ],
+    "systemMountVolumes": [
+      {
+        "sourceVolumePath": "/home/octocat/git/runner/_layout/_work",
+        "targetVolumePath": "/__w",
+        "readOnly": false
+      },
+      {
+        "sourceVolumePath": "/home/octocat/git/runner/_layout/externals",
+        "targetVolumePath": "/__e",
+        "readOnly": true
+      },
+      {
+        "sourceVolumePath": "/home/octocat/git/runner/_layout/_work/_temp",
+        "targetVolumePath": "/__w/_temp",
+        "readOnly": false
+      },
+      {
+        "sourceVolumePath": "/home/octocat/git/runner/_layout/_work/_actions",
+        "targetVolumePath": "/__w/_actions",
+        "readOnly": false
+      },
+      {
+        "sourceVolumePath": "/home/octocat/git/runner/_layout/_work/_tool",
+        "targetVolumePath": "/__w/_tool",
+        "readOnly": false
+      },
+      {
+        "sourceVolumePath": "/home/octocat/git/runner/_layout/_work/_temp/_github_home",
+        "targetVolumePath": "/github/home",
+        "readOnly": false
+      },
+      {
+        "sourceVolumePath": "/home/octocat/git/runner/_layout/_work/_temp/_github_workflow",
+        "targetVolumePath": "/github/workflow",
+        "readOnly": false
+      }
+    ],
+    "registry": null,
+    "portMappings": { "80": "801" }
+  }
+}
+</pre></header><pre><code><span>{</span>
+  <span>"command"</span><span>:</span> <span>"run_container_step"</span><span>,</span>
+  <span>"responseFile"</span><span>:</span> <span><span>null</span></span><span>,</span>
+  <span>"state"</span><span>:</span> <span>{</span>
+    <span>"network"</span><span>:</span> <span>"example_network_53269bd575972817b43f7733536b200c"</span><span>,</span>
+    <span>"jobContainer"</span><span>:</span> <span>"82e8219701fe096a35941d869cf3d71af1d943b5d8bdd718857fb87ac3042480"</span><span>,</span>
+    <span>"serviceContainers"</span><span>:</span> <span>{</span>
+      <span>"redis"</span><span>:</span> <span>"60972d9aa486605e66b0dad4abb678dc3d9116f536579e418176eedb8abb9105"</span>
+    <span>}</span>
+  <span>}</span><span>,</span>
+  <span>"args"</span><span>:</span> <span>{</span>
+    <span>"image"</span><span>:</span> <span>"node:18"</span><span>,</span>
+    <span>"dockerfile"</span><span>:</span> <span><span>null</span></span><span>,</span>
+    <span>"entryPointArgs"</span><span>:</span> <span>[</span><span>"-f"</span><span>,</span> <span>"/dev/null"</span><span>]</span><span>,</span>
+    <span>"entryPoint"</span><span>:</span> <span>"tail"</span><span>,</span>
+    <span>"workingDirectory"</span><span>:</span> <span>"/__w/octocat-test2/octocat-test2"</span><span>,</span>
+    <span>"createOptions"</span><span>:</span> <span>"--cpus 1"</span><span>,</span>
+    <span>"environmentVariables"</span><span>:</span> <span>{</span>
+      <span>"NODE_ENV"</span><span>:</span> <span>"development"</span>
+    <span>}</span><span>,</span>
+    <span>"prependPath"</span><span>:</span> <span>[</span><span>"/foo/bar"</span><span>,</span> <span>"bar/foo"</span><span>]</span><span>,</span>
+    <span>"userMountVolumes"</span><span>:</span> <span>[</span>
+      <span>{</span>
+        <span>"sourceVolumePath"</span><span>:</span> <span>"my_docker_volume"</span><span>,</span>
+        <span>"targetVolumePath"</span><span>:</span> <span>"/volume_mount"</span><span>,</span>
+        <span>"readOnly"</span><span>:</span> <span><span>false</span></span>
+      <span>}</span>
+    <span>]</span><span>,</span>
+    <span>"systemMountVolumes"</span><span>:</span> <span>[</span>
+      <span>{</span>
+        <span>"sourceVolumePath"</span><span>:</span> <span>"/home/octocat/git/runner/_layout/_work"</span><span>,</span>
+        <span>"targetVolumePath"</span><span>:</span> <span>"/__w"</span><span>,</span>
+        <span>"readOnly"</span><span>:</span> <span><span>false</span></span>
+      <span>}</span><span>,</span>
+      <span>{</span>
+        <span>"sourceVolumePath"</span><span>:</span> <span>"/home/octocat/git/runner/_layout/externals"</span><span>,</span>
+        <span>"targetVolumePath"</span><span>:</span> <span>"/__e"</span><span>,</span>
+        <span>"readOnly"</span><span>:</span> <span><span>true</span></span>
+      <span>}</span><span>,</span>
+      <span>{</span>
+        <span>"sourceVolumePath"</span><span>:</span> <span>"/home/octocat/git/runner/_layout/_work/_temp"</span><span>,</span>
+        <span>"targetVolumePath"</span><span>:</span> <span>"/__w/_temp"</span><span>,</span>
+        <span>"readOnly"</span><span>:</span> <span><span>false</span></span>
+      <span>}</span><span>,</span>
+      <span>{</span>
+        <span>"sourceVolumePath"</span><span>:</span> <span>"/home/octocat/git/runner/_layout/_work/_actions"</span><span>,</span>
+        <span>"targetVolumePath"</span><span>:</span> <span>"/__w/_actions"</span><span>,</span>
+        <span>"readOnly"</span><span>:</span> <span><span>false</span></span>
+      <span>}</span><span>,</span>
+      <span>{</span>
+        <span>"sourceVolumePath"</span><span>:</span> <span>"/home/octocat/git/runner/_layout/_work/_tool"</span><span>,</span>
+        <span>"targetVolumePath"</span><span>:</span> <span>"/__w/_tool"</span><span>,</span>
+        <span>"readOnly"</span><span>:</span> <span><span>false</span></span>
+      <span>}</span><span>,</span>
+      <span>{</span>
+        <span>"sourceVolumePath"</span><span>:</span> <span>"/home/octocat/git/runner/_layout/_work/_temp/_github_home"</span><span>,</span>
+        <span>"targetVolumePath"</span><span>:</span> <span>"/github/home"</span><span>,</span>
+        <span>"readOnly"</span><span>:</span> <span><span>false</span></span>
+      <span>}</span><span>,</span>
+      <span>{</span>
+        <span>"sourceVolumePath"</span><span>:</span> <span>"/home/octocat/git/runner/_layout/_work/_temp/_github_workflow"</span><span>,</span>
+        <span>"targetVolumePath"</span><span>:</span> <span>"/github/workflow"</span><span>,</span>
+        <span>"readOnly"</span><span>:</span> <span><span>false</span></span>
+      <span>}</span>
+    <span>]</span><span>,</span>
+    <span>"registry"</span><span>:</span> <span><span>null</span></span><span>,</span>
+    <span>"portMappings"</span><span>:</span> <span>{</span> <span>"80"</span><span>:</span> <span>"801"</span> <span>}</span>
+  <span>}</span>
+<span>}</span>
+</code></pre>
+</div>
+<h4><a href="#example-input-for-dockerfile">Example input for Dockerfile</a></h4>
+<p>If your container is defined by a Dockerfile, this example demonstrates how to specify the path to a <code>Dockerfile</code> in your input, using the <code>"dockerfile":</code> parameter.</p>
+<div>
+<header><span>JSON</span><pre>{
+  "command": "run_container_step",
+  "responseFile": null,
+  "state": {
+    "network": "example_network_53269bd575972817b43f7733536b200c",
+    "jobContainer": "82e8219701fe096a35941d869cf3d71af1d943b5d8bdd718857fb87ac3042480",
+    "services": {
+      "redis": "60972d9aa486605e66b0dad4abb678dc3d9116f536579e418176eedb8abb9105"
+    }
+  },
+  "args": {
+    "image": null,
+    "dockerfile": "/__w/_actions/foo/dockerfile",
+    "entryPointArgs": ["hello world"],
+    "entryPoint": "echo",
+    "workingDirectory": "/__w/octocat-test2/octocat-test2",
+    "createOptions": "--cpus 1",
+    "environmentVariables": {
+      "NODE_ENV": "development"
+    },
+    "prependPath": ["/foo/bar", "bar/foo"],
+    "userMountVolumes": [
+      {
+        "sourceVolumePath": "my_docker_volume",
+        "targetVolumePath": "/volume_mount",
+        "readOnly": false
+      }
+    ],
+    "systemMountVolumes": [
+      {
+        "sourceVolumePath": "/home/octocat/git/runner/_layout/_work",
+        "targetVolumePath": "/__w",
+        "readOnly": false
+      },
+      {
+        "sourceVolumePath": "/home/octocat/git/runner/_layout/externals",
+        "targetVolumePath": "/__e",
+        "readOnly": true
+      },
+      {
+        "sourceVolumePath": "/home/octocat/git/runner/_layout/_work/_temp",
+        "targetVolumePath": "/__w/_temp",
+        "readOnly": false
+      },
+      {
+        "sourceVolumePath": "/home/octocat/git/runner/_layout/_work/_actions",
+        "targetVolumePath": "/__w/_actions",
+        "readOnly": false
+      },
+      {
+        "sourceVolumePath": "/home/octocat/git/runner/_layout/_work/_tool",
+        "targetVolumePath": "/__w/_tool",
+        "readOnly": false
+      },
+      {
+        "sourceVolumePath": "/home/octocat/git/runner/_layout/_work/_temp/_github_home",
+        "targetVolumePath": "/github/home",
+        "readOnly": false
+      },
+      {
+        "sourceVolumePath": "/home/octocat/git/runner/_layout/_work/_temp/_github_workflow",
+        "targetVolumePath": "/github/workflow",
+        "readOnly": false
+      }
+    ],
+    "registry": null,
+    "portMappings": { "80": "801" }
+  }
+}
+</pre></header><pre><code><span>{</span>
+  <span>"command"</span><span>:</span> <span>"run_container_step"</span><span>,</span>
+  <span>"responseFile"</span><span>:</span> <span><span>null</span></span><span>,</span>
+  <span>"state"</span><span>:</span> <span>{</span>
+    <span>"network"</span><span>:</span> <span>"example_network_53269bd575972817b43f7733536b200c"</span><span>,</span>
+    <span>"jobContainer"</span><span>:</span> <span>"82e8219701fe096a35941d869cf3d71af1d943b5d8bdd718857fb87ac3042480"</span><span>,</span>
+    <span>"services"</span><span>:</span> <span>{</span>
+      <span>"redis"</span><span>:</span> <span>"60972d9aa486605e66b0dad4abb678dc3d9116f536579e418176eedb8abb9105"</span>
+    <span>}</span>
+  <span>}</span><span>,</span>
+  <span>"args"</span><span>:</span> <span>{</span>
+    <span>"image"</span><span>:</span> <span><span>null</span></span><span>,</span>
+    <span>"dockerfile"</span><span>:</span> <span>"/__w/_actions/foo/dockerfile"</span><span>,</span>
+    <span>"entryPointArgs"</span><span>:</span> <span>[</span><span>"hello world"</span><span>]</span><span>,</span>
+    <span>"entryPoint"</span><span>:</span> <span>"echo"</span><span>,</span>
+    <span>"workingDirectory"</span><span>:</span> <span>"/__w/octocat-test2/octocat-test2"</span><span>,</span>
+    <span>"createOptions"</span><span>:</span> <span>"--cpus 1"</span><span>,</span>
+    <span>"environmentVariables"</span><span>:</span> <span>{</span>
+      <span>"NODE_ENV"</span><span>:</span> <span>"development"</span>
+    <span>}</span><span>,</span>
+    <span>"prependPath"</span><span>:</span> <span>[</span><span>"/foo/bar"</span><span>,</span> <span>"bar/foo"</span><span>]</span><span>,</span>
+    <span>"userMountVolumes"</span><span>:</span> <span>[</span>
+      <span>{</span>
+        <span>"sourceVolumePath"</span><span>:</span> <span>"my_docker_volume"</span><span>,</span>
+        <span>"targetVolumePath"</span><span>:</span> <span>"/volume_mount"</span><span>,</span>
+        <span>"readOnly"</span><span>:</span> <span><span>false</span></span>
+      <span>}</span>
+    <span>]</span><span>,</span>
+    <span>"systemMountVolumes"</span><span>:</span> <span>[</span>
+      <span>{</span>
+        <span>"sourceVolumePath"</span><span>:</span> <span>"/home/octocat/git/runner/_layout/_work"</span><span>,</span>
+        <span>"targetVolumePath"</span><span>:</span> <span>"/__w"</span><span>,</span>
+        <span>"readOnly"</span><span>:</span> <span><span>false</span></span>
+      <span>}</span><span>,</span>
+      <span>{</span>
+        <span>"sourceVolumePath"</span><span>:</span> <span>"/home/octocat/git/runner/_layout/externals"</span><span>,</span>
+        <span>"targetVolumePath"</span><span>:</span> <span>"/__e"</span><span>,</span>
+        <span>"readOnly"</span><span>:</span> <span><span>true</span></span>
+      <span>}</span><span>,</span>
+      <span>{</span>
+        <span>"sourceVolumePath"</span><span>:</span> <span>"/home/octocat/git/runner/_layout/_work/_temp"</span><span>,</span>
+        <span>"targetVolumePath"</span><span>:</span> <span>"/__w/_temp"</span><span>,</span>
+        <span>"readOnly"</span><span>:</span> <span><span>false</span></span>
+      <span>}</span><span>,</span>
+      <span>{</span>
+        <span>"sourceVolumePath"</span><span>:</span> <span>"/home/octocat/git/runner/_layout/_work/_actions"</span><span>,</span>
+        <span>"targetVolumePath"</span><span>:</span> <span>"/__w/_actions"</span><span>,</span>
+        <span>"readOnly"</span><span>:</span> <span><span>false</span></span>
+      <span>}</span><span>,</span>
+      <span>{</span>
+        <span>"sourceVolumePath"</span><span>:</span> <span>"/home/octocat/git/runner/_layout/_work/_tool"</span><span>,</span>
+        <span>"targetVolumePath"</span><span>:</span> <span>"/__w/_tool"</span><span>,</span>
+        <span>"readOnly"</span><span>:</span> <span><span>false</span></span>
+      <span>}</span><span>,</span>
+      <span>{</span>
+        <span>"sourceVolumePath"</span><span>:</span> <span>"/home/octocat/git/runner/_layout/_work/_temp/_github_home"</span><span>,</span>
+        <span>"targetVolumePath"</span><span>:</span> <span>"/github/home"</span><span>,</span>
+        <span>"readOnly"</span><span>:</span> <span><span>false</span></span>
+      <span>}</span><span>,</span>
+      <span>{</span>
+        <span>"sourceVolumePath"</span><span>:</span> <span>"/home/octocat/git/runner/_layout/_work/_temp/_github_workflow"</span><span>,</span>
+        <span>"targetVolumePath"</span><span>:</span> <span>"/github/workflow"</span><span>,</span>
+        <span>"readOnly"</span><span>:</span> <span><span>false</span></span>
+      <span>}</span>
+    <span>]</span><span>,</span>
+    <span>"registry"</span><span>:</span> <span><span>null</span></span><span>,</span>
+    <span>"portMappings"</span><span>:</span> <span>{</span> <span>"80"</span><span>:</span> <span>"801"</span> <span>}</span>
+  <span>}</span>
+<span>}</span>
+</code></pre>
+</div>
+<h4><a href="#example-output-for-run_container_step">Example output for <code>run_container_step</code></a></h4>
+<p>No output is expected for <code>run_container_step</code>.</p>
+<h3><a href="#run_script_step"><code>run_script_step</code></a></h3>
+<p>GitHub Actions assumes that you will do the following tasks:</p>
+<ul>
+<li>Invoke the provided script inside the job container and return the exit code.</li>
+<li>Stream any step log output to stdout and stderr.</li>
+</ul>
+<h4><a href="#arguments-for-run_script_step">Arguments for <code>run_script_step</code></a></h4>
+<ul>
+<li>
+<code>entryPointArgs</code>: <strong>Optional</strong>. A list containing the entry point arguments.</li>
+<li>
+<code>entryPoint</code>: <strong>Optional</strong>. The container entry point to use if the default image entrypoint should be overwritten.</li>
+<li>
+<code>prependPath</code>: <strong>Optional</strong>. An array of additional paths to prepend to the <code>$PATH</code> variable.</li>
+<li>
+<code>workingDirectory</code>: <strong>Required</strong>. A string containing the absolute path of the working directory.</li>
+<li>
+<code>environmentVariables</code>: <strong>Optional</strong>. Sets a map of key environment variables.</li>
+</ul>
+<h4><a href="#example-input-for-run_script_step">Example input for <code>run_script_step</code></a></h4>
+<div>
+<header><span>JSON</span><pre>{
+  "command": "run_script_step",
+  "responseFile": null,
+  "state": {
+    "network": "example_network_53269bd575972817b43f7733536b200c",
+    "jobContainer": "82e8219701fe096a35941d869cf3d71af1d943b5d8bdd718857fb87ac3042480",
+    "serviceContainers": {
+      "redis": "60972d9aa486605e66b0dad4abb678dc3d9116f536579e418176eedb8abb9105"
+    }
+  },
+  "args": {
+    "entryPointArgs": ["-e", "/runner/temp/example.sh"],
+    "entryPoint": "bash",
+    "environmentVariables": {
+      "NODE_ENV": "development"
+    },
+    "prependPath": ["/foo/bar", "bar/foo"],
+    "workingDirectory": "/__w/octocat-test2/octocat-test2"
+  }
+}
+</pre></header><pre><code><span>{</span>
+  <span>"command"</span><span>:</span> <span>"run_script_step"</span><span>,</span>
+  <span>"responseFile"</span><span>:</span> <span><span>null</span></span><span>,</span>
+  <span>"state"</span><span>:</span> <span>{</span>
+    <span>"network"</span><span>:</span> <span>"example_network_53269bd575972817b43f7733536b200c"</span><span>,</span>
+    <span>"jobContainer"</span><span>:</span> <span>"82e8219701fe096a35941d869cf3d71af1d943b5d8bdd718857fb87ac3042480"</span><span>,</span>
+    <span>"serviceContainers"</span><span>:</span> <span>{</span>
+      <span>"redis"</span><span>:</span> <span>"60972d9aa486605e66b0dad4abb678dc3d9116f536579e418176eedb8abb9105"</span>
+    <span>}</span>
+  <span>}</span><span>,</span>
+  <span>"args"</span><span>:</span> <span>{</span>
+    <span>"entryPointArgs"</span><span>:</span> <span>[</span><span>"-e"</span><span>,</span> <span>"/runner/temp/example.sh"</span><span>]</span><span>,</span>
+    <span>"entryPoint"</span><span>:</span> <span>"bash"</span><span>,</span>
+    <span>"environmentVariables"</span><span>:</span> <span>{</span>
+      <span>"NODE_ENV"</span><span>:</span> <span>"development"</span>
+    <span>}</span><span>,</span>
+    <span>"prependPath"</span><span>:</span> <span>[</span><span>"/foo/bar"</span><span>,</span> <span>"bar/foo"</span><span>]</span><span>,</span>
+    <span>"workingDirectory"</span><span>:</span> <span>"/__w/octocat-test2/octocat-test2"</span>
+  <span>}</span>
+<span>}</span>
+</code></pre>
+</div>
+<h4><a href="#example-output-for-run_script_step">Example output for <code>run_script_step</code></a></h4>
+<p>No output is expected for <code>run_script_step</code>.</p>
+<h2><a href="#generating-the-customization-script">Generating the customization script</a></h2>
+<p>GitHub has created an example repository that demonstrates how to generate customization scripts for Docker and Kubernetes.</p>
+<div>
+<p>
+The resulting scripts are available for testing purposes, and you will need to determine whether they are appropriate for your requirements.</p>
+</div>
+<ol>
+<li>
+<p>Clone the <a href="https://github.com/actions/runner-container-hooks">actions/runner-container-hooks</a> repository to your self-hosted runner.</p>
+</li>
+<li>
+<p>The <code>examples/</code> directory contains some existing customization commands, each with its own JSON file. You can review these examples and use them as a starting point for your own customization commands.</p>
+<ul>
+<li><code>prepare_job.json</code></li>
+<li><code>run_script_step.json</code></li>
+<li><code>run_container_step.json</code></li>
+</ul>
+</li>
+<li>
+<p>Build the npm packages. These commands generate the <code>index.js</code> files inside <code>packages/docker/dist</code> and <code>packages/k8s/dist</code>.</p>
+<pre><code>npm install &amp;&amp; npm run bootstrap &amp;&amp; npm run build-all
+</code></pre>
+</li>
+</ol>
+<p>When the resulting <code>index.js</code> is triggered by GitHub Actions, it will run the customization commands defined in the JSON files. To trigger the <code>index.js</code>, you will need to add it your <code>ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER</code> environment variable, as described in the next section.</p>
+<h2><a href="#triggering-the-customization-script">Triggering the customization script</a></h2>
+<p>The custom script must be located on the runner, but should not be stored in the self-hosted runner application directory (that is, the directory into which you downloaded and unpacked the runner software). The scripts are executed in the security context of the service account that's running the runner service.</p>
+<div>
+<p>
+The triggered script is processed synchronously, so it will block job execution while running.</p>
+</div>
+<p>The script is automatically executed when the runner has the following environment variable containing an absolute path to the script:</p>
+<ul>
+<li>
+<code>ACTIONS_RUNNER_CONTAINER_HOOKS</code>: The script defined in this environment variable is triggered when a job has been assigned to a runner, but before the job starts running.</li>
+</ul>
+<p>To set this environment variable, you can either add it to the operating system, or add it to a file named <code>.env</code> within the self-hosted runner application directory. For example, the following <code>.env</code> entry will have the runner automatically run the script at <code>/Users/octocat/runner/index.js</code> before each container-based job runs:</p>
+<pre><code>ACTIONS_RUNNER_CONTAINER_HOOKS=/Users/octocat/runner/index.js
+</code></pre>
+<p>If you want to ensure that your job always runs inside a container, and subsequently always applies your container customizations, you can set the <code>ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER</code> variable on the self hosted runner to <code>true</code>. This will fail jobs that do not specify a job container.</p>
+<h2><a href="#troubleshooting">Troubleshooting</a></h2>
+<h3><a href="#no-timeout-setting">No timeout setting</a></h3>
+<p>There is currently no timeout setting available for the script executed by <code>ACTIONS_RUNNER_CONTAINER_HOOKS</code>. As a result, you could consider adding timeout handling to your script.</p>
+<h3><a href="#reviewing-the-workflow-run-log">Reviewing the workflow run log</a></h3>
+<p>To confirm whether your scripts are executing, you can review the logs for that job. For more information on checking the logs, see <a href="/en/actions/monitoring-and-troubleshooting-workflows/using-workflow-run-logs#viewing-logs-to-diagnose-failures">Using workflow run logs</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

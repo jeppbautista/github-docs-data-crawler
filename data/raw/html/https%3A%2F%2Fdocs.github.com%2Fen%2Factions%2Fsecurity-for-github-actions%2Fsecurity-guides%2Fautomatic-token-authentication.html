@@ -1,0 +1,365 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Security" href="/en/actions/security-for-github-actions">Security</a><span>/</span>
+</li>
+<li>
+<a title="Security guides" href="/en/actions/security-for-github-actions/security-guides">Security guides</a><span>/</span>
+</li>
+<li><a title="Automatic token authentication" href="/en/actions/security-for-github-actions/security-guides/automatic-token-authentication">Automatic token authentication</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Automatic token authentication</h1></div></div>
+<div><div><p>GitHub provides a token that you can use to authenticate on behalf of GitHub Actions.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-the-github_token-secret"><div><span>About the GITHUB_TOKEN secret</span></div></a></li>
+<li><a href="#using-the-github_token-in-a-workflow"><div><span>Using the GITHUB_TOKEN in a workflow</span></div></a></li>
+<li><a href="#permissions-for-the-github_token"><div><span>Permissions for the GITHUB_TOKEN</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-the-github_token-secret">About the <code>GITHUB_TOKEN</code> secret</a></h2>
+<p>At the start of each workflow job, GitHub automatically creates a unique <code>GITHUB_TOKEN</code> secret to use in your workflow. You can use the <code>GITHUB_TOKEN</code> to authenticate in the workflow job.</p>
+<p>When you enable GitHub Actions, GitHub installs a GitHub App on your repository. The <code>GITHUB_TOKEN</code> secret is a GitHub App installation access token. You can use the installation access token to authenticate on behalf of the GitHub App installed on your repository. The token's permissions are limited to the repository that contains your workflow. For more information, see <a href="#permissions-for-the-github_token">Permissions for the <code>GITHUB_TOKEN</code></a>.</p>
+<p>Before each job begins, GitHub fetches an installation access token for the job. The <code>GITHUB_TOKEN</code> expires when a job finishes or after a maximum of 24 hours.</p>
+<p>The token is also available in the <code>github.token</code> context. For more information, see <a href="/en/actions/learn-github-actions/contexts#github-context">Accessing contextual information about workflow runs</a>.</p>
+<h2><a href="#using-the-github_token-in-a-workflow">Using the <code>GITHUB_TOKEN</code> in a workflow</a></h2>
+<p>You can use the <code>GITHUB_TOKEN</code> by using the standard syntax for referencing secrets: <code>${{ secrets.GITHUB_TOKEN }}</code>. Examples of using the <code>GITHUB_TOKEN</code> include passing the token as an input to an action, or using it to make an authenticated GitHub API request.</p>
+<div>
+<p>
+An action can access the <code>GITHUB_TOKEN</code> through the <code>github.token</code> context even if the workflow does not explicitly pass the <code>GITHUB_TOKEN</code> to the action. As a good security practice, you should always make sure that actions only have the minimum access they require by limiting the permissions granted to the <code>GITHUB_TOKEN</code>. For more information, see <a href="#permissions-for-the-github_token">Permissions for the <code>GITHUB_TOKEN</code></a>.</p>
+</div>
+<p>When you use the repository's <code>GITHUB_TOKEN</code> to perform tasks, events triggered by the <code>GITHUB_TOKEN</code>, with the exception of <code>workflow_dispatch</code> and <code>repository_dispatch</code>, will not create a new workflow run. This prevents you from accidentally creating recursive workflow runs. For example, if a workflow run pushes code using the repository's <code>GITHUB_TOKEN</code>, a new workflow will not run even when the repository contains a workflow configured to run when <code>push</code> events occur.</p>
+<p>Commits pushed by a GitHub Actions workflow that uses the <code>GITHUB_TOKEN</code> do not trigger a GitHub Pages build.</p>
+<h3><a href="#example-1-passing-the-github_token-as-an-input">Example 1: passing the <code>GITHUB_TOKEN</code> as an input</a></h3>
+<p>This example workflow uses the <a href="/en/actions/using-workflows/using-github-cli-in-workflows">GitHub CLI</a>, which requires the <code>GITHUB_TOKEN</code> as the value for the <code>GH_TOKEN</code> input parameter:</p>
+<div>
+<header><span>YAML</span><pre>name: Open new issue
+on: workflow_dispatch
+
+jobs:
+  open-issue:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - run: |
+          gh issue --repo ${{ github.repository }} \
+            create --title "Issue title" --body "Issue body"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+</pre></header><pre><code><span>name:</span> <span>Open</span> <span>new</span> <span>issue</span>
+<span>on:</span> <span>workflow_dispatch</span>
+
+<span>jobs:</span>
+  <span>open-issue:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>permissions:</span>
+      <span>contents:</span> <span>read</span>
+      <span>issues:</span> <span>write</span>
+    <span>steps:</span>
+      <span>-</span> <span>run:</span> <span>|
+          gh issue --repo ${{ github.repository }} \
+            create --title "Issue title" --body "Issue body"
+</span>        <span>env:</span>
+          <span>GH_TOKEN:</span> <span>${{</span> <span>secrets.GITHUB_TOKEN</span> <span>}}</span>
+</code></pre>
+</div>
+<h3><a href="#example-2-calling-the-rest-api">Example 2: calling the REST API</a></h3>
+<p>You can use the <code>GITHUB_TOKEN</code> to make authenticated API calls. This example workflow creates an issue using the GitHub REST API:</p>
+<pre><code><span>name:</span> <span>Create</span> <span>issue</span> <span>on</span> <span>commit</span>
+
+<span>on:</span> [ <span>push</span> ]
+
+<span>jobs:</span>
+  <span>create_issue:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>permissions:</span>
+      <span>issues:</span> <span>write</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>Create</span> <span>issue</span> <span>using</span> <span>REST</span> <span>API</span>
+        <span>run:</span> <span>|
+          curl --request POST \
+          --url https://api.github.com/repos/${{ github.repository }}/issues \
+          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+          --header 'content-type: application/json' \
+          --data '{
+            "title": "Automated issue for commit: ${{ github.sha }}",
+            "body": "This issue was automatically created by the GitHub Action workflow **${{ github.workflow }}**. \n\n The commit hash was: _${{ github.sha }}_."
+            }' \
+          --fail
+</span></code></pre>
+<h2><a href="#permissions-for-the-github_token">Permissions for the <code>GITHUB_TOKEN</code></a></h2>
+<p>For information about the API endpoints GitHub Apps can access with each permission, see <a href="/en/rest/overview/permissions-required-for-github-apps">Permissions required for GitHub Apps</a>.</p>
+<p>The following table shows the permissions granted to the <code>GITHUB_TOKEN</code> by default. People with admin permissions to an enterprise, organization, or repository, can set the default permissions to be either permissive or restricted. For information on how to set the default permissions for the <code>GITHUB_TOKEN</code> for your enterprise, organization, or repository, see <a href="/en/enterprise-cloud@latest/admin/policies/enforcing-policies-for-your-enterprise/enforcing-policies-for-github-actions-in-your-enterprise#enforcing-a-policy-for-workflow-permissions-in-your-enterprise">Enforcing policies for GitHub Actions in your enterprise</a>, <a href="/en/organizations/managing-organization-settings/disabling-or-limiting-github-actions-for-your-organization#setting-the-permissions-of-the-github_token-for-your-organization">Disabling or limiting GitHub Actions for your organization</a>, or <a href="/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#setting-the-permissions-of-the-github_token-for-your-repository">Managing GitHub Actions settings for a repository</a>.</p>
+<div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Scope</th>
+<th>Default access<br>(permissive)</th>
+<th>Default access<br>(restricted)</th>
+<th>Maximum access for<br>pull requests from<br>public forked repositories</th>
+</tr></thead>
+<tbody>
+<tr>
+<th>actions</th>
+<td>read/write</td>
+<td>none</td>
+<td>read</td>
+</tr>
+<tr>
+<th>attestations</th>
+<td>read/write</td>
+<td>none</td>
+<td>read</td>
+</tr>
+<tr>
+<th>checks</th>
+<td>read/write</td>
+<td>none</td>
+<td>read</td>
+</tr>
+<tr>
+<th>contents</th>
+<td>read/write</td>
+<td>read</td>
+<td>read</td>
+</tr>
+<tr>
+<th>deployments</th>
+<td>read/write</td>
+<td>none</td>
+<td>read</td>
+</tr>
+<tr>
+<th>discussions</th>
+<td>read/write</td>
+<td>none</td>
+<td>read</td>
+</tr>
+<tr>
+<th>id-token</th>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<th>issues</th>
+<td>read/write</td>
+<td>none</td>
+<td>read</td>
+</tr>
+<tr>
+<th>metadata</th>
+<td>read</td>
+<td>read</td>
+<td>read</td>
+</tr>
+<tr>
+<th>models</th>
+<td>read</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<th>packages</th>
+<td>read/write</td>
+<td>read</td>
+<td>read</td>
+</tr>
+<tr>
+<th>pages</th>
+<td>read/write</td>
+<td>none</td>
+<td>read</td>
+</tr>
+<tr>
+<th>pull-requests</th>
+<td>read/write</td>
+<td>none</td>
+<td>read</td>
+</tr>
+<tr>
+<th>security-events</th>
+<td>read/write</td>
+<td>none</td>
+<td>read</td>
+</tr>
+<tr>
+<th>statuses</th>
+<td>read/write</td>
+<td>none</td>
+<td>read</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<ul>
+<li>When a workflow is triggered by the <a href="/en/actions/using-workflows/events-that-trigger-workflows#pull_request_target"><code>pull_request_target</code></a> event, the <code>GITHUB_TOKEN</code> is granted read/write repository permission, even when it is triggered from a public fork. For more information, see <a href="/en/actions/using-workflows/events-that-trigger-workflows#pull_request_target">Events that trigger workflows</a>.</li>
+<li>Private repositories can control whether pull requests from forks can run workflows, and can configure the permissions assigned to <code>GITHUB_TOKEN</code>. For more information, see <a href="/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#enabling-workflows-for-forks-of-private-repositories">Managing GitHub Actions settings for a repository</a>.</li>
+<li>Workflow runs triggered by Dependabot pull requests run as if they are from a forked repository, and therefore use a read-only <code>GITHUB_TOKEN</code>. These workflow runs cannot access any secrets. For information about strategies to keep these workflows secure, see <a href="/en/actions/security-guides/security-hardening-for-github-actions">Security hardening for GitHub Actions</a>.</li>
+</ul>
+</div>
+<h3><a href="#modifying-the-permissions-for-the-github_token">Modifying the permissions for the <code>GITHUB_TOKEN</code></a></h3>
+<p>You can modify the permissions for the <code>GITHUB_TOKEN</code> in individual workflow files. If the default permissions for the <code>GITHUB_TOKEN</code> are restrictive, you may have to elevate the permissions to allow some actions and commands to run successfully. If the default permissions are permissive, you can edit the workflow file to remove some permissions from the <code>GITHUB_TOKEN</code>. As a good security practice, you should grant the <code>GITHUB_TOKEN</code> the least required access.</p>
+<p>You can see the permissions that <code>GITHUB_TOKEN</code> had for a specific job in the "Set up job" section of the workflow run log. For more information, see <a href="/en/actions/monitoring-and-troubleshooting-workflows/using-workflow-run-logs">Using workflow run logs</a>.</p>
+<p>You can use the <code>permissions</code> key in your workflow file to modify permissions for the <code>GITHUB_TOKEN</code> for an entire workflow or for individual jobs. This allows you to configure the minimum required permissions for a workflow or job.</p>
+<p>You can use the <code>permissions</code> key to add and remove read permissions for forked repositories, but typically you can't grant write access. The exception to this behavior is where an admin user has selected the <strong>Send write tokens to workflows from pull requests</strong> option in the GitHub Actions settings. For more information, see <a href="/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#enabling-workflows-for-private-repository-forks">Managing GitHub Actions settings for a repository</a>.</p>
+<p>The two workflow examples earlier in this article show the <code>permissions</code> key being used at the job level, as it is best practice to limit the permissions' scope.</p>
+<p>For full details of the <code>permissions</code> key, see <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#permissions">Workflow syntax for GitHub Actions</a>.</p>
+<div>
+<p>
+Organization owners can prevent you from granting write access to the <code>GITHUB_TOKEN</code> at the repository level. For more information, see <a href="/en/organizations/managing-organization-settings/disabling-or-limiting-github-actions-for-your-organization#setting-the-permissions-of-the-github_token-for-your-organization">Disabling or limiting GitHub Actions for your organization</a>.</p>
+<p>When the <code>permissions</code> key is used, all unspecified permissions are set to no access, with the exception of the <code>metadata</code> scope, which always gets read access.</p>
+</div>
+<h4><a href="#how-the-permissions-are-calculated-for-a-workflow-job">How the permissions are calculated for a workflow job</a></h4>
+<p>The permissions for the <code>GITHUB_TOKEN</code> are initially set to the default setting for the enterprise, organization, or repository. If the default is set to the restricted permissions at any of these levels then this will apply to the relevant repositories. For example, if you choose the restricted default at the organization level then all repositories in that organization will use the restricted permissions as the default. The permissions are then adjusted based on any configuration within the workflow file, first at the workflow level and then at the job level. Finally, if the workflow was triggered by a pull request from a forked repository, and the <strong>Send write tokens to workflows from pull requests</strong> setting is not selected, the permissions are adjusted to change any write permissions to read only.</p>
+<h3><a href="#granting-additional-permissions">Granting additional permissions</a></h3>
+<p>If you need a token that requires permissions that aren't available in the <code>GITHUB_TOKEN</code>, you can create a GitHub App and generate an installation access token within your workflow. For more information, see <a href="/en/apps/creating-github-apps/guides/making-authenticated-api-requests-with-a-github-app-in-a-github-actions-workflow">Making authenticated API requests with a GitHub App in a GitHub Actions workflow</a>. Alternatively, you can create a personal access token, store it as a secret in your repository, and use the token in your workflow with the <code>${{ secrets.SECRET_NAME }}</code> syntax. For more information, see <a href="/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token">Managing your personal access tokens</a> and <a href="/en/actions/security-guides/using-secrets-in-github-actions">Using secrets in GitHub Actions</a>.</p>
+<h3><a href="#further-reading">Further reading</a></h3>
+<ul>
+<li><a href="/en/rest/overview/rate-limits-for-the-rest-api">Rate limits for the REST API</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

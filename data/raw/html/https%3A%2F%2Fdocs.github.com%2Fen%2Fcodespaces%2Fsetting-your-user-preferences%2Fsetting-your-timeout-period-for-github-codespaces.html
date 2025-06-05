@@ -1,0 +1,84 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Setting your user preferences" href="/en/codespaces/setting-your-user-preferences">Setting your user preferences</a><span>/</span>
+</li>
+<li><a title="Set the timeout" href="/en/codespaces/setting-your-user-preferences/setting-your-timeout-period-for-github-codespaces">Set the timeout</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Setting your timeout period for GitHub Codespaces</h1></div></div>
+<div>
+<div><p>You can set your default timeout for GitHub Codespaces in your personal settings page.</p></div>
+<div>
+<h2>Tool navigation</h2>
+<nav><ul>
+<li><a href="?tool=cli"><span>GitHub CLI</span></a></li>
+<li><a href="?tool=vscode"><span>Visual Studio Code</span></a></li>
+<li><a href="?tool=webui"><span>Web browser</span></a></li>
+</ul></nav>
+</div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-the-idle-timeout"><div><span>About the idle timeout</span></div></a></li>
+<li><a href="#setting-your-default-timeout-period"><div><span>Setting your default timeout period</span></div></a></li>
+<li><a href="#setting-the-timeout-period-for-a-codespace"><div><span>Setting the timeout period for a codespace</span></div></a></li>
+<li><a href="#setting-a-timeout-period"><div><span>Setting a timeout period</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-the-idle-timeout">About the idle timeout</a></h2>
+<p>A codespace will stop running after a period of inactivity. By default this period is 30 minutes, but you can specify a longer or shorter default timeout period in your personal settings on GitHub. The updated setting will apply to any new codespaces you create, or to existing codespaces the next time you start them. You can also specify a timeout when you use GitHub CLI to create a codespace.</p>
+<div>
+<p>
+Codespaces compute usage is billed for the duration for which a codespace is active. If you're not using a codespace but it remains running, and hasn't yet timed out, you are billed for the total time that the codespace was active, irrespective of whether you were using it. For more information, see <a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/about-billing-for-github-codespaces#codespaces-pricing">About billing for GitHub Codespaces</a>.</p>
+</div>
+<h3><a href="#inactivity-defined">Inactivity defined</a></h3>
+<p>In the context of the Codespaces idle timeout, inactivity is defined as the absence of activity indicative of a user's presence. Personal interaction with a codespace, such as typing or using the mouse, resets the idle timeout period. Terminal activity, either input or output, also resets the idle timeout period. For example, if you publish a web app on a port from a codespace and page requests generate output in a terminal on the codespace, then each time terminal output occurs the timeout will be reset. However, if you share a port, and then don't interact with the codespace, and no terminal output is generated, the codespace will time out after the configured period.</p>
+<h3><a href="#timeout-periods-for-organization-owned-repositories">Timeout periods for organization-owned repositories</a></h3>
+<p>Organizations can set a maximum idle timeout policy for codespaces created from some or all of their repositories. If an organization policy sets a maximum timeout which is less than the default timeout you have set, the organization's timeout will be used instead of your setting. You will be notified of this after the codespace is created. For more information, see <a href="/en/codespaces/managing-codespaces-for-your-organization/restricting-the-idle-timeout-period">Restricting the idle timeout period</a>.</p>
+<div>
+<h2><a href="#setting-your-default-timeout-period">Setting your default timeout period</a></h2>
+<ol>
+<li>
+<p>In the upper-right corner of any page on GitHub, click your profile photo, then click </p>
+</li>
+<li>
+<p>In the "Code, planning, and automation" section of the sidebar, click </p>
+</li>
+<li>
+<p>Under "Default idle timeout", enter the time that you want, then click <strong>Save</strong>. The time must be between 5 minutes and 240 minutes (4 hours).</p>
+<div><picture><source><img src="/assets/cb-37553/images/help/codespaces/setting-default-timeout.png" alt='Screenshot of the "Default idle timeout" section of the Codespaces settings, with "90 minutes" entered.' width="720" height="174"></source></picture></div>
+</li>
+</ol>
+</div>
+<div>
+<h2><a href="#setting-the-timeout-period-for-a-codespace">Setting the timeout period for a codespace</a></h2>
+<div>
+<p>
+To learn more about GitHub CLI, see <a href="/en/github-cli/github-cli/about-github-cli">About GitHub CLI</a>.</p>
+</div>
+<p>To set the timeout period when you create a codespace, use the <code>idle-timeout</code> argument with the <code>codespace create</code> subcommand. Specify the time in minutes, followed by <code>m</code>. The time must be between 5 minutes and 240 minutes (4 hours).</p>
+<pre><code>gh codespace create --idle-timeout 90m
+</code></pre>
+<p>If you don't specify a timeout period when you create a codespace, then the default timeout period will be used. For information about setting a default timeout period, click the "Web browser" tab on this page. You can't currently specify a default timeout period through GitHub CLI.</p>
+</div>
+<div>
+<h2><a href="#setting-a-timeout-period">Setting a timeout period</a></h2>
+<p>You can set your default timeout period in your web browser, on GitHub. Alternatively, if you use GitHub CLI to create a codespace you can set a timeout period for that particular codespace. For more information, click the appropriate tab above.</p>
+</div>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/codespaces/customizing-your-codespace">Customizing your codespace</a></li>
+<li><a href="/en/codespaces/managing-your-codespaces">Managing your codespaces</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

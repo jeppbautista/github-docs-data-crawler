@@ -1,0 +1,26 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Code scanning" href="/en/code-security/code-scanning">Code scanning</a><span>/</span>
+</li>
+<li>
+<a title="Troubleshooting code scanning" href="/en/code-security/code-scanning/troubleshooting-code-scanning">Troubleshooting code scanning</a><span>/</span>
+</li>
+<li><a title="Results different than expected" href="/en/code-security/code-scanning/troubleshooting-code-scanning/results-different-than-expected">Results different than expected</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Results are different than expected</h1></div></div>
+<div><div><p>If your code scanning results are different than you expected, you can check which configurations are active.</p></div></div>
+<div><div><div>
+<p>If your code scanning results are different than you expected, you may have both default and advanced setup configured for your repository. When you enable default setup, this disables the existing CodeQL workflow file and blocks any CodeQL API analysis from uploading results.</p>
+<p>To check if default setup is enabled, navigate to the main page of the repository, then click </p>
+<p>If you want to return to using advanced setup and get code scanning results from your custom workflow file, click <a href="/en/actions/managing-workflow-runs/disabling-and-enabling-a-workflow">Disabling and enabling a workflow</a> and <a href="/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/configuring-advanced-setup-for-code-scanning">Configuring advanced setup for code scanning</a>.</p>
+<p>In some cases, your repository may use multiple code scanning configurations. These configurations can generate duplicate alerts. Additionally, stale configurations that no longer run will display outdated alert statuses, and the stale alerts will stay open indefinitely. To avoid outdated alerts, you should remove stale code scanning configurations from a branch. For more information on multiple configurations and deleting stale configurations, see <a href="/en/code-security/code-scanning/managing-code-scanning-alerts/about-code-scanning-alerts#about-alerts-from-multiple-configurations">About code scanning alerts</a> and <a href="/en/code-security/code-scanning/managing-code-scanning-alerts/resolving-code-scanning-alerts#removing-stale-configurations-and-alerts-from-a-branch">Resolving code scanning alerts</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

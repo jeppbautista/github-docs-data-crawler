@@ -1,0 +1,148 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Use cases and examples" href="/en/actions/use-cases-and-examples">Use cases and examples</a><span>/</span>
+</li>
+<li>
+<a title="Deployment" href="/en/actions/use-cases-and-examples/deploying">Deployment</a><span>/</span>
+</li>
+<li><a title="Deploy with GitHub Actions" href="/en/actions/use-cases-and-examples/deploying/deploying-with-github-actions">Deploy with GitHub Actions</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Deploying with GitHub Actions</h1></div></div>
+<div><div><p>Learn how to control deployments with features like environments and concurrency.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#triggering-your-deployment"><div><span>Triggering your deployment</span></div></a></li>
+<li><a href="#using-environments"><div><span>Using environments</span></div></a></li>
+<li><a href="#using-concurrency"><div><span>Using concurrency</span></div></a></li>
+<li><a href="#viewing-deployment-history"><div><span>Viewing deployment history</span></div></a></li>
+<li><a href="#monitoring-workflow-runs"><div><span>Monitoring workflow runs</span></div></a></li>
+<li><a href="#tracking-deployments-through-apps"><div><span>Tracking deployments through apps</span></div></a></li>
+<li><a href="#choosing-a-runner"><div><span>Choosing a runner</span></div></a></li>
+<li><a href="#displaying-a-status-badge"><div><span>Displaying a status badge</span></div></a></li>
+<li><a href="#finding-deployment-examples"><div><span>Finding deployment examples</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>GitHub Actions offers features that let you control deployments. You can:</p>
+<ul>
+<li>Trigger workflows with a variety of events.</li>
+<li>Configure environments to set rules before a job can proceed and to limit access to secrets.</li>
+<li>Use concurrency to control the number of deployments running at a time.</li>
+</ul>
+<p>For more information about continuous deployment, see <a href="/en/actions/deployment/about-deployments/about-continuous-deployment">About continuous deployment with GitHub Actions</a>.</p>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<p>You should be familiar with the syntax for GitHub Actions. For more information, see <a href="/en/actions/learn-github-actions">Writing workflows</a>.</p>
+<h2><a href="#triggering-your-deployment">Triggering your deployment</a></h2>
+<p>You can use a variety of events to trigger your deployment workflow. Some of the most common are: <code>pull_request</code>, <code>push</code>, and <code>workflow_dispatch</code>.</p>
+<p>For example, a workflow with the following triggers runs whenever:</p>
+<ul>
+<li>There is a push to the <code>main</code> branch.</li>
+<li>A pull request targeting the <code>main</code> branch is opened, synchronized, or reopened.</li>
+<li>Someone manually triggers it.</li>
+</ul>
+<pre><code><span>on:</span>
+  <span>push:</span>
+    <span>branches:</span>
+      <span>-</span> <span>main</span>
+  <span>pull_request:</span>
+    <span>branches:</span>
+      <span>-</span> <span>main</span>
+  <span>workflow_dispatch:</span>
+</code></pre>
+<p>For more information, see <a href="/en/actions/using-workflows/events-that-trigger-workflows">Events that trigger workflows</a>.</p>
+<h2><a href="#using-environments">Using environments</a></h2>
+<p>Environments are used to describe a general deployment target like <code>production</code>, <code>staging</code>, or <code>development</code>. When a GitHub Actions workflow deploys to an environment, the environment is displayed on the main page of the repository. You can use environments to require approval for a job to proceed, restrict which branches can trigger a workflow, gate deployments with custom deployment protection rules, or limit access to secrets. For more information about creating environments, see <a href="/en/actions/deployment/targeting-different-environments/managing-environments-for-deployment">Managing environments for deployment</a>.</p>
+<h2><a href="#using-concurrency">Using concurrency</a></h2>
+<p>Concurrency ensures that only a single job or workflow using the same concurrency group will run at a time. You can use concurrency so that an environment has a maximum of one deployment in progress and one deployment pending at a time. For more information about concurrency, see <a href="/en/actions/using-jobs/using-concurrency">Control the concurrency of workflows and jobs</a>.</p>
+<div>
+<p>
+<code>concurrency</code> and <code>environment</code> are not connected. The concurrency value can be any string; it does not need to be an environment name. Additionally, if another workflow uses the same environment but does not specify concurrency, that workflow will not be subject to any concurrency rules.</p>
+</div>
+<p>For example, when the following workflow runs, it will be paused with the status <code>pending</code> if any job or workflow that uses the <code>production</code> concurrency group is in progress. It will also cancel any job or workflow that uses the <code>production</code> concurrency group and has the status <code>pending</code>. This means that there will be a maximum of one running and one pending job or workflow in that uses the <code>production</code> concurrency group.</p>
+<pre><code><span>name:</span> <span>Deployment</span>
+
+<span>concurrency:</span> <span>production</span>
+
+<span>on:</span>
+  <span>push:</span>
+    <span>branches:</span>
+      <span>-</span> <span>main</span>
+
+<span>jobs:</span>
+  <span>deployment:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>environment:</span> <span>production</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>deploy</span>
+        <span># ...deployment-specific steps</span>
+</code></pre>
+<p>You can also specify concurrency at the job level. This will allow other jobs in the workflow to proceed even if the concurrent job is <code>pending</code>.</p>
+<pre><code><span>name:</span> <span>Deployment</span>
+
+<span>on:</span>
+  <span>push:</span>
+    <span>branches:</span>
+      <span>-</span> <span>main</span>
+
+<span>jobs:</span>
+  <span>deployment:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>environment:</span> <span>production</span>
+    <span>concurrency:</span> <span>production</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>deploy</span>
+        <span># ...deployment-specific steps</span>
+</code></pre>
+<p>You can also use <code>cancel-in-progress</code> to cancel any currently running job or workflow in the same concurrency group.</p>
+<pre><code><span>name:</span> <span>Deployment</span>
+
+<span>concurrency:</span>
+  <span>group:</span> <span>production</span>
+  <span>cancel-in-progress:</span> <span>true</span>
+
+<span>on:</span>
+  <span>push:</span>
+    <span>branches:</span>
+      <span>-</span> <span>main</span>
+
+<span>jobs:</span>
+  <span>deployment:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>environment:</span> <span>production</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>deploy</span>
+        <span># ...deployment-specific steps</span>
+</code></pre>
+<p>For guidance on writing deployment-specific steps, see <a href="#finding-deployment-examples">Finding deployment examples</a>.</p>
+<h2><a href="#viewing-deployment-history">Viewing deployment history</a></h2>
+<p>When a GitHub Actions workflow deploys to an environment, the environment is displayed on the main page of the repository. For more information about viewing deployments to environments, see <a href="/en/actions/deployment/managing-your-deployments/viewing-deployment-history">Viewing deployment history</a>.</p>
+<h2><a href="#monitoring-workflow-runs">Monitoring workflow runs</a></h2>
+<p>Every workflow run generates a real-time graph that illustrates the run progress. You can use this graph to monitor and debug deployments. For more information see, <a href="/en/actions/monitoring-and-troubleshooting-workflows/using-the-visualization-graph">Using the visualization graph</a>.</p>
+<p>You can also view the logs of each workflow run and the history of workflow runs. For more information, see <a href="/en/actions/monitoring-and-troubleshooting-workflows/viewing-workflow-run-history">Viewing workflow run history</a>.</p>
+<h2><a href="#tracking-deployments-through-apps">Tracking deployments through apps</a></h2>
+<p>If your personal account or organization on GitHub is integrated with Microsoft Teams or Slack, you can track deployments that use environments through Microsoft Teams or Slack. For example, you can receive notifications through the app when a deployment is pending approval, when a deployment is approved, or when the deployment status changes. For more information about integrating Microsoft Teams or Slack, see <a href="/en/get-started/exploring-integrations/github-extensions-and-integrations#team-communication-tools">Featured GitHub integrations</a>.</p>
+<p>You can also build an app that uses deployment and deployment status webhooks to track deployments. When a workflow job that references an environment runs, it creates a deployment object with the <code>environment</code> property set to the name of your environment. As the workflow progresses, it also creates deployment status objects with the <code>environment</code> property set to the name of your environment, the <code>environment_url</code> property set to the URL for environment (if specified in the workflow), and the <code>state</code> property set to the status of the job. For more information, see <a href="/en/apps">GitHub Apps documentation</a> and <a href="/en/webhooks-and-events/webhooks/webhook-events-and-payloads#deployment">Webhook events and payloads</a>.</p>
+<h2><a href="#choosing-a-runner">Choosing a runner</a></h2>
+<p>You can run your deployment workflow on GitHub-hosted runners or on self-hosted runners. Traffic from GitHub-hosted runners can come from a <a href="/en/rest/meta/meta#get-github-meta-information">wide range of network addresses</a>. If you are deploying to an internal environment and your company restricts external traffic into private networks, GitHub Actions workflows running on GitHub-hosted runners may not be able to communicate with your internal services or resources. To overcome this, you can host your own runners. For more information, see <a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners">About self-hosted runners</a> and <a href="/en/actions/using-github-hosted-runners/about-github-hosted-runners">Using GitHub-hosted runners</a>.</p>
+<h2><a href="#displaying-a-status-badge">Displaying a status badge</a></h2>
+<p>You can use a status badge to display the status of your deployment workflow. A status badge shows whether a workflow is currently failing or passing. A common place to add a status badge is in the <code>README.md</code> file of your repository, but you can add it to any web page you'd like. By default, badges display the status of your default branch. If there are no workflow runs on your default branch, it will display the status of the most recent run across all branches. You can display the status of a workflow run for a specific branch or event using the <code>branch</code> and <code>event</code> query parameters in the URL.</p>
+<p><picture><source><img src="/assets/cb-16218/images/help/repository/actions-workflow-status-badge.png" alt='Screenshot of a workflow status badge. From right to left it shows: the GitHub logo, workflow name ("GitHub Actions Demo"), and status ("passing").' width="407" height="53"></source></picture></p>
+<p>For more information, see <a href="/en/actions/monitoring-and-troubleshooting-workflows/adding-a-workflow-status-badge">Adding a workflow status badge</a>.</p>
+<h2><a href="#finding-deployment-examples">Finding deployment examples</a></h2>
+<p>This article demonstrated features of GitHub Actions that you can add to your deployment workflows.</p>
+<p>GitHub offers deployment workflow templates for several popular services, such as Azure Web App. To learn how to get started using a workflow template, see <a href="/en/actions/learn-github-actions/using-starter-workflows">Using workflow templates</a> or <a href="https://github.com/actions/starter-workflows/tree/main/deployments">browse the full list of deployment workflow templates</a>. You can also check out our more detailed guides for specific deployment workflows, such as <a href="/en/actions/deployment/deploying-to-your-cloud-provider/deploying-to-azure/deploying-nodejs-to-azure-app-service">Deploying Node.js to Azure App Service</a>.</p>
+<p>Many service providers also offer actions on GitHub Marketplace for deploying to their service. For the full list, see <a href="https://github.com/marketplace?category=deployment&amp;type=actions">GitHub Marketplace</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

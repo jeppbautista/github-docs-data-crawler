@@ -1,0 +1,550 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Share automations" href="/en/actions/sharing-automations">Share automations</a><span>/</span>
+</li>
+<li><a title="Reuse workflows" href="/en/actions/sharing-automations/reusing-workflows">Reuse workflows</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Reusing workflows</h1></div></div>
+<div><div><p>Learn how to avoid duplication when creating a workflow by reusing existing workflows.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#overview"><div><span>Overview</span></div></a></li>
+<li><a href="#access-to-reusable-workflows"><div><span>Access to reusable workflows</span></div></a></li>
+<li><a href="#using-runners"><div><span>Using runners</span></div></a></li>
+<li><a href="#limitations"><div><span>Limitations</span></div></a></li>
+<li><a href="#creating-a-reusable-workflow"><div><span>Creating a reusable workflow</span></div></a></li>
+<li><a href="#calling-a-reusable-workflow"><div><span>Calling a reusable workflow</span></div></a></li>
+<li><a href="#nesting-reusable-workflows"><div><span>Nesting reusable workflows</span></div></a></li>
+<li><a href="#using-outputs-from-a-reusable-workflow"><div><span>Using outputs from a reusable workflow</span></div></a></li>
+<li><a href="#monitoring-which-workflows-are-being-used"><div><span>Monitoring which workflows are being used</span></div></a></li>
+<li><a href="#re-running-workflows-and-jobs-with-reusable-workflows"><div><span>Re-running workflows and jobs with reusable workflows</span></div></a></li>
+<li><a href="#next-steps"><div><span>Next steps</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#overview">Overview</a></h2>
+<p>Rather than copying and pasting from one workflow to another, you can make workflows reusable. You and anyone with access to the reusable workflow can then call the reusable workflow from another workflow.</p>
+<p>Reusing workflows avoids duplication. This makes workflows easier to maintain and allows you to create new workflows more quickly by building on the work of others, just as you do with actions. Workflow reuse also promotes best practice by helping you to use workflows that are well designed, have already been tested, and have been proven to be effective. Your organization can build up a library of reusable workflows that can be centrally maintained.</p>
+<p>The diagram below shows an in-progress workflow run that uses a reusable workflow.</p>
+<ul>
+<li>After each of three build jobs on the left of the diagram completes successfully, a dependent job called "Deploy" is run.</li>
+<li>The "Deploy" job calls a reusable workflow that contains three jobs: "Staging", "Review", and "Production."</li>
+<li>The "Production" deployment job only runs after the "Staging" job has completed successfully.</li>
+<li>When a job targets an environment, the workflow run displays a progress bar that shows the number of steps in the job. In the diagram below, the "Production" job contains 8 steps, with step 6 currently being processed.</li>
+<li>Using a reusable workflow to run deployment jobs allows you to run those jobs for each build without duplicating code in workflows.</li>
+</ul>
+<p><picture><source><img src="/assets/cb-34427/images/help/actions/reusable-workflows-ci-cd.png" alt="Diagram of a workflow calling a reusable workflow." width="720" height="226"></source></picture></p>
+<p>A workflow that uses another workflow is referred to as a "caller" workflow. The reusable workflow is a "called" workflow. One caller workflow can use multiple called workflows. Each called workflow is referenced in a single line. The result is that the caller workflow file may contain just a few lines of YAML, but may perform a large number of tasks when it's run. When you reuse a workflow, the entire called workflow is used, just as if it was part of the caller workflow.</p>
+<p>If you reuse a workflow from a different repository, any actions in the called workflow run as if they were part of the caller workflow. For example, if the called workflow uses <code>actions/checkout</code>, the action checks out the contents of the repository that hosts the caller workflow, not the called workflow.</p>
+<p>When a reusable workflow is triggered by a caller workflow, the <code>github</code> context is always associated with the caller workflow. The called workflow is automatically granted access to <code>github.token</code> and <code>secrets.GITHUB_TOKEN</code>. For more information about the <code>github</code> context, see <a href="/en/actions/learn-github-actions/contexts#github-context">Accessing contextual information about workflow runs</a>.</p>
+<p>You can view the reused workflows referenced in your GitHub Actions workflows as dependencies in the dependency graph of the repository containing your workflows. For more information, see “<a href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-the-dependency-graph">About the dependency graph</a>.”</p>
+<h3><a href="#reusable-workflows-and-composite-actions">Reusable workflows and composite actions</a></h3>
+<p>Reusable workflows and composite actions both help you to avoid duplication. Whereas reusable workflows allow you to reuse an entire workflow, with multiple jobs and steps, composite actions combine multiple steps that you can then run within a job step, just like any other action. For more information, see <a href="/en/actions/using-workflows/avoiding-duplication">Avoiding duplication</a>.</p>
+<h3><a href="#reusable-workflows-and-workflow-templates">Reusable workflows and workflow templates</a></h3>
+<p>Workflow templates allow everyone in your organization who has permission to create workflows to do so more quickly and easily. When people create a new workflow, they can choose a workflow template and some or all of the work of writing the workflow will be done for them. Within a workflow template, you can also reference reusable workflows to make it easy for people to benefit from reusing centrally managed workflow code. If you use a commit SHA when referencing the reusable workflow, you can ensure that everyone who reuses that workflow will always be using the same YAML code. However, if you reference a reusable workflow by a tag or branch, be sure that you can trust that version of the workflow. For more information, see <a href="/en/actions/security-guides/security-hardening-for-github-actions#reusing-third-party-workflows">Security hardening for GitHub Actions</a>.</p>
+<p>For more information, see <a href="/en/actions/using-workflows/creating-starter-workflows-for-your-organization">Creating workflow templates for your organization</a>.</p>
+<h2><a href="#access-to-reusable-workflows">Access to reusable workflows</a></h2>
+<p>A reusable workflow can be used by another workflow if any of the following is true:</p>
+<ul>
+<li>Both workflows are in the same repository.</li>
+<li>The called workflow is stored in a public repository, and your organization allows you to use public reusable workflows.</li>
+<li>The called workflow is stored in a private repository and the settings for that repository allow it to be accessed. For more information, see <a href="/en/actions/creating-actions/sharing-actions-and-workflows-with-your-organization">Sharing actions and workflows with your organization</a> and <a href="/en/actions/creating-actions/sharing-actions-and-workflows-from-your-private-repository">Sharing actions and workflows from your private repository</a>.</li>
+</ul>
+<p>The following table shows the accessibility of reusable workflows to a caller workflow, depending on the visibility of the host repository.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Caller repository</th>
+<th>Accessible workflows repositories</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>private</code></td>
+<td>
+<code>private</code> and <code>public</code>
+</td>
+</tr>
+<tr>
+<td><code>public</code></td>
+<td><code>public</code></td>
+</tr>
+</tbody>
+</table>
+<p>The <strong>Actions permissions</strong> on the callers repository's Actions settings page must be configured to allow the use of actions and reusable workflows - see <a href="/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#allowing-select-actions-and-reusable-workflows-to-run">Managing GitHub Actions settings for a repository</a>.</p>
+<p>For private repositories, the <strong>Access</strong> policy on the Actions settings page of the called workflow's repository must be explicitly configured to allow access from repositories containing caller workflows - see <a href="/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#allowing-access-to-components-in-a-private-repository">Managing GitHub Actions settings for a repository</a>.</p>
+<div>
+<p>
+To enhance security, GitHub Actions does not support redirects for actions or reusable workflows. This means that when the owner, name of an action's repository, or name of an action is changed, any workflows using that action with the previous name will fail.</p>
+</div>
+<h2><a href="#using-runners">Using runners</a></h2>
+<h3><a href="#using-github-hosted-runners">Using GitHub-hosted runners</a></h3>
+<p>The assignment of GitHub-hosted runners is always evaluated using only the caller's context. Billing for GitHub-hosted runners is always associated with the caller. The caller workflow cannot use GitHub-hosted runners from the called repository. For more information, see <a href="/en/actions/using-github-hosted-runners/about-github-hosted-runners">Using GitHub-hosted runners</a>.</p>
+<h3><a href="#using-self-hosted-runners">Using self-hosted runners</a></h3>
+<p>Called workflows that are owned by the same user or organization as the caller workflow can access self-hosted runners from the caller's context. This means that a called workflow can access self-hosted runners that are:</p>
+<ul>
+<li>In the caller repository</li>
+<li>In the caller repository's organization, provided that the runner has been made available to the caller repository</li>
+</ul>
+<h2><a href="#limitations">Limitations</a></h2>
+<ul>
+<li>
+<p>You can connect up to four levels of workflows. For more information, see <a href="#nesting-reusable-workflows">Nesting reusable workflows</a>.</p>
+</li>
+<li>
+<p>You can call a maximum of 20 unique reusable workflows from a single workflow file. This limit includes any trees of nested reusable workflows that may be called starting from your top-level caller workflow file.</p>
+<p>For example, <em>top-level-caller-workflow.yml</em> → <em>called-workflow-1.yml</em> → <em>called-workflow-2.yml</em> counts as 2 reusable workflows.</p>
+</li>
+<li>
+<p>Any environment variables set in an <code>env</code> context defined at the workflow level in the caller workflow are not propagated to the called workflow. For more information, see <a href="/en/actions/learn-github-actions/variables">Store information in variables</a> and <a href="/en/actions/learn-github-actions/contexts#env-context">Accessing contextual information about workflow runs</a>.</p>
+</li>
+<li>
+<p>Similarly, environment variables set in the <code>env</code> context, defined in the called workflow, are not accessible in the <code>env</code> context of the caller workflow. Instead, you must use outputs of the reusable workflow. For more information, see <a href="#using-outputs-from-a-reusable-workflow">Using outputs from a reusable workflow</a>.</p>
+</li>
+<li>
+<p>To reuse variables in multiple workflows, set them at the organization, repository, or environment levels and reference them using the <code>vars</code> context. For more information see <a href="/en/actions/learn-github-actions/variables">Store information in variables</a> and <a href="/en/actions/learn-github-actions/contexts#vars-context">Accessing contextual information about workflow runs</a>.</p>
+</li>
+<li>
+<p>Reusable workflows are called directly within a job, and not from within a job step. You cannot, therefore, use <code>GITHUB_ENV</code> to pass values to job steps in the caller workflow.</p>
+</li>
+</ul>
+<h2><a href="#creating-a-reusable-workflow">Creating a reusable workflow</a></h2>
+<p>Reusable workflows are YAML-formatted files, very similar to any other workflow file. As with other workflow files, you locate reusable workflows in the <code>.github/workflows</code> directory of a repository. Subdirectories of the <code>workflows</code> directory are not supported.</p>
+<p>For a workflow to be reusable, the values for <code>on</code> must include <code>workflow_call</code>:</p>
+<pre><code><span>on:</span>
+  <span>workflow_call:</span>
+</code></pre>
+<h3><a href="#using-inputs-and-secrets-in-a-reusable-workflow">Using inputs and secrets in a reusable workflow</a></h3>
+<p>You can define inputs and secrets, which can be passed from the caller workflow and then used within the called workflow. There are three stages to using an input or a secret in a reusable workflow.</p>
+<ol>
+<li>
+<p>In the reusable workflow, use the <code>inputs</code> and <code>secrets</code> keywords to define inputs or secrets that will be passed from a caller workflow.</p>
+<pre><code><span>on:</span>
+  <span>workflow_call:</span>
+    <span>inputs:</span>
+      <span>config-path:</span>
+        <span>required:</span> <span>true</span>
+        <span>type:</span> <span>string</span>
+    <span>secrets:</span>
+      <span>personal_access_token:</span>
+        <span>required:</span> <span>true</span>
+</code></pre>
+<p>For details of the syntax for defining inputs and secrets, see <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_callinputs"><code>on.workflow_call.inputs</code></a> and <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_callsecrets"><code>on.workflow_call.secrets</code></a>.</p>
+</li>
+<li>
+<p>In the reusable workflow, reference the input or secret that you defined in the <code>on</code> key in the previous step.</p>
+<div>
+<p>
+If the secrets are inherited by using <code>secrets: inherit</code> in the calling workflow, you can reference them even if they are not explicitly defined in the <code>on</code> key. For more information, see <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idsecretsinherit">Workflow syntax for GitHub Actions</a>.</p>
+</div>
+<pre><code><span>jobs:</span>
+  <span>reusable_workflow_job:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>steps:</span>
+    <span>-</span> <span>uses:</span> <span>actions/labeler@v4</span>
+      <span>with:</span>
+        <span>repo-token:</span> <span>${{</span> <span>secrets.personal_access_token</span> <span>}}</span>
+        <span>configuration-path:</span> <span>${{</span> <span>inputs.config-path</span> <span>}}</span>
+</code></pre>
+<p>In the example above, <code>personal_access_token</code> is a secret that's defined at the repository or organization level.</p>
+<div>
+<p>
+Environment secrets cannot be passed from the caller workflow as <code>on.workflow_call</code> does not support the <code>environment</code> keyword. If you include <code>environment</code> in the reusable workflow at the job level, the environment secret will be used, and not the secret passed from the caller workflow. For more information, see <a href="/en/actions/deployment/targeting-different-environments/managing-environments-for-deployment#environment-secrets">Managing environments for deployment</a> and <a href="/en/actions/writing-workflows/workflow-syntax-for-github-actions#onworkflow_call">Workflow syntax for GitHub Actions</a>.</p>
+</div>
+</li>
+<li>
+<p>Pass the input or secret from the caller workflow.</p>
+<p>To pass named inputs to a called workflow, use the <code>with</code> keyword in a job. Use the <code>secrets</code> keyword to pass named secrets. For inputs, the data type of the input value must match the type specified in the called workflow (either boolean, number, or string).</p>
+<pre><code><span>jobs:</span>
+  <span>call-workflow-passing-data:</span>
+    <span>uses:</span> <span>octo-org/example-repo/.github/workflows/reusable-workflow.yml@main</span>
+    <span>with:</span>
+      <span>config-path:</span> <span>.github/labeler.yml</span>
+    <span>secrets:</span>
+      <span>personal_access_token:</span> <span>${{</span> <span>secrets.token</span> <span>}}</span>
+</code></pre>
+<p>Workflows that call reusable workflows in the same organization or enterprise can use the <code>inherit</code> keyword to implicitly pass the secrets.</p>
+<pre><code><span>jobs:</span>
+  <span>call-workflow-passing-data:</span>
+    <span>uses:</span> <span>octo-org/example-repo/.github/workflows/reusable-workflow.yml@main</span>
+    <span>with:</span>
+      <span>config-path:</span> <span>.github/labeler.yml</span>
+    <span>secrets:</span> <span>inherit</span>
+</code></pre>
+</li>
+</ol>
+<h3><a href="#example-reusable-workflow">Example reusable workflow</a></h3>
+<p>This reusable workflow file named <code>workflow-B.yml</code> (we'll refer to this later in the <a href="#example-caller-workflow">example caller workflow</a>) takes an input string and a secret from the caller workflow and uses them in an action.</p>
+<div>
+<header><span>YAML</span><pre>name: Reusable workflow example
+
+on:
+  workflow_call:
+    inputs:
+      config-path:
+        required: true
+        type: string
+    secrets:
+      token:
+        required: true
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/labeler@v4
+      with:
+        repo-token: ${{ secrets.token }}
+        configuration-path: ${{ inputs.config-path }}
+</pre></header><pre><code><span>name:</span> <span>Reusable</span> <span>workflow</span> <span>example</span>
+
+<span>on:</span>
+  <span>workflow_call:</span>
+    <span>inputs:</span>
+      <span>config-path:</span>
+        <span>required:</span> <span>true</span>
+        <span>type:</span> <span>string</span>
+    <span>secrets:</span>
+      <span>token:</span>
+        <span>required:</span> <span>true</span>
+
+<span>jobs:</span>
+  <span>triage:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>steps:</span>
+    <span>-</span> <span>uses:</span> <span>actions/labeler@v4</span>
+      <span>with:</span>
+        <span>repo-token:</span> <span>${{</span> <span>secrets.token</span> <span>}}</span>
+        <span>configuration-path:</span> <span>${{</span> <span>inputs.config-path</span> <span>}}</span>
+</code></pre>
+</div>
+<h2><a href="#calling-a-reusable-workflow">Calling a reusable workflow</a></h2>
+<p>You call a reusable workflow by using the <code>uses</code> keyword. Unlike when you are using actions within a workflow, you call reusable workflows directly within a job, and not from within job steps.</p>
+<p><a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_iduses"><code>jobs.&lt;job_id&gt;.uses</code></a></p>
+<p>You reference reusable workflow files using one of the following syntaxes:</p>
+<ul>
+<li>
+<code>{owner}/{repo}/.github/workflows/{filename}@{ref}</code> for reusable workflows in public and private repositories.</li>
+<li>
+<code>./.github/workflows/{filename}</code> for reusable workflows in the same repository.</li>
+</ul>
+<p>In the first option, <code>{ref}</code> can be a SHA, a release tag, or a branch name. If a release tag and a branch have the same name, the release tag takes precedence over the branch name. Using the commit SHA is the safest option for stability and security. For more information, see <a href="/en/actions/security-guides/security-hardening-for-github-actions#reusing-third-party-workflows">Security hardening for GitHub Actions</a>.</p>
+<p>If you use the second syntax option (without <code>{owner}/{repo}</code> and <code>@{ref}</code>) the called workflow is from the same commit as the caller workflow. Ref prefixes such as <code>refs/heads</code> and <code>refs/tags</code> are not allowed. You cannot use contexts or expressions in this keyword.</p>
+<p>You can call multiple workflows, referencing each in a separate job.</p>
+<pre><code><span>jobs:</span>
+  <span>call-workflow-1-in-local-repo:</span>
+    <span>uses:</span> <span>octo-org/this-repo/.github/workflows/workflow-1.yml@172239021f7ba04fe7327647b213799853a9eb89</span>
+  <span>call-workflow-2-in-local-repo:</span>
+    <span>uses:</span> <span>./.github/workflows/workflow-2.yml</span>
+  <span>call-workflow-in-another-repo:</span>
+    <span>uses:</span> <span>octo-org/another-repo/.github/workflows/workflow.yml@v1</span>
+</code></pre>
+<h3><a href="#passing-inputs-and-secrets-to-a-reusable-workflow">Passing inputs and secrets to a reusable workflow</a></h3>
+<p>To pass named inputs to a called workflow, use the <code>with</code> keyword in a job. Use the <code>secrets</code> keyword to pass named secrets. For inputs, the data type of the input value must match the type specified in the called workflow (either boolean, number, or string).</p>
+<pre><code><span>jobs:</span>
+  <span>call-workflow-passing-data:</span>
+    <span>uses:</span> <span>octo-org/example-repo/.github/workflows/reusable-workflow.yml@main</span>
+    <span>with:</span>
+      <span>config-path:</span> <span>.github/labeler.yml</span>
+    <span>secrets:</span>
+      <span>personal_access_token:</span> <span>${{</span> <span>secrets.token</span> <span>}}</span>
+</code></pre>
+<p>Workflows that call reusable workflows in the same organization or enterprise can use the <code>inherit</code> keyword to implicitly pass the secrets.</p>
+<pre><code><span>jobs:</span>
+  <span>call-workflow-passing-data:</span>
+    <span>uses:</span> <span>octo-org/example-repo/.github/workflows/reusable-workflow.yml@main</span>
+    <span>with:</span>
+      <span>config-path:</span> <span>.github/labeler.yml</span>
+    <span>secrets:</span> <span>inherit</span>
+</code></pre>
+<h3><a href="#using-a-matrix-strategy-with-a-reusable-workflow">Using a matrix strategy with a reusable workflow</a></h3>
+<p>Jobs using the matrix strategy can call a reusable workflow.</p>
+<p>A matrix strategy lets you use variables in a single job definition to automatically create multiple job runs that are based on the combinations of the variables. For example, you can use a matrix strategy to pass different inputs to a reusable workflow. For more information about matrices, see <a href="/en/actions/using-jobs/using-a-matrix-for-your-jobs">Running variations of jobs in a workflow</a>.</p>
+<p>This example job below calls a reusable workflow and references the matrix context by defining the variable <code>target</code> with the values <code>[dev, stage, prod]</code>. It will run three jobs, one for each value in the variable.</p>
+<div>
+<header><span>YAML</span><pre>jobs:
+  ReuseableMatrixJobForDeployment:
+    strategy:
+      matrix:
+        target: [dev, stage, prod]
+    uses: octocat/octo-repo/.github/workflows/deployment.yml@main
+    with:
+      target: ${{ matrix.target }}
+</pre></header><pre><code><span>jobs:</span>
+  <span>ReuseableMatrixJobForDeployment:</span>
+    <span>strategy:</span>
+      <span>matrix:</span>
+        <span>target:</span> [<span>dev</span>, <span>stage</span>, <span>prod</span>]
+    <span>uses:</span> <span>octocat/octo-repo/.github/workflows/deployment.yml@main</span>
+    <span>with:</span>
+      <span>target:</span> <span>${{</span> <span>matrix.target</span> <span>}}</span>
+</code></pre>
+</div>
+<h3><a href="#supported-keywords-for-jobs-that-call-a-reusable-workflow">Supported keywords for jobs that call a reusable workflow</a></h3>
+<p>When you call a reusable workflow, you can only use the following keywords in the job containing the call:</p>
+<ul>
+<li>
+<p><a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idname"><code>jobs.&lt;job_id&gt;.name</code></a></p>
+</li>
+<li>
+<p><a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_iduses"><code>jobs.&lt;job_id&gt;.uses</code></a></p>
+</li>
+<li>
+<p><a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idwith"><code>jobs.&lt;job_id&gt;.with</code></a></p>
+</li>
+<li>
+<p><a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idwithinput_id"><code>jobs.&lt;job_id&gt;.with.&lt;input_id&gt;</code></a></p>
+</li>
+<li>
+<p><a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idsecrets"><code>jobs.&lt;job_id&gt;.secrets</code></a></p>
+</li>
+<li>
+<p><a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idsecretssecret_id"><code>jobs.&lt;job_id&gt;.secrets.&lt;secret_id&gt;</code></a></p>
+</li>
+<li>
+<p><a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idsecretsinherit"><code>jobs.&lt;job_id&gt;.secrets.inherit</code></a></p>
+</li>
+<li>
+<p><a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstrategy"><code>jobs.&lt;job_id&gt;.strategy</code></a></p>
+</li>
+<li>
+<p><a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idneeds"><code>jobs.&lt;job_id&gt;.needs</code></a></p>
+</li>
+<li>
+<p><a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idif"><code>jobs.&lt;job_id&gt;.if</code></a></p>
+</li>
+<li>
+<p><a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idconcurrency"><code>jobs.&lt;job_id&gt;.concurrency</code></a></p>
+</li>
+<li>
+<p><a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idpermissions"><code>jobs.&lt;job_id&gt;.permissions</code></a></p>
+<div>
+<ul>
+<li>If <code>jobs.&lt;job_id&gt;.permissions</code> is not specified in the calling job, the called workflow will have the default permissions for the <code>GITHUB_TOKEN</code>. For more information, see <a href="/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token">Automatic token authentication</a>.</li>
+<li>The <code>GITHUB_TOKEN</code> permissions passed from the caller workflow can be only downgraded (not elevated) by the called workflow.</li>
+<li>If you use <code>jobs.&lt;job_id&gt;.concurrency.cancel-in-progress: true</code>, don't use the same value for <code>jobs.&lt;job_id&gt;.concurrency.group</code> in the called and caller workflows as this will cause the workflow that's already running to be cancelled. A called workflow uses the name of its caller workflow in ${{ github.workflow }}, so using this context as the value of <code>jobs.&lt;job_id&gt;.concurrency.group</code> in both caller and called workflows will cause the caller workflow to be cancelled when the called workflow runs.</li>
+</ul>
+</div>
+</li>
+</ul>
+<h3><a href="#example-caller-workflow">Example caller workflow</a></h3>
+<p>This workflow file calls two workflow files. The second of these, <code>workflow-B.yml</code> (shown in the <a href="#example-reusable-workflow">example reusable workflow</a>), is passed an input (<code>config-path</code>) and a secret (<code>token</code>).</p>
+<div>
+<header><span>YAML</span><pre>name: Call a reusable workflow
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  call-workflow:
+    uses: octo-org/example-repo/.github/workflows/workflow-A.yml@v1
+
+  call-workflow-passing-data:
+    permissions:
+      contents: read
+      pull-requests: write
+    uses: octo-org/example-repo/.github/workflows/workflow-B.yml@main
+    with:
+      config-path: .github/labeler.yml
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
+</pre></header><pre><code><span>name:</span> <span>Call</span> <span>a</span> <span>reusable</span> <span>workflow</span>
+
+<span>on:</span>
+  <span>pull_request:</span>
+    <span>branches:</span>
+      <span>-</span> <span>main</span>
+
+<span>jobs:</span>
+  <span>call-workflow:</span>
+    <span>uses:</span> <span>octo-org/example-repo/.github/workflows/workflow-A.yml@v1</span>
+
+  <span>call-workflow-passing-data:</span>
+    <span>permissions:</span>
+      <span>contents:</span> <span>read</span>
+      <span>pull-requests:</span> <span>write</span>
+    <span>uses:</span> <span>octo-org/example-repo/.github/workflows/workflow-B.yml@main</span>
+    <span>with:</span>
+      <span>config-path:</span> <span>.github/labeler.yml</span>
+    <span>secrets:</span>
+      <span>token:</span> <span>${{</span> <span>secrets.GITHUB_TOKEN</span> <span>}}</span>
+</code></pre>
+</div>
+<h2><a href="#nesting-reusable-workflows">Nesting reusable workflows</a></h2>
+<p>You can connect a maximum of four levels of workflows - that is, the top-level caller workflow and up to three levels of reusable workflows. For example: <em>caller-workflow.yml</em> → <em>called-workflow-1.yml</em> → <em>called-workflow-2.yml</em> → <em>called-workflow-3.yml</em>. Loops in the workflow tree are not permitted.</p>
+<p>From within a reusable workflow you can call another reusable workflow.</p>
+<div>
+<header><span>YAML</span><pre>name: Reusable workflow
+
+on:
+  workflow_call:
+
+jobs:
+  call-another-reusable:
+    uses: octo-org/example-repo/.github/workflows/another-reusable.yml@v1
+</pre></header><pre><code><span>name:</span> <span>Reusable</span> <span>workflow</span>
+
+<span>on:</span>
+  <span>workflow_call:</span>
+
+<span>jobs:</span>
+  <span>call-another-reusable:</span>
+    <span>uses:</span> <span>octo-org/example-repo/.github/workflows/another-reusable.yml@v1</span>
+</code></pre>
+</div>
+<h3><a href="#passing-secrets-to-nested-workflows">Passing secrets to nested workflows</a></h3>
+<p>You can use <code>jobs.&lt;job_id&gt;.secrets</code> in a calling workflow to pass named secrets to a directly called workflow. Alternatively, you can use <code>jobs.&lt;job_id&gt;.secrets.inherit</code> to pass all of the calling workflow's secrets to a directly called workflow. For more information, see the section <a href="/en/actions/using-workflows/reusing-workflows#passing-inputs-and-secrets-to-a-reusable-workflow">Reusing workflows</a> above, and the reference article <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idsecretsinherit">Workflow syntax for GitHub Actions</a>. Secrets are only passed to directly called workflow, so in the workflow chain A &gt; B &gt; C, workflow C will only receive secrets from A if they have been passed from A to B, and then from B to C.</p>
+<p>In the following example, workflow A passes all of its secrets to workflow B, by using the <code>inherit</code> keyword, but workflow B only passes one secret to workflow C. Any of the other secrets passed to workflow B are not available to workflow C.</p>
+<pre><code><span>jobs:</span>
+  <span>workflowA-calls-workflowB:</span>
+    <span>uses:</span> <span>octo-org/example-repo/.github/workflows/B.yml@main</span>
+    <span>secrets:</span> <span>inherit</span> <span># pass all secrets</span>
+</code></pre>
+<pre><code><span>jobs:</span>
+  <span>workflowB-calls-workflowC:</span>
+    <span>uses:</span> <span>different-org/example-repo/.github/workflows/C.yml@main</span>
+    <span>secrets:</span>
+      <span>repo-token:</span> <span>${{</span> <span>secrets.personal_access_token</span> <span>}}</span> <span># pass just this secret</span>
+</code></pre>
+<h3><a href="#access-and-permissions">Access and permissions</a></h3>
+<p>A workflow that contains nested reusable workflows will fail if any of the nested workflows is inaccessible to the initial caller workflow. For more information, see <a href="/en/actions/using-workflows/reusing-workflows#access-to-reusable-workflows">Reusing workflows</a>.</p>
+<p><code>GITHUB_TOKEN</code> permissions can only be the same or more restrictive in nested workflows. For example, in the workflow chain A &gt; B &gt; C, if workflow A has <code>package: read</code> token permission, then B and C cannot have <code>package: write</code> permission. For more information, see <a href="/en/actions/security-guides/automatic-token-authentication">Automatic token authentication</a>.</p>
+<p>For information on how to use the API to determine which workflow files were involved in a particular workflow run, see <a href="#monitoring-which-workflows-are-being-used">Monitoring which workflows are being used</a>.</p>
+<h2><a href="#using-outputs-from-a-reusable-workflow">Using outputs from a reusable workflow</a></h2>
+<p>A reusable workflow may generate data that you want to use in the caller workflow. To use these outputs, you must specify them as the outputs of the reusable workflow.</p>
+<p>If a reusable workflow that sets an output is executed with a matrix strategy, the output will be the output set by the last successful completing reusable workflow of the matrix which actually sets a value.
+That means if the last successful completing reusable workflow sets an empty string for its output, and the second last successful completing reusable workflow sets an actual value for its output, the output will contain the value of the second last completing reusable workflow.</p>
+<p>The following reusable workflow has a single job containing two steps. In each of these steps we set a single word as the output: "hello" and "world." In the <code>outputs</code> section of the job, we map these step outputs to job outputs called: <code>output1</code> and <code>output2</code>. In the <code>on.workflow_call.outputs</code> section we then define two outputs for the workflow itself, one called <code>firstword</code> which we map to <code>output1</code>, and one called <code>secondword</code> which we map to <code>output2</code>.</p>
+<p>The <code>value</code> must be set to the value of a job-level output within the called workflow. Step-level outputs must first be mapped to job-level outputs as shown below.</p>
+<p>For more information, see <a href="/en/actions/using-jobs/defining-outputs-for-jobs#overview">Passing information between jobs</a> and <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_calloutputs">Workflow syntax for GitHub Actions</a>.</p>
+<div>
+<header><span>YAML</span><pre>name: Reusable workflow
+
+on:
+  workflow_call:
+    # Map the workflow outputs to job outputs
+    outputs:
+      firstword:
+        description: "The first output string"
+        value: ${{ jobs.example_job.outputs.output1 }}
+      secondword:
+        description: "The second output string"
+        value: ${{ jobs.example_job.outputs.output2 }}
+
+jobs:
+  example_job:
+    name: Generate output
+    runs-on: ubuntu-latest
+    # Map the job outputs to step outputs
+    outputs:
+      output1: ${{ steps.step1.outputs.firstword }}
+      output2: ${{ steps.step2.outputs.secondword }}
+    steps:
+      - id: step1
+        run: echo "firstword=hello" &gt;&gt; $GITHUB_OUTPUT
+      - id: step2
+        run: echo "secondword=world" &gt;&gt; $GITHUB_OUTPUT
+</pre></header><pre><code><span>name:</span> <span>Reusable</span> <span>workflow</span>
+
+<span>on:</span>
+  <span>workflow_call:</span>
+    <span># Map the workflow outputs to job outputs</span>
+    <span>outputs:</span>
+      <span>firstword:</span>
+        <span>description:</span> <span>"The first output string"</span>
+        <span>value:</span> <span>${{</span> <span>jobs.example_job.outputs.output1</span> <span>}}</span>
+      <span>secondword:</span>
+        <span>description:</span> <span>"The second output string"</span>
+        <span>value:</span> <span>${{</span> <span>jobs.example_job.outputs.output2</span> <span>}}</span>
+
+<span>jobs:</span>
+  <span>example_job:</span>
+    <span>name:</span> <span>Generate</span> <span>output</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span># Map the job outputs to step outputs</span>
+    <span>outputs:</span>
+      <span>output1:</span> <span>${{</span> <span>steps.step1.outputs.firstword</span> <span>}}</span>
+      <span>output2:</span> <span>${{</span> <span>steps.step2.outputs.secondword</span> <span>}}</span>
+    <span>steps:</span>
+      <span>-</span> <span>id:</span> <span>step1</span>
+        <span>run:</span> <span>echo</span> <span>"firstword=hello"</span> <span>&gt;&gt;</span> <span>$GITHUB_OUTPUT</span>
+      <span>-</span> <span>id:</span> <span>step2</span>
+        <span>run:</span> <span>echo</span> <span>"secondword=world"</span> <span>&gt;&gt;</span> <span>$GITHUB_OUTPUT</span>
+</code></pre>
+</div>
+<p>We can now use the outputs in the caller workflow, in the same way you would use the outputs from a job within the same workflow. We reference the outputs using the names defined at the workflow level in the reusable workflow: <code>firstword</code> and <code>secondword</code>. In this workflow, <code>job1</code> calls the reusable workflow and <code>job2</code> prints the outputs from the reusable workflow ("hello world") to standard output in the workflow log.</p>
+<div>
+<header><span>YAML</span><pre>name: Call a reusable workflow and use its outputs
+
+on:
+  workflow_dispatch:
+
+jobs:
+  job1:
+    uses: octo-org/example-repo/.github/workflows/called-workflow.yml@v1
+
+  job2:
+    runs-on: ubuntu-latest
+    needs: job1
+    steps:
+      - run: echo ${{ needs.job1.outputs.firstword }} ${{ needs.job1.outputs.secondword }}
+</pre></header><pre><code><span>name:</span> <span>Call</span> <span>a</span> <span>reusable</span> <span>workflow</span> <span>and</span> <span>use</span> <span>its</span> <span>outputs</span>
+
+<span>on:</span>
+  <span>workflow_dispatch:</span>
+
+<span>jobs:</span>
+  <span>job1:</span>
+    <span>uses:</span> <span>octo-org/example-repo/.github/workflows/called-workflow.yml@v1</span>
+
+  <span>job2:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>needs:</span> <span>job1</span>
+    <span>steps:</span>
+      <span>-</span> <span>run:</span> <span>echo</span> <span>${{</span> <span>needs.job1.outputs.firstword</span> <span>}}</span> <span>${{</span> <span>needs.job1.outputs.secondword</span> <span>}}</span>
+</code></pre>
+</div>
+<p>For more information on using job outputs, see <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idoutputs">Workflow syntax for GitHub Actions</a>. If you want to share something other than a variable (e.g. a build artifact) between workflows, see <a href="/en/actions/using-workflows/storing-workflow-data-as-artifacts">Storing and sharing data from a workflow</a>.</p>
+<h2><a href="#monitoring-which-workflows-are-being-used">Monitoring which workflows are being used</a></h2>
+<p>Organizations that use GitHub Enterprise Cloud can interact with the audit log via the GitHub REST API to monitor which workflows are being used. For more information, see <a href="/en/enterprise-cloud@latest/organizations/keeping-your-organization-secure/managing-security-settings-for-your-organization/reviewing-the-audit-log-for-your-organization#using-the-audit-log-api">the GitHub Enterprise Cloud documentation</a>.</p>
+<h2><a href="#re-running-workflows-and-jobs-with-reusable-workflows">Re-running workflows and jobs with reusable workflows</a></h2>
+<p>Reusable workflows from public repositories can be referenced using a SHA, a release tag, or a branch name. For more information, see <a href="/en/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow">Reusing workflows</a>.</p>
+<p>When you re-run a workflow that uses a reusable workflow and the reference is not a SHA, there are some behaviors to be aware of:</p>
+<ul>
+<li>Re-running all jobs in a workflow will use the reusable workflow from the specified reference. For more information about re-running all jobs in a workflow, see <a href="/en/actions/managing-workflow-runs/re-running-workflows-and-jobs#re-running-all-the-jobs-in-a-workflow">Re-running workflows and jobs</a>.</li>
+<li>Re-running failed jobs or a specific job in a workflow will use the reusable workflow from the same commit SHA of the first attempt. For more information about re-running failed jobs in a workflow, see <a href="/en/actions/managing-workflow-runs/re-running-workflows-and-jobs#re-running-failed-jobs-in-a-workflow">Re-running workflows and jobs</a>. For more information about re-running a specific job in a workflow, see <a href="/en/actions/managing-workflow-runs/re-running-workflows-and-jobs#re-running-a-specific-job-in-a-workflow">Re-running workflows and jobs</a>.</li>
+</ul>
+<h2><a href="#next-steps">Next steps</a></h2>
+<p>To continue learning about GitHub Actions, see <a href="/en/actions/using-workflows/events-that-trigger-workflows">Events that trigger workflows</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

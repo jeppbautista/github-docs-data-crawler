@@ -1,0 +1,271 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Use cases and examples" href="/en/actions/use-cases-and-examples">Use cases and examples</a><span>/</span>
+</li>
+<li>
+<a title="Deployment" href="/en/actions/use-cases-and-examples/deploying">Deployment</a><span>/</span>
+</li>
+<li><a title="Deploying PHP to Azure App Service" href="/en/actions/use-cases-and-examples/deploying/deploying-php-to-azure-app-service">Deploying PHP to Azure App Service</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Deploying PHP to Azure App Service</h1></div></div>
+<div><div><p>You can deploy your PHP project to Azure App Service as part of your continuous deployment (CD) workflows.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#creating-the-workflow"><div><span>Creating the workflow</span></div></a></li>
+<li><a href="#additional-resources"><div><span>Additional resources</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>This guide explains how to use GitHub Actions to build and deploy a PHP project to <a href="https://azure.microsoft.com/services/app-service/">Azure App Service</a>.</p>
+<div>
+<p>
+If your GitHub Actions workflows need to access resources from a cloud provider that supports OpenID Connect (OIDC), you can configure your workflows to authenticate directly to the cloud provider. This will let you stop storing these credentials as long-lived secrets and provide other security benefits. For more information, see <a href="/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect">About security hardening with OpenID Connect</a>. and <a href="/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-azure">Configuring OpenID Connect in Azure</a>.</p>
+</div>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<p>Before creating your GitHub Actions workflow, you will first need to complete the following setup steps:</p>
+<ol>
+<li>
+<p>Create an Azure App Service plan.</p>
+<p>For example, you can use the Azure CLI to create a new App Service plan:</p>
+<div>
+<header><span>Bash</span><pre>az appservice plan create \
+   --resource-group MY_RESOURCE_GROUP \
+   --name MY_APP_SERVICE_PLAN \
+   --is-linux
+</pre></header><pre><code>az appservice plan create \
+   --resource-group MY_RESOURCE_GROUP \
+   --name MY_APP_SERVICE_PLAN \
+   --is-linux
+</code></pre>
+</div>
+<p>In the command above, replace <code>MY_RESOURCE_GROUP</code> with your pre-existing Azure Resource Group, and <code>MY_APP_SERVICE_PLAN</code> with a new name for the App Service plan.</p>
+<p>See the Azure documentation for more information on using the <a href="https://docs.microsoft.com/cli/azure/">Azure CLI</a>:</p>
+<ul>
+<li>For authentication, see <a href="https://docs.microsoft.com/cli/azure/authenticate-azure-cli">Sign in with Azure CLI</a>.</li>
+<li>If you need to create a new resource group, see <a href="https://docs.microsoft.com/cli/azure/group?view=azure-cli-latest#az_group_create">az group</a>.</li>
+</ul>
+</li>
+<li>
+<p>Create a web app.</p>
+<p>For example, you can use the Azure CLI to create an Azure App Service web app with a PHP runtime:</p>
+<div>
+<header><span>Bash</span><pre>az webapp create \
+    --name MY_WEBAPP_NAME \
+    --plan MY_APP_SERVICE_PLAN \
+    --resource-group MY_RESOURCE_GROUP \
+    --runtime "php|7.4"
+</pre></header><pre><code>az webapp create \
+    --name MY_WEBAPP_NAME \
+    --plan MY_APP_SERVICE_PLAN \
+    --resource-group MY_RESOURCE_GROUP \
+    --runtime <span>"php|7.4"</span>
+</code></pre>
+</div>
+<p>In the command above, replace the parameters with your own values, where <code>MY_WEBAPP_NAME</code> is a new name for the web app.</p>
+</li>
+<li>
+<p>Configure an Azure publish profile and create an <code>AZURE_WEBAPP_PUBLISH_PROFILE</code> secret.</p>
+<p>Generate your Azure deployment credentials using a publish profile. For more information, see <a href="https://docs.microsoft.com/azure/app-service/deploy-github-actions?tabs=applevel#generate-deployment-credentials">Generate deployment credentials</a> in the Azure documentation.</p>
+<p>In your GitHub repository, create a secret named <code>AZURE_WEBAPP_PUBLISH_PROFILE</code> that contains the contents of the publish profile. For more information on creating secrets, see <a href="/en/actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository">Using secrets in GitHub Actions</a>.</p>
+</li>
+<li>
+<p>Optionally, configure a deployment environment. Environments are used to describe a general deployment target like <code>production</code>, <code>staging</code>, or <code>development</code>. When a GitHub Actions workflow deploys to an environment, the environment is displayed on the main page of the repository. You can use environments to require approval for a job to proceed, restrict which branches can trigger a workflow, gate deployments with custom deployment protection rules, or limit access to secrets. For more information about creating environments, see <a href="/en/actions/deployment/targeting-different-environments/managing-environments-for-deployment">Managing environments for deployment</a>.</p>
+</li>
+</ol>
+<h2><a href="#creating-the-workflow">Creating the workflow</a></h2>
+<p>Once you've completed the prerequisites, you can proceed with creating the workflow.</p>
+<p>The following example workflow demonstrates how to build and deploy a PHP project to Azure App Service when there is a push to the <code>main</code> branch.</p>
+<p>Ensure that you set <code>AZURE_WEBAPP_NAME</code> in the workflow <code>env</code> key to the name of the web app you created. If the path to your project is not the repository root, change <code>AZURE_WEBAPP_PACKAGE_PATH</code> to the path to your project. If you use a version of PHP other than <code>8.x</code>, change<code>PHP_VERSION</code> to the version that you use.</p>
+<p>If you configured a deployment environment, change the value of <code>environment</code> to be the name of your environment. If you did not configure an environment or if your workflow is in a private repository and you do not use GitHub Enterprise Cloud, delete the <code>environment</code> key.</p>
+<div>
+<header><span>YAML</span><pre># This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# GitHub recommends pinning actions to a commit SHA.
+# To get a newer version, you will need to update the SHA.
+# You can also reference a tag or branch, but the action may change without warning.
+
+name: Build and deploy PHP app to Azure Web App
+
+env:
+  AZURE_WEBAPP_NAME: MY_WEBAPP_NAME   # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
+  PHP_VERSION: '8.x'                  # set this to the PHP version to use
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@1f2e3d4c5b6a7f8e9d0c1b2a3e4f5d6c7b8a9e0f
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+
+      - name: Check if composer.json exists
+        id: check_files
+        uses: andstor/file-existence-action@2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b
+        with:
+          files: 'composer.json'
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        if: steps.check_files.outputs.files_exists == 'true'
+        run: |
+          echo "dir=$(composer config cache-files-dir)" &gt;&gt; $GITHUB_OUTPUT
+
+      - name: Set up dependency caching for faster installs
+        uses: actions/cache@v4
+        if: steps.check_files.outputs.files_exists == 'true'
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Run composer install if composer.json exists
+        if: steps.check_files.outputs.files_exists == 'true'
+        run: composer validate --no-check-publish &amp;&amp; composer install --prefer-dist --no-progress
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: php-app
+          path: .
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: php-app
+
+      - name: 'Deploy to Azure Web App'
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@85270a1854658d167ab239bce43949edb336fa7c
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: .
+</pre></header><pre><code><span># This workflow uses actions that are not certified by GitHub.</span>
+<span># They are provided by a third-party and are governed by</span>
+<span># separate terms of service, privacy policy, and support</span>
+<span># documentation.</span>
+
+<span># GitHub recommends pinning actions to a commit SHA.</span>
+<span># To get a newer version, you will need to update the SHA.</span>
+<span># You can also reference a tag or branch, but the action may change without warning.</span>
+
+<span>name:</span> <span>Build</span> <span>and</span> <span>deploy</span> <span>PHP</span> <span>app</span> <span>to</span> <span>Azure</span> <span>Web</span> <span>App</span>
+
+<span>env:</span>
+  <span>AZURE_WEBAPP_NAME:</span> <span>MY_WEBAPP_NAME</span>   <span># set this to your application's name</span>
+  <span>AZURE_WEBAPP_PACKAGE_PATH:</span> <span>'.'</span>      <span># set this to the path to your web app project, defaults to the repository root</span>
+  <span>PHP_VERSION:</span> <span>'8.x'</span>                  <span># set this to the PHP version to use</span>
+
+<span>on:</span>
+  <span>push:</span>
+    <span>branches:</span>
+      <span>-</span> <span>main</span>
+
+<span>jobs:</span>
+  <span>build:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+
+    <span>steps:</span>
+      <span>-</span> <span>uses:</span> <span>actions/checkout@v4</span>
+
+      <span>-</span> <span>name:</span> <span>Setup</span> <span>PHP</span>
+        <span>uses:</span> <span>shivammathur/setup-php@1f2e3d4c5b6a7f8e9d0c1b2a3e4f5d6c7b8a9e0f</span>
+        <span>with:</span>
+          <span>php-version:</span> <span>${{</span> <span>env.PHP_VERSION</span> <span>}}</span>
+
+      <span>-</span> <span>name:</span> <span>Check</span> <span>if</span> <span>composer.json</span> <span>exists</span>
+        <span>id:</span> <span>check_files</span>
+        <span>uses:</span> <span>andstor/file-existence-action@2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b</span>
+        <span>with:</span>
+          <span>files:</span> <span>'composer.json'</span>
+
+      <span>-</span> <span>name:</span> <span>Get</span> <span>Composer</span> <span>Cache</span> <span>Directory</span>
+        <span>id:</span> <span>composer-cache</span>
+        <span>if:</span> <span>steps.check_files.outputs.files_exists</span> <span>==</span> <span>'true'</span>
+        <span>run:</span> <span>|
+          echo "dir=$(composer config cache-files-dir)" &gt;&gt; $GITHUB_OUTPUT
+</span>
+      <span>-</span> <span>name:</span> <span>Set</span> <span>up</span> <span>dependency</span> <span>caching</span> <span>for</span> <span>faster</span> <span>installs</span>
+        <span>uses:</span> <span>actions/cache@v4</span>
+        <span>if:</span> <span>steps.check_files.outputs.files_exists</span> <span>==</span> <span>'true'</span>
+        <span>with:</span>
+          <span>path:</span> <span>${{</span> <span>steps.composer-cache.outputs.dir</span> <span>}}</span>
+          <span>key:</span> <span>${{</span> <span>runner.os</span> <span>}}-composer-${{</span> <span>hashFiles('**/composer.lock')</span> <span>}}</span>
+          <span>restore-keys:</span> <span>|
+            ${{ runner.os }}-composer-
+</span>
+      <span>-</span> <span>name:</span> <span>Run</span> <span>composer</span> <span>install</span> <span>if</span> <span>composer.json</span> <span>exists</span>
+        <span>if:</span> <span>steps.check_files.outputs.files_exists</span> <span>==</span> <span>'true'</span>
+        <span>run:</span> <span>composer</span> <span>validate</span> <span>--no-check-publish</span> <span>&amp;&amp;</span> <span>composer</span> <span>install</span> <span>--prefer-dist</span> <span>--no-progress</span>
+
+      <span>-</span> <span>name:</span> <span>Upload</span> <span>artifact</span> <span>for</span> <span>deployment</span> <span>job</span>
+        <span>uses:</span> <span>actions/upload-artifact@v4</span>
+        <span>with:</span>
+          <span>name:</span> <span>php-app</span>
+          <span>path:</span> <span>.</span>
+
+  <span>deploy:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>needs:</span> <span>build</span>
+    <span>environment:</span>
+      <span>name:</span> <span>'production'</span>
+      <span>url:</span> <span>${{</span> <span>steps.deploy-to-webapp.outputs.webapp-url</span> <span>}}</span>
+
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>Download</span> <span>artifact</span> <span>from</span> <span>build</span> <span>job</span>
+        <span>uses:</span> <span>actions/download-artifact@v4</span>
+        <span>with:</span>
+          <span>name:</span> <span>php-app</span>
+
+      <span>-</span> <span>name:</span> <span>'Deploy to Azure Web App'</span>
+        <span>id:</span> <span>deploy-to-webapp</span>
+        <span>uses:</span> <span>azure/webapps-deploy@85270a1854658d167ab239bce43949edb336fa7c</span>
+        <span>with:</span>
+          <span>app-name:</span> <span>${{</span> <span>env.AZURE_WEBAPP_NAME</span> <span>}}</span>
+          <span>publish-profile:</span> <span>${{</span> <span>secrets.AZURE_WEBAPP_PUBLISH_PROFILE</span> <span>}}</span>
+          <span>package:</span> <span>.</span>
+</code></pre>
+</div>
+<h2><a href="#additional-resources">Additional resources</a></h2>
+<p>The following resources may also be useful:</p>
+<ul>
+<li>For the original workflow template, see <a href="https://github.com/actions/starter-workflows/blob/main/deployments/azure-webapps-php.yml"><code>azure-webapps-php.yml</code></a> in the GitHub Actions <code>starter-workflows</code> repository.</li>
+<li>The action used to deploy the web app is the official Azure <a href="https://github.com/Azure/webapps-deploy"><code>Azure/webapps-deploy</code></a> action.</li>
+<li>For more examples of GitHub Action workflows that deploy to Azure, see the <a href="https://github.com/Azure/actions-workflow-samples">actions-workflow-samples</a> repository.</li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

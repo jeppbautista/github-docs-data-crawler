@@ -1,0 +1,118 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Apps" href="/en/apps">Apps</a><span>/</span>
+</li>
+<li>
+<a title="Using GitHub Apps" href="/en/apps/using-github-apps">Using GitHub Apps</a><span>/</span>
+</li>
+<li><a title="Review installations" href="/en/apps/using-github-apps/reviewing-and-modifying-installed-github-apps">Review installations</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Reviewing and modifying installed GitHub Apps</h1></div></div>
+<div><div><p>You can review the permissions and change the repository access for GitHub Apps that you have installed. You can also temporarily or permanently prevent a GitHub App from accessing resources owned by your account or organization.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-installed-github-apps"><div><span>About installed GitHub Apps</span></div></a></li>
+<li><a href="#navigating-to-the-github-app-you-want-to-review-or-modify"><div><span>Navigating to the GitHub App you want to review or modify</span></div></a></li>
+<li><a href="#reviewing-permissions"><div><span>Reviewing permissions</span></div></a></li>
+<li><a href="#modifying-repository-access"><div><span>Modifying repository access</span></div></a></li>
+<li><a href="#blocking-access"><div><span>Blocking access</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-installed-github-apps">About installed GitHub Apps</a></h2>
+<p>GitHub users can install GitHub Apps on their personal account or organizations. When you install a GitHub App, you grant the app the organization-level and repository-level permissions that it requested. You also specify which repositories the GitHub App can access.</p>
+<p>You should periodically review the GitHub Apps that you have installed. You can review the permissions that you granted and change the repositories that the GitHub App can access. If you no longer use an app, consider suspending or deleting the GitHub App to block its access to resources owned by the account where it is installed.</p>
+<p>In addition to reviewing GitHub Apps that you have installed, you can review GitHub Apps that you have authorized to act on your behalf. For more information, see <a href="/en/apps/using-github-apps/reviewing-and-revoking-authorization-of-github-apps">Reviewing and revoking authorization of GitHub Apps</a>.</p>
+<h2><a href="#navigating-to-the-github-app-you-want-to-review-or-modify">Navigating to the GitHub App you want to review or modify</a></h2>
+<ul>
+<li>
+<p>For a GitHub App installed on an organization:</p>
+<ol>
+<li>In the top right corner of GitHub, click your profile photo, then click <strong>Your organizations</strong>.</li>
+<li>Next to your organization name, click <strong>Settings</strong>.</li>
+<li>In the side bar, under "Third-party Access," click <strong>GitHub Apps</strong>. A list of the GitHub Apps installed on your organization will be displayed.</li>
+<li>Next to the GitHub App you want to review or modify, click <strong>Configure</strong>.</li>
+</ol>
+</li>
+<li>
+<p>For a GitHub App installed on your personal account:</p>
+<ol>
+<li>In the upper-right corner of any page, click your profile photo, then click <strong>Settings</strong>.</li>
+<li>Under "Integrations," click <strong>Applications</strong>.</li>
+<li>Click <strong>Installed GitHub Apps</strong>. A list of the GitHub Apps installed on your personal account will be displayed.</li>
+<li>Next to the GitHub App you want to review or modify, click <strong>Configure</strong>.</li>
+</ol>
+</li>
+<li>
+<p>For a repository where a GitHub App was granted access:</p>
+<div>
+<p>
+In the following steps, you will be taken to the account settings for the organization or personal account where the GitHub App is installed. The settings will affect all repositories where the app is installed under that account, not just the repository where you navigated from.</p>
+</div>
+<ol>
+<li>
+<p>Navigate to the main page of the organization or repository.</p>
+</li>
+<li>
+<p>Click </p>
+</li>
+<li>
+<p>Under "Integrations," click <strong>GitHub Apps</strong>. A list of the GitHub Apps that have been granted access to your repository will be displayed.</p>
+</li>
+<li>
+<p>Next to the GitHub App you want to review or modify, click <strong>Configure</strong>.</p>
+</li>
+</ol>
+</li>
+</ul>
+<h2><a href="#reviewing-permissions">Reviewing permissions</a></h2>
+<ol>
+<li>Navigate to the GitHub App you want to modify. For more information, see <a href="#navigating-to-the-github-app-you-want-to-review-or-modify">Navigating to the GitHub App you want to review or modify</a>.</li>
+<li>Under "Permissions," review the permissions that the GitHub App has. For more information about what different permissions enable a GitHub App to do, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/choosing-permissions-for-a-github-app">Choosing permissions for a GitHub App</a>.</li>
+</ol>
+<h2><a href="#modifying-repository-access">Modifying repository access</a></h2>
+<ol>
+<li>
+<p>Navigate to the GitHub App you want to modify. For more information, see <a href="#navigating-to-the-github-app-you-want-to-review-or-modify">Navigating to the GitHub App you want to review or modify</a>.</p>
+</li>
+<li>
+<p>Under "Repository access," select <strong>All repositories</strong> or <strong>Only select repositories</strong>.</p>
+</li>
+<li>
+<p>If you selected <strong>Only select repositories</strong> in the previous step, under the <strong>Select repositories</strong> dropdown, select the repositories that you want the GitHub App to access.</p>
+<p>If the GitHub App creates any repositories later, the app will automatically be granted access to those repositories as well.</p>
+</li>
+<li>
+<p>Click <strong>Save</strong>.</p>
+</li>
+</ol>
+<h2><a href="#blocking-access">Blocking access</a></h2>
+<ol>
+<li>
+<p>Navigate to the GitHub App you want to modify. For more information, see <a href="#navigating-to-the-github-app-you-want-to-review-or-modify">Navigating to the GitHub App you want to review or modify</a>.</p>
+</li>
+<li>
+<p>To keep the GitHub App installed for future use but temporarily block it from accessing resources owned by your account, click <strong>Suspend</strong>.</p>
+<p>When you suspend a GitHub App, your authorization of the app (if the app is installed on your personal account) or the authorization of the app by members of your organization (if the app is installed on an organization) will not be affected. For more information, see <a href="/en/apps/using-github-apps/authorizing-github-apps">Authorizing GitHub Apps</a>.</p>
+<p>If the GitHub App was previously suspended, you can unsuspend the app by clicking <strong>Unsuspend</strong>. If the GitHub App was suspended by the GitHub App owner, then you cannot unsuspend the app.</p>
+</li>
+<li>
+<p>To uninstall a GitHub App and block it from accessing resources owned by your account, click <strong>Uninstall</strong>.</p>
+<p>When you uninstall a GitHub App from an account, the app will lose access to the resources in that account. The app might still be authorized to access organizations on your behalf, if it has installations in those organizations.</p>
+<p>If you want to stop an app from acting on your behalf anywhere on GitHub, also de-authorize the app in the "Authorized GitHub Apps" tab of your user account. This will fully deactivate any tokens issued to the app on your behalf. For more information, see <a href="/en/apps/using-github-apps/authorizing-github-apps">Authorizing GitHub Apps</a>.</p>
+</li>
+</ol>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/apps/using-github-apps/reviewing-and-revoking-authorization-of-github-apps">Reviewing and revoking authorization of GitHub Apps</a></li>
+<li><a href="/en/apps/using-github-apps/privileged-github-apps">Privileged GitHub Apps</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,133 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Apps" href="/en/apps">Apps</a><span>/</span>
+</li>
+<li>
+<a title="Creating GitHub Apps" href="/en/apps/creating-github-apps">Creating GitHub Apps</a><span>/</span>
+</li>
+<li>
+<a title="Registering a GitHub App" href="/en/apps/creating-github-apps/registering-a-github-app">Registering a GitHub App</a><span>/</span>
+</li>
+<li><a title="Register a GitHub App" href="/en/apps/creating-github-apps/registering-a-github-app/registering-a-github-app">Register a GitHub App</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Registering a GitHub App</h1></div></div>
+<div><div><p>You can register a GitHub App under your personal account or under any organization you own.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-registering-github-apps"><div><span>About registering GitHub Apps</span></div></a></li>
+<li><a href="#registering-a-github-app"><div><span>Registering a GitHub App</span></div></a></li>
+<li><a href="#next-steps"><div><span>Next steps</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-registering-github-apps">About registering GitHub Apps</a></h2>
+<p>You can register a GitHub App in a few different ways.</p>
+<ul>
+<li>Under your <strong>personal account</strong>.</li>
+<li>Under an <strong>organization you own</strong>.</li>
+<li>Under an <strong>organization</strong> that has granted you permission to manage all its apps. See <a href="/en/organizations/managing-programmatic-access-to-your-organization/adding-github-app-managers-in-your-organization">Adding and removing GitHub App managers in your organization</a>.</li>
+</ul>
+<p>A user or organization can register up to 100 GitHub Apps, but there is no limit to how many GitHub Apps can be installed on an account.</p>
+<h2><a href="#registering-a-github-app">Registering a GitHub App</a></h2>
+<ol>
+<li>
+<p>In the upper-right corner of any page on GitHub, click your profile photo.</p>
+</li>
+<li>
+<p>Navigate to your account settings.</p>
+<ul>
+<li>For an app owned by a personal account, click <strong>Settings</strong>.</li>
+<li>For an app owned by an organization:
+<ol>
+<li>Click <strong>Your organizations</strong>.</li>
+<li>To the right of the organization, click <strong>Settings</strong>.</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p>In the left sidebar, click </p>
+</li>
+<li>
+<p>In the left sidebar, click <strong>GitHub Apps</strong>.</p>
+</li>
+<li>
+<p>Click <strong>New GitHub App</strong>.</p>
+</li>
+<li>
+<p>Under "GitHub App name", enter a name for your app. You should choose a clear and short name. The name cannot be longer than 34 characters. Your app's name (converted to lowercase, with spaces replaced by <code>-</code>, and with special characters replaced) will be shown in the user interface when your app takes an action. For example, <code>My APp Näme</code> would display as <code>my-app-name</code>.</p>
+<p>The name must be unique across GitHub. You cannot use the same name as an existing GitHub account, unless it is your own user or organization name.</p>
+</li>
+<li>
+<p>Optionally, under "Description", type a description of your app. Users and organizations will see this description when they install your app.</p>
+</li>
+<li>
+<p>Under "Homepage URL", type the full URL to your app's website. If you don’t have a dedicated URL and your app's code is stored in a public repository, you can use that repository URL. Or, you can use the URL of the organization or user that owns the app.</p>
+</li>
+<li>
+<p>Optionally, under "Callback URL", enter the full URL to redirect to after a user authorizes the installation.</p>
+<p>You can enter up to 10 callback URLs. To add additional callback URLs, click <strong>Add callback URL</strong>.</p>
+<p>If your app does not need to act on behalf of a user (does not need to generate a user access token), this field will be ignored. If your app uses device flow instead of web application flow to generate a user access token, this field will be ignored.</p>
+<p>For more information about the callback URL, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/about-the-user-authorization-callback-url">About the user authorization callback URL</a>. For more information about generating a user access token to act on behalf of a user, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-with-a-github-app-on-behalf-of-a-user">Authenticating with a GitHub App on behalf of a user</a> and <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app">Generating a user access token for a GitHub App</a>.</p>
+</li>
+<li>
+<p>Optionally, to prevent user access tokens from expiring, deselect <strong>Expire user authorization tokens</strong>. GitHub strongly recommends that you leave this option selected. For more information about refreshing expired tokens and the benefits of user access tokens that expire, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/refreshing-user-access-tokens">Refreshing user access tokens</a>. If your app does not need to generate a user access token, this field will be ignored.</p>
+</li>
+<li>
+<p>Optionally, to prompt users to authorize your app when they install it, select <strong>Request user authorization (OAuth) during installation</strong>. If a user authorizes your app, your app can generate a user access token to make API requests on the user's behalf and attribute app activity to the user. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-with-a-github-app-on-behalf-of-a-user">Authenticating with a GitHub App on behalf of a user</a> and <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app">Generating a user access token for a GitHub App</a>.</p>
+</li>
+<li>
+<p>Optionally, if you want to use device flow to generate a user access token, select <strong>Enable Device Flow</strong>. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app">Generating a user access token for a GitHub App</a>.</p>
+</li>
+<li>
+<p>Optionally, under "Setup URL", enter the URL to redirect users to after they install your app. If additional setup is required after installation, you can use this URL to tell users what steps to take after installation. For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/about-the-setup-url">About the setup URL</a>.</p>
+<p>If you selected <strong>Request user authorization (OAuth) during installation</strong> in an earlier step, you will not be able to enter a URL here. Users will instead be redirected to the Callback URL as part of the authorization flow, where you can describe additional setup.</p>
+</li>
+<li>
+<p>Optionally, if you want to redirect users to the setup URL after they update an installation, select <strong>Redirect on update</strong>. An update includes adding or removing a repository for an installation. If "Setup URL" is blank, this will be ignored.</p>
+</li>
+<li>
+<p>Optionally, if you do not want your app to receive webhook events, deselect <strong>Active</strong>. For example, if your app will only be used for authentication or does not need to respond to webhooks, deselect this option. For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/using-webhooks-with-github-apps">Using webhooks with GitHub Apps</a>.</p>
+</li>
+<li>
+<p>If you selected <strong>Active</strong> in the previous step, under "Webhook URL", enter the URL that GitHub should send webhook events to. For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/using-webhooks-with-github-apps">Using webhooks with GitHub Apps</a>.</p>
+</li>
+<li>
+<p>Optionally, if you selected <strong>Active</strong> in the previous step, under "Webhook secret", enter a secret token to secure your webhooks. GitHub highly recommends that you set a webhook secret. For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/using-webhooks-with-github-apps">Using webhooks with GitHub Apps</a>.</p>
+</li>
+<li>
+<p>If you entered a webhook URL, under "SSL verification", select whether to enable SSL verification. GitHub highly recommends that you enable SSL verification.</p>
+</li>
+<li>
+<p>Under "Permissions", choose the permissions that your app needs. For each permission, select the dropdown menu and click <strong>Read-only</strong>, <strong>Read &amp; write</strong>, or <strong>No access</strong>. You should select the minimum permissions necessary for your app. For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/choosing-permissions-for-a-github-app">Choosing permissions for a GitHub App</a>.</p>
+</li>
+<li>
+<p>If you selected <strong>Active</strong> in the earlier step to indicate that your app should receive webhook events, under "Subscribe to events", select the webhook events that you want your app to receive. The permissions that you selected in the previous step determine what webhook events are available. For more information about each webhook event, see <a href="/en/webhooks-and-events/webhooks/webhook-events-and-payloads">Webhook events and payloads</a>.</p>
+</li>
+<li>
+<p>Under "Where can this GitHub App be installed?", select <strong>Only on this account</strong> or <strong>Any account</strong>. For more information on installation options, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/making-a-github-app-public-or-private">Making a GitHub App public or private</a>.</p>
+</li>
+<li>
+<p>Click <strong>Create GitHub App</strong>.</p>
+</li>
+</ol>
+<h2><a href="#next-steps">Next steps</a></h2>
+<p>After registering a GitHub App, you will want to write code to make your GitHub App do something. For examples of how to write code, see:</p>
+<ul>
+<li><a href="/en/apps/creating-github-apps/writing-code-for-a-github-app/quickstart">Quickstart for building GitHub Apps</a></li>
+<li><a href="/en/apps/creating-github-apps/guides/building-a-github-app-that-responds-to-webhook-events">Building a GitHub App that responds to webhook events</a></li>
+<li><a href="/en/apps/creating-github-apps/guides/building-a-login-with-github-button-with-a-github-app">Building a "Login with GitHub" button with a GitHub App</a></li>
+<li><a href="/en/apps/creating-github-apps/guides/building-a-cli-with-a-github-app">Building a CLI with a GitHub App</a></li>
+<li><a href="/en/apps/creating-github-apps/writing-code-for-a-github-app/making-authenticated-api-requests-with-a-github-app-in-a-github-actions-workflow">Making authenticated API requests with a GitHub App in a GitHub Actions workflow</a></li>
+</ul>
+<p>You should aim to follow best practices. For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/best-practices-for-creating-a-github-app">Best practices for creating a GitHub App</a>.</p>
+<p>Once your GitHub App is fully built, you can install your GitHub App and share your GitHub App with others. For more information, see <a href="/en/apps/using-github-apps/installing-your-own-github-app">Installing your own GitHub App</a> and <a href="/en/apps/sharing-github-apps/sharing-your-github-app">Sharing your GitHub App</a>.</p>
+<p>You can always make changes to the settings for your GitHub App. For more information, see <a href="/en/apps/maintaining-github-apps/modifying-a-github-app">Modifying a GitHub App registration</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

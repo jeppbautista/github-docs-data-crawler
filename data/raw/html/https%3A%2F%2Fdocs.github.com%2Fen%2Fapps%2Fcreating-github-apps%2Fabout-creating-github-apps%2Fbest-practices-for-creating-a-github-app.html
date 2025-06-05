@@ -1,0 +1,149 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Apps" href="/en/apps">Apps</a><span>/</span>
+</li>
+<li>
+<a title="Creating GitHub Apps" href="/en/apps/creating-github-apps">Creating GitHub Apps</a><span>/</span>
+</li>
+<li>
+<a title="About creating GitHub Apps" href="/en/apps/creating-github-apps/about-creating-github-apps">About creating GitHub Apps</a><span>/</span>
+</li>
+<li><a title="Best practices" href="/en/apps/creating-github-apps/about-creating-github-apps/best-practices-for-creating-a-github-app">Best practices</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Best practices for creating a GitHub App</h1></div></div>
+<div><div><p>Follow these best practices to improve the security and performance of your GitHub App.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#select-the-minimum-permissions-required"><div><span>Select the minimum permissions required</span></div></a></li>
+<li><a href="#stay-under-the-rate-limit"><div><span>Stay under the rate limit</span></div></a></li>
+<li><a href="#secure-your-apps-credentials"><div><span>Secure your app's credentials</span></div></a></li>
+<li><a href="#use-the-appropriate-token-type"><div><span>Use the appropriate token type</span></div></a></li>
+<li><a href="#check-authorization-thoroughly-durably-and-often"><div><span>Check authorization thoroughly, durably, and often</span></div></a></li>
+<li><a href="#expire-tokens"><div><span>Expire tokens</span></div></a></li>
+<li><a href="#cache-tokens"><div><span>Cache tokens</span></div></a></li>
+<li><a href="#make-a-plan-for-handling-security-breaches"><div><span>Make a plan for handling security breaches</span></div></a></li>
+<li><a href="#conduct-regular-vulnerability-scans"><div><span>Conduct regular vulnerability scans</span></div></a></li>
+<li><a href="#choose-an-appropriate-environment"><div><span>Choose an appropriate environment</span></div></a></li>
+<li><a href="#subscribe-to-the-minimum-webhooks"><div><span>Subscribe to the minimum webhooks</span></div></a></li>
+<li><a href="#use-a-webhook-secret"><div><span>Use a webhook secret</span></div></a></li>
+<li><a href="#allow-time-for-users-to-accept-new-permissions"><div><span>Allow time for users to accept new permissions</span></div></a></li>
+<li><a href="#use-services-in-a-secure-manner"><div><span>Use services in a secure manner</span></div></a></li>
+<li><a href="#add-logging-and-monitoring"><div><span>Add logging and monitoring</span></div></a></li>
+<li><a href="#enable-data-deletion"><div><span>Enable data deletion</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#select-the-minimum-permissions-required">Select the minimum permissions required</a></h2>
+<p>When you register a GitHub App, select the minimum permissions that your GitHub App needs. If any keys or tokens for your app become compromised, this will limit the amount of damage that can occur. For more information about how to choose permissions, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/choosing-permissions-for-a-github-app">Choosing permissions for a GitHub App</a>.</p>
+<p>When your GitHub App creates an installation access token or user access token, you can further limit the repositories that the app can access and the permissions that the token has. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-an-installation-access-token-for-a-github-app">Generating an installation access token for a GitHub App</a> and <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app">Generating a user access token for a GitHub App</a>.</p>
+<h2><a href="#stay-under-the-rate-limit">Stay under the rate limit</a></h2>
+<p>Subscribe to webhook events instead of polling the API for data. This will help your GitHub App stay within the API rate limit. For more information, see <a href="/en/apps/creating-github-apps/creating-github-apps/using-webhooks-with-github-apps">Using webhooks with GitHub Apps</a> and <a href="/en/apps/creating-github-apps/guides/building-a-github-app-that-responds-to-webhook-events">Building a GitHub App that responds to webhook events</a>.</p>
+<p>Consider using conditional requests to help you stay within the rate limit. For more information about conditional requests, see <a href="/en/rest/guides/best-practices-for-using-the-rest-api">Best practices for using the REST API</a>.</p>
+<p>If possible, consider using consolidated GraphQL queries instead of REST API requests to help you stay within rate limits. For more information, see <a href="/en/rest/overview/about-githubs-apis">Comparing GitHub's REST API and GraphQL API</a> and <a href="/en/graphql">GitHub GraphQL API documentation</a>.</p>
+<p>If you do hit a rate limit and need to retry an API request, use the <code>x-ratelimit-reset</code> or <code>Retry-After</code> response headers. If these headers are not available, wait for an exponentially increasing amount of time between retries, and throw an error after a specific number of retries. For more information, see <a href="/en/rest/guides/best-practices-for-integrators#dealing-with-rate-limits">Best practices for using the REST API</a>.</p>
+<h2><a href="#secure-your-apps-credentials">Secure your app's credentials</a></h2>
+<p>You can generate a private key and client secret for your GitHub App. With these credentials, your app can generate installation access tokens, user access tokens, and refresh tokens. These tokens can be used to make API requests on behalf of an app installation or user.</p>
+<p>You must store these credentials securely. The storage mechanism depends on your integrations architecture and the platform that it runs on. In general, you should use a storage mechanism that is intended to store sensitive data on the platform that you are using.</p>
+<h3><a href="#private-keys">Private keys</a></h3>
+<p>The private key for your GitHub App grants access to every account that the app is installed on.</p>
+<p>Consider storing your GitHub App's private key in a key vault, such as <a href="https://azure.microsoft.com/en-gb/products/key-vault">Azure Key Vault</a>, and making it sign-only.</p>
+<p>Alternatively, you can store the key as an environment variable. However, this is not as strong as storing the key in a key vault. If an attacker gains access to the environment, they can read the private key and gain persistent authentication as the GitHub App.</p>
+<p>You should never hard code your private key in your app, even if your code is stored in a private repository. If your app is a native client, client-side app, or runs on a user device (as opposed to running on your servers), you should never ship your private key with your app.</p>
+<p>You should not generate more private keys than you need. You should delete private keys that you no longer need. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/managing-private-keys-for-github-apps">Managing private keys for GitHub Apps</a>.</p>
+<h3><a href="#client-secrets">Client secrets</a></h3>
+<p>Client secrets are used to generate user access tokens for your app, unless your app uses device flow. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app#using-the-device-flow-to-generate-a-user-access-token">Generating a user access token for a GitHub App</a>.</p>
+<p>If your app is a website or web app, consider storing your client secret in a key vault, such as <a href="https://azure.microsoft.com/products/key-vault">Azure Key Vault</a>, or as an encrypted environment variable or secret on your server.</p>
+<p>If your app is a native client, client-side app, or runs on a user device (as opposed to running on your servers), you cannot secure your client secret. You should use caution if you plan to gate access to your own services based on tokens generated by your app because anyone can access the client secret to generate a token.</p>
+<h3><a href="#installation-access-tokens-user-access-tokens-and-refresh-tokens">Installation access tokens, user access tokens, and refresh tokens</a></h3>
+<p>Installation access tokens are used to make API requests on behalf of an app installation. User access tokens are used to make API requests on behalf of a user. Refresh tokens are used to regenerate user access tokens. Your app can use its private key to generate an installation access token. Your app can use its client secret to generate a user access token and refresh token.</p>
+<p>If your app is a website or web app, you should encrypt the tokens on your back end and ensure there is security around the systems that can access the tokens. Consider storing refresh tokens in a separate place from active access tokens.</p>
+<p>If your app is a native client, client-side app, or runs on a user device (as opposed to running on your servers), you may not be able to secure tokens as well as an app that runs on your servers. You should not generate installation access tokens since doing so requires a private key. Instead, you should generate user access tokens. You should store tokens via the mechanism recommended for your app's platform, and keep in mind that the storage mechanism may not be fully secure.</p>
+<h2><a href="#use-the-appropriate-token-type">Use the appropriate token type</a></h2>
+<p>GitHub Apps can generate installation access tokens or user access tokens in order to make authenticated API requests.</p>
+<p>Installation access tokens will attribute activity to your app. These are useful for automations that act independently of users.</p>
+<p>User access tokens will attribute activity to a user and to your app. These are useful for taking actions based on user input or on behalf of a user.</p>
+<p>An installation access token is restricted based on the GitHub App's permissions and access. A user access token is restricted based on both the GitHub App's permission and access and the user's permission and access. Therefore, if your GitHub App takes an action on behalf of a user, it should always use a user access token instead of an installation access token. Otherwise, your app might allow a user to see or do things that they shouldn't be able to see or do.</p>
+<p>Your app should never use a personal access token or GitHub password to authenticate.</p>
+<h2><a href="#check-authorization-thoroughly-durably-and-often">Check authorization thoroughly, durably, and often</a></h2>
+<p>After signing in a user, app developers must take additional steps to ensure that the user is meant to have access to the data in your system. You must routinely check that their memberships, access, and their current SSO status all allow access to your application and the resources it protects.</p>
+<h3><a href="#use-the-durable-unique-id-to-store-the-user">Use the durable, unique <code>id</code> to store the user</a></h3>
+<p>When a user signs in and performs actions in your application, you have to remember which user took that action in order to grant them access to the same resources the next time they sign in.</p>
+<p>To store users in your database correctly, always use the <code>id</code> of the user. This value will never change for the user or be used to point to a different user, so it ensures you are providing access to the user you intend. You can find a user's <code>id</code> with the <code>GET /user</code> REST API endpoint. See <a href="/en/rest/users/users#get-a-user">REST API endpoints for users</a>.</p>
+<p>If you store references to repositories, organizations, and enterprises, use their <code>id</code> as well to ensure your links to them remain accurate.</p>
+<p><em>Never</em> use identifiers that can change over time, including user handles, organization slugs, or email addresses.</p>
+<h3><a href="#validate-organization-access-for-every-new-authentication">Validate organization access for every new authentication</a></h3>
+<p>When you sign in a user, you should track which organizations the user's token is authorized for. This can change over time after sign in as users are removed from organizations. If an organization uses SAML SSO and a user has not performed SAML SSO, the user access token will not have access to that organization. You should use the <code>GET /user/installations</code> REST API endpoint regularly to verify which organizations a user access token has access to. If the user is not authorized to access an organization, you should prevent their access to organization owned data within your own application until they perform SAML SSO or rejoin the organization. For more information, see <a href="/en/rest/apps/installations#list-app-installations-accessible-to-the-user-access-token">REST API endpoints for GitHub App installations</a>.</p>
+<h3><a href="#store-user-data-with-organizational-and-enterprise-contexts">Store user data with organizational and enterprise contexts</a></h3>
+<p>Beyond tracking user identity via the <code>id</code> field, you should retain data for the organization or enterprise each user is operating under. This will help ensure you don't leak sensitive information if a user switches roles.</p>
+<p>For example:</p>
+<ol>
+<li>A user is in the <code>Mona</code> organization, which requires SAML SSO, and signs into your app after performing SSO. Your app now has access to whatever the user does within <code>Mona</code>.</li>
+<li>The user pulls a bunch of code out of a repository in <code>Mona</code> and saves it in your app for analysis.</li>
+<li>Later, the user switches jobs, and is removed from the <code>Mona</code> organization.</li>
+</ol>
+<p>When the user accesses your app, can they still see the code and analysis from the <code>Mona</code> organization in their user account?</p>
+<p>This is why it's critical to track the source of the data that your app is saving. Otherwise, your app is a data protection threat for organizations, and they're likely to ban your app if they can't trust that your app correctly protects their data.</p>
+<h2><a href="#expire-tokens">Expire tokens</a></h2>
+<p>GitHub strongly encourages you to use user access tokens that expire. If you previously opted out of using user access tokens that expire but want to re-enable this feature, see <a href="/en/apps/maintaining-github-apps/activating-optional-features-for-github-apps">Activating optional features for GitHub Apps</a>.</p>
+<p>Installation access tokens expire after one hour, expiring user access tokens expire after eight hours, and refresh tokens expire after six months. However, you can also revoke tokens as soon as you no longer need them. For more information, see <a href="/en/rest/apps/installations#revoke-an-installation-access-token"><code>DELETE /installation/token</code></a> to revoke an installation access token and <a href="/en/rest/apps/oauth-applications#delete-an-app-token"><code>DELETE /applications/{client_id}/token</code></a> to revoke a user access token.</p>
+<h2><a href="#cache-tokens">Cache tokens</a></h2>
+<p>User access tokens and installation access tokens are meant to be used until they expire. You should cache tokens that you create. Before you create a new token, check your cache to see if you already have a valid token. Reusing tokens will make your app faster since it will make fewer requests to generate tokens.</p>
+<h2><a href="#make-a-plan-for-handling-security-breaches">Make a plan for handling security breaches</a></h2>
+<p>You should have a plan in place so that you can handle any security breaches in a timely manner.</p>
+<p>In the event that your app's private key or secret is compromised, you will need to generate a new key or secret, update your app to use the new key or secret, and delete your old key or secret.</p>
+<p>In the event that installation access tokens, user access tokens, or refresh tokens are compromised, you should immediately revoke these tokens. For more information, see <a href="/en/rest/apps/installations#revoke-an-installation-access-token"><code>DELETE /installation/token</code></a> to revoke an installation access token and <a href="/en/rest/apps/oauth-applications#delete-an-app-token"><code>DELETE /applications/{client_id}/token</code></a> to revoke a user access token.</p>
+<h2><a href="#conduct-regular-vulnerability-scans">Conduct regular vulnerability scans</a></h2>
+<p>You should conduct regular vulnerability scans for your app. For example, you might set up code scanning and secret scanning for the repository that hosts your app's code. For more information, see <a href="/en/code-security/code-scanning/introduction-to-code-scanning/about-code-scanning">About code scanning</a> and <a href="/en/code-security/secret-scanning/introduction/about-secret-scanning">About secret scanning</a>.</p>
+<h2><a href="#choose-an-appropriate-environment">Choose an appropriate environment</a></h2>
+<p>If your app runs on a server, verify that your server environment is secure and that it can handle the volume of traffic that you expect for your app.</p>
+<h2><a href="#subscribe-to-the-minimum-webhooks">Subscribe to the minimum webhooks</a></h2>
+<p>Only subscribe to the webhook events that your app needs. This will help reduce latency since your app won't be receiving payloads that it doesn't need.</p>
+<h2><a href="#use-a-webhook-secret">Use a webhook secret</a></h2>
+<p>You should set a webhook secret for your GitHub App and verify that the signature of incoming webhook events matches the secret. This helps to ensure that the incoming webhook event is a valid GitHub event.</p>
+<p>For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/using-webhooks-with-github-apps#securing-your-webhooks-with-a-webhook-secret">Using webhooks with GitHub Apps</a>. For an example, see <a href="/en/apps/creating-github-apps/guides/building-a-github-app-that-responds-to-webhook-events">Building a GitHub App that responds to webhook events</a>.</p>
+<h2><a href="#allow-time-for-users-to-accept-new-permissions">Allow time for users to accept new permissions</a></h2>
+<p>When you add repository or organization permissions to your GitHub App, users who have the app installed on their personal account or organization will receive an email prompting them to review the new permissions. Until the user approves the new permissions, their app installation will only receive the old permissions.</p>
+<p>When you update permissions, you should consider making your app backwards compatible to give your users time to accept the new permissions. You can use the <a href="/en/webhooks-and-events/webhooks/webhook-events-and-payloads?actionType=new_permissions_accepted#installation">installation webhook with the <code>new_permissions_accepted</code> action property</a> to learn when users accept new permissions for your app.</p>
+<h2><a href="#use-services-in-a-secure-manner">Use services in a secure manner</a></h2>
+<p>If your app uses third-party services, they should be used in a secure manner:</p>
+<ul>
+<li>Any services used by your app should have a unique login and password.</li>
+<li>Apps should not share service accounts such as email or database services to manage your SaaS service.</li>
+<li>Only employees with administrative duties should have admin access to the infrastructure that hosts your app.</li>
+</ul>
+<h2><a href="#add-logging-and-monitoring">Add logging and monitoring</a></h2>
+<p>Consider adding logging and monitoring capabilities for your app. A security log could include:</p>
+<ul>
+<li>Authentication and authorization events</li>
+<li>Service configuration changes</li>
+<li>Object reads and writes</li>
+<li>User and group permission changes</li>
+<li>Elevation of role to admin</li>
+</ul>
+<p>Your logs should use consistent timestamping for each event and should record the users, IP addresses, or hostnames for all logged events.</p>
+<h2><a href="#enable-data-deletion">Enable data deletion</a></h2>
+<p>If your GitHub App is available to other users or organizations, you should give users and organization owners a way to delete their data. Users should not need to email or call a support person in order to delete their data.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li>
+<p><a href="/en/apps/publishing-apps-to-github-marketplace/creating-apps-for-github-marketplace/security-best-practices-for-apps">Security best practices for apps on GitHub Marketplace</a></p>
+</li>
+<li>
+<p><a href="/en/apps/publishing-apps-to-github-marketplace/creating-apps-for-github-marketplace/customer-experience-best-practices-for-apps">Customer experience best practices for apps</a></p>
+</li>
+<li>
+<p><a href="/en/webhooks/using-webhooks/best-practices-for-using-webhooks">Best practices for using webhooks</a></p>
+</li>
+<li>
+<p><a href="/en/rest/guides/best-practices-for-integrators">Best practices for using the REST API</a></p>
+</li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

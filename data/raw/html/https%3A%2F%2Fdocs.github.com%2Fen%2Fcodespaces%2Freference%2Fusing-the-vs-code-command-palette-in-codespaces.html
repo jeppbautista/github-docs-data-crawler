@@ -1,0 +1,70 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Reference" href="/en/codespaces/reference">Reference</a><span>/</span>
+</li>
+<li><a title="VS Code Command Palette" href="/en/codespaces/reference/using-the-vs-code-command-palette-in-codespaces">VS Code Command Palette</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Using the Visual Studio Code Command Palette in GitHub Codespaces</h1></div></div>
+<div><div><p>You can use the Command Palette feature of Visual Studio Code to access many commands in GitHub Codespaces.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-the-visual-studio-code-command-palette"><div><span>About the Visual Studio Code Command Palette</span></div></a></li>
+<li><a href="#accessing-the-vs-code-command-palette"><div><span>Accessing the VS Code Command Palette</span></div></a></li>
+<li><a href="#commands-for-codespaces"><div><span>Commands for Codespaces</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-the-visual-studio-code-command-palette">About the Visual Studio Code Command Palette</a></h2>
+<p>The VS Code Command Palette is one of the focal features of Visual Studio Code and is available for you to use in GitHub Codespaces. The Command Palette allows you to access many commands for GitHub Codespaces and VS Code. For more information on using the VS Code Command Palette, see <a href="https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette">User Interface</a> in the VS Code documentation.</p>
+<h2><a href="#accessing-the-vs-code-command-palette">Accessing the VS Code Command Palette</a></h2>
+<p>You can access the VS Code Command Palette in a number of ways.</p>
+<ul>
+<li>
+<p><kbd>Shift</kbd>+<kbd>Command</kbd>+<kbd>P</kbd> (Mac) / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> (Windows/Linux).</p>
+<p>Note that this command is a reserved keyboard shortcut in Firefox.</p>
+</li>
+<li>
+<p><kbd>F1</kbd></p>
+</li>
+<li>
+<p>From the Application Menu, click <strong>View &gt; Command Palette</strong>.</p>
+</li>
+</ul>
+<h2><a href="#commands-for-codespaces">Commands for Codespaces</a></h2>
+<p>To see all commands related to GitHub Codespaces, <a href="#accessing-the-vs-code-command-palette">access the VS Code Command Palette</a>, then start typing "Codespaces".</p>
+<p><picture><source><img src="/assets/cb-187285/images/help/codespaces/codespaces-command-palette.png" alt='Screenshot of the Command Palette with "codespaces" entered. The dropdown lists all commands that relate to GitHub Codespaces.'></source></picture></p>
+<h3><a href="#suspending-or-stopping-a-codespace">Suspending or stopping a codespace</a></h3>
+<p>If you add a new secret or change the machine type, you'll have to stop and restart the codespace for it to apply your changes.</p>
+<p>To suspend or stop your codespace's container, <a href="#accessing-the-vs-code-command-palette">access the VS Code Command Palette</a>, then start typing "stop". Select <strong>Codespaces: Stop Current Codespace</strong>.</p>
+<p><picture><source><img src="/assets/cb-9151/images/help/codespaces/codespaces-stop.png" alt='Screenshot of the Command Palette with the search text "stop" and the option "Codespaces: Stop Current Codespace."' width="614" height="68"></source></picture></p>
+<h3><a href="#adding-a-predefined-dev-container-configuration">Adding a predefined dev container configuration</a></h3>
+<p>To add a predefined dev container configuration, <a href="#accessing-the-vs-code-command-palette">access the VS Code Command Palette</a>, then start typing "add dev". Click <strong>Codespaces: Add Dev Container Configuration Files</strong>.</p>
+<p><picture><source><img src="/assets/cb-12613/images/help/codespaces/add-prebuilt-container-command.png" alt='Screenshot of the Command Palette, with "add dev" entered and "Codespaces: Add Dev Container Configuration Files" listed.' width="624" height="96"></source></picture></p>
+<h3><a href="#rebuilding-a-codespace">Rebuilding a codespace</a></h3>
+<p>If you add a dev container or edit any of the configuration files (<code>devcontainer.json</code> and <code>Dockerfile</code>), you'll have to rebuild your codespace for it to apply your changes.</p>
+<p>To rebuild your container, <a href="#accessing-the-vs-code-command-palette">access the VS Code Command Palette</a>, then start typing "rebuild". Select <strong>Codespaces: Rebuild Container</strong>.</p>
+<p><picture><source><img src="/assets/cb-22518/images/help/codespaces/codespaces-rebuild.png" alt='Screenshot of the Command Palette with the search text "rebuild" and the option "Codespaces: Rebuild Container."' width="720" height="106"></source></picture></p>
+<div>
+<p>
+You may occasionally want to perform a full rebuild to clear your cache and rebuild your container with fresh images. For more information, see <a href="/en/codespaces/developing-in-codespaces/rebuilding-the-container-in-a-codespace#about-rebuilding-a-container">Rebuilding the container in a codespace</a>.</p>
+</div>
+<h3><a href="#codespaces-logs">Codespaces logs</a></h3>
+<p>You can use the VS Code Command Palette to access the codespace creation logs, or you can use it export all logs.</p>
+<p>To retrieve the logs for GitHub Codespaces, <a href="#accessing-the-vs-code-command-palette">access the VS Code Command Palette</a>, then start typing "export". Select <strong>Codespaces: Export Logs</strong> to export all logs related to GitHub Codespaces or select <strong>Codespaces: View Creation Logs</strong> to view logs related to the setup.</p>
+<p><picture><source><img src="/assets/cb-7269/images/help/codespaces/codespaces-logs.png" alt='Screenshot of the Command Palette with the search text "export" and the option "Codespaces: Export Logs."' width="614" height="70"></source></picture></p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/codespaces/developing-in-a-codespace/using-github-codespaces-in-visual-studio-code">Using GitHub Codespaces in Visual Studio Code</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

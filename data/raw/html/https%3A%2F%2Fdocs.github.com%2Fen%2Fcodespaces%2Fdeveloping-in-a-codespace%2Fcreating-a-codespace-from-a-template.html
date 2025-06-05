@@ -1,0 +1,146 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Developing in a codespace" href="/en/codespaces/developing-in-a-codespace">Developing in a codespace</a><span>/</span>
+</li>
+<li><a title="Create a codespace from a template" href="/en/codespaces/developing-in-a-codespace/creating-a-codespace-from-a-template">Create a codespace from a template</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Creating a codespace from a template</h1></div></div>
+<div><div><p>If you're starting a new project, you can create a codespace from a blank template or choose a template specially designed for the type of work you want to do.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-templates-for-github-codespaces"><div><span>About templates for GitHub Codespaces</span></div></a></li>
+<li><a href="#creating-a-codespace-from-a-github-template"><div><span>Creating a codespace from a GitHub template</span></div></a></li>
+<li><a href="#creating-a-codespace-from-a-template-repository"><div><span>Creating a codespace from a template repository</span></div></a></li>
+<li><a href="#publishing-to-a-repository-on-github"><div><span>Publishing to a repository on GitHub</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-templates-for-github-codespaces">About templates for GitHub Codespaces</a></h2>
+<p>If you're starting a new project, you can get started with development work quickly by creating a codespace from a template. You'll be able to work on your project in a cloud-based development environment, save your files in the cloud, and publish your work to a new remote repository that you can share with others or clone to your local machine.</p>
+<p>You can start from a blank template, choose from templates maintained by GitHub for popular technologies such as React or Jupyter Notebook, or launch a codespace from any template repository on GitHub.</p>
+<p>With a blank template, you'll start with an empty directory, with access to cloud-based compute resources and the tools, languages, and runtime environments that come preinstalled with the default dev container image. With other templates, you'll get starter files for the technology you're working with, plus typically some extra files such as a README file, a <code>.gitignore</code> file, and dev container configuration files containing some custom environment configuration. For more information on dev containers and the default image, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers">Introduction to dev containers</a>.</p>
+<p>As an example, if you create a codespace from GitHub's React template, you'll arrive in a workspace containing template files for a simple application, such as <code>index.js</code>, <code>app.js</code>, and <code>package.json</code>. Shortly after the codespace opens, a development server will start up automatically, and you will be able to view the running application in a simple browser tab within the VS Code web client.</p>
+<p><picture><source><img src="/assets/cb-257825/images/help/codespaces/react-template.png" alt="Screenshot of VS Code's simple browser rendering the web application in GitHub's React template." width="720" height="409"></source></picture></p>
+<p>The files and configuration included in templates are defined in template repositories. The template repository is cloned into your codespace when you create the codespace. After that, the link is severed, and your codespace won't be linked to a remote repository until you publish to one.</p>
+<div>
+<p>
+To help people get started with your framework, library, or other project, you can set up a template repository for use with GitHub Codespaces. For more information, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/setting-up-your-repository/setting-up-a-template-repository-for-github-codespaces">Setting up a template repository for GitHub Codespaces</a>.</p>
+</div>
+<h2><a href="#creating-a-codespace-from-a-github-template">Creating a codespace from a GitHub template</a></h2>
+<p>Templates maintained by GitHub, including the blank template, are available from the "Your codespaces" page.</p>
+<ol>
+<li>
+<p>In the top-left corner of GitHub, select <a href="https://github.com/codespaces">github.com/codespaces</a>.</p>
+</li>
+<li>
+<p>To view the full list of templates, in the "Explore quick start templates" section, click <strong>See all</strong>.</p>
+<div><picture><source><img src="/assets/cb-56660/images/help/codespaces/codespace-templates-see-all.png" alt='Screenshot of the "Explore quick start templates" section. "See all" is highlighted with a dark orange outline.' width="720" height="289"></source></picture></div>
+</li>
+<li>
+<p>Optionally, to view the template repository containing the files for a template, click the name of the template.</p>
+<div><picture><source><img src="/assets/cb-49411/images/help/codespaces/react-template-name.png" alt='Screenshot of the "Explore quick start templates" section. Three templates are listed. The templates names are outlined in orange.' width="720" height="231"></source></picture></div>
+</li>
+<li>
+<p>Under the name of the template you want to launch, click <strong>Use this template</strong>.</p>
+</li>
+</ol>
+<p>When you create a new codespace from a template, it is always opened in the Visual Studio Code web client. You can reopen an existing codespace in any supported editor. For more information, see <a href="/en/codespaces/developing-in-codespaces/opening-an-existing-codespace">Opening an existing codespace</a>.</p>
+<h2><a href="#creating-a-codespace-from-a-template-repository">Creating a codespace from a template repository</a></h2>
+<p>You can create a codespace from any template repository, then publish your work to a new repository when you are ready. For more information on template repositories, see <a href="/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template#about-repository-templates">Creating a repository from a template</a>.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Click <strong>Use this template</strong>, then click <strong>Open in a codespace</strong>.</p>
+<div><picture><source><img src="/assets/cb-76823/images/help/repository/use-this-template-button.png" alt='Screenshot of the "Use this template" button and the dropdown menu expanded to show the "Open in a codespace" option.' width="400" height="169"></source></picture></div>
+<div>
+<p>
+If you're a maintainer of the template repository, and want to commit changes to the template repository itself, you should create a codespace from the <a href="/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository#creating-a-codespace-for-a-repository">Creating a codespace for a repository</a>.</p>
+</div>
+</li>
+</ol>
+<p>When you create a new codespace from a template, it is always opened in the Visual Studio Code web client. You can reopen an existing codespace in any supported editor. For more information, see <a href="/en/codespaces/developing-in-codespaces/opening-an-existing-codespace">Opening an existing codespace</a>.</p>
+<h2><a href="#publishing-to-a-repository-on-github">Publishing to a repository on GitHub</a></h2>
+<p>When you work in a codespace created from a template, your work is saved on a virtual machine in the cloud, but it is not stored in a repository on GitHub.</p>
+<p>You can save your files, close and stop your codespace, and come back to your work later. Typically, Git will come preinstalled, and the working directory will be automatically initialized as a Git repository unless you started from GitHub's blank template. This means you can immediately use Git for local source control, such as adding and committing files.</p>
+<p>However, if you delete an unpublished codespace, or if it's automatically deleted by being left unused for the duration of the retention period, then your work will be deleted too. To persist your work, and to allow others to work on your project, you will need to publish your codespace to a repository on GitHub.</p>
+<div>
+<p>
+If an unpublished codespace is currently billed to an organization, publishing the codespace transfers ownership and billing of the codespace to your personal account. See <a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/about-billing-for-github-codespaces#how-billing-is-handled-for-github-codespaces-templates">About billing for GitHub Codespaces</a>.</p>
+</div>
+<h3><a href="#publishing-from-vs-code">Publishing from VS Code</a></h3>
+<p>If you're working in a codespace, you can publish it from the VS Code web client or desktop application.</p>
+<ol>
+<li>
+<p>In the Activity Bar, click the <strong>Source Control</strong> view.</p>
+<div><picture><source><img src="/assets/cb-33788/images/help/codespaces/source-control-activity-bar-button.png" alt="Screenshot of the VS Code Activity Bar with the source control button highlighted with an orange outline." width="458" height="239"></source></picture></div>
+</li>
+<li>
+<p>To stage your changes, click <strong>+</strong> next to the file you've added or changed, or next to <strong>Changes</strong> if you've changed multiple files and you want to stage them all.</p>
+<div><picture><source><img src="/assets/cb-33843/images/help/codespaces/codespaces-commit-stage.png" alt='Screenshot of the "Source control" side bar with the staging button (a plus sign), to the right of "Changes," highlighted with a dark orange outline.' width="459" height="189"></source></picture></div>
+<div>
+<p>
+If you start from GitHub's blank template, you will not see a list of changes unless you have already initialized your directory as a Git repository. To publish codespaces created from the blank template, click <strong>Publish to GitHub</strong> in the "Source Control" view, then skip to step 5.</p>
+</div>
+</li>
+<li>
+<p>To commit your staged changes, type a commit message describing the change you've made, then click <strong>Commit</strong>.</p>
+<div><picture><source><img src="/assets/cb-38443/images/help/codespaces/vscode-commit-button.png" alt='Screenshot of the "Source control" side bar with a commit message and, below it, the "Commit" button both highlighted with a dark orange outline.' width="459" height="205"></source></picture></div>
+</li>
+<li>
+<p>Click <strong>Publish Branch</strong>.</p>
+<div><picture><source><img src="/assets/cb-15968/images/help/codespaces/vscode-publish-branch-button.png" alt='Screenshot of the "Source control" side bar showing the "Publish Branch" button.' width="436" height="177"></source></picture></div>
+</li>
+<li>
+<p>In the "Repository Name" dropdown, type a name for your new repository, then select <strong>Publish to GitHub private repository</strong> or <strong>Publish to GitHub public repository</strong>.</p>
+<div><picture><source><img src="/assets/cb-24667/images/help/codespaces/choose-new-repository.png" alt="Screenshot of the repository name dropdown in VS Code. Two options are shown, for publishing to a private or a public repository." width="627" height="108"></source></picture></div>
+<p>The owner of the new repository will be the GitHub account with which you created the codespace.</p>
+</li>
+<li>
+<p>Optionally, in the pop-up that appears in the lower right corner of the editor, click <strong>Open on GitHub</strong> to view the new repository on GitHub.</p>
+<div><picture><source><img src="/assets/cb-33916/images/help/codespaces/open-on-github.png" alt='Screenshot of a confirmation message for a successfully published repository, showing the "Open on GitHub" button.' width="626" height="159"></source></picture></div>
+</li>
+</ol>
+<p>When a codespace is published, you have access to a greater range of options to customize your GitHub Codespaces experience. For example, you can:</p>
+<ul>
+<li>Change the machine type of your codespace to make sure you're using resources appropriate for the work you're doing (see <a href="/en/codespaces/customizing-your-codespace/changing-the-machine-type-for-your-codespace">Changing the machine type for your codespace</a>).</li>
+<li>Allow GitHub to automatically use GPG to sign commits you make in your codespace (see <a href="/en/codespaces/managing-your-codespaces/managing-gpg-verification-for-github-codespaces">Managing GPG verification for GitHub Codespaces</a>).</li>
+<li>Share secrets with your codespace (see <a href="/en/codespaces/managing-your-codespaces/managing-your-account-specific-secrets-for-github-codespaces">Managing your account-specific secrets for GitHub Codespaces</a>).</li>
+</ul>
+<h3><a href="#publishing-from-github">Publishing from GitHub</a></h3>
+<p>You can publish an unpublished codespace from the "Your codespaces" page on GitHub. This is useful if you want to publish a codespace that you don't currently have open in your browser. If you do this, your work will be preserved in a repository, but there won't be a link between your existing codespace and the new repository. However, you can navigate to the new repository and create a codespace from there, and this codespace will be connected to the repository.</p>
+<ol>
+<li>
+<p>In the top-left corner of GitHub, select <a href="https://github.com/codespaces">github.com/codespaces</a>.</p>
+</li>
+<li>
+<p>Next to the unpublished codespace, click the ellipsis (<strong>...</strong>), then select <strong>Publish to a new repository</strong>.</p>
+<div><picture><source><img src="/assets/cb-24214/images/help/codespaces/publish-to-new-repository.png" alt='Screenshot of the dropdown menu for a codespace, showing the "Publish to a new repository" option.' width="365" height="209"></source></picture></div>
+</li>
+<li>
+<p>Choose a name for your new repository, set it as <strong>Public</strong> or <strong>Private</strong>, and click <strong>Create repository</strong>.</p>
+<div><picture><source><img src="/assets/cb-50266/images/help/codespaces/template-new-repository-settings.png" alt='Screenshot of the "Publish to a new repository" dropdown, with the "Name" field, "Public" and "Private" options, and "Create repository" button.'></source></picture></div>
+</li>
+<li>
+<p>Optionally, to view the new repository, click <strong>See repository</strong>.</p>
+</li>
+</ol>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository">Creating a codespace for a repository</a></li>
+<li><a href="/en/codespaces/about-codespaces/understanding-the-codespace-lifecycle">Understanding the codespace lifecycle</a></li>
+<li><a href="/en/codespaces/developing-in-a-codespace/using-source-control-in-your-codespace">Using source control in your codespace</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

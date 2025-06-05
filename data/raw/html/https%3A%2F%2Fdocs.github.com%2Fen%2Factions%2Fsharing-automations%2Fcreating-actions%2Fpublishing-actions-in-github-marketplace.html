@@ -1,0 +1,122 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Share automations" href="/en/actions/sharing-automations">Share automations</a><span>/</span>
+</li>
+<li>
+<a title="Create actions" href="/en/actions/sharing-automations/creating-actions">Create actions</a><span>/</span>
+</li>
+<li><a title="Publish in GitHub Marketplace" href="/en/actions/sharing-automations/creating-actions/publishing-actions-in-github-marketplace">Publish in GitHub Marketplace</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Publishing actions in GitHub Marketplace</h1></div></div>
+<div><div><p>You can publish actions in GitHub Marketplace and share actions you've created with the GitHub community.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-publishing-actions"><div><span>About publishing actions</span></div></a></li>
+<li><a href="#publishing-an-action"><div><span>Publishing an action</span></div></a></li>
+<li><a href="#removing-an-action-from-github-marketplace"><div><span>Removing an action from GitHub Marketplace</span></div></a></li>
+<li><a href="#transferring-an-action-repository"><div><span>Transferring an action repository</span></div></a></li>
+<li><a href="#about-badges-in-github-marketplace"><div><span>About badges in GitHub Marketplace</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>You must accept the terms of service to publish actions in GitHub Marketplace.</p>
+<h2><a href="#about-publishing-actions">About publishing actions</a></h2>
+<p>Before you can publish an action, you'll need to create an action in your repository. For more information, see <a href="/en/actions/creating-actions">Sharing automations</a>.</p>
+<p>When you plan to publish your action to GitHub Marketplace, you'll need to ensure that the repository only includes the metadata file, code, and files necessary for the action. Creating a single repository for the action allows you to tag, release, and package the code in a single unit. GitHub also uses the action's metadata on your GitHub Marketplace page.</p>
+<p>Actions are published to GitHub Marketplace immediately and aren't reviewed by GitHub as long as they meet these requirements:</p>
+<ul>
+<li>The action must be in a public repository.</li>
+<li>Each repository must contain a single action metadata file (<code>action.yml</code> or <code>action.yaml</code>) at the root.
+<ul>
+<li>Repositories may include other actions metadata files in sub-folders, but they will not be automatically listed in the marketplace.</li>
+</ul>
+</li>
+<li>Each repository must <em>not</em> contain any workflow files.</li>
+<li>The <code>name</code> in the action's metadata file must be unique.
+<ul>
+<li>The <code>name</code> cannot match an existing action name published on GitHub Marketplace.</li>
+<li>The <code>name</code> cannot match a user or organization on GitHub, unless the user or organization owner is publishing the action. For example, only the GitHub organization can publish an action named <code>github</code>.</li>
+<li>The <code>name</code> cannot match an existing GitHub Marketplace category.</li>
+<li>GitHub reserves the names of GitHub features.</li>
+</ul>
+</li>
+</ul>
+<h2><a href="#publishing-an-action">Publishing an action</a></h2>
+<p>You can add the action you've created to GitHub Marketplace by tagging it as a new release and publishing it.</p>
+<p>To draft a new release and publish the action to GitHub Marketplace, follow these instructions:</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Navigate to the action metadata file in your repository (<code>action.yml</code>), and you'll see a banner to publish the action to GitHub Marketplace. Click <strong>Draft a release</strong>.</p>
+</li>
+<li>
+<p>Under "Release Action", select <strong>Publish this Action to the GitHub Marketplace</strong>.</p>
+<div>
+<p>
+The "Publish" checkbox is disabled if the account that owns the repository has not yet accepted the GitHub Marketplace Developer Agreement. If you own the repository or are an organization owner, click the link to "accept the GitHub Marketplace Developer Agreement", then accept the agreement. If there is no link, send the organization owner a link to this "Release Action" page and ask them to accept the agreement.</p>
+</div>
+</li>
+<li>
+<p>If the labels in your metadata file contain any problems, you will see an error message or a warning message. Address them by updating your metadata file. Once complete, you will see an "Everything looks good!" message.</p>
+</li>
+<li>
+<p>Select the <strong>Primary Category</strong> dropdown menu and click a category that will help people find your action in GitHub Marketplace.</p>
+</li>
+<li>
+<p>Optionally, select the <strong>Another Category</strong> dropdown menu and click a secondary category.</p>
+</li>
+<li>
+<p>In the tag field, type a version for your action. This helps people know what changes or features the release includes. People will see the version in the action's dedicated GitHub Marketplace page.</p>
+</li>
+<li>
+<p>In the title field, type a release title.</p>
+</li>
+<li>
+<p>Complete all other fields and click <strong>Publish release</strong>. Publishing requires you to use two-factor authentication. For more information, see <a href="/en/authentication/securing-your-account-with-two-factor-authentication-2fa/configuring-two-factor-authentication">Configuring two-factor authentication</a>.</p>
+</li>
+</ol>
+<h2><a href="#removing-an-action-from-github-marketplace">Removing an action from GitHub Marketplace</a></h2>
+<p>To remove a published action from GitHub Marketplace, you'll need to update each published release. Perform the following steps for each release of the action you've published to GitHub Marketplace.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>To the right of the list of files, click <strong>Releases</strong>.</p>
+<div><picture><source><img src="/assets/cb-90524/images/help/releases/release-link.png" alt='Screenshot of the main page of a repository. A link, labeled "Releases", is highlighted with an orange outline.' width="1072" height="1220"></source></picture></div>
+</li>
+<li>
+<p>Next to the release you want to edit, click </p>
+<div><picture><source><img src="/assets/cb-33857/images/help/releases/edit-release-pencil.png" alt="Screenshot of a release in the releases list. A pencil icon is highlighted with an orange outline." width="569" height="304"></source></picture></div>
+</li>
+<li>
+<p>Select <strong>Publish this action to the GitHub Marketplace</strong> to remove the check from the box.</p>
+</li>
+<li>
+<p>Click <strong>Update release</strong> at the bottom of the page.</p>
+</li>
+</ol>
+<h2><a href="#transferring-an-action-repository">Transferring an action repository</a></h2>
+<p>You can transfer an action repository to another user or organization. For more information, see <a href="/en/repositories/creating-and-managing-repositories/transferring-a-repository">Transferring a repository</a>.</p>
+<p>When a repository admin transfers an action repository, GitHub automatically creates a redirect from the previous URL to the new URL, meaning workflows that use the affected action do not need to be updated.</p>
+<p>Actions published on GitHub Marketplace are linked to a repository by their unique <code>name</code> identifier, meaning you can publish new releases of an action from the transferred repository under the same GitHub Marketplace listing. If an action repository is deleted, the GitHub Marketplace listing is also deleted, and the unique <code>name</code> identifier becomes available.</p>
+<div>
+<p>
+The "Verified" badge seen on an organization's GitHub profile is different from the verified creator badge on GitHub Marketplace. If you transfer an action repository, the GitHub Marketplace listing will lose the verified creator badge unless the new owner is also a verified creator.</p>
+</div>
+<h2><a href="#about-badges-in-github-marketplace">About badges in GitHub Marketplace</a></h2>
+<p>Actions with the <a href="mailto:partnerships@github.com"></a><a href="mailto:partnerships@github.com">partnerships@github.com</a> to request the verified creator badge.</p>
+<p><picture><source><img src="/assets/cb-15807/images/marketplace/verified-creator-badge-for-actions.png" alt="Screenshot of GitHub Actions with the verified creator badge." width="505" height="97"></source></picture></p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

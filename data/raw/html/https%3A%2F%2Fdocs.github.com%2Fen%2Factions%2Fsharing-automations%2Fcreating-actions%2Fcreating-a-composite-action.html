@@ -1,0 +1,397 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Share automations" href="/en/actions/sharing-automations">Share automations</a><span>/</span>
+</li>
+<li>
+<a title="Create actions" href="/en/actions/sharing-automations/creating-actions">Create actions</a><span>/</span>
+</li>
+<li><a title="Create a composite action" href="/en/actions/sharing-automations/creating-actions/creating-a-composite-action">Create a composite action</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Creating a composite action</h1></div></div>
+<div>
+<div><p>In this guide, you'll learn how to build a composite action.</p></div>
+<div>
+<h2>Platform navigation</h2>
+<nav><ul>
+<li><a href="?platform=mac"><span>Mac</span></a></li>
+<li><a href="?platform=windows"><span>Windows</span></a></li>
+<li><a href="?platform=linux"><span>Linux</span></a></li>
+</ul></nav>
+</div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#creating-an-action-metadata-file"><div><span>Creating an action metadata file</span></div></a></li>
+<li><a href="#testing-out-your-action-in-a-workflow"><div><span>Testing out your action in a workflow</span></div></a></li>
+<li><a href="#creating-a-composite-action-within-the-same-repository"><div><span>Creating a composite action within the same repository</span></div></a></li>
+<li><a href="#example-composite-actions-on-github"><div><span>Example composite actions on GitHub</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>In this guide, you'll learn about the basic components needed to create and use a packaged composite action. To focus this guide on the components needed to package the action, the functionality of the action's code is minimal. The action prints "Hello World" and then "Goodbye", or if you provide a custom name, it prints "Hello [who-to-greet]" and then "Goodbye". The action also maps a random number to the <code>random-number</code> output variable, and runs a script named <code>goodbye.sh</code>.</p>
+<p>Once you complete this project, you should understand how to build your own composite action and test it in a workflow.</p>
+<div>
+<p>
+When creating workflows and actions, you should always consider whether your code might execute untrusted input from possible attackers. Certain contexts should be treated as untrusted input, as an attacker could insert their own malicious content. For more information, see <a href="/en/actions/security-guides/security-hardening-for-github-actions#understanding-the-risk-of-script-injections">Security hardening for GitHub Actions</a>.</p>
+</div>
+<h3><a href="#composite-actions-and-reusable-workflows">Composite actions and reusable workflows</a></h3>
+<p>Composite actions allow you to collect a series of workflow job steps into a single action which you can then run as a single job step in multiple workflows. Reusable workflows provide another way of avoiding duplication, by allowing you to run a complete workflow from within other workflows. For more information, see <a href="/en/actions/using-workflows/avoiding-duplication">Avoiding duplication</a>.</p>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<div>
+<p>
+This example explains how to create a composite action within a separate repository. However, it is possible to create a composite action within the same repository. For more information, see <a href="/en/actions/creating-actions/creating-a-composite-action#creating-a-composite-action-within-the-same-repository">Creating a composite action</a>.</p>
+</div>
+<p>Before you begin, you'll create a repository on GitHub.</p>
+<ol>
+<li>
+<p>Create a new public repository on GitHub. You can choose any repository name, or use the following <code>hello-world-composite-action</code> example. You can add these files after your project has been pushed to GitHub. For more information, see <a href="/en/repositories/creating-and-managing-repositories/creating-a-new-repository">Creating a new repository</a>.</p>
+</li>
+<li>
+<p>Clone your repository to your computer. For more information, see <a href="/en/repositories/creating-and-managing-repositories/cloning-a-repository">Cloning a repository</a>.</p>
+</li>
+<li>
+<p>From your terminal, change directories into your new repository.</p>
+<div>
+<header><span>Shell</span><pre>cd hello-world-composite-action
+</pre></header><pre><code>cd hello-world-composite-action
+</code></pre>
+</div>
+</li>
+<li>
+<p>In the <code>hello-world-composite-action</code> repository, create a new file called <code>goodbye.sh</code> with example code:</p>
+<div>
+<header><span>Shell</span><pre>echo "echo Goodbye" &gt; goodbye.sh
+</pre></header><pre><code>echo "echo Goodbye" &gt; goodbye.sh
+</code></pre>
+</div>
+</li>
+<li>
+<p>From your terminal, make <code>goodbye.sh</code> executable.</p>
+<div>
+<div>
+<header><span>Shell</span><pre>chmod +x goodbye.sh
+</pre></header><pre><code>chmod +x goodbye.sh
+</code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>Shell</span><pre>chmod +x goodbye.sh
+</pre></header><pre><code>chmod +x goodbye.sh
+</code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>Shell</span><pre>git add --chmod=+x -- goodbye.sh
+</pre></header><pre><code>git add --chmod=+x -- goodbye.sh
+</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>From your terminal, check in your <code>goodbye.sh</code> file.</p>
+<div>
+<div>
+<header><span>Shell</span><pre>git add goodbye.sh
+git commit -m "Add goodbye script"
+git push
+</pre></header><pre><code>git add goodbye.sh
+git commit -m "Add goodbye script"
+git push
+</code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>Shell</span><pre>git add goodbye.sh
+git commit -m "Add goodbye script"
+git push
+</pre></header><pre><code>git add goodbye.sh
+git commit -m "Add goodbye script"
+git push
+</code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>Shell</span><pre>git commit -m "Add goodbye script"
+git push
+</pre></header><pre><code>git commit -m "Add goodbye script"
+git push
+</code></pre>
+</div>
+</div>
+</li>
+</ol>
+<h2><a href="#creating-an-action-metadata-file">Creating an action metadata file</a></h2>
+<ol>
+<li>
+<p>In the <code>hello-world-composite-action</code> repository, create a new file called <code>action.yml</code> and add the following example code. For more information about this syntax, see <a href="/en/actions/creating-actions/metadata-syntax-for-github-actions#runs-for-composite-actions">Metadata syntax for GitHub Actions</a>.</p>
+<div>
+<header><span>YAML</span><pre>name: 'Hello World'
+description: 'Greet someone'
+inputs:
+  who-to-greet:  # id of input
+    description: 'Who to greet'
+    required: true
+    default: 'World'
+outputs:
+  random-number:
+    description: "Random number"
+    value: ${{ steps.random-number-generator.outputs.random-number }}
+runs:
+  using: "composite"
+  steps:
+    - name: Set Greeting
+      run: echo "Hello $INPUT_WHO_TO_GREET."
+      shell: bash
+      env:
+        INPUT_WHO_TO_GREET: ${{ inputs.who-to-greet }}
+
+    - name: Random Number Generator
+      id: random-number-generator
+      run: echo "random-number=$(echo $RANDOM)" &gt;&gt; $GITHUB_OUTPUT
+      shell: bash
+
+    - name: Set GitHub Path
+      run: echo "$GITHUB_ACTION_PATH" &gt;&gt; $GITHUB_PATH
+      shell: bash
+      env:
+        GITHUB_ACTION_PATH: ${{ github.action_path }}
+
+    - name: Run goodbye.sh
+      run: goodbye.sh
+      shell: bash
+
+</pre></header><pre><code><span>name:</span> <span>'Hello World'</span>
+<span>description:</span> <span>'Greet someone'</span>
+<span>inputs:</span>
+  <span>who-to-greet:</span>  <span># id of input</span>
+    <span>description:</span> <span>'Who to greet'</span>
+    <span>required:</span> <span>true</span>
+    <span>default:</span> <span>'World'</span>
+<span>outputs:</span>
+  <span>random-number:</span>
+    <span>description:</span> <span>"Random number"</span>
+    <span>value:</span> <span>${{</span> <span>steps.random-number-generator.outputs.random-number</span> <span>}}</span>
+<span>runs:</span>
+  <span>using:</span> <span>"composite"</span>
+  <span>steps:</span>
+    <span>-</span> <span>name:</span> <span>Set</span> <span>Greeting</span>
+      <span>run:</span> <span>echo</span> <span>"Hello $INPUT_WHO_TO_GREET."</span>
+      <span>shell:</span> <span>bash</span>
+      <span>env:</span>
+        <span>INPUT_WHO_TO_GREET:</span> <span>${{</span> <span>inputs.who-to-greet</span> <span>}}</span>
+
+    <span>-</span> <span>name:</span> <span>Random</span> <span>Number</span> <span>Generator</span>
+      <span>id:</span> <span>random-number-generator</span>
+      <span>run:</span> <span>echo</span> <span>"random-number=$(echo $RANDOM)"</span> <span>&gt;&gt;</span> <span>$GITHUB_OUTPUT</span>
+      <span>shell:</span> <span>bash</span>
+
+    <span>-</span> <span>name:</span> <span>Set</span> <span>GitHub</span> <span>Path</span>
+      <span>run:</span> <span>echo</span> <span>"$GITHUB_ACTION_PATH"</span> <span>&gt;&gt;</span> <span>$GITHUB_PATH</span>
+      <span>shell:</span> <span>bash</span>
+      <span>env:</span>
+        <span>GITHUB_ACTION_PATH:</span> <span>${{</span> <span>github.action_path</span> <span>}}</span>
+
+    <span>-</span> <span>name:</span> <span>Run</span> <span>goodbye.sh</span>
+      <span>run:</span> <span>goodbye.sh</span>
+      <span>shell:</span> <span>bash</span>
+
+</code></pre>
+</div>
+<p>This file defines the <code>who-to-greet</code> input, maps the random generated number to the <code>random-number</code> output variable, adds the action's path to the runner system path (to locate the <code>goodbye.sh</code> script during execution), and runs the <code>goodbye.sh</code> script.</p>
+<p>For more information about managing outputs, see <a href="/en/actions/creating-actions/metadata-syntax-for-github-actions#outputs-for-composite-actions">Metadata syntax for GitHub Actions</a>.</p>
+<p>For more information about how to use <code>github.action_path</code>, see <a href="/en/actions/learn-github-actions/contexts#github-context">Accessing contextual information about workflow runs</a>.</p>
+</li>
+<li>
+<p>From your terminal, check in your <code>action.yml</code> file.</p>
+<div>
+<header><span>Shell</span><pre>git add action.yml
+git commit -m "Add action"
+git push
+</pre></header><pre><code>git add action.yml
+git commit -m "Add action"
+git push
+</code></pre>
+</div>
+</li>
+<li>
+<p>From your terminal, add a tag. This example uses a tag called <code>v1</code>. For more information, see <a href="/en/actions/creating-actions/about-custom-actions#using-release-management-for-actions">About custom actions</a>.</p>
+<div>
+<header><span>Shell</span><pre>git tag -a -m "Description of this release" v1
+git push --follow-tags
+</pre></header><pre><code>git tag -a -m "Description of this release" v1
+git push --follow-tags
+</code></pre>
+</div>
+</li>
+</ol>
+<h2><a href="#testing-out-your-action-in-a-workflow">Testing out your action in a workflow</a></h2>
+<p>The following workflow code uses the completed hello world action that you made in <a href="/en/actions/creating-actions/creating-a-composite-action#creating-an-action-metadata-file">Creating a composite action</a>.</p>
+<p>Copy the workflow code into a <code>.github/workflows/main.yml</code> file in another repository, replacing <code>OWNER</code> and <code>SHA</code> with the repository owner and the SHA of the commit you want to use, respectively. You can also replace the <code>who-to-greet</code> input with your name.</p>
+<div>
+<header><span>YAML</span><pre>on: [push]
+
+jobs:
+  hello_world_job:
+    runs-on: ubuntu-latest
+    name: A job to say hello
+    steps:
+      - uses: actions/checkout@v4
+      - id: foo
+        uses: OWNER/hello-world-composite-action@SHA
+        with:
+          who-to-greet: 'Mona the Octocat'
+      - run: echo random-number "$RANDOM_NUMBER"
+        shell: bash
+        env:
+          RANDOM_NUMBER: ${{ steps.foo.outputs.random-number }}
+</pre></header><pre><code><span>on:</span> [<span>push</span>]
+
+<span>jobs:</span>
+  <span>hello_world_job:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>name:</span> <span>A</span> <span>job</span> <span>to</span> <span>say</span> <span>hello</span>
+    <span>steps:</span>
+      <span>-</span> <span>uses:</span> <span>actions/checkout@v4</span>
+      <span>-</span> <span>id:</span> <span>foo</span>
+        <span>uses:</span> <span>OWNER/hello-world-composite-action@SHA</span>
+        <span>with:</span>
+          <span>who-to-greet:</span> <span>'Mona the Octocat'</span>
+      <span>-</span> <span>run:</span> <span>echo</span> <span>random-number</span> <span>"$RANDOM_NUMBER"</span>
+        <span>shell:</span> <span>bash</span>
+        <span>env:</span>
+          <span>RANDOM_NUMBER:</span> <span>${{</span> <span>steps.foo.outputs.random-number</span> <span>}}</span>
+</code></pre>
+</div>
+<p>From your repository, click the <strong>Actions</strong> tab, and select the latest workflow run. The output should include: "Hello Mona the Octocat", the result of the "Goodbye" script, and a random number.</p>
+<h2><a href="#creating-a-composite-action-within-the-same-repository">Creating a composite action within the same repository</a></h2>
+<ol>
+<li>
+<p>Create a new subfolder called <code>hello-world-composite-action</code>, this can be placed in any subfolder within the repository. However, it is recommended that this be placed in the <code>.github/actions</code> subfolder to make organization easier.</p>
+</li>
+<li>
+<p>In the <code>hello-world-composite-action</code> folder, do the same steps to create the <code>goodbye.sh</code> script</p>
+<div>
+<header><span>Shell</span><pre>echo "echo Goodbye" &gt; goodbye.sh
+</pre></header><pre><code>echo "echo Goodbye" &gt; goodbye.sh
+</code></pre>
+</div>
+<div>
+<div>
+<header><span>Shell</span><pre>chmod +x goodbye.sh
+</pre></header><pre><code>chmod +x goodbye.sh
+</code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>Shell</span><pre>chmod +x goodbye.sh
+</pre></header><pre><code>chmod +x goodbye.sh
+</code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>Shell</span><pre>git add --chmod=+x -- goodbye.sh
+</pre></header><pre><code>git add --chmod=+x -- goodbye.sh
+</code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>Shell</span><pre>git add goodbye.sh
+git commit -m "Add goodbye script"
+git push
+</pre></header><pre><code>git add goodbye.sh
+git commit -m "Add goodbye script"
+git push
+</code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>Shell</span><pre>git add goodbye.sh
+git commit -m "Add goodbye script"
+git push
+</pre></header><pre><code>git add goodbye.sh
+git commit -m "Add goodbye script"
+git push
+</code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>Shell</span><pre>git commit -m "Add goodbye script"
+git push
+</pre></header><pre><code>git commit -m "Add goodbye script"
+git push
+</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>In the <code>hello-world-composite-action</code> folder, create the <code>action.yml</code> file based on the steps in <a href="/en/actions/creating-actions/creating-a-composite-action#creating-an-action-metadata-file">Creating a composite action</a>.</p>
+</li>
+<li>
+<p>When using the action, use the relative path to the folder where the composite action's <code>action.yml</code> file is located in the <code>uses</code> key. The below example assumes it is in the <code>.github/actions/hello-world-composite-action</code> folder.</p>
+</li>
+</ol>
+<div>
+<header><span>YAML</span><pre>on: [push]
+
+jobs:
+  hello_world_job:
+    runs-on: ubuntu-latest
+    name: A job to say hello
+    steps:
+      - uses: actions/checkout@v4
+      - id: foo
+        uses: ./.github/actions/hello-world-composite-action
+        with:
+          who-to-greet: 'Mona the Octocat'
+      - run: echo random-number "$RANDOM_NUMBER"
+        shell: bash
+        env:
+          RANDOM_NUMBER: ${{ steps.foo.outputs.random-number }}
+</pre></header><pre><code><span>on:</span> [<span>push</span>]
+
+<span>jobs:</span>
+  <span>hello_world_job:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>name:</span> <span>A</span> <span>job</span> <span>to</span> <span>say</span> <span>hello</span>
+    <span>steps:</span>
+      <span>-</span> <span>uses:</span> <span>actions/checkout@v4</span>
+      <span>-</span> <span>id:</span> <span>foo</span>
+        <span>uses:</span> <span>./.github/actions/hello-world-composite-action</span>
+        <span>with:</span>
+          <span>who-to-greet:</span> <span>'Mona the Octocat'</span>
+      <span>-</span> <span>run:</span> <span>echo</span> <span>random-number</span> <span>"$RANDOM_NUMBER"</span>
+        <span>shell:</span> <span>bash</span>
+        <span>env:</span>
+          <span>RANDOM_NUMBER:</span> <span>${{</span> <span>steps.foo.outputs.random-number</span> <span>}}</span>
+</code></pre>
+</div>
+<h2><a href="#example-composite-actions-on-github">Example composite actions on GitHub</a></h2>
+<p>You can find many examples of composite actions on GitHub.</p>
+<ul>
+<li><a href="https://github.com/microsoft/action-python">microsoft/action-python</a></li>
+<li><a href="https://github.com/microsoft/gpt-review">microsoft/gpt-review</a></li>
+<li><a href="https://github.com/tailscale/github-action">tailscale/github-action</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

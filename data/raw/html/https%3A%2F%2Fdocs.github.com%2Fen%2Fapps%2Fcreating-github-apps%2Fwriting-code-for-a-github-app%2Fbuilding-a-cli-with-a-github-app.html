@@ -1,0 +1,1273 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Apps" href="/en/apps">Apps</a><span>/</span>
+</li>
+<li>
+<a title="Creating GitHub Apps" href="/en/apps/creating-github-apps">Creating GitHub Apps</a><span>/</span>
+</li>
+<li>
+<a title="Writing code for a GitHub App" href="/en/apps/creating-github-apps/writing-code-for-a-github-app">Writing code for a GitHub App</a><span>/</span>
+</li>
+<li><a title="Build a CLI" href="/en/apps/creating-github-apps/writing-code-for-a-github-app/building-a-cli-with-a-github-app">Build a CLI</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Building a CLI with a GitHub App</h1></div></div>
+<div><div><p>Follow this tutorial to write a CLI in Ruby that generates a user access token for a GitHub App via the device flow.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#get-the-client-id"><div><span>Get the client ID</span></div></a></li>
+<li><a href="#write-the-cli"><div><span>Write the CLI</span></div></a></li>
+<li><a href="#full-code-example"><div><span>Full code example</span></div></a></li>
+<li><a href="#testing"><div><span>Testing</span></div></a></li>
+<li><a href="#next-steps"><div><span>Next steps</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>This tutorial demonstrates how to build a command line interface (CLI) backed by a GitHub App, and how to use the device flow to generate a user access token for the app.</p>
+<p>The CLI will have three commands:</p>
+<ul>
+<li>
+<code>help</code>: Outputs the usage instructions.</li>
+<li>
+<code>login</code>: Generates a user access token that the app can use to make API requests on behalf of the user.</li>
+<li>
+<code>whoami</code>: Returns information about the logged in user.</li>
+</ul>
+<p>This tutorial uses Ruby, but you can write a CLI and use the device flow to generate a user access token with any programming language.</p>
+<h3><a href="#about-device-flow-and-user-access-tokens">About device flow and user access tokens</a></h3>
+<p>The CLI will use the device flow to authenticate a user and generate a user access token. Then, the CLI can use the user access token to make API requests on behalf of the authenticated user.</p>
+<p>Your app should use a user access token if you want to attribute the app's actions to a user. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-with-a-github-app-on-behalf-of-a-user">Authenticating with a GitHub App on behalf of a user</a>.</p>
+<p>There are two ways to generate a user access token for a GitHub App: web application flow and device flow. You should use the device flow to generate a user access token if your app is headless or does not have access to a web interface. For example, CLI tools, simple Raspberry Pis, and desktop applications should use the device flow. If your app has access to a web interface, you should use web application flow instead. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app">Generating a user access token for a GitHub App</a> and <a href="/en/apps/creating-github-apps/guides/using-the-web-application-flow-to-generate-a-user-access-token-for-a-github-app">Building a "Login with GitHub" button with a GitHub App</a>.</p>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<p>This tutorial assumes that you have already registered a GitHub App. For more information about registering a GitHub App, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/creating-a-github-app">Registering a GitHub App</a>.</p>
+<p>Before following this tutorial, you must enable device flow for your app. For more information about enabling device flow for your app, see <a href="/en/apps/maintaining-github-apps/modifying-a-github-app">Modifying a GitHub App registration</a>.</p>
+<p>This tutorial assumes that you have a basic understanding of Ruby. For more information, see <a href="https://www.ruby-lang.org">Ruby</a>.</p>
+<h2><a href="#get-the-client-id">Get the client ID</a></h2>
+<p>You will need your app's client ID in order to generate a user access token via the device flow.</p>
+<ol>
+<li>
+<p>In the upper-right corner of any page on GitHub, click your profile photo.</p>
+</li>
+<li>
+<p>Navigate to your account settings.</p>
+<ul>
+<li>For an app owned by a personal account, click <strong>Settings</strong>.</li>
+<li>For an app owned by an organization:
+<ol>
+<li>Click <strong>Your organizations</strong>.</li>
+<li>To the right of the organization, click <strong>Settings</strong>.</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p>In the left sidebar, click </p>
+</li>
+<li>
+<p>In the left sidebar, click <strong>GitHub Apps</strong>.</p>
+</li>
+<li>
+<p>Next to the GitHub App that you want to work with, click <strong>Edit</strong>.</p>
+</li>
+<li>
+<p>On the app's settings page, find the client ID for your app. You will use it later in this tutorial. Note that the client ID is different from the app ID.</p>
+</li>
+</ol>
+<h2><a href="#write-the-cli">Write the CLI</a></h2>
+<p>These steps lead you through building a CLI and using device flow to get a user access token. To skip ahead to the final code, see <a href="#full-code-example">Full code example</a>.</p>
+<h3><a href="#setup">Setup</a></h3>
+<ol>
+<li>
+<p>Create a Ruby file to hold the code that will generate a user access token. This tutorial will name the file <code>app_cli.rb</code>.</p>
+</li>
+<li>
+<p>In your terminal, from the directory where <code>app_cli.rb</code> is stored, run the following command to make <code>app_cli.rb</code> executable:</p>
+<div>
+<header><span>Text</span><pre>chmod +x app_cli.rb
+</pre></header><pre><code>chmod +x app_cli.rb
+</code></pre>
+</div>
+</li>
+<li>
+<p>Add this line to the top of <code>app_cli.rb</code> to indicate that the Ruby interpreter should be used to run the script:</p>
+<div>
+<header><span>Ruby</span><pre>#!/usr/bin/env ruby
+</pre></header><pre><code><span>#!/usr/bin/env ruby</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Add these dependencies to the top of <code>app_cli.rb</code>, following <code>#!/usr/bin/env ruby</code>:</p>
+<div>
+<header><span>Ruby</span><pre>require "net/http"
+require "json"
+require "uri"
+require "fileutils"
+</pre></header><pre><code><span>require</span> <span>"net/http"</span>
+<span>require</span> <span>"json"</span>
+<span>require</span> <span>"uri"</span>
+<span>require</span> <span>"fileutils"</span>
+</code></pre>
+</div>
+<p>These are all part of the Ruby standard library, so you don't need to install any gems.</p>
+</li>
+<li>
+<p>Add the following <code>main</code> function that will serve as an entry point. The function includes a <code>case</code> statement to take different actions depending on which command is specified. You will expand this <code>case</code> statement later.</p>
+<div>
+<header><span>Ruby</span><pre>def main
+  case ARGV[0]
+  when "help"
+    puts "`help` is not yet defined"
+  when "login"
+    puts "`login` is not yet defined"
+  when "whoami"
+    puts "`whoami` is not yet defined"
+  else
+    puts "Unknown command `#{ARGV[0]}`"
+  end
+end
+</pre></header><pre><code><span>def</span> <span>main</span>
+  <span>case</span> <span>ARGV</span>[<span>0</span>]
+  <span>when</span> <span>"help"</span>
+    puts <span>"`help` is not yet defined"</span>
+  <span>when</span> <span>"login"</span>
+    puts <span>"`login` is not yet defined"</span>
+  <span>when</span> <span>"whoami"</span>
+    puts <span>"`whoami` is not yet defined"</span>
+  <span>else</span>
+    puts <span>"Unknown command `<span>#{<span>ARGV</span>[<span>0</span>]}</span>`"</span>
+  <span>end</span>
+<span>end</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>At the bottom of the file, add the following line to call the entry point function. This function call should remain at the bottom of your file as you add more functions to this file later in the tutorial.</p>
+<div>
+<header><span>Ruby</span><pre>main
+</pre></header><pre><code>main
+</code></pre>
+</div>
+</li>
+<li>
+<p>Optionally, check your progress:</p>
+<p><code>app_cli.rb</code> now looks like this:</p>
+<div>
+<header><span>Ruby</span><pre>#!/usr/bin/env ruby
+
+require "net/http"
+require "json"
+require "uri"
+require "fileutils"
+
+def main
+  case ARGV[0]
+  when "help"
+    puts "`help` is not yet defined"
+  when "login"
+    puts "`login` is not yet defined"
+  when "whoami"
+    puts "`whoami` is not yet defined"
+  else
+    puts "Unknown command `#{ARGV[0]}`"
+  end
+end
+
+main
+</pre></header><pre><code><span>#!/usr/bin/env ruby</span>
+
+<span>require</span> <span>"net/http"</span>
+<span>require</span> <span>"json"</span>
+<span>require</span> <span>"uri"</span>
+<span>require</span> <span>"fileutils"</span>
+
+<span>def</span> <span>main</span>
+  <span>case</span> <span>ARGV</span>[<span>0</span>]
+  <span>when</span> <span>"help"</span>
+    puts <span>"`help` is not yet defined"</span>
+  <span>when</span> <span>"login"</span>
+    puts <span>"`login` is not yet defined"</span>
+  <span>when</span> <span>"whoami"</span>
+    puts <span>"`whoami` is not yet defined"</span>
+  <span>else</span>
+    puts <span>"Unknown command `<span>#{<span>ARGV</span>[<span>0</span>]}</span>`"</span>
+  <span>end</span>
+<span>end</span>
+
+main
+</code></pre>
+</div>
+<p>In your terminal, from the directory where <code>app_cli.rb</code> is stored, run <code>./app_cli.rb help</code>. You should see this output:</p>
+<pre><code>`help` is not yet defined
+</code></pre>
+<p>You can also test your script without a command or with an unhandled command. For example, <code>./app_cli.rb create-issue</code> should output:</p>
+<pre><code>Unknown command `create-issue`
+</code></pre>
+</li>
+</ol>
+<h3><a href="#add-a-help-command">Add a <code>help</code> command</a></h3>
+<ol>
+<li>
+<p>Add the following <code>help</code> function to <code>app_cli.rb</code>. Currently, the <code>help</code> function prints a line to tell users that this CLI takes one command, "help". You will expand this <code>help</code> function later.</p>
+<div>
+<header><span>Ruby</span><pre>def help
+  puts "usage: app_cli &lt;help&gt;"
+end
+</pre></header><pre><code><span>def</span> <span>help</span>
+  puts <span>"usage: app_cli &lt;help&gt;"</span>
+<span>end</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Update the <code>main</code> function to call the <code>help</code> function when the <code>help</code> command is given:</p>
+<div>
+<header><span>Ruby</span><pre>def main
+  case ARGV[0]
+  when "help"
+    help
+  when "login"
+    puts "`login` is not yet defined"
+  when "whoami"
+    puts "`whoami` is not yet defined"
+  else
+    puts "Unknown command #{ARGV[0]}"
+  end
+end
+</pre></header><pre><code><span>def</span> <span>main</span>
+  <span>case</span> <span>ARGV</span>[<span>0</span>]
+  <span>when</span> <span>"help"</span>
+    help
+  <span>when</span> <span>"login"</span>
+    puts <span>"`login` is not yet defined"</span>
+  <span>when</span> <span>"whoami"</span>
+    puts <span>"`whoami` is not yet defined"</span>
+  <span>else</span>
+    puts <span>"Unknown command <span>#{<span>ARGV</span>[<span>0</span>]}</span>"</span>
+  <span>end</span>
+<span>end</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Optionally, check your progress:</p>
+<p><code>app_cli.rb</code> now looks like this. The order of the functions doesn't matter as long as the <code>main</code> function call is at the end of the file.</p>
+<div>
+<header><span>Ruby</span><pre>#!/usr/bin/env ruby
+
+require "net/http"
+require "json"
+require "uri"
+require "fileutils"
+
+def help
+  puts "usage: app_cli &lt;help&gt;"
+end
+
+def main
+  case ARGV[0]
+  when "help"
+    help
+  when "login"
+    puts "`login` is not yet defined"
+  when "whoami"
+    puts "`whoami` is not yet defined"
+  else
+    puts "Unknown command #{ARGV[0]}"
+  end
+end
+
+main
+</pre></header><pre><code><span>#!/usr/bin/env ruby</span>
+
+<span>require</span> <span>"net/http"</span>
+<span>require</span> <span>"json"</span>
+<span>require</span> <span>"uri"</span>
+<span>require</span> <span>"fileutils"</span>
+
+<span>def</span> <span>help</span>
+  puts <span>"usage: app_cli &lt;help&gt;"</span>
+<span>end</span>
+
+<span>def</span> <span>main</span>
+  <span>case</span> <span>ARGV</span>[<span>0</span>]
+  <span>when</span> <span>"help"</span>
+    help
+  <span>when</span> <span>"login"</span>
+    puts <span>"`login` is not yet defined"</span>
+  <span>when</span> <span>"whoami"</span>
+    puts <span>"`whoami` is not yet defined"</span>
+  <span>else</span>
+    puts <span>"Unknown command <span>#{<span>ARGV</span>[<span>0</span>]}</span>"</span>
+  <span>end</span>
+<span>end</span>
+
+main
+</code></pre>
+</div>
+<p>In your terminal, from the directory where <code>app_cli.rb</code> is stored, run <code>./app_cli.rb help</code>. You should see this output:</p>
+<pre><code>usage: app_cli &lt;help&gt;
+</code></pre>
+</li>
+</ol>
+<h3><a href="#add-a-login-command">Add a <code>login</code> command</a></h3>
+<p>The <code>login</code> command will run the device flow to get a user access token. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app#using-the-device-flow-to-generate-a-user-access-token">Generating a user access token for a GitHub App</a>.</p>
+<ol>
+<li>
+<p>Near the top of your file, after the <code>require</code> statements, add the <code>CLIENT_ID</code> of your GitHub App as a constant in <code>app_cli.rb</code>. For more information about finding your app's client ID, see <a href="#get-the-client-id">Get the client ID</a>. Replace <code>YOUR_CLIENT_ID</code> with the client ID of your app:</p>
+<div>
+<header><span>Ruby</span><pre>CLIENT_ID="YOUR_CLIENT_ID"
+</pre></header><pre><code><span>CLIENT_ID</span>=<span>"YOUR_CLIENT_ID"</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Add the following <code>parse_response</code> function to <code>app_cli.rb</code>. This function parses a response from the GitHub REST API. When the response status is <code>200 OK</code> or <code>201 Created</code>, the function returns the parsed response body. Otherwise, the function prints the response and body and exits the program.</p>
+<div>
+<header><span>Ruby</span><pre>def parse_response(response)
+  case response
+  when Net::HTTPOK, Net::HTTPCreated
+    JSON.parse(response.body)
+  else
+    puts response
+    puts response.body
+    exit 1
+  end
+end
+</pre></header><pre><code><span>def</span> <span>parse_response</span>(<span>response</span>)
+  <span>case</span> response
+  <span>when</span> <span>Net</span><span>:</span><span>:HTTPOK</span>, <span>Net</span><span>:</span><span>:HTTPCreated</span>
+    <span>JSON</span>.parse(response.body)
+  <span>else</span>
+    puts response
+    puts response.body
+    exit <span>1</span>
+  <span>end</span>
+<span>end</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Add the following <code>request_device_code</code> function to <code>app_cli.rb</code>. This function makes a <code>POST</code> request to <code>https://github.com/login/device/code</code> and returns the response.</p>
+<div>
+<header><span>Ruby</span><pre>def request_device_code
+  uri = URI("https://github.com/login/device/code")
+  parameters = URI.encode_www_form("client_id" =&gt; CLIENT_ID)
+  headers = {"Accept" =&gt; "application/json"}
+
+  response = Net::HTTP.post(uri, parameters, headers)
+  parse_response(response)
+end
+</pre></header><pre><code><span>def</span> <span>request_device_code</span>
+  uri = <span>URI</span>(<span>"https://github.com/login/device/code"</span>)
+  parameters = <span>URI</span>.encode_www_form(<span>"client_id"</span> =&gt; <span>CLIENT_ID</span>)
+  headers = {<span>"Accept"</span> =&gt; <span>"application/json"</span>}
+
+  response = <span>Net</span><span>:</span><span>:HTTP</span>.post(uri, parameters, headers)
+  parse_response(response)
+<span>end</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Add the following <code>request_token</code> function to <code>app_cli.rb</code>. This function makes a <code>POST</code> request to <code>https://github.com/login/oauth/access_token</code> and returns the response.</p>
+<div>
+<header><span>Ruby</span><pre>def request_token(device_code)
+  uri = URI("https://github.com/login/oauth/access_token")
+  parameters = URI.encode_www_form({
+    "client_id" =&gt; CLIENT_ID,
+    "device_code" =&gt; device_code,
+    "grant_type" =&gt; "urn:ietf:params:oauth:grant-type:device_code"
+  })
+  headers = {"Accept" =&gt; "application/json"}
+  response = Net::HTTP.post(uri, parameters, headers)
+  parse_response(response)
+end
+</pre></header><pre><code><span>def</span> <span>request_token</span>(<span>device_code</span>)
+  uri = <span>URI</span>(<span>"https://github.com/login/oauth/access_token"</span>)
+  parameters = <span>URI</span>.encode_www_form({
+    <span>"client_id"</span> =&gt; <span>CLIENT_ID</span>,
+    <span>"device_code"</span> =&gt; device_code,
+    <span>"grant_type"</span> =&gt; <span>"urn:ietf:params:oauth:grant-type:device_code"</span>
+  })
+  headers = {<span>"Accept"</span> =&gt; <span>"application/json"</span>}
+  response = <span>Net</span><span>:</span><span>:HTTP</span>.post(uri, parameters, headers)
+  parse_response(response)
+<span>end</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Add the following <code>poll_for_token</code> function to <code>app_cli.rb</code>. This function polls <code>https://github.com/login/oauth/access_token</code> at the specified interval until GitHub responds with an <code>access_token</code> parameter instead of an <code>error</code> parameter. Then, it writes the user access token to a file and restricts the permissions on the file.</p>
+<div>
+<header><span>Ruby</span><pre>def poll_for_token(device_code, interval)
+
+  loop do
+    response = request_token(device_code)
+    error, access_token = response.values_at("error", "access_token")
+
+    if error
+      case error
+      when "authorization_pending"
+        # The user has not yet entered the code.
+        # Wait, then poll again.
+        sleep interval
+        next
+      when "slow_down"
+        # The app polled too fast.
+        # Wait for the interval plus 5 seconds, then poll again.
+        sleep interval + 5
+        next
+      when "expired_token"
+        # The `device_code` expired, and the process needs to restart.
+        puts "The device code has expired. Please run `login` again."
+        exit 1
+      when "access_denied"
+        # The user cancelled the process. Stop polling.
+        puts "Login cancelled by user."
+        exit 1
+      else
+        puts response
+        exit 1
+      end
+    end
+
+    File.write("./.token", access_token)
+
+    # Set the file permissions so that only the file owner can read or modify the file
+    FileUtils.chmod(0600, "./.token")
+
+    break
+  end
+end
+</pre></header><pre><code><span>def</span> <span>poll_for_token</span>(<span>device_code, interval</span>)
+
+  loop <span>do</span>
+    response = request_token(device_code)
+    error, access_token = response.values_at(<span>"error"</span>, <span>"access_token"</span>)
+
+    <span>if</span> error
+      <span>case</span> error
+      <span>when</span> <span>"authorization_pending"</span>
+        <span># The user has not yet entered the code.</span>
+        <span># Wait, then poll again.</span>
+        sleep interval
+        <span>next</span>
+      <span>when</span> <span>"slow_down"</span>
+        <span># The app polled too fast.</span>
+        <span># Wait for the interval plus 5 seconds, then poll again.</span>
+        sleep interval + <span>5</span>
+        <span>next</span>
+      <span>when</span> <span>"expired_token"</span>
+        <span># The `device_code` expired, and the process needs to restart.</span>
+        puts <span>"The device code has expired. Please run `login` again."</span>
+        exit <span>1</span>
+      <span>when</span> <span>"access_denied"</span>
+        <span># The user cancelled the process. Stop polling.</span>
+        puts <span>"Login cancelled by user."</span>
+        exit <span>1</span>
+      <span>else</span>
+        puts response
+        exit <span>1</span>
+      <span>end</span>
+    <span>end</span>
+
+    <span>File</span>.write(<span>"./.token"</span>, access_token)
+
+    <span># Set the file permissions so that only the file owner can read or modify the file</span>
+    <span>FileUtils</span>.chmod(<span>0600</span>, <span>"./.token"</span>)
+
+    <span>break</span>
+  <span>end</span>
+<span>end</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Add the following <code>login</code> function.</p>
+<p>This function:</p>
+<ol>
+<li>Calls the <code>request_device_code</code> function and gets the <code>verification_uri</code>, <code>user_code</code>, <code>device_code</code>, and <code>interval</code> parameters from the response.</li>
+<li>Prompts users to enter the <code>user_code</code> from the previous step.</li>
+<li>Calls the <code>poll_for_token</code> to poll GitHub for an access token.</li>
+<li>Lets the user know that authentication was successful.</li>
+</ol>
+<div>
+<header><span>Ruby</span><pre>def login
+  verification_uri, user_code, device_code, interval = request_device_code.values_at("verification_uri", "user_code", "device_code", "interval")
+
+  puts "Please visit: #{verification_uri}"
+  puts "and enter code: #{user_code}"
+
+  poll_for_token(device_code, interval)
+
+  puts "Successfully authenticated!"
+end
+</pre></header><pre><code><span>def</span> <span>login</span>
+  verification_uri, user_code, device_code, interval = request_device_code.values_at(<span>"verification_uri"</span>, <span>"user_code"</span>, <span>"device_code"</span>, <span>"interval"</span>)
+
+  puts <span>"Please visit: <span>#{verification_uri}</span>"</span>
+  puts <span>"and enter code: <span>#{user_code}</span>"</span>
+
+  poll_for_token(device_code, interval)
+
+  puts <span>"Successfully authenticated!"</span>
+<span>end</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Update the <code>main</code> function to call the <code>login</code> function when the <code>login</code> command is given:</p>
+<div>
+<header><span>Ruby</span><pre>def main
+  case ARGV[0]
+  when "help"
+    help
+  when "login"
+    login
+  when "whoami"
+    puts "`whoami` is not yet defined"
+  else
+    puts "Unknown command #{ARGV[0]}"
+  end
+end
+</pre></header><pre><code><span>def</span> <span>main</span>
+  <span>case</span> <span>ARGV</span>[<span>0</span>]
+  <span>when</span> <span>"help"</span>
+    help
+  <span>when</span> <span>"login"</span>
+    login
+  <span>when</span> <span>"whoami"</span>
+    puts <span>"`whoami` is not yet defined"</span>
+  <span>else</span>
+    puts <span>"Unknown command <span>#{<span>ARGV</span>[<span>0</span>]}</span>"</span>
+  <span>end</span>
+<span>end</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Update the <code>help</code> function to include the <code>login</code> command:</p>
+<div>
+<header><span>Ruby</span><pre>def help
+  puts "usage: app_cli &lt;login | help&gt;"
+end
+</pre></header><pre><code><span>def</span> <span>help</span>
+  puts <span>"usage: app_cli &lt;login | help&gt;"</span>
+<span>end</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Optionally, check your progress:</p>
+<p><code>app_cli.rb</code> now looks something like this, where <code>YOUR_CLIENT_ID</code> is the client ID of your app. The order of the functions doesn't matter as long as the <code>main</code> function call is at the end of the file.</p>
+<div>
+<header><span>Ruby</span><pre>#!/usr/bin/env ruby
+
+require "net/http"
+require "json"
+require "uri"
+require "fileutils"
+
+CLIENT_ID="YOUR_CLIENT_ID"
+
+def help
+  puts "usage: app_cli &lt;login | help&gt;"
+end
+
+def main
+  case ARGV[0]
+  when "help"
+    help
+  when "login"
+    login
+  when "whoami"
+    puts "`whoami` is not yet defined"
+  else
+    puts "Unknown command #{ARGV[0]}"
+  end
+end
+
+def parse_response(response)
+  case response
+  when Net::HTTPOK, Net::HTTPCreated
+    JSON.parse(response.body)
+  else
+    puts response
+    puts response.body
+    exit 1
+  end
+end
+
+def request_device_code
+  uri = URI("https://github.com/login/device/code")
+  parameters = URI.encode_www_form("client_id" =&gt; CLIENT_ID)
+  headers = {"Accept" =&gt; "application/json"}
+
+  response = Net::HTTP.post(uri, parameters, headers)
+  parse_response(response)
+end
+
+def request_token(device_code)
+  uri = URI("https://github.com/login/oauth/access_token")
+  parameters = URI.encode_www_form({
+    "client_id" =&gt; CLIENT_ID,
+    "device_code" =&gt; device_code,
+    "grant_type" =&gt; "urn:ietf:params:oauth:grant-type:device_code"
+  })
+  headers = {"Accept" =&gt; "application/json"}
+  response = Net::HTTP.post(uri, parameters, headers)
+  parse_response(response)
+end
+
+def poll_for_token(device_code, interval)
+
+  loop do
+    response = request_token(device_code)
+    error, access_token = response.values_at("error", "access_token")
+
+    if error
+      case error
+      when "authorization_pending"
+        # The user has not yet entered the code.
+        # Wait, then poll again.
+        sleep interval
+        next
+      when "slow_down"
+        # The app polled too fast.
+        # Wait for the interval plus 5 seconds, then poll again.
+        sleep interval + 5
+        next
+      when "expired_token"
+        # The `device_code` expired, and the process needs to restart.
+        puts "The device code has expired. Please run `login` again."
+        exit 1
+      when "access_denied"
+        # The user cancelled the process. Stop polling.
+        puts "Login cancelled by user."
+        exit 1
+      else
+        puts response
+        exit 1
+      end
+    end
+
+    File.write("./.token", access_token)
+
+    # Set the file permissions so that only the file owner can read or modify the file
+    FileUtils.chmod(0600, "./.token")
+
+    break
+  end
+end
+
+def login
+  verification_uri, user_code, device_code, interval = request_device_code.values_at("verification_uri", "user_code", "device_code", "interval")
+
+  puts "Please visit: #{verification_uri}"
+  puts "and enter code: #{user_code}"
+
+  poll_for_token(device_code, interval)
+
+  puts "Successfully authenticated!"
+end
+
+main
+</pre></header><pre><code><span>#!/usr/bin/env ruby</span>
+
+<span>require</span> <span>"net/http"</span>
+<span>require</span> <span>"json"</span>
+<span>require</span> <span>"uri"</span>
+<span>require</span> <span>"fileutils"</span>
+
+<span>CLIENT_ID</span>=<span>"YOUR_CLIENT_ID"</span>
+
+<span>def</span> <span>help</span>
+  puts <span>"usage: app_cli &lt;login | help&gt;"</span>
+<span>end</span>
+
+<span>def</span> <span>main</span>
+  <span>case</span> <span>ARGV</span>[<span>0</span>]
+  <span>when</span> <span>"help"</span>
+    help
+  <span>when</span> <span>"login"</span>
+    login
+  <span>when</span> <span>"whoami"</span>
+    puts <span>"`whoami` is not yet defined"</span>
+  <span>else</span>
+    puts <span>"Unknown command <span>#{<span>ARGV</span>[<span>0</span>]}</span>"</span>
+  <span>end</span>
+<span>end</span>
+
+<span>def</span> <span>parse_response</span>(<span>response</span>)
+  <span>case</span> response
+  <span>when</span> <span>Net</span><span>:</span><span>:HTTPOK</span>, <span>Net</span><span>:</span><span>:HTTPCreated</span>
+    <span>JSON</span>.parse(response.body)
+  <span>else</span>
+    puts response
+    puts response.body
+    exit <span>1</span>
+  <span>end</span>
+<span>end</span>
+
+<span>def</span> <span>request_device_code</span>
+  uri = <span>URI</span>(<span>"https://github.com/login/device/code"</span>)
+  parameters = <span>URI</span>.encode_www_form(<span>"client_id"</span> =&gt; <span>CLIENT_ID</span>)
+  headers = {<span>"Accept"</span> =&gt; <span>"application/json"</span>}
+
+  response = <span>Net</span><span>:</span><span>:HTTP</span>.post(uri, parameters, headers)
+  parse_response(response)
+<span>end</span>
+
+<span>def</span> <span>request_token</span>(<span>device_code</span>)
+  uri = <span>URI</span>(<span>"https://github.com/login/oauth/access_token"</span>)
+  parameters = <span>URI</span>.encode_www_form({
+    <span>"client_id"</span> =&gt; <span>CLIENT_ID</span>,
+    <span>"device_code"</span> =&gt; device_code,
+    <span>"grant_type"</span> =&gt; <span>"urn:ietf:params:oauth:grant-type:device_code"</span>
+  })
+  headers = {<span>"Accept"</span> =&gt; <span>"application/json"</span>}
+  response = <span>Net</span><span>:</span><span>:HTTP</span>.post(uri, parameters, headers)
+  parse_response(response)
+<span>end</span>
+
+<span>def</span> <span>poll_for_token</span>(<span>device_code, interval</span>)
+
+  loop <span>do</span>
+    response = request_token(device_code)
+    error, access_token = response.values_at(<span>"error"</span>, <span>"access_token"</span>)
+
+    <span>if</span> error
+      <span>case</span> error
+      <span>when</span> <span>"authorization_pending"</span>
+        <span># The user has not yet entered the code.</span>
+        <span># Wait, then poll again.</span>
+        sleep interval
+        <span>next</span>
+      <span>when</span> <span>"slow_down"</span>
+        <span># The app polled too fast.</span>
+        <span># Wait for the interval plus 5 seconds, then poll again.</span>
+        sleep interval + <span>5</span>
+        <span>next</span>
+      <span>when</span> <span>"expired_token"</span>
+        <span># The `device_code` expired, and the process needs to restart.</span>
+        puts <span>"The device code has expired. Please run `login` again."</span>
+        exit <span>1</span>
+      <span>when</span> <span>"access_denied"</span>
+        <span># The user cancelled the process. Stop polling.</span>
+        puts <span>"Login cancelled by user."</span>
+        exit <span>1</span>
+      <span>else</span>
+        puts response
+        exit <span>1</span>
+      <span>end</span>
+    <span>end</span>
+
+    <span>File</span>.write(<span>"./.token"</span>, access_token)
+
+    <span># Set the file permissions so that only the file owner can read or modify the file</span>
+    <span>FileUtils</span>.chmod(<span>0600</span>, <span>"./.token"</span>)
+
+    <span>break</span>
+  <span>end</span>
+<span>end</span>
+
+<span>def</span> <span>login</span>
+  verification_uri, user_code, device_code, interval = request_device_code.values_at(<span>"verification_uri"</span>, <span>"user_code"</span>, <span>"device_code"</span>, <span>"interval"</span>)
+
+  puts <span>"Please visit: <span>#{verification_uri}</span>"</span>
+  puts <span>"and enter code: <span>#{user_code}</span>"</span>
+
+  poll_for_token(device_code, interval)
+
+  puts <span>"Successfully authenticated!"</span>
+<span>end</span>
+
+main
+</code></pre>
+</div>
+<ol>
+<li>
+<p>In your terminal, from the directory where <code>app_cli.rb</code> is stored, run <code>./app_cli.rb login</code>. You should see output that looks like this. The code will differ every time:</p>
+<pre><code>Please visit: https://github.com/login/device
+and enter code: CA86-8D94
+</code></pre>
+</li>
+<li>
+<p>Navigate to <a href="https://github.com/login/device">https://github.com/login/device</a> in your browser and enter the code from the previous step, then click <strong>Continue</strong>.</p>
+</li>
+<li>
+<p>GitHub should display a page that prompts you to authorize your app. Click the "Authorize" button.</p>
+</li>
+<li>
+<p>Your terminal should now say "Successfully authenticated!".</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3><a href="#add-a-whoami-command">Add a <code>whoami</code> command</a></h3>
+<p>Now that your app can generate a user access token, you can make API requests on behalf of the user. Add a <code>whoami</code> command to get the username of the authenticated user.</p>
+<ol>
+<li>
+<p>Add the following <code>whoami</code> function to <code>app_cli.rb</code>. This function gets information about the user with the <code>/user</code> REST API endpoint. It outputs the username that corresponds to the user access token. If the <code>.token</code> file was not found, it prompts the user to run the <code>login</code> function.</p>
+<div>
+<header><span>Ruby</span><pre>def whoami
+  uri = URI("https://api.github.com/user")
+
+  begin
+    token = File.read("./.token").strip
+  rescue Errno::ENOENT =&gt; e
+    puts "You are not authorized. Run the `login` command."
+    exit 1
+  end
+
+  response = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
+    body = {"access_token" =&gt; token}.to_json
+    headers = {"Accept" =&gt; "application/vnd.github+json", "Authorization" =&gt; "Bearer #{token}"}
+
+    http.send_request("GET", uri.path, body, headers)
+  end
+
+  parsed_response = parse_response(response)
+  puts "You are #{parsed_response["login"]}"
+end
+</pre></header><pre><code><span>def</span> <span>whoami</span>
+  uri = <span>URI</span>(<span>"https://api.github.com/user"</span>)
+
+  <span>begin</span>
+    token = <span>File</span>.read(<span>"./.token"</span>).strip
+  <span>rescue</span> <span>Errno</span><span>:</span><span>:ENOENT</span> =&gt; e
+    puts <span>"You are not authorized. Run the `login` command."</span>
+    exit <span>1</span>
+  <span>end</span>
+
+  response = <span>Net</span><span>:</span><span>:HTTP</span>.start(uri.host, uri.port, <span>use_ssl:</span> <span>true</span>) <span>do</span> |<span>http</span>|
+    body = {<span>"access_token"</span> =&gt; token}.to_json
+    headers = {<span>"Accept"</span> =&gt; <span>"application/vnd.github+json"</span>, <span>"Authorization"</span> =&gt; <span>"Bearer <span>#{token}</span>"</span>}
+
+    http.send_request(<span>"GET"</span>, uri.path, body, headers)
+  <span>end</span>
+
+  parsed_response = parse_response(response)
+  puts <span>"You are <span>#{parsed_response[<span>"login"</span>]}</span>"</span>
+<span>end</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Update the <code>parse_response</code> function to handle the case where the token has expired or been revoked. Now, if you get a <code>401 Unauthorized</code> response, the CLI will prompt the user to run the <code>login</code> command.</p>
+<div>
+<header><span>Ruby</span><pre>def parse_response(response)
+  case response
+  when Net::HTTPOK, Net::HTTPCreated
+    JSON.parse(response.body)
+  when Net::HTTPUnauthorized
+    puts "You are not authorized. Run the `login` command."
+    exit 1
+  else
+    puts response
+    puts response.body
+    exit 1
+  end
+end
+</pre></header><pre><code><span>def</span> <span>parse_response</span>(<span>response</span>)
+  <span>case</span> response
+  <span>when</span> <span>Net</span><span>:</span><span>:HTTPOK</span>, <span>Net</span><span>:</span><span>:HTTPCreated</span>
+    <span>JSON</span>.parse(response.body)
+  <span>when</span> <span>Net</span><span>:</span><span>:HTTPUnauthorized</span>
+    puts <span>"You are not authorized. Run the `login` command."</span>
+    exit <span>1</span>
+  <span>else</span>
+    puts response
+    puts response.body
+    exit <span>1</span>
+  <span>end</span>
+<span>end</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Update the <code>main</code> function to call the <code>whoami</code> function when the <code>whoami</code> command is given:</p>
+<div>
+<header><span>Ruby</span><pre>def main
+  case ARGV[0]
+  when "help"
+    help
+  when "login"
+    login
+  when "whoami"
+    whoami
+  else
+    puts "Unknown command #{ARGV[0]}"
+  end
+end
+</pre></header><pre><code><span>def</span> <span>main</span>
+  <span>case</span> <span>ARGV</span>[<span>0</span>]
+  <span>when</span> <span>"help"</span>
+    help
+  <span>when</span> <span>"login"</span>
+    login
+  <span>when</span> <span>"whoami"</span>
+    whoami
+  <span>else</span>
+    puts <span>"Unknown command <span>#{<span>ARGV</span>[<span>0</span>]}</span>"</span>
+  <span>end</span>
+<span>end</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Update the <code>help</code> function to include the <code>whoami</code> command:</p>
+<div>
+<header><span>Ruby</span><pre>def help
+  puts "usage: app_cli &lt;login | whoami | help&gt;"
+end
+</pre></header><pre><code><span>def</span> <span>help</span>
+  puts <span>"usage: app_cli &lt;login | whoami | help&gt;"</span>
+<span>end</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Check your code against the full code example in the next section. You can test your code by following the steps outlined in the <a href="#testing">Testing</a> section below the full code example.</p>
+</li>
+</ol>
+<h2><a href="#full-code-example">Full code example</a></h2>
+<p>This is the full code example that was outlined in the previous section. Replace <code>YOUR_CLIENT_ID</code> with the client ID of your app.</p>
+<div>
+<header><span>Ruby</span><pre>#!/usr/bin/env ruby
+
+require "net/http"
+require "json"
+require "uri"
+require "fileutils"
+
+CLIENT_ID="YOUR_CLIENT_ID"
+
+def help
+  puts "usage: app_cli &lt;login | whoami | help&gt;"
+end
+
+def main
+  case ARGV[0]
+  when "help"
+    help
+  when "login"
+    login
+  when "whoami"
+    whoami
+  else
+    puts "Unknown command #{ARGV[0]}"
+  end
+end
+
+def parse_response(response)
+  case response
+  when Net::HTTPOK, Net::HTTPCreated
+    JSON.parse(response.body)
+  when Net::HTTPUnauthorized
+    puts "You are not authorized. Run the `login` command."
+    exit 1
+  else
+    puts response
+    puts response.body
+    exit 1
+  end
+end
+
+def request_device_code
+  uri = URI("https://github.com/login/device/code")
+  parameters = URI.encode_www_form("client_id" =&gt; CLIENT_ID)
+  headers = {"Accept" =&gt; "application/json"}
+
+  response = Net::HTTP.post(uri, parameters, headers)
+  parse_response(response)
+end
+
+def request_token(device_code)
+  uri = URI("https://github.com/login/oauth/access_token")
+  parameters = URI.encode_www_form({
+    "client_id" =&gt; CLIENT_ID,
+    "device_code" =&gt; device_code,
+    "grant_type" =&gt; "urn:ietf:params:oauth:grant-type:device_code"
+  })
+  headers = {"Accept" =&gt; "application/json"}
+  response = Net::HTTP.post(uri, parameters, headers)
+  parse_response(response)
+end
+
+def poll_for_token(device_code, interval)
+
+  loop do
+    response = request_token(device_code)
+    error, access_token = response.values_at("error", "access_token")
+
+    if error
+      case error
+      when "authorization_pending"
+        # The user has not yet entered the code.
+        # Wait, then poll again.
+        sleep interval
+        next
+      when "slow_down"
+        # The app polled too fast.
+        # Wait for the interval plus 5 seconds, then poll again.
+        sleep interval + 5
+        next
+      when "expired_token"
+        # The `device_code` expired, and the process needs to restart.
+        puts "The device code has expired. Please run `login` again."
+        exit 1
+      when "access_denied"
+        # The user cancelled the process. Stop polling.
+        puts "Login cancelled by user."
+        exit 1
+      else
+        puts response
+        exit 1
+      end
+    end
+
+    File.write("./.token", access_token)
+
+    # Set the file permissions so that only the file owner can read or modify the file
+    FileUtils.chmod(0600, "./.token")
+
+    break
+  end
+end
+
+def login
+  verification_uri, user_code, device_code, interval = request_device_code.values_at("verification_uri", "user_code", "device_code", "interval")
+
+  puts "Please visit: #{verification_uri}"
+  puts "and enter code: #{user_code}"
+
+  poll_for_token(device_code, interval)
+
+  puts "Successfully authenticated!"
+end
+
+def whoami
+  uri = URI("https://api.github.com/user")
+
+  begin
+    token = File.read("./.token").strip
+  rescue Errno::ENOENT =&gt; e
+    puts "You are not authorized. Run the `login` command."
+    exit 1
+  end
+
+  response = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
+    body = {"access_token" =&gt; token}.to_json
+    headers = {"Accept" =&gt; "application/vnd.github+json", "Authorization" =&gt; "Bearer #{token}"}
+
+    http.send_request("GET", uri.path, body, headers)
+  end
+
+  parsed_response = parse_response(response)
+  puts "You are #{parsed_response["login"]}"
+end
+
+main
+</pre></header><pre><code><span>#!/usr/bin/env ruby</span>
+
+<span>require</span> <span>"net/http"</span>
+<span>require</span> <span>"json"</span>
+<span>require</span> <span>"uri"</span>
+<span>require</span> <span>"fileutils"</span>
+
+<span>CLIENT_ID</span>=<span>"YOUR_CLIENT_ID"</span>
+
+<span>def</span> <span>help</span>
+  puts <span>"usage: app_cli &lt;login | whoami | help&gt;"</span>
+<span>end</span>
+
+<span>def</span> <span>main</span>
+  <span>case</span> <span>ARGV</span>[<span>0</span>]
+  <span>when</span> <span>"help"</span>
+    help
+  <span>when</span> <span>"login"</span>
+    login
+  <span>when</span> <span>"whoami"</span>
+    whoami
+  <span>else</span>
+    puts <span>"Unknown command <span>#{<span>ARGV</span>[<span>0</span>]}</span>"</span>
+  <span>end</span>
+<span>end</span>
+
+<span>def</span> <span>parse_response</span>(<span>response</span>)
+  <span>case</span> response
+  <span>when</span> <span>Net</span><span>:</span><span>:HTTPOK</span>, <span>Net</span><span>:</span><span>:HTTPCreated</span>
+    <span>JSON</span>.parse(response.body)
+  <span>when</span> <span>Net</span><span>:</span><span>:HTTPUnauthorized</span>
+    puts <span>"You are not authorized. Run the `login` command."</span>
+    exit <span>1</span>
+  <span>else</span>
+    puts response
+    puts response.body
+    exit <span>1</span>
+  <span>end</span>
+<span>end</span>
+
+<span>def</span> <span>request_device_code</span>
+  uri = <span>URI</span>(<span>"https://github.com/login/device/code"</span>)
+  parameters = <span>URI</span>.encode_www_form(<span>"client_id"</span> =&gt; <span>CLIENT_ID</span>)
+  headers = {<span>"Accept"</span> =&gt; <span>"application/json"</span>}
+
+  response = <span>Net</span><span>:</span><span>:HTTP</span>.post(uri, parameters, headers)
+  parse_response(response)
+<span>end</span>
+
+<span>def</span> <span>request_token</span>(<span>device_code</span>)
+  uri = <span>URI</span>(<span>"https://github.com/login/oauth/access_token"</span>)
+  parameters = <span>URI</span>.encode_www_form({
+    <span>"client_id"</span> =&gt; <span>CLIENT_ID</span>,
+    <span>"device_code"</span> =&gt; device_code,
+    <span>"grant_type"</span> =&gt; <span>"urn:ietf:params:oauth:grant-type:device_code"</span>
+  })
+  headers = {<span>"Accept"</span> =&gt; <span>"application/json"</span>}
+  response = <span>Net</span><span>:</span><span>:HTTP</span>.post(uri, parameters, headers)
+  parse_response(response)
+<span>end</span>
+
+<span>def</span> <span>poll_for_token</span>(<span>device_code, interval</span>)
+
+  loop <span>do</span>
+    response = request_token(device_code)
+    error, access_token = response.values_at(<span>"error"</span>, <span>"access_token"</span>)
+
+    <span>if</span> error
+      <span>case</span> error
+      <span>when</span> <span>"authorization_pending"</span>
+        <span># The user has not yet entered the code.</span>
+        <span># Wait, then poll again.</span>
+        sleep interval
+        <span>next</span>
+      <span>when</span> <span>"slow_down"</span>
+        <span># The app polled too fast.</span>
+        <span># Wait for the interval plus 5 seconds, then poll again.</span>
+        sleep interval + <span>5</span>
+        <span>next</span>
+      <span>when</span> <span>"expired_token"</span>
+        <span># The `device_code` expired, and the process needs to restart.</span>
+        puts <span>"The device code has expired. Please run `login` again."</span>
+        exit <span>1</span>
+      <span>when</span> <span>"access_denied"</span>
+        <span># The user cancelled the process. Stop polling.</span>
+        puts <span>"Login cancelled by user."</span>
+        exit <span>1</span>
+      <span>else</span>
+        puts response
+        exit <span>1</span>
+      <span>end</span>
+    <span>end</span>
+
+    <span>File</span>.write(<span>"./.token"</span>, access_token)
+
+    <span># Set the file permissions so that only the file owner can read or modify the file</span>
+    <span>FileUtils</span>.chmod(<span>0600</span>, <span>"./.token"</span>)
+
+    <span>break</span>
+  <span>end</span>
+<span>end</span>
+
+<span>def</span> <span>login</span>
+  verification_uri, user_code, device_code, interval = request_device_code.values_at(<span>"verification_uri"</span>, <span>"user_code"</span>, <span>"device_code"</span>, <span>"interval"</span>)
+
+  puts <span>"Please visit: <span>#{verification_uri}</span>"</span>
+  puts <span>"and enter code: <span>#{user_code}</span>"</span>
+
+  poll_for_token(device_code, interval)
+
+  puts <span>"Successfully authenticated!"</span>
+<span>end</span>
+
+<span>def</span> <span>whoami</span>
+  uri = <span>URI</span>(<span>"https://api.github.com/user"</span>)
+
+  <span>begin</span>
+    token = <span>File</span>.read(<span>"./.token"</span>).strip
+  <span>rescue</span> <span>Errno</span><span>:</span><span>:ENOENT</span> =&gt; e
+    puts <span>"You are not authorized. Run the `login` command."</span>
+    exit <span>1</span>
+  <span>end</span>
+
+  response = <span>Net</span><span>:</span><span>:HTTP</span>.start(uri.host, uri.port, <span>use_ssl:</span> <span>true</span>) <span>do</span> |<span>http</span>|
+    body = {<span>"access_token"</span> =&gt; token}.to_json
+    headers = {<span>"Accept"</span> =&gt; <span>"application/vnd.github+json"</span>, <span>"Authorization"</span> =&gt; <span>"Bearer <span>#{token}</span>"</span>}
+
+    http.send_request(<span>"GET"</span>, uri.path, body, headers)
+  <span>end</span>
+
+  parsed_response = parse_response(response)
+  puts <span>"You are <span>#{parsed_response[<span>"login"</span>]}</span>"</span>
+<span>end</span>
+
+main
+</code></pre>
+</div>
+<h2><a href="#testing">Testing</a></h2>
+<p>This tutorial assumes that your app code is stored in a file named <code>app_cli.rb</code>.</p>
+<ol>
+<li>
+<p>In your terminal, from the directory where <code>app_cli.rb</code> is stored, run <code>./app_cli.rb help</code>. You should see output that looks like this.</p>
+<pre><code>usage: app_cli &lt;login | whoami | help&gt;
+</code></pre>
+</li>
+<li>
+<p>In your terminal, from the directory where <code>app_cli.rb</code> is stored, run <code>./app_cli.rb login</code>. You should see output that looks like this. The code will differ every time:</p>
+<pre><code>Please visit: https://github.com/login/device
+and enter code: CA86-8D94
+</code></pre>
+</li>
+<li>
+<p>Navigate to <a href="https://github.com/login/device">https://github.com/login/device</a> in your browser and enter the code from the previous step, then click <strong>Continue</strong>.</p>
+</li>
+<li>
+<p>GitHub should display a page that prompts you to authorize your app. Click the "Authorize" button.</p>
+</li>
+<li>
+<p>Your terminal should now say "Successfully authenticated!".</p>
+</li>
+<li>
+<p>In your terminal, from the directory where <code>app_cli.rb</code> is stored, run <code>./app_cli.rb whoami</code>. You should see output that looks like this, where <code>octocat</code> is your username.</p>
+<pre><code>You are octocat
+</code></pre>
+</li>
+<li>
+<p>Open the <code>.token</code> file in your editor, and modify the token. Now, the token is invalid.</p>
+</li>
+<li>
+<p>In your terminal, from the directory where <code>app_cli.rb</code> is stored, run <code>./app_cli.rb whoami</code>. You should see output that looks like this:</p>
+<pre><code>You are not authorized. Run the `login` command.
+</code></pre>
+</li>
+<li>
+<p>Delete the <code>.token</code> file.</p>
+</li>
+<li>
+<p>In your terminal, from the directory where <code>app_cli.rb</code> is stored, run <code>./app_cli.rb whoami</code>. You should see output that looks like this:</p>
+<pre><code>You are not authorized. Run the `login` command.
+</code></pre>
+</li>
+</ol>
+<h2><a href="#next-steps">Next steps</a></h2>
+<h3><a href="#adjust-the-code-to-meet-your-apps-needs">Adjust the code to meet your app's needs</a></h3>
+<p>This tutorial demonstrated how to write a CLI that uses the device flow to generate a user access token. You can expand this CLI to accept additional commands. For example, you can add a <code>create-issue</code> command that opens an issue. Remember to update your app's permissions if your app needs additional permissions for the API requests that you want to make. For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/choosing-permissions-for-a-github-app">Choosing permissions for a GitHub App</a>.</p>
+<h3><a href="#securely-store-tokens">Securely store tokens</a></h3>
+<p>This tutorial generates a user access token and saves it in a local file. You should never commit this file or publicize the token.</p>
+<p>Depending on your device, you may choose different ways to store the token. You should check the best practices for storing tokens on your device.</p>
+<p>For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/best-practices-for-creating-a-github-app">Best practices for creating a GitHub App</a>.</p>
+<h3><a href="#follow-best-practices">Follow best practices</a></h3>
+<p>You should aim to follow best practices with your GitHub App. For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/best-practices-for-creating-a-github-app">Best practices for creating a GitHub App</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

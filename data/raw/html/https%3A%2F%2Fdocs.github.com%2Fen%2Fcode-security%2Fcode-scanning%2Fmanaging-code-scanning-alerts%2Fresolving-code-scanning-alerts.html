@@ -1,0 +1,155 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Code scanning" href="/en/code-security/code-scanning">Code scanning</a><span>/</span>
+</li>
+<li>
+<a title="Manage alerts" href="/en/code-security/code-scanning/managing-code-scanning-alerts">Manage alerts</a><span>/</span>
+</li>
+<li><a title="Resolve alerts" href="/en/code-security/code-scanning/managing-code-scanning-alerts/resolving-code-scanning-alerts">Resolve alerts</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Resolving code scanning alerts</h1></div></div>
+<div>
+<div><p>From the security view, you can view, fix, or dismiss alerts for potential vulnerabilities or errors in your project's code.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Users with <strong>write</strong> access</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#generating-suggested-fixes-for-code-scanning-alerts"><div><span>Generating suggested fixes for code scanning alerts</span></div></a></li>
+<li><a href="#fixing-an-alert-manually"><div><span>Fixing an alert manually</span></div></a></li>
+<li><a href="#dismissing-alerts"><div><span>Dismissing alerts</span></div></a></li>
+<li><a href="#re-opening-dismissed-alerts"><div><span>Re-opening dismissed alerts</span></div></a></li>
+<li><a href="#removing-stale-configurations-and-alerts-from-a-branch"><div><span>Removing stale configurations and alerts from a branch</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#generating-suggested-fixes-for-code-scanning-alerts">Generating suggested fixes for code scanning alerts</a></h2>
+<p>GitHub Copilot Autofix can generate fixes for alerts identified by code scanning analysis. Most CodeQL alert types are supported and also some alerts from third-party tools. For more information, see <a href="/en/code-security/code-scanning/managing-code-scanning-alerts/responsible-use-autofix-code-scanning">Responsible use of Copilot Autofix for code scanning</a>.</p>
+<div>
+<p>
+You do not need a subscription to GitHub Copilot to use GitHub Copilot Autofix. Copilot Autofix is available to all public repositories on GitHub.com, as well as internal or private repositories owned by organizations and enterprises that have a license for GitHub Code Security.</p>
+</div>
+<ol>
+<li>On GitHub, navigate to the main page of the repository.</li>
+<li>Under the repository name, click <strong>Security</strong>.
+<div><picture><source><img src="/assets/cb-17801/images/help/repository/security-tab.png" alt='Screenshot of a repository header showing the tabs. The "Security" tab is highlighted by a dark orange outline.' width="720" height="89"></source></picture></div>
+</li>
+<li>In the left sidebar, click </li>
+<li>Click the name of an alert.</li>
+<li>If Copilot Autofix can suggest a fix, at the top of the page, click </li>
+<li>Once the suggested fix has been generated, at the bottom of the page, you can click <strong>Create PR with fix</strong> to automatically generate a pull request with the suggested fix.
+A new branch is created from the default branch, the generated fix is committed and a draft pull request is created. You can test and edit the suggested fix as you would with any other fix.</li>
+</ol>
+<p>You can also use the Autofix API for historical alerts endpoints to generate, get, and commit suggested fixes.</p>
+<ul>
+<li><a href="/en/rest/code-scanning/code-scanning#create-an-autofix-for-a-code-scanning-alert">Create an autofix for a code scanning alert</a></li>
+<li><a href="/en/rest/code-scanning/code-scanning#get-the-status-of-an-autofix-for-a-code-scanning-alert">Get the status of an autofix for a code scanning alert</a></li>
+<li><a href="/en/rest/code-scanning/code-scanning#commit-an-autofix-for-a-code-scanning-alert">Commit an autofix for a code scanning alert</a></li>
+</ul>
+<p>For information about the limitations of automatically generated fixes, see <a href="/en/code-security/code-scanning/managing-code-scanning-alerts/about-autofix-for-codeql-code-scanning#limitations-of-suggestions">Limitations of suggestions</a>.</p>
+<h2><a href="#fixing-an-alert-manually">Fixing an alert manually</a></h2>
+<p>Anyone with write permission for a repository can fix an alert by committing a correction to the code. If the repository has code scanning scheduled to run on pull requests, it's best to raise a pull request with your correction. This will trigger code scanning analysis of the changes and test that your fix doesn't introduce any new problems. For more information, see <a href="/en/code-security/code-scanning/managing-code-scanning-alerts/triaging-code-scanning-alerts-in-pull-requests">Triaging code scanning alerts in pull requests</a>.</p>
+<p>You can use the free text search or the filters to display a subset of alerts and then in turn mark all matching alerts as closed.</p>
+<p>Alerts may be fixed in one branch but not in another. You can use the "Branch" filter, on the summary of alerts, to check whether an alert is fixed in a particular branch.</p>
+<p><picture><source><img src="/assets/cb-86395/images/help/repository/code-scanning-branch-filter.png" alt='Screenshot of alerts view with the "Branch" dropdown menu expanded. The "Branch" button is outlined in dark orange.' width="720" height="257"></source></picture></p>
+<p>Please note that if you have filtered for alerts on a non-default branch, but the same alerts exist on the default branch, the alert page for any given alert will still only reflect the alert's status on the default branch, even if that status conflicts with the status on a non-default branch. For example, an alert that appears in the "Open" list in the summary of alerts for <code>branch-x</code> could show a status of "Fixed" on the alert page, if the alert is already fixed on the default branch. You can view the status of the alert for the branch you filtered on in the <strong>Affected branches</strong> section on the right side of the alert page.</p>
+<div>
+<p>
+If you run code scanning using multiple configurations, the same alert will sometimes be generated by more than one configuration. Unless you run all configurations regularly, you may see alerts that are fixed in one configuration but not in another. These stale configurations and alerts can be removed from a branch. For more information, see <a href="#removing-stale-configurations-and-alerts-from-a-branch">Removing stale configurations and alerts from a branch</a>.</p>
+</div>
+<h2><a href="#dismissing-alerts">Dismissing alerts</a></h2>
+<p>There are two ways of closing an alert. You can fix the problem in the code, or you can dismiss the alert.</p>
+<p>Dismissing an alert is a way of closing an alert that you don't think needs to be fixed. For example, an error in code that's used only for testing, or when the effort of fixing the error is greater than the potential benefit of improving the code. You can dismiss alerts from code scanning annotations in code, or from the summary list within the <strong>Security</strong> tab.</p>
+<p>When you dismiss an alert:</p>
+<ul>
+<li>It's dismissed in all branches.</li>
+<li>The alert is removed from the number of current alerts for your project.</li>
+<li>The alert is moved to the "Closed" list in the summary of alerts, from where you can reopen it, if required.</li>
+<li>The reason why you closed the alert is recorded.</li>
+<li>Optionally, you can comment on a dismissal to record the context of an alert dismissal.</li>
+<li>Next time code scanning runs, the same code won't generate an alert.</li>
+</ul>
+<p>To dismiss alerts:</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under the repository name, click <strong>Security</strong>.
+</p>
+<div><picture><source><img src="/assets/cb-17801/images/help/repository/security-tab.png" alt='Screenshot of a repository header showing the tabs. The "Security" tab is highlighted by a dark orange outline.' width="720" height="89"></source></picture></div>
+</li>
+<li>
+<p>In the left sidebar, click </p>
+</li>
+<li>
+<p>If you want to dismiss an alert, it's important to explore the alert first, so that you can choose the correct dismissal reason. Click the alert you'd like to explore.</p>
+</li>
+<li>
+<p>Review the alert, then click <strong>Dismiss alert</strong> and choose, or type, a reason for closing the alert.
+</p>
+<div><picture><source><img src="/assets/cb-126828/images/help/repository/code-scanning-alert-dropdown-reason.png" alt='Screenshot of an alert check failure. The "Dismiss alert" button is highlighted in dark orange and the dismiss drop-down displayed. '></source></picture></div>
+It's important to choose the appropriate reason from the drop-down menu as this may affect whether a query continues to be included in future analysis. Optionally, you can comment on a dismissal to record the context of an alert dismissal. The dismissal comment is added to the alert timeline and can be used as justification during auditing and reporting. You can retrieve or set a comment by using the code scanning REST API. The comment is contained in <code>dismissed_comment</code> for the <code>alerts/{alert_number}</code> endpoint. For more information, see <a href="/en/rest/code-scanning#update-a-code-scanning-alert">REST API endpoints for code scanning</a>.<p>If you dismiss a CodeQL alert as a false positive result, for example because the code uses a sanitization library that isn't supported, consider contributing to the CodeQL repository and improving the analysis. For more information about CodeQL, see <a href="https://github.com/github/codeql/blob/main/CONTRIBUTING.md">Contributing to CodeQL</a>.</p>
+</li>
+</ol>
+<h3><a href="#dismissing-multiple-alerts-at-once">Dismissing multiple alerts at once</a></h3>
+<p>If a project has multiple alerts that you want to dismiss for the same reason, you can bulk dismiss them from the summary of alerts. Typically, you'll want to filter the list and then dismiss all of the matching alerts. For example, you might want to dismiss all of the current alerts in the project that have been tagged for a particular Common Weakness Enumeration (CWE) vulnerability.</p>
+<h2><a href="#re-opening-dismissed-alerts">Re-opening dismissed alerts</a></h2>
+<p>If you dismiss an alert but later realize that you need to fix the alert, you can re-open it and fix the problem with the code. Display the list of closed alerts, find the alert, display it, and reopen it. You can then fix the alert in the same way as any other alert.</p>
+<h2><a href="#removing-stale-configurations-and-alerts-from-a-branch">Removing stale configurations and alerts from a branch</a></h2>
+<p>You may have multiple code scanning configurations on a single repository. When run, multiple configurations can generate the same alert. Additionally, if the configurations are run on different schedules, the alert statuses may become out-of-date for infrequent or stale configurations. For more information on alerts from multiple configurations, see <a href="/en/code-security/code-scanning/managing-code-scanning-alerts/about-code-scanning-alerts#about-alerts-from-multiple-configurations">About code scanning alerts</a>.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under the repository name, click <strong>Security</strong>.
+</p>
+<div><picture><source><img src="/assets/cb-17801/images/help/repository/security-tab.png" alt='Screenshot of a repository header showing the tabs. The "Security" tab is highlighted by a dark orange outline.' width="720" height="89"></source></picture></div>
+</li>
+<li>
+<p>In the left sidebar, click </p>
+</li>
+<li>
+<p>Under "Code scanning", click a code scanning alert.</p>
+</li>
+<li>
+<p>In the "Affected branches" section of the sidebar, click the desired branch.</p>
+</li>
+<li>
+<p>In the "Configurations analyzing" dialog, review details of the configurations that reported this alert on the selected branch. To delete an unwanted configuration for the desired branch, click </p>
+<p>If you delete a configuration by mistake, click <strong>Cancel</strong> to avoid applying your changes.</p>
+<div><picture><source><img src="/assets/cb-44092/images/help/repository/code-scanning-remove-configuration.png" alt='Screenshot of the "Configurations analyzing" modal. The "Delete configuration" icon is outlined in dark orange.' width="641" height="340"></source></picture></div>
+</li>
+<li>
+<p>Once you have removed any unwanted configurations and confirmed the expected configurations are displayed, click <strong>Save changes</strong>.</p>
+<p>If you save your changes after accidentally deleting a configuration, re-run the configuration to update the alert. For more information on re-running configurations that use GitHub Actions, see <a href="/en/actions/managing-workflow-runs/re-running-workflows-and-jobs#re-running-all-the-jobs-in-a-workflow">Re-running workflows and jobs</a>.</p>
+</li>
+</ol>
+<div>
+<ul>
+<li>If you remove all code scanning configurations for the default branch of your repository, the default branch will remain in the "Affected branches" sidebar, but it will not be analyzed by any configurations.</li>
+<li>If you remove all code scanning configurations for any branch other than the default branch of your repository, that branch will be removed from the "Affected branches" sidebar.</li>
+</ul>
+</div>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/code-security/code-scanning/managing-code-scanning-alerts/triaging-code-scanning-alerts-in-pull-requests">Triaging code scanning alerts in pull requests</a></li>
+<li><a href="/en/code-security/code-scanning/enabling-code-scanning/configuring-default-setup-for-code-scanning">Configuring default setup for code scanning</a></li>
+<li><a href="/en/code-security/code-scanning/integrating-with-code-scanning/about-integration-with-code-scanning">About integration with code scanning</a></li>
+<li><a href="/en/copilot/using-github-copilot/using-github-copilot-for-pull-requests/using-copilot-to-help-you-work-on-a-pull-request">Using Copilot to help you work on a pull request</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

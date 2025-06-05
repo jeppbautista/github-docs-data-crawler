@@ -1,0 +1,215 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Developing in a codespace" href="/en/codespaces/developing-in-a-codespace">Developing in a codespace</a><span>/</span>
+</li>
+<li><a title="GitHub CLI" href="/en/codespaces/developing-in-a-codespace/using-github-codespaces-with-github-cli">GitHub CLI</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Using GitHub Codespaces with GitHub CLI</h1></div></div>
+<div><div><p>You can work with GitHub Codespaces directly from your command line by using <code>gh</code>, the GitHub command line interface.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-github-cli"><div><span>About GitHub CLI</span></div></a></li>
+<li><a href="#installing-github-cli"><div><span>Installing GitHub CLI</span></div></a></li>
+<li><a href="#using-github-cli"><div><span>Using GitHub CLI</span></div></a></li>
+<li><a href="#gh-commands-for-github-codespaces"><div><span>gh commands for GitHub Codespaces</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-github-cli">About GitHub CLI</a></h2>
+<p>GitHub CLI is an open source tool for using GitHub from your computer's command line. When you're working from the command line, you can use the GitHub CLI to save time and avoid switching context. For more information, see <a href="/en/github-cli/github-cli/about-github-cli">About GitHub CLI</a>.</p>
+<p>You can work with GitHub Codespaces in the GitHub CLI to:</p>
+<ul>
+<li><a href="#list-all-of-your-codespaces">List all of your codespaces</a></li>
+<li><a href="#create-a-new-codespace">Create a new codespace</a></li>
+<li><a href="#view-details-of-a-codespace">View details of a codespace</a></li>
+<li><a href="#stop-a-codespace">Stop a codespace</a></li>
+<li><a href="#delete-a-codespace">Delete a codespace</a></li>
+<li><a href="#rename-a-codespace">Rename a codespace</a></li>
+<li><a href="#rebuild-a-codespace">Rebuild a codespace</a></li>
+<li><a href="#ssh-into-a-codespace">SSH into a codespace</a></li>
+<li><a href="#open-a-codespace-in-visual-studio-code">Open a codespace in Visual Studio Code</a></li>
+<li><a href="#open-a-codespace-in-jupyterlab">Open a codespace in JupyterLab</a></li>
+<li><a href="#copy-a-file-tofrom-a-codespace">Copy a file to/from a codespace</a></li>
+<li><a href="#modify-ports-in-a-codespace">Modify ports in a codespace</a></li>
+<li><a href="#access-codespace-logs">Access codespace logs</a></li>
+<li><a href="#access-remote-resources">Access remote resources</a></li>
+<li><a href="#change-the-machine-type-of-a-codespace">Change the machine type of a codespace</a></li>
+</ul>
+<h2><a href="#installing-github-cli">Installing GitHub CLI</a></h2>
+<p>For installation instructions for GitHub CLI, see the <a href="https://github.com/cli/cli#installation">GitHub CLI repository</a>.</p>
+<h2><a href="#using-github-cli">Using GitHub CLI</a></h2>
+<p>If you have not already done so, run <code>gh auth login</code> to authenticate with your GitHub account.</p>
+<p>To use <code>gh</code> to work with GitHub Codespaces, type <code>gh codespace SUBCOMMAND</code> or its alias <code>gh cs SUBCOMMAND</code>.</p>
+<p>As an example of a series of commands you might use to work with GitHub Codespaces, you could:</p>
+<ul>
+<li>List your current codespaces, to check whether you have a codespace for a particular repository:<br>
+<code>gh codespace list</code>
+</li>
+<li>Create a new codespace for the required repository branch:<br>
+<code>gh codespace create -r github/docs -b main</code>
+</li>
+<li>SSH into the new codespace:<br>
+<code>gh codespace ssh -c octocat-literate-space-parakeet-7gwrqp9q9jcx4vq</code>
+</li>
+<li>Forward a port to your local machine:<br>
+<code>gh codespace ports forward 8000:8000 -c octocat-literate-space-parakeet-7gwrqp9q9jcx4vq</code>
+</li>
+</ul>
+<h2><a href="#gh-commands-for-github-codespaces"><code>gh</code> commands for GitHub Codespaces</a></h2>
+<p>The sections below give example commands for each of the available operations.</p>
+<p>For a complete reference of <code>gh</code> commands for GitHub Codespaces, including details of all available options for each command, see the GitHub CLI online help for <a href="https://cli.github.com/manual/gh_codespace">gh codespace</a>. Alternatively, on the command line, use <code>gh codespace --help</code> for general help or <code>gh codespace SUBCOMMAND --help</code> for help with a specific subcommand.</p>
+<div>
+<p>
+The <code>-c CODESPACE_NAME</code> flag, used with many commands, is optional. If you omit it a list of codespaces is displayed for you to choose from.</p>
+</div>
+<h3><a href="#list-all-of-your-codespaces">List all of your codespaces</a></h3>
+<pre><code>gh codespace list
+</code></pre>
+<p>The list includes the unique name of each codespace, which you can use in other <code>gh codespace</code> commands.</p>
+<p>An asterisk at the end of the branch name for a codespace indicates that there are uncommitted or unpushed changes in that codespace.</p>
+<h3><a href="#create-a-new-codespace">Create a new codespace</a></h3>
+<pre><code>gh codespace create -r OWNER/REPO_NAME [-b BRANCH]
+</code></pre>
+<p>For more information, see <a href="/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository">Creating a codespace for a repository</a>.</p>
+<h3><a href="#view-details-of-a-codespace">View details of a codespace</a></h3>
+<pre><code>gh codespace view
+</code></pre>
+<p>After running this command you are prompted to choose one of your existing codespaces. The following information is then displayed:</p>
+<ul>
+<li>Name of the codespace</li>
+<li>State (for example, "Available" or "Shutdown")</li>
+<li>Repository</li>
+<li>Git status</li>
+<li>Path to the dev container configuration file used to create the codespace</li>
+<li>Machine type</li>
+<li>Idle timeout</li>
+<li>Date and time the codespace was created</li>
+<li>Retention period</li>
+</ul>
+<p>For more information, see the <a href="https://cli.github.com/manual/gh_codespace_view">GitHub CLI reference</a>.</p>
+<h3><a href="#stop-a-codespace">Stop a codespace</a></h3>
+<pre><code>gh codespace stop -c CODESPACE-NAME
+</code></pre>
+<p>For more information, see <a href="/en/codespaces/about-codespaces/deep-dive#closing-or-stopping-your-codespace">Deep dive into GitHub Codespaces</a>.</p>
+<h3><a href="#delete-a-codespace">Delete a codespace</a></h3>
+<pre><code>gh codespace delete -c CODESPACE-NAME
+</code></pre>
+<p>For more information, see <a href="/en/codespaces/developing-in-a-codespace/deleting-a-codespace">Deleting a codespace</a>.</p>
+<h3><a href="#rename-a-codespace">Rename a codespace</a></h3>
+<pre><code>gh codespace edit -c CODESPACE-NAME -d 'DISPLAY-NAME'
+</code></pre>
+<p>For more information, see <a href="/en/codespaces/customizing-your-codespace/renaming-a-codespace?tool=cli">Renaming a codespace</a>.</p>
+<h3><a href="#rebuild-a-codespace">Rebuild a codespace</a></h3>
+<pre><code>gh codespace rebuild
+</code></pre>
+<p>To perform a full rebuild, add <code>--full</code> at the end of this command. For more information, see <a href="/en/codespaces/developing-in-a-codespace/rebuilding-the-container-in-a-codespace">Rebuilding the container in a codespace</a>.</p>
+<p>When you use this command to rebuild a codespace, it uses the <code>devcontainer.json</code> file that is currently saved in the codespace's system. This happens regardless of whether or not the current state of the file has been saved in source control. For more information, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers">Introduction to dev containers</a>.</p>
+<h3><a href="#ssh-into-a-codespace">SSH into a codespace</a></h3>
+<p>To run commands on the remote codespace machine, from your terminal, you can SSH into the codespace.</p>
+<pre><code>gh codespace ssh -c CODESPACE-NAME
+</code></pre>
+<div>
+<p>
+The codespace you connect to must be running an SSH server. The default dev container image includes an SSH server, which is started automatically. If your codespaces are not created from the default image, you can install and start an SSH server by adding the following to the <code>features</code> object in your <code>devcontainer.json</code> file.</p>
+<pre><code><span>"features"</span><span>:</span> <span>{</span>
+<span>// ...</span>
+<span>"ghcr.io/devcontainers/features/sshd:1"</span><span>:</span> <span>{</span>
+<span>"version"</span><span>:</span> <span>"latest"</span>
+<span>}</span><span>,</span>
+<span>// ...</span>
+<span>}</span>
+</code></pre>
+<p>For more information about the <code>devcontainer.json</code> file and the default container image, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers">Introduction to dev containers</a>.</p>
+</div>
+<p>GitHub Codespaces creates a local SSH key automatically to provide a seamless authentication experience. For more information on connecting with SSH, see <a href="https://cli.github.com/manual/gh_codespace_ssh"><code>gh codespace ssh</code></a>.</p>
+<h3><a href="#open-a-codespace-in-visual-studio-code">Open a codespace in Visual Studio Code</a></h3>
+<pre><code>gh codespace code -c CODESPACE-NAME
+</code></pre>
+<p>You must have VS Code installed on your local machine. For more information, see <a href="/en/codespaces/developing-in-a-codespace/using-github-codespaces-in-visual-studio-code">Using GitHub Codespaces in Visual Studio Code</a>.</p>
+<h3><a href="#open-a-codespace-in-jupyterlab">Open a codespace in JupyterLab</a></h3>
+<pre><code>gh codespace jupyter -c CODESPACE-NAME
+</code></pre>
+<p>The JupyterLab application must be installed in the codespace you are opening. The default dev container image includes JupyterLab, so codespaces created from the default image will always have JupyterLab installed. For more information about the default image, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers#using-the-default-dev-container-configuration">Introduction to dev containers</a> and the <a href="https://github.com/devcontainers/images/tree/main/src/universal"><code>devcontainers/images</code></a> repository. If you're not using the default image in your dev container configuration, you can install JupyterLab by adding the <code>ghcr.io/devcontainers/features/python</code> feature to your <code>devcontainer.json</code> file. You should include the option <code>"installJupyterlab": true</code>. For more information, see the README for the <a href="https://github.com/devcontainers/features/tree/main/src/python#python-python"><code>python</code></a> feature, in the <code>devcontainers/features</code> repository.</p>
+<h3><a href="#copy-a-file-tofrom-a-codespace">Copy a file to/from a codespace</a></h3>
+<pre><code>gh codespace cp [-r] SOURCE(S) DESTINATION
+</code></pre>
+<p>Use the prefix <code>remote:</code> on a file or directory name to indicate that it's on the codespace. As with the UNIX <code>cp</code> command, the first argument specifies the source and the last specifies the destination. If the destination is a directory, you can specify multiple sources. Use the <code>-r</code> (recursive) flag if any of the sources is a directory.</p>
+<p>The location of files and directories on the codespace is relative to the home directory of the remote user.</p>
+<h4><a href="#examples">Examples</a></h4>
+<ul>
+<li>
+<p>Copy a file from the local machine to the <code>$HOME</code> directory of a codespace:</p>
+<p><code>gh codespace cp myfile.txt remote:</code></p>
+</li>
+<li>
+<p>Copy a file to the directory in which a repository is checked out in a codespace:</p>
+<p><code>gh codespace cp myfile.txt remote:/workspaces/REPOSITORY-NAME</code></p>
+</li>
+<li>
+<p>Copy a file from a codespace to the current directory on the local machine:</p>
+<p><code>gh codespace cp remote:myfile.txt .</code></p>
+</li>
+<li>
+<p>Copy three local files to the <code>$HOME/temp</code> directory of a codespace:</p>
+<p><code>gh codespace cp a1.txt a2.txt a3.txt remote:temp</code></p>
+</li>
+<li>
+<p>Copy three files from a codespace to the current working directory on the local machine:</p>
+<p><code>gh codespace cp remote:a1.txt remote:a2.txt remote:a3.txt .</code></p>
+</li>
+<li>
+<p>Copy a local directory into the <code>$HOME</code> directory of a codespace:</p>
+<p><code>gh codespace cp -r mydir remote:</code></p>
+</li>
+<li>
+<p>Copy a directory from a codespace to the local machine, changing the directory name:</p>
+<p><code>gh codespace cp -r remote:mydir mydir-localcopy</code></p>
+</li>
+</ul>
+<p>For more information about the <code>gh codespace cp</code> command, including additional flags you can use, see <a href="https://cli.github.com/manual/gh_codespace_cp">the GitHub CLI manual</a>.</p>
+<h3><a href="#modify-ports-in-a-codespace">Modify ports in a codespace</a></h3>
+<p>You can forward a port on a codespace to a local port. The port remains forwarded as long as the process is running. To stop forwarding the port, press <kbd>Control</kbd>+<kbd>C</kbd>.</p>
+<pre><code>gh codespace ports forward CODESPACE-PORT_NAME:LOCAL-PORT-NAME -c CODESPACE-NAME
+</code></pre>
+<p>To see details of forwarded ports enter <code>gh codespace ports</code> and then choose a codespace.</p>
+<p>You can set the visibility of a forwarded port. There are three visibility settings:</p>
+<ul>
+<li>
+<code>private</code> - Visible only to you. This is the default setting when you forward a port.</li>
+<li>
+<code>org</code> - Visible to members of the organization that owns the repository.</li>
+<li>
+<code>public</code> - Visible to anyone who knows the URL and port number.</li>
+</ul>
+<pre><code>gh codespace ports visibility CODESPACE-PORT:private|org|public -c CODESPACE-NAME
+</code></pre>
+<p>You can set the visibility for multiple ports with one command. For example:</p>
+<pre><code>gh codespace ports visibility 80:private 3000:public 3306:org -c CODESPACE-NAME
+</code></pre>
+<p>For more information, see <a href="/en/codespaces/developing-in-a-codespace/forwarding-ports-in-your-codespace">Forwarding ports in your codespace</a>.</p>
+<h3><a href="#access-codespace-logs">Access codespace logs</a></h3>
+<p>You can see the creation log for a codespace. After entering this command you will be asked to enter the passphrase for your SSH key.</p>
+<pre><code>gh codespace logs -c CODESPACE-NAME
+</code></pre>
+<p>For more information about the creation log, see <a href="/en/codespaces/troubleshooting/github-codespaces-logs#creation-logs">GitHub Codespaces logs</a>.</p>
+<h3><a href="#access-remote-resources">Access remote resources</a></h3>
+<p>You can use the GitHub CLI extension to create a bridge between a codespace and your local machine, so that the codespace can access any remote resource that is accessible from your machine. For more information on using the extension, see <a href="https://github.com/github/gh-net#codespaces-network-bridge">Using GitHub CLI to access remote resources</a>.</p>
+<div>
+<p>
+The GitHub CLI extension is currently in public preview and subject to change.</p>
+</div>
+<h3><a href="#change-the-machine-type-of-a-codespace">Change the machine type of a codespace</a></h3>
+<pre><code>gh codespace edit -m MACHINE-TYPE-NAME
+</code></pre>
+<p>For more information, see the "GitHub CLI" tab of <a href="/en/codespaces/customizing-your-codespace/changing-the-machine-type-for-your-codespace">Changing the machine type for your codespace</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

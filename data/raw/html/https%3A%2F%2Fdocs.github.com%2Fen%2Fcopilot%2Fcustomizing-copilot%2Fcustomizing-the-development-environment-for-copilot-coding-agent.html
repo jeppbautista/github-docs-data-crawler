@@ -1,0 +1,151 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Customize Copilot" href="/en/copilot/customizing-copilot">Customize Copilot</a><span>/</span>
+</li>
+<li><a title="Customize the agent environment" href="/en/copilot/customizing-copilot/customizing-the-development-environment-for-copilot-coding-agent">Customize the agent environment</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Customizing the development environment for Copilot coding agent</h1></div></div>
+<div><div><p>Learn how to customize GitHub Copilot's development environment with additional tools.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-customizing-copilot-coding-agents-development-environment"><div><span>About customizing Copilot coding agent's development environment</span></div></a></li>
+<li><a href="#preinstalling-tools-or-dependencies-in-copilots-environment"><div><span>Preinstalling tools or dependencies in Copilot's environment</span></div></a></li>
+<li><a href="#upgrading-to-larger-github-hosted-github-actions-runners"><div><span>Upgrading to larger GitHub-hosted GitHub Actions runners</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<p>
+Copilot coding agent is in public preview and subject to change.</p>
+<p>For more information about Copilot coding agent, see <a href="/en/copilot/using-github-copilot/coding-agent/about-assigning-tasks-to-copilot">About assigning tasks to Copilot</a>.</p>
+</div>
+<h2><a href="#about-customizing-copilot-coding-agents-development-environment">About customizing Copilot coding agent's development environment</a></h2>
+<p>While working on a task, Copilot has access to its own ephemeral development environment, powered by GitHub Actions, where it can explore your code, make changes, execute automated tests and linters and more.</p>
+<p>You can customize Copilot's environment by:</p>
+<ul>
+<li>
+<a href="#preinstalling-tools-or-dependencies-in-copilots-environment">Preinstalling tools or dependencies in Copilot's environment</a>.</li>
+<li>
+<a href="#upgrading-to-larger-github-hosted-github-actions-runners">Upgrading from standard GitHub-hosted GitHub Actions runners to larger runners</a>.</li>
+<li>
+<a href="/en/copilot/customizing-copilot/customizing-or-disabling-the-firewall-for-copilot-coding-agent">Disabling or customizing the agent's firewall</a>.</li>
+</ul>
+<h2><a href="#preinstalling-tools-or-dependencies-in-copilots-environment">Preinstalling tools or dependencies in Copilot's environment</a></h2>
+<p>In its ephemeral development environment, Copilot can build or compile your project and run automated tests, linters and other tools. To do this, it will need to install your project's dependencies.</p>
+<p>Copilot can discover and install these dependencies itself via a process of trial and error, but this can be slow and unreliable, given the non-deterministic nature of large language models (LLMs), and in some cases, it may be completely unable to download these dependencies—for example, if they are private.</p>
+<p>Instead, you can preconfigure Copilot's environment before the agent starts by creating a special GitHub Actions workflow file, located at <code>.github/workflows/copilot-setup-steps.yml</code> within your repository.</p>
+<p>A <code>copilot-setup-steps.yml</code> file looks like a normal GitHub Actions workflow file, but must contain a single <code>copilot-setup-steps</code> job. This job will be executed in GitHub Actions before Copilot starts working. For more information on GitHub Actions workflow files, see <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions">Workflow syntax for GitHub Actions</a>.</p>
+<p>Here is a simple example of a <code>copilot-setup-steps.yml</code> file for a TypeScript project that clones the project, installs Node.js and downloads and caches the project's dependencies. You should customize this to fit your own project's language(s) and dependencies:</p>
+<div>
+<header><span>YAML</span><pre>name: "Copilot Setup Steps"
+
+# Allow testing of the setup steps from your repository's "Actions" tab.
+on: workflow_dispatch
+
+jobs:
+  # The job MUST be called `copilot-setup-steps` or it will not be picked up by Copilot.
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+
+    # Set the permissions to the lowest permissions possible needed for your steps.
+    # Copilot will be given its own token for its operations.
+    permissions:
+      # If you want to clone the repository as part of your setup steps, for example to install dependencies, you'll need the `contents: read` permission. If you don't clone the repository in your setup steps, Copilot will do this for you automatically after the steps complete.
+      contents: read
+
+    # You can define any steps you want, and they will run before the agent starts.
+    # If you do not check out your code, Copilot will do this for you.
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install JavaScript dependencies
+        run: npm ci
+</pre></header><pre><code><span>name:</span> <span>"Copilot Setup Steps"</span>
+
+<span># Allow testing of the setup steps from your repository's "Actions" tab.</span>
+<span>on:</span> <span>workflow_dispatch</span>
+
+<span>jobs:</span>
+  <span># The job MUST be called `copilot-setup-steps` or it will not be picked up by Copilot.</span>
+  <span>copilot-setup-steps:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+
+    <span># Set the permissions to the lowest permissions possible needed for your steps.</span>
+    <span># Copilot will be given its own token for its operations.</span>
+    <span>permissions:</span>
+      <span># If you want to clone the repository as part of your setup steps, for example to install dependencies, you'll need the `contents: read` permission. If you don't clone the repository in your setup steps, Copilot will do this for you automatically after the steps complete.</span>
+      <span>contents:</span> <span>read</span>
+
+    <span># You can define any steps you want, and they will run before the agent starts.</span>
+    <span># If you do not check out your code, Copilot will do this for you.</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>Checkout</span> <span>code</span>
+        <span>uses:</span> <span>actions/checkout@v4</span>
+
+      <span>-</span> <span>name:</span> <span>Set</span> <span>up</span> <span>Node.js</span>
+        <span>uses:</span> <span>actions/setup-node@v4</span>
+        <span>with:</span>
+          <span>node-version:</span> <span>"20"</span>
+          <span>cache:</span> <span>"npm"</span>
+
+      <span>-</span> <span>name:</span> <span>Install</span> <span>JavaScript</span> <span>dependencies</span>
+        <span>run:</span> <span>npm</span> <span>ci</span>
+</code></pre>
+</div>
+<p>In your <code>copilot-setup-steps.yml</code> file, you can only customize the following settings of the <code>copilot-setup-steps</code> job. If you try to customize other settings, your changes will be ignored.</p>
+<ul>
+<li>
+<code>steps</code> (see above)</li>
+<li>
+<code>permissions</code> (see above)</li>
+<li>
+<code>runs-on</code> (see below)</li>
+<li><code>container </code></li>
+<li><code>services</code></li>
+<li><code>snapshot</code></li>
+<li>
+<code>timeout-minutes</code> (maximum value: <code>59</code>)</li>
+</ul>
+<p>For more information on these options, see <a href="/en/actions/writing-workflows/workflow-syntax-for-github-actions#jobs">Workflow syntax for GitHub Actions</a>.</p>
+<p>Once you have created a <code>copilot-setup-steps.yml</code> file and merged it into your default branch, you can manually run the workflow from the repository's <strong>Actions</strong> tab to check that it works. For more information, see <a href="/en/actions/managing-workflow-runs-and-deployments/managing-workflow-runs/manually-running-a-workflow">Manually running a workflow</a>.</p>
+<h2><a href="#upgrading-to-larger-github-hosted-github-actions-runners">Upgrading to larger GitHub-hosted GitHub Actions runners</a></h2>
+<p>By default, Copilot works in a standard GitHub Actions runner with limited resources.</p>
+<p>You can choose instead to use larger runners with more advanced features—for example more RAM, CPU and disk space and advanced networking controls. You may want to upgrade to a larger runner if you see poor performance—for example when downloading dependencies or running tests. For more information, see <a href="/en/actions/using-github-hosted-runners/using-larger-runners/about-larger-runners">About larger runners</a>.</p>
+<p>Before Copilot can use larger runners, you must first add one or more larger runners and then configure your repository to use them. See <a href="/en/actions/using-github-hosted-runners/managing-larger-runners">Managing larger runners</a>. Once you have done this, you can use the <code>copilot-setup-steps.yml</code> file to tell Copilot to use the larger runners.</p>
+<p>To use larger runners, set the <code>runs-on</code> step of the <code>copilot-setup-steps</code> job to the label and/or group for the larger runners you want Copilot to use. For more information on specifying larger runners with <code>runs-on</code>, see <a href="/en/actions/using-github-hosted-runners/running-jobs-on-larger-runners">Running jobs on larger runners</a>.</p>
+<pre><code><span># ...</span>
+
+<span>jobs:</span>
+  <span>copilot-setup-steps:</span>
+    <span>runs-on:</span> <span>ubuntu-4-core</span>
+    <span># ...</span>
+</code></pre>
+<div>
+<ul>
+<li>Copilot coding agent is only compatible with Ubuntu x86 Linux runners. Runners with Windows, macOS or other operating systems are not supported.</li>
+<li>Self-hosted GitHub Actions runners are not supported.</li>
+</ul>
+</div>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/copilot/customizing-copilot/customizing-or-disabling-the-firewall-for-copilot-coding-agent">Customizing or disabling the firewall for Copilot coding agent</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

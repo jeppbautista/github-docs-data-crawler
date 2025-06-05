@@ -1,0 +1,116 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Developing in a codespace" href="/en/codespaces/developing-in-a-codespace">Developing in a codespace</a><span>/</span>
+</li>
+<li><a title="Stop a codespace" href="/en/codespaces/developing-in-a-codespace/stopping-and-starting-a-codespace">Stop a codespace</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Stopping and starting a codespace</h1></div></div>
+<div>
+<div><p>You can stop and start your codespace to save resources and to pause work.</p></div>
+<div>
+<h2>Tool navigation</h2>
+<nav><ul>
+<li><a href="?tool=cli"><span>GitHub CLI</span></a></li>
+<li><a href="?tool=vscode"><span>Visual Studio Code</span></a></li>
+<li><a href="?tool=webui"><span>Web browser</span></a></li>
+</ul></nav>
+</div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-stopping-and-starting-a-codespace"><div><span>About stopping and starting a codespace</span></div></a></li>
+<li><a href="#stopping-a-codespace"><div><span>Stopping a codespace</span></div></a></li>
+<li><a href="#restarting-a-codespace"><div><span>Restarting a codespace</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-stopping-and-starting-a-codespace">About stopping and starting a codespace</a></h2>
+<p>You can stop a codespace at any time. When you stop a codespace, any running processes are stopped. Any saved changes in your codespace will still be available when you next start it. The terminal history is preserved, but the visible contents of the terminal window are not preserved between codespace sessions.</p>
+<p>If you do not explicitly stop a codespace, it will continue to run until it times out from inactivity. Closing a codespace does not stop the codespace. For example, if you're using a codespace in the VS Code web client and you close the browser tab, the codespace remains running on the remote machine. For information about timeouts, see <a href="/en/codespaces/about-codespaces/the-codespace-lifecycle#timeouts-for-github-codespaces">Understanding the codespace lifecycle</a>.</p>
+<p>Only running codespaces incur CPU charges. A stopped codespace incurs only storage costs.</p>
+<p>You may want to stop and restart a codespace to apply changes to it. For example, if you change the machine type used for your codespace, you will need to stop and restart it for the change to take effect. You can also stop your codespace and choose to restart or delete it if you encounter an error or something unexpected.</p>
+<p>Regardless of where you created or access your codespaces, you can view and manage them in your browser at <a href="https://github.com/codespaces">https://github.com/codespaces</a>.</p>
+<h2><a href="#stopping-a-codespace">Stopping a codespace</a></h2>
+<div>
+<ol>
+<li>Navigate to the "Your Codespaces" page at <a href="https://github.com/codespaces">https://github.com/codespaces</a>.</li>
+<li>To the right of the codespace you want to stop, click the ellipsis (<strong>...</strong>).</li>
+<li>Click <strong>Stop codespace</strong>.</li>
+</ol>
+<p><picture><source><img src="/assets/cb-90117/images/help/codespaces/stop-codespace-webui.png" alt='Screenshot of a list of codespaces with the dropdown menu for one of them displayed, showing the "Stop codespace" option.' width="1440" height="550"></source></picture></p>
+</div>
+<div>
+<div>
+<p>
+To learn more about GitHub CLI, see <a href="/en/github-cli/github-cli/about-github-cli">About GitHub CLI</a>.</p>
+</div>
+<p>To stop a codespace use the <code>gh codespace stop</code> subcommand and then choose the codespace you want to stop from the list that's displayed.</p>
+<div>
+<header><span>Shell</span><pre>gh codespace stop
+</pre></header><pre><code>gh codespace stop
+</code></pre>
+</div>
+</div>
+<div>
+<ol>
+<li>Open the VS Code Command Palette (<kbd>Shift</kbd>+<kbd>Command</kbd>+<kbd>P</kbd> (Mac) / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> (Windows/Linux)).</li>
+<li>Type <code>stop</code> and select <strong>Codespaces: Stop Codespace</strong> from the list of options.</li>
+<li>In the list of codespaces, select the codespace you want to stop.</li>
+</ol>
+</div>
+<h2><a href="#restarting-a-codespace">Restarting a codespace</a></h2>
+<div>
+<ol>
+<li>
+<p>Navigate to the "Your Codespaces" page at <a href="https://github.com/codespaces">https://github.com/codespaces</a>.</p>
+</li>
+<li>
+<p>Click the name of the codespace you want to restart.</p>
+<div><picture><source><img src="/assets/cb-52884/images/help/codespaces/restart-codespace-webui.png" alt="Screenshot of a list of two codespaces on GitHub. The names of the codespaces are highlighted with dark orange outlines." width="720" height="192"></source></picture></div>
+</li>
+</ol>
+</div>
+<div>
+<p>When you restart a codespace you can choose to open it in Visual Studio Code or in your browser.</p>
+<ul>
+<li>
+<p>To restart a codespace and open it in Visual Studio Code, use the <code>gh codespace code</code> subcommand and then choose the codespace you want to restart from the list that's displayed.</p>
+<div>
+<header><span>Shell</span><pre>gh codespace code
+</pre></header><pre><code>gh codespace code
+</code></pre>
+</div>
+</li>
+<li>
+<p>To restart a codespace and open it in your browser, use the <code>gh codespace open --web</code> subcommand and then choose the codespace you want to restart from the list that's displayed.</p>
+<div>
+<header><span>Shell</span><pre>gh codespace open --web
+</pre></header><pre><code>gh codespace open --web
+</code></pre>
+</div>
+</li>
+</ul>
+</div>
+<div>
+<ol>
+<li>Open the VS Code Command Palette (<kbd>Shift</kbd>+<kbd>Command</kbd>+<kbd>P</kbd> (Mac) / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> (Windows/Linux)).</li>
+<li>Type <code>connect</code> and select <strong>Codespaces: Connect to Codespace</strong> from the list of options.</li>
+<li>In the list of codespaces, select the codespace you want to restart.</li>
+</ol>
+</div>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/codespaces/about-codespaces/understanding-the-codespace-lifecycle">Understanding the codespace lifecycle</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

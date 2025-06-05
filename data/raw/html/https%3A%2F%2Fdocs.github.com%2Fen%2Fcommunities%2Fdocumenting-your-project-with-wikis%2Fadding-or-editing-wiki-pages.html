@@ -1,0 +1,95 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Building communities" href="/en/communities">Building communities</a><span>/</span>
+</li>
+<li>
+<a title="Using wikis" href="/en/communities/documenting-your-project-with-wikis">Using wikis</a><span>/</span>
+</li>
+<li><a title="Manage wiki pages" href="/en/communities/documenting-your-project-with-wikis/adding-or-editing-wiki-pages">Manage wiki pages</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Adding or editing wiki pages</h1></div></div>
+<div>
+<div><p>You can add and edit wiki pages directly on GitHub or locally using the command line.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Wikis are available in public repositories with GitHub Free and GitHub Free for organizations, and in public and private repositories with GitHub Pro, GitHub Team, GitHub Enterprise Cloud and GitHub Enterprise Server. For more information, see <a href="/en/get-started/learning-about-github/githubs-plans">GitHub’s plans</a>.</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#adding-wiki-pages"><div><span>Adding wiki pages</span></div></a></li>
+<li><a href="#editing-wiki-pages"><div><span>Editing wiki pages</span></div></a></li>
+<li><a href="#adding-or-editing-wiki-pages-locally"><div><span>Adding or editing wiki pages locally</span></div></a></li>
+<li><a href="#about-wiki-filenames"><div><span>About wiki filenames</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#adding-wiki-pages">Adding wiki pages</a></h2>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click </p>
+<div><picture><source><img src="/assets/cb-50193/images/help/wiki/wiki-menu-link.png" alt='Screenshot of the menu in a repository. The "Wiki" option is outlined in dark orange.' width="720" height="80"></source></picture></div>
+</li>
+<li>
+<p>In the upper-right corner of the page, click <strong>New Page</strong>.</p>
+</li>
+<li>
+<p>Optionally, to write in a format other than Markdown, use the "Edit mode" dropdown to choose a different format.</p>
+<div><picture><source><img src="/assets/cb-109248/images/help/wiki/wiki-edit-mode-dropdown.png" alt='Screenshot of the "Create new page" page. The "Edit mode" dropdown is outlined in dark orange.' width="720" height="222"></source></picture></div>
+</li>
+<li>
+<p>Use the text editor to add your page's content.</p>
+</li>
+<li>
+<p>In the "Edit message" field, type a commit message describing the new file you’re adding.</p>
+</li>
+<li>
+<p>To commit your changes to the wiki, click <strong>Save Page</strong>.</p>
+</li>
+</ol>
+<h2><a href="#editing-wiki-pages">Editing wiki pages</a></h2>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click </p>
+<div><picture><source><img src="/assets/cb-50193/images/help/wiki/wiki-menu-link.png" alt='Screenshot of the menu in a repository. The "Wiki" option is outlined in dark orange.' width="720" height="80"></source></picture></div>
+</li>
+<li>
+<p>Using the wiki sidebar on the right, navigate to the page you want to change. In the upper-right corner of the page, click <strong>Edit</strong>.</p>
+</li>
+<li>
+<p>Use the text editor to edit the page's content.</p>
+</li>
+<li>
+<p>In the "Edit message" field, type a commit message describing the new file you’re adding.</p>
+</li>
+<li>
+<p>To commit your changes to the wiki, click <strong>Save Page</strong>.</p>
+</li>
+</ol>
+<h2><a href="#adding-or-editing-wiki-pages-locally">Adding or editing wiki pages locally</a></h2>
+<p>Wikis are part of Git repositories, so you can make changes locally and push them to your repository using a Git workflow.</p>
+<h3><a href="#cloning-wikis-to-your-computer">Cloning wikis to your computer</a></h3>
+<p>Every wiki provides an easy way to clone its contents down to your computer.
+Once you've created an initial page on GitHub, you can clone the repository to your computer with the provided URL:</p>
+<pre><code><span>$ </span><span>git <span>clone</span> https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.wiki.git</span>
+<span># </span><span>Clones the wiki locally</span>
+</code></pre>
+<p>Once you have cloned the wiki, you can add new files, edit existing ones, and commit your changes. You and your collaborators can create branches when working on wikis, but only changes pushed to the default branch will be made live and available to your readers.</p>
+<h2><a href="#about-wiki-filenames">About wiki filenames</a></h2>
+<p>The filename determines the title of your wiki page, and the file extension determines how your wiki content is rendered.</p>
+<p>Wikis use <a href="https://github.com/github/markup">our open-source Markup library</a> to convert the markup, and it determines which converter to use by a file's extension. For example, if you name a file <em>foo.md</em> or <em>foo.markdown</em>, wiki will use the Markdown converter, while a file named <em>foo.textile</em> will use the Textile converter.</p>
+<p>Don't use the following characters in your wiki page's titles: <code>\ / : * ? " &lt; &gt; |</code>. Users on certain operating systems won't be able to work with filenames containing these characters. Be sure to write your content using a markup language that matches the extension, or your content won't render properly.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

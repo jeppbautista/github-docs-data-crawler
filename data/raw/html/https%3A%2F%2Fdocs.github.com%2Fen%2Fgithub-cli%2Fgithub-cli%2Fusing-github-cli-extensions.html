@@ -1,0 +1,68 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub CLI" href="/en/github-cli">GitHub CLI</a><span>/</span>
+</li>
+<li>
+<a title="GitHub CLI" href="/en/github-cli/github-cli">GitHub CLI</a><span>/</span>
+</li>
+<li><a title="Using GitHub CLI extensions" href="/en/github-cli/github-cli/using-github-cli-extensions">Using GitHub CLI extensions</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Using GitHub CLI extensions</h1></div></div>
+<div><div><p>Learn how to use custom extensions written by other GitHub CLI users.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-github-cli-extensions"><div><span>About GitHub CLI extensions</span></div></a></li>
+<li><a href="#finding-extensions"><div><span>Finding extensions</span></div></a></li>
+<li><a href="#installing-extensions"><div><span>Installing extensions</span></div></a></li>
+<li><a href="#running-an-extension"><div><span>Running an extension</span></div></a></li>
+<li><a href="#viewing-installed-extensions"><div><span>Viewing installed extensions</span></div></a></li>
+<li><a href="#updating-extensions"><div><span>Updating extensions</span></div></a></li>
+<li><a href="#uninstalling-extensions"><div><span>Uninstalling extensions</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-github-cli-extensions">About GitHub CLI extensions</a></h2>
+<div>
+<p>
+Extensions outside of GitHub and GitHub CLI are not certified by GitHub and are governed by separate terms of service, privacy policy, and support documentation. To mitigate risk when using third-party extensions, audit the source code of the extension before installing or updating the extension.</p>
+</div>
+<p>GitHub CLI extensions are custom GitHub CLI commands that anyone can create and use. For more information about how to create GitHub CLI extensions, see <a href="/en/github-cli/github-cli/creating-github-cli-extensions">Creating GitHub CLI extensions</a>.</p>
+<p>Extensions are locally installed and are scoped to the user. Therefore, if you access GitHub CLI from a different machine or another user accesses GitHub CLI from the same machine, the extension will not be available.</p>
+<h2><a href="#finding-extensions">Finding extensions</a></h2>
+<p>You can find extensions by browsing <a href="https://github.com/topics/gh-extension">repositories with the <code>gh-extension</code> topic</a>.</p>
+<h2><a href="#installing-extensions">Installing extensions</a></h2>
+<p>To install an extension, use the <code>extensions install</code> subcommand. Replace the <code>repo</code> parameter with the repository of the extension. You can use the full URL, such as <code>https://github.com/octocat/gh-whoami</code>, or just the owner and repository, such as <code>octocat/gh-whoami</code>.</p>
+<p>If the owner and repository are used, <code>gh</code> will install the extension using the hostname to which <code>gh</code> is currently authenticated. The full URL format is useful when installing extensions from a different host. For example, users on GitHub Enterprise Server should use the full repository URL to install extensions from GitHub.com or any other host.</p>
+<p>To install an extension in development from the current directory, use <code>.</code> as the value for the <code>repo</code> parameter.</p>
+<pre><code>gh extension install REPO
+</code></pre>
+<p>If you already have an extension by the same name installed, the command will fail. For example, if you have installed <code>octocat/gh-whoami</code>, you must uninstall it before installing <code>hubot/gh-whoami</code>.</p>
+<h2><a href="#running-an-extension">Running an extension</a></h2>
+<p>When you have installed an extension, you run the extension as you would run a native GitHub CLI command, using <code>gh EXTENSION-NAME</code>. The <code>EXTENSION-NAME</code> is the name of the repository that contains the extension, minus the <code>gh-</code> prefix.</p>
+<p>For example, if you installed the extension from the <code>octocat/gh-whoami</code> repository, you would run the extension with the following command.</p>
+<pre><code>gh whoami
+</code></pre>
+<p>You can usually find specific information about how to use an extension in the README of the repository that contains the extension.</p>
+<h2><a href="#viewing-installed-extensions">Viewing installed extensions</a></h2>
+<p>To view all installed extensions, use the <code>extensions list</code> subcommand. The output will also tell you which extensions have updates available.</p>
+<pre><code>gh extension list
+</code></pre>
+<h2><a href="#updating-extensions">Updating extensions</a></h2>
+<p>To update an extension, use the <code>extensions upgrade</code> subcommand. Replace the <code>extension</code> parameter with the name of the extension.</p>
+<pre><code>gh extension upgrade EXTENSION
+</code></pre>
+<p>To update all installed extensions, use the <code>--all</code> flag.</p>
+<pre><code>gh extension upgrade --all
+</code></pre>
+<h2><a href="#uninstalling-extensions">Uninstalling extensions</a></h2>
+<p>To uninstall an extension, use the <code>extensions remove</code> subcommand. Replace the <code>extension</code> parameter with the name of the extension.</p>
+<pre><code>gh extension remove EXTENSION
+</code></pre>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

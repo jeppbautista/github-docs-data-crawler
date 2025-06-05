@@ -1,0 +1,91 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="About GitHub Copilot" href="/en/copilot/about-github-copilot">About GitHub Copilot</a><span>/</span>
+</li>
+<li><a title="Copilot features" href="/en/copilot/about-github-copilot/github-copilot-features">Copilot features</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>GitHub Copilot features</h1></div></div>
+<div><div><p>GitHub Copilot offers a suite of features. Copilot also offers a suite of features for administrators.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#github-copilot-features"><div><span>GitHub Copilot features</span></div></a></li>
+<li><a href="#github-copilot-features-for-administrators"><div><span>GitHub Copilot features for administrators</span></div></a></li>
+<li><a href="#next-steps"><div><span>Next steps</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#github-copilot-features">GitHub Copilot features</a></h2>
+<h3><a href="#code-completion">Code completion</a></h3>
+<p>Autocomplete-style suggestions from Copilot in supported IDEs <em>(Visual Studio Code, Visual Studio, JetBrains IDEs, Azure Data Studio, Xcode, Vim/Neovim, and Eclipse)</em>. See <a href="/en/copilot/using-github-copilot/getting-code-suggestions-in-your-ide-with-github-copilot">Getting code suggestions in your IDE with GitHub Copilot</a>.</p>
+<p>If you use VS Code, you can also use next edit suggestions, which will predict the location of the next edit you are likely to make and suggest a completion for it.</p>
+<h3><a href="#copilot-chat">Copilot Chat</a></h3>
+<p>A chat interface that lets you ask coding-related questions. GitHub Copilot Chat is available on the GitHub website, in GitHub Mobile, in supported IDEs <em>(Visual Studio Code, Visual Studio, JetBrains IDEs, Eclipse IDE, and Xcode)</em>, and in Windows Terminal. Users can also use skills with Copilot Chat. See <a href="/en/copilot/using-github-copilot/asking-github-copilot-questions-in-github">Asking GitHub Copilot questions in GitHub</a> and <a href="/en/copilot/using-github-copilot/asking-github-copilot-questions-in-your-ide">Asking GitHub Copilot questions in your IDE</a>.</p>
+<h3><a href="#copilot-coding-agent-public-preview">Copilot coding agent (public preview)</a></h3>
+<p>An autonomous AI agent that can make code changes for you. You can assign a GitHub issue to Copilot and the agent will work on making the required changes, and will create a pull request for you to review. You can also ask Copilot to create a pull request from Copilot Chat. See <a href="/en/copilot/using-github-copilot/coding-agent">Coding agent</a>.</p>
+<h3><a href="#copilot-in-the-cli">Copilot in the CLI</a></h3>
+<p>A chat-like interface in the terminal, where you can ask questions about the command line. You can ask Copilot to provide command suggestions or explanations of commands. Users can also integrate Copilot in Windows Terminal Canary. See <a href="/en/copilot/using-github-copilot/using-github-copilot-in-the-command-line">Using GitHub Copilot in the command line</a>.</p>
+<h3><a href="#github-copilot-code-review">GitHub Copilot code review</a></h3>
+<p>AI-generated code review suggestions to help you write better code. See <a href="/en/copilot/using-github-copilot/code-review/using-copilot-code-review">Using GitHub Copilot code review</a>.</p>
+<h3><a href="#copilot-pull-request-summaries">Copilot pull request summaries</a></h3>
+<p>AI-generated summaries of the changes that were made in a pull request, which files they impact, and what a reviewer should focus on when they conduct their review. See <a href="/en/copilot/using-github-copilot/using-github-copilot-for-pull-requests/creating-a-pull-request-summary-with-github-copilot">Creating a pull request summary with GitHub Copilot</a>.</p>
+<h3><a href="#copilot-workspace-public-preview">Copilot Workspace (public preview)</a></h3>
+<p>A Copilot-enabled environment for refining your pull requests, validating changes, and integrating suggestions from reviewers. See <a href="/en/copilot/using-github-copilot/using-github-copilot-for-pull-requests/using-copilot-to-help-you-work-on-a-pull-request">Using Copilot to help you work on a pull request</a>.</p>
+<h3><a href="#copilot-text-completion-public-preview">Copilot text completion (public preview)</a></h3>
+<p>AI-generated text completion to help you write pull request descriptions quickly and accurately. See <a href="/en/copilot/using-github-copilot/using-copilot-text-completion">Using Copilot text completion</a>.</p>
+<h3><a href="#github-copilot-extensions">GitHub Copilot Extensions</a></h3>
+<p>GitHub Copilot Extensions are <strong>a type of GitHub App that integrates the power of external tools into GitHub Copilot Chat</strong>. Copilot Extensions can be developed by anyone, for private or public use, and can be shared with others through the GitHub Marketplace. See <a href="/en/copilot/building-copilot-extensions/about-building-copilot-extensions">About building Copilot Extensions</a>.</p>
+<h3><a href="#github-models-public-preview">GitHub Models (public preview)</a></h3>
+<p>Bringing the power of industry leading large and small language models to users directly on GitHub. See <a href="/en/github-models">GitHub Models</a>.</p>
+<h3><a href="#copilot-edits">Copilot Edits</a></h3>
+<p>Copilot Edits is available in Visual Studio Code, Visual Studio, and JetBrains IDEs. Use Copilot Edits to make changes across multiple files directly from a single Copilot Chat prompt. Copilot Edits has the following modes:</p>
+<ul>
+<li>Use edit mode when you want more granular control over the edits that Copilot proposes. In edit mode, you choose which files Copilot can make changes to, provide context to Copilot with each iteration, and decide whether or not to accept the suggested edits after each turn.</li>
+</ul>
+<p>Edit mode is best suited to use cases where:</p>
+<ul>
+<li>You want to make a quick, specific update to a defined set of files.</li>
+<li>You want full control over the number of LLM requests Copilot uses. Edit mode is only available in Visual Studio Code and JetBrains IDEs.</li>
+<li>Use agent mode when you have a specific task in mind and want to enable Copilot to autonomously edit your code. In agent mode, Copilot determines which files to make changes to, offers code changes and terminal commands to complete the task, and iterates to remediate issues until the original task is complete.</li>
+</ul>
+<p>Agent mode is best suited to use cases where:</p>
+<ul>
+<li>Your task is complex, and involves multiple steps, iterations, and error handling.</li>
+<li>You want Copilot to determine the necessary steps to take to complete the task.</li>
+<li>The task requires Copilot to integrate with external applications, such as an MCP server. Agent mode is only available in Visual Studio Code and Visual Studio.</li>
+</ul>
+<h3><a href="#copilot-custom-instructions">Copilot custom instructions</a></h3>
+<p>Enhance Copilot Chat responses by providing contextual details on your preferences, tools, and requirements. See <a href="/en/copilot/customizing-copilot/about-customizing-github-copilot-chat-responses">About customizing GitHub Copilot Chat responses</a>.</p>
+<h3><a href="#copilot-in-github-desktop-public-preview">Copilot in GitHub Desktop (public preview)</a></h3>
+<p>Automatically generate commit messages and descriptions with Copilot in GitHub Desktop based on the changes you make to your project.</p>
+<h3><a href="#copilot-spaces-public-preview">Copilot Spaces (public preview)</a></h3>
+<p>Organize and centralize relevant content—like code, docs, specs, and more—into Spaces that ground Copilot’s responses in the right context for a specific task. See <a href="/en/copilot/using-github-copilot/copilot-spaces/about-organizing-and-sharing-context-with-copilot-spaces">About organizing and sharing context with Copilot Spaces</a>.</p>
+<h3><a href="#copilot-knowledge-bases-copilot-enterprise-only">Copilot knowledge bases <em>(Copilot Enterprise only)</em></a></h3>
+<p>Create and manage collections of documentation to use as context for chatting with Copilot. When you ask a question in Copilot Chat in GitHub or in VS Code, you can specify a knowledge base as the context for your question. See <a href="/en/copilot/customizing-copilot/managing-copilot-knowledge-bases">Managing Copilot knowledge bases</a>.</p>
+<h2><a href="#github-copilot-features-for-administrators">GitHub Copilot features for administrators</a></h2>
+<p>The following features are available to organization and enterprise owners with a Copilot Business or Copilot Enterprise plan.</p>
+<h3><a href="#policy-management">Policy management</a></h3>
+<p>Manage policies for Copilot in your organization or enterprise. See <a href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/setting-policies-for-copilot-in-your-organization/managing-policies-for-copilot-in-your-organization">Managing policies for Copilot in your organization</a> and <a href="/en/copilot/managing-copilot/managing-copilot-for-your-enterprise/managing-policies-and-features-for-copilot-in-your-enterprise">Managing policies and features for Copilot in your enterprise</a>.</p>
+<h3><a href="#access-management">Access management</a></h3>
+<p>Enterprise owners can specify which organizations in the enterprise can use Copilot, and organization owners can specify which organization members can use Copilot. See <a href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/managing-access-to-github-copilot-in-your-organization">Managing access to GitHub Copilot in your organization</a> and <a href="/en/copilot/managing-copilot/managing-copilot-for-your-enterprise/managing-access-to-copilot-in-your-enterprise">Managing access to Copilot in your enterprise</a>.</p>
+<h3><a href="#usage-data">Usage data</a></h3>
+<p>Review Copilot usage data within your organization or enterprise to inform how to manage access and drive adoption of Copilot. See <a href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/reviewing-activity-related-to-github-copilot-in-your-organization/reviewing-user-activity-data-for-copilot-in-your-organization">Reviewing user activity data for Copilot in your organization</a> and <a href="/en/copilot/managing-copilot/managing-copilot-for-your-enterprise/managing-access-to-copilot-in-your-enterprise/viewing-copilot-license-usage-in-your-enterprise">Viewing Copilot license usage in your enterprise</a>.</p>
+<h3><a href="#audit-logs">Audit logs</a></h3>
+<p>Review audit logs for Copilot in your organization to understand what actions have been taken and by which users. See <a href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/reviewing-activity-related-to-github-copilot-in-your-organization/reviewing-audit-logs-for-copilot-business">Reviewing audit logs for Copilot Business</a>.</p>
+<h3><a href="#exclude-files">Exclude files</a></h3>
+<p>Configure Copilot to ignore certain files. This can be useful if you have files that you don't want to be available to Copilot. See <a href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/setting-policies-for-copilot-in-your-organization/excluding-content-from-github-copilot">Excluding content from GitHub Copilot</a>.</p>
+<h2><a href="#next-steps">Next steps</a></h2>
+<ul>
+<li>To learn more about the plans available for GitHub Copilot, see <a href="/en/copilot/about-github-copilot/subscription-plans-for-github-copilot">Plans for GitHub Copilot</a>.</li>
+<li>To start using Copilot, see <a href="/en/copilot/setting-up-github-copilot">Setting up GitHub Copilot</a>.</li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,61 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Code scanning" href="/en/code-security/code-scanning">Code scanning</a><span>/</span>
+</li>
+<li>
+<a title="Troubleshooting code scanning" href="/en/code-security/code-scanning/troubleshooting-code-scanning">Troubleshooting code scanning</a><span>/</span>
+</li>
+<li><a title="Unnecessary step found" href="/en/code-security/code-scanning/troubleshooting-code-scanning/unnecessary-step-found">Unnecessary step found</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Warning: "1 issue was detected with this workflow: git checkout HEAD^2 is no longer necessary"</h1></div></div>
+<div><div><p>If you see this warning, you should update your workflow to follow current best practice.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-this-warning"><div><span>About this warning</span></div></a></li>
+<li><a href="#confirm-the-cause-of-the-problem"><div><span>Confirm the cause of the problem</span></div></a></li>
+<li><a href="#fixing-the-problem"><div><span>Fixing the problem</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-this-warning">About this warning</a></h2>
+<pre><code>Warning: 1 issue was detected with this workflow: git checkout HEAD^2 is no longer
+necessary. Please remove this step as Code Scanning recommends analyzing the merge
+commit for best results.
+</code></pre>
+<p>If you're using an old CodeQL workflow you may receive this warning from the "Initialize CodeQL" action.</p>
+<h2><a href="#confirm-the-cause-of-the-problem">Confirm the cause of the problem</a></h2>
+<p>Check for the following lines from the CodeQL workflow. These lines were included in the <code>steps</code> section of the <code>Analyze</code> job in initial versions of the CodeQL workflow.</p>
+<pre><code>        <span>with:</span>
+          <span># We must fetch at least the immediate parents so that if this is</span>
+          <span># a pull request then we can checkout the head.</span>
+          <span>fetch-depth:</span> <span>2</span>
+
+      <span># If this run was triggered by a pull request event, then checkout</span>
+      <span># the head of the pull request instead of the merge commit.</span>
+      <span>-</span> <span>run:</span> <span>git</span> <span>checkout</span> <span>HEAD^2</span>
+        <span>if:</span> <span>${{</span> <span>github.event_name</span> <span>==</span> <span>'pull_request'</span> <span>}}</span>
+</code></pre>
+<h2><a href="#fixing-the-problem">Fixing the problem</a></h2>
+<p>Remove the lines from the CodeQL workflow. The revised <code>steps</code> section of the workflow should now look like this:</p>
+<pre><code>    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>Checkout</span> <span>repository</span>
+        <span>uses:</span> <span>actions/checkout@v4</span>
+
+      <span># Initializes the CodeQL tools for scanning.</span>
+      <span>-</span> <span>name:</span> <span>Initialize</span> <span>CodeQL</span>
+        <span>uses:</span> <span>github/codeql-action/init@v3</span>
+
+      <span># ...</span>
+</code></pre>
+<p>For more information about editing the CodeQL workflow file, see <a href="/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#editing-a-code-scanning-workflow">Customizing your advanced setup for code scanning</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

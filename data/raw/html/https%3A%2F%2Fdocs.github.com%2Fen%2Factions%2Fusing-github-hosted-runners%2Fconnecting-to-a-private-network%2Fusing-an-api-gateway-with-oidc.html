@@ -1,0 +1,34 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="GitHub-hosted runners" href="/en/actions/using-github-hosted-runners">GitHub-hosted runners</a><span>/</span>
+</li>
+<li>
+<a title="Private networking" href="/en/actions/using-github-hosted-runners/connecting-to-a-private-network">Private networking</a><span>/</span>
+</li>
+<li><a title="Using OIDC" href="/en/actions/using-github-hosted-runners/connecting-to-a-private-network/using-an-api-gateway-with-oidc">Using OIDC</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Using an API gateway with OIDC</h1></div></div>
+<div><div><p>You can use OpenID Connect (OIDC) tokens to authenticate your workflow.</p></div></div>
+<div><div><div>
+<h2><a href="#using-an-api-gateway-with-oidc">Using an API gateway with OIDC</a></h2>
+<p>With GitHub Actions, you can use OpenID Connect (OIDC) tokens to authenticate your workflow outside of GitHub Actions. For example, you could run an API gateway on the edge of your private network that authenticates incoming requests with the OIDC token and then makes API requests on behalf of your workflow in your private network.</p>
+<p>The following diagram gives an overview of this solution's architecture:</p>
+<p><picture><source><img src="/assets/cb-22109/images/help/actions/actions-oidc-gateway.png" alt="Diagram of an OIDC gateway architecture, starting with a GitHub Actions runner and ending with a private network's private service."></source></picture></p>
+<p>It's important that you verify not just that the OIDC token came from GitHub Actions, but that it came specifically from your expected workflows, so that other GitHub Actions users aren't able to access services in your private network. You can use OIDC claims to create these conditions. For more information, see <a href="/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#defining-trust-conditions-on-cloud-roles-using-oidc-claims">About security hardening with OpenID Connect</a>.</p>
+<p>The main disadvantages of this approach are that you must implement the API gateway to make requests on your behalf, and you must run the gateway on the edge of your network.</p>
+<p>The following advantages apply.</p>
+<ul>
+<li>You don't need to configure any firewalls, or modify the routing of your private network.</li>
+<li>The API gateway is stateless and scales horizontally to handle high availability and high throughput.</li>
+</ul>
+<p>For more information, see <a href="https://github.com/github/actions-oidc-gateway-example">a reference implementation of an API Gateway</a> in the github/actions-oidc-gateway repository. This implementation requires customization for your use case and is not ready-to-run as-is). For more information, see <a href="/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect">About security hardening with OpenID Connect</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

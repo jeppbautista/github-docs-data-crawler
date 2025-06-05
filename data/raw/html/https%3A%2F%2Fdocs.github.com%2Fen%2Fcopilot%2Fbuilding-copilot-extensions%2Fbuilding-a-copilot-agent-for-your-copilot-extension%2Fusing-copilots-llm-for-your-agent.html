@@ -1,0 +1,57 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Build Copilot Extensions" href="/en/copilot/building-copilot-extensions">Build Copilot Extensions</a><span>/</span>
+</li>
+<li>
+<a title="Build a Copilot agent" href="/en/copilot/building-copilot-extensions/building-a-copilot-agent-for-your-copilot-extension">Build a Copilot agent</a><span>/</span>
+</li>
+<li><a title="Use Copilot's LLM" href="/en/copilot/building-copilot-extensions/building-a-copilot-agent-for-your-copilot-extension/using-copilots-llm-for-your-agent">Use Copilot's LLM</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Using Copilot's LLM for your agent</h1></div></div>
+<div><div><p>Learn how to use Copilot's LLM for your agent.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-copilots-large-language-model-llm"><div><span>About Copilot's Large Language Model (LLM)</span></div></a></li>
+<li><a href="#using-copilots-llm-for-your-agent"><div><span>Using Copilot's LLM for your agent</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-copilots-large-language-model-llm">About Copilot's Large Language Model (LLM)</a></h2>
+<p>Copilot's Large Language Model (LLM) is a powerful, large-scale language model that is trained on a diverse range of data sources, including code, documentation, and other text. Copilot's LLM underpins the functionality for GitHub Copilot, and is used to power all of Copilot's features, including code generation, documentation generation, and code completion.</p>
+<p>You have the option to use Copilot's LLM to power your agent, which can be useful if you want your agent to be able to generate completions for user messages, but you don't want to manage your own LLM.</p>
+<div>
+<p> Third-party agents have strict rate limits for using Copilot's LLM. If your third-party agent will need to generate a large number of completions, you should consider using your own LLM or an API like OpenAI.</p>
+</div>
+<h2><a href="#using-copilots-llm-for-your-agent">Using Copilot's LLM for your agent</a></h2>
+<p>You can call Copilot's LLM deployment at <code>https://api.githubcopilot.com/chat/completions</code> with a POST request. Requests and responses should follow the format as the <a href="https://platform.openai.com/docs/api-reference/chat/create">OpenAI API</a>.</p>
+<p>To authenticate, use the same <code>X-Github-Token</code> header sent to your agent. For more information, see <a href="/en/copilot/building-copilot-extensions/building-a-copilot-agent-for-your-copilot-extension/configuring-your-copilot-agent-to-communicate-with-github#fetching-resources-from-the-github-api">Configuring your Copilot agent to communicate with GitHub</a>.</p>
+<p>Here is an example of how Copilot's LLM deployment is used by the Blackbeard extension to generate completions for a user message:</p>
+<pre><code>  <span>// Use Copilot's LLM to generate a response to the user's</span>
+  <span>//  messages, with our extra system messages attached.</span>
+  <span>const</span> copilotLLMResponse = <span>await</span> <span>fetch</span>(
+    <span>"https://api.githubcopilot.com/chat/completions"</span>,
+    {
+      <span>method</span>: <span>"POST"</span>,
+      <span>headers</span>: {
+        <span>authorization</span>: <span>`Bearer <span>${tokenForUser}</span>`</span>,
+        <span>"content-type"</span>: <span>"application/json"</span>,
+      },
+      <span>body</span>: <span>JSON</span>.<span>stringify</span>({
+        messages,
+        <span>stream</span>: <span>true</span>,
+      }),
+    }
+  );
+</code></pre>
+<p>To see this example in its full context, see the <a href="https://github.com/copilot-extensions/blackbeard-extension">Blackbeard extension</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,215 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Administer GitHub Actions" href="/en/actions/administering-github-actions">Administer GitHub Actions</a><span>/</span>
+</li>
+<li><a title="GitHub Actions metrics" href="/en/actions/administering-github-actions/viewing-github-actions-metrics">GitHub Actions metrics</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Viewing GitHub Actions metrics</h1></div></div>
+<div>
+<div><p>You can view metrics to monitor where your organization or repositories use GitHub Actions and how they are performing.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Organization owners and users with the "View organization Actions metrics" permission can view organization-level metrics. <br><br> Users with the base repository role can view repository-level metrics.</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-github-actions-metrics"><div><span>About GitHub Actions metrics</span></div></a></li>
+<li><a href="#enabling-access-to-github-actions-metrics"><div><span>Enabling access to GitHub Actions metrics</span></div></a></li>
+<li><a href="#about-github-actions-usage-metrics"><div><span>About GitHub Actions usage metrics</span></div></a></li>
+<li><a href="#about-github-actions-performance-metrics"><div><span>About GitHub Actions performance metrics</span></div></a></li>
+<li><a href="#understanding-github-actions-metrics-aggregation"><div><span>Understanding GitHub Actions metrics aggregation</span></div></a></li>
+<li><a href="#viewing-github-actions-metrics-for-your-organization"><div><span>Viewing GitHub Actions metrics for your organization</span></div></a></li>
+<li><a href="#viewing-github-actions-metrics-for-your-repository"><div><span>Viewing GitHub Actions metrics for your repository</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-github-actions-metrics">About GitHub Actions metrics</a></h2>
+<p>GitHub Actions metrics provide insights into how your workflows and jobs are performing at the organization and repository levels. There are two types of metrics to help you analyze different aspects of your workflows:</p>
+<ul>
+<li>
+<strong>GitHub Actions usage metrics:</strong> Usage metrics help you track how many minutes your workflows and jobs consume. You can use this data to understand the cost of running Actions and ensure you're staying within your plan limits. This is especially useful for identifying high-usage workflows or repositories.</li>
+<li>
+<strong>GitHub Actions performance metrics:</strong> Performance metrics focus on the efficiency and reliability of your workflows and jobs. With performance metrics, you can monitor key indicators like job run times, queue times, and failure rates to identify bottlenecks, slow-running jobs, or frequently failing workflows.</li>
+</ul>
+<h2><a href="#enabling-access-to-github-actions-metrics">Enabling access to GitHub Actions metrics</a></h2>
+<p>Organization owners can create custom organization roles to allow people to view GitHub Actions usage metrics for their organization. To provide users with access, select the "View organization Actions metrics" role when creating a custom organization role. For more information, see <a href="/en/organizations/managing-peoples-access-to-your-organization-with-roles/about-custom-organization-roles">About custom organization roles</a>.</p>
+<h2><a href="#about-github-actions-usage-metrics">About GitHub Actions usage metrics</a></h2>
+<p>GitHub Actions usage metrics enable you to analyze how your organization is using Actions minutes. You can view usage information related to:</p>
+<ul>
+<li>
+<strong>Workflows</strong>. View usage data for each workflow in your organization, and use this information to identify opportunities for optimization, such as refactoring a workflow or using a larger runner.</li>
+<li>
+<strong>Jobs</strong>. See which jobs are the most resource-intensive and where they are running.</li>
+<li>
+<strong>Repositories</strong>. Get a high-level snapshot of each repository in your organization and their volume of Actions minutes usage.</li>
+<li>
+<strong>Runtime OS</strong>. Understand how runners for each operating system are using Actions minutes and what types of operating systems your workflows are running on most often.</li>
+<li>
+<strong>Runner type</strong>. Compare how your self-hosted runners and GitHub-hosted runners use Actions minutes and the volume of workflow runs for each type of runner.</li>
+</ul>
+<h2><a href="#about-github-actions-performance-metrics">About GitHub Actions performance metrics</a></h2>
+<p>GitHub Actions performance metrics enables you to analyze the efficiency and reliability of your workflows. You can view performance information such as average run times, average queue times, and failure rates, related to:</p>
+<ul>
+<li>
+<strong>Workflows</strong>. View performance data for each workflow in your organization, including average run time and job failures. Use this information to identify inefficient workflows and run stability.</li>
+<li>
+<strong>Jobs</strong>. View performance data for each individual job to, including average run time, average queue time, and job failures. Use this information to identify inefficient jobs.</li>
+<li>
+<strong>Repositories</strong>. Get a high-level snapshot of each repository in your organization and their average performance metrics.</li>
+<li>
+<strong>Runtime OS</strong>. Understand how runners for each operating system are performing.</li>
+<li>
+<strong>Runner type</strong>. Compare the performance of self-hosted runners and GitHub-hosted runners, to make decisions about runner types.</li>
+</ul>
+<h2><a href="#understanding-github-actions-metrics-aggregation">Understanding GitHub Actions metrics aggregation</a></h2>
+<p>The time period selection feature allows you to view GitHub Actions metrics over predefined periods, as detailed in the following table. These metrics include skipped runs and those that use zero minutes. Data is presented using Coordinated Universal Time (UTC) days.</p>
+<div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Period</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<th>Current week (Mon-Sun)</th>
+<td>Data from Monday through the current day when the page is viewed.</td>
+</tr>
+<tr>
+<th>Current month</th>
+<td>Data from the first of the month to the current day when the page is viewed.</td>
+</tr>
+<tr>
+<th>Last month</th>
+<td>Data from the first day to the last day of the previous month.</td>
+</tr>
+<tr>
+<th>Last 30 days</th>
+<td>Data from the last 30 days to when the page is viewed.</td>
+</tr>
+<tr>
+<th>Last 90 days</th>
+<td>Data from the last 90 days to when the page is viewed.</td>
+</tr>
+<tr>
+<th>Last year</th>
+<td>Data aggregated for the last 12 months.</td>
+</tr>
+<tr>
+<th>Custom</th>
+<td>Data from a custom date range. The range can be up to 100 days including the start and end dates and go back as far as one year.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><a href="#viewing-github-actions-metrics-for-your-organization">Viewing GitHub Actions metrics for your organization</a></h2>
+<div>
+<p>
+There may be a discrepancy between the <strong>Workflows</strong> tab's job count and the <strong>Jobs</strong> tab's count due to differences in how unique jobs are identified. This does not affect the total minutes calculated.</p>
+</div>
+<ol>
+<li>
+<p>In the upper-right corner of GitHub, select your profile photo, then click </p>
+</li>
+<li>
+<p>Click the name of your organization.</p>
+</li>
+<li>
+<p>Under your organization name, click </p>
+<div><picture><source><img src="/assets/cb-25805/images/help/organizations/org-nav-insights-tab.png" alt='Screenshot of the horizontal navigation bar for an organization. A tab, labeled with a graph icon and "Insights," is outlined in dark orange.' width="720" height="82"></source></picture></div>
+</li>
+<li>
+<p>In the "Insights" navigation menu, click <strong>Actions Usage Metrics</strong> or click <strong>Actions Performance Metrics</strong>.</p>
+</li>
+<li>
+<p>Optionally, to select a time period to view usage metrics for, choose an option from the <strong>Period</strong> drop down menu at the top right of the page. For more information, see <a href="#understanding-github-actions-metrics-aggregation">Understanding GitHub Actions metrics aggregation</a>.</p>
+</li>
+<li>
+<p>Click on the tab that contains the metrics you would like to view. For more information, see <a href="#about-github-actions-usage-metrics">About GitHub Actions usage metrics</a> or <a href="#about-github-actions-performance-metrics">About GitHub Actions performance metrics</a>.</p>
+</li>
+<li>
+<p>Optionally, to filter the data displayed in a tab, create a filter.</p>
+<ol>
+<li>Click on the </li>
+<li>Click </li>
+<li>Choose a metric you would like to filter results by.</li>
+<li>Depending on the metric you chose, fill out information in the "Qualifier," "Operator," and "Value" columns.</li>
+<li>Optionally, click </li>
+<li>Click <strong>Apply</strong>.</li>
+</ol>
+</li>
+<li>
+<p>Optionally, to download usage metrics to a CSV file, click </p>
+</li>
+</ol>
+<h2><a href="#viewing-github-actions-metrics-for-your-repository">Viewing GitHub Actions metrics for your repository</a></h2>
+<div>
+<p>
+There may be a discrepancy between the <strong>Workflows</strong> tab's job count and the <strong>Jobs</strong> tab's count due to differences in how unique jobs are identified. This does not affect the total minutes calculated.</p>
+</div>
+<ol>
+<li>On GitHub, navigate to the main page of the repository.</li>
+<li>Under your repository name, click the </li>
+<li>In the "Insights" navigation menu, click <strong>Actions Usage Metrics</strong> or click <strong>Actions Performance Metrics</strong>.</li>
+<li>Optionally, to select a time period to view usage metrics for, choose an option from the <strong>Period</strong> drop down menu at the top right of the page. For more information, see <a href="#understanding-github-actions-metrics-aggregation">Understanding GitHub Actions metrics aggregation</a>.</li>
+<li>Click on the tab that contains the metrics you would like to view. For more information, see <a href="#about-github-actions-usage-metrics">About GitHub Actions usage metrics</a> or <a href="#about-github-actions-performance-metrics">About GitHub Actions performance metrics</a>.</li>
+<li>Optionally, to filter the data displayed in a tab, create a filter.
+<ol>
+<li>Click on the </li>
+<li>Click </li>
+<li>Choose a metric you would like to filter results by.</li>
+<li>Depending on the metric you chose, fill out information in the "Qualifier," "Operator," and "Value" columns.</li>
+<li>Optionally, click </li>
+<li>Click <strong>Apply</strong>.</li>
+</ol>
+</li>
+<li>Optionally, to download usage metrics to a CSV file, click </li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

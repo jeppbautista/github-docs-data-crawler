@@ -1,0 +1,371 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Get started" href="/en/get-started">Get started</a><span>/</span>
+</li>
+<li>
+<a title="Learning about GitHub" href="/en/get-started/learning-about-github">Learning about GitHub</a><span>/</span>
+</li>
+<li><a title="GitHub Advanced Security" href="/en/get-started/learning-about-github/about-github-advanced-security">GitHub Advanced Security</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>About GitHub Advanced Security</h1></div></div>
+<div>
+<div><p>GitHub makes extra security features available to customers who purchase GitHub Code Security or GitHub Secret Protection. Some features are enabled for public repositories by default.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div>
+<p>GitHub Code Security and GitHub Secret Protection are available for accounts on GitHub Team and GitHub Enterprise Cloud.</p>
+<p>Some features are also available for free for public repositories on GitHub.com. For more information, see <a href="/en/get-started/learning-about-github/githubs-plans">GitHub’s plans</a>.</p>
+<p>For information about GitHub Advanced Security for Azure DevOps, see <a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/configure-github-advanced-security-features">Configure GitHub Advanced Security for Azure DevOps</a> in Microsoft Learn.</p>
+</div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-github-advanced-security-products"><div><span>About GitHub Advanced Security products</span></div></a></li>
+<li><a href="#github-code-security"><div><span>GitHub Code Security</span></div></a></li>
+<li><a href="#github-secret-protection"><div><span>GitHub Secret Protection</span></div></a></li>
+<li><a href="#run-an-assessment-of-your-organizations-exposure-to-secret-leaks"><div><span>Run an assessment of your organization's exposure to secret leaks</span></div></a></li>
+<li><a href="#deploying-github-code-security-and-github-secret-protection"><div><span>Deploying GitHub Code Security and GitHub Secret Protection</span></div></a></li>
+<li><a href="#enabling-features"><div><span>Enabling features</span></div></a></li>
+<li><a href="#about-github-advanced-security-certification"><div><span>About GitHub Advanced Security Certification</span></div></a></li>
+<li><a href="#about-github-advanced-security-with-azure-repos"><div><span>About GitHub Advanced Security with Azure Repos</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-github-advanced-security-products">About GitHub Advanced Security products</a></h2>
+<p>GitHub has many features that help you improve and maintain the quality of your code. Some of these are included in all plans, such as dependency graph and Dependabot alerts.</p>
+<p>Other security features require you to purchase one of GitHub's Advanced Security products:</p>
+<ul>
+<li>
+<strong>GitHub Secret Protection</strong>, which includes features that help you detect and prevent secret leaks, such as secret scanning and push protection.</li>
+<li>
+<strong>GitHub Code Security</strong>, which includes features that help you find and fix vulnerabilities, like code scanning, premium Dependabot features, and dependency review.</li>
+</ul>
+<p>Some of these features, such as code scanning and secret scanning, are enabled for public repositories by default. To run the feature on your private or internal repositories, you must purchase the relevant GitHub Advanced Security product.</p>
+<p>You must be on a GitHub Team or GitHub Enterprise plan in order to purchase GitHub Code Security or GitHub Secret Protection. For more information, see <a href="/en/get-started/learning-about-github/githubs-plans">GitHub’s plans</a> and <a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-advanced-security/about-billing-for-github-advanced-security">About billing for GitHub Advanced Security</a>.</p>
+<h2><a href="#github-code-security">GitHub Code Security</a></h2>
+<p>You get the following features with GitHub Code Security:</p>
+<ul>
+<li>
+<p><strong>Code scanning</strong>: Search for potential security vulnerabilities and coding errors in your code using CodeQL or a third-party tool.</p>
+</li>
+<li>
+<p><strong>CodeQL CLI</strong>: Run CodeQL processes locally on software projects or to generate code scanning results for upload to GitHub.</p>
+</li>
+<li>
+<p><strong>Copilot Autofix</strong>: Get automatically generated fixes for code scanning alerts.</p>
+</li>
+<li>
+<p><strong>Security campaigns</strong>: Reduce security debt at scale.</p>
+</li>
+<li>
+<p><strong>Custom auto-triage rules for Dependabot</strong>: Manage your Dependabot alerts at scale, by automating which alerts you want to ignore, snooze, or trigger a Dependabot security update for.</p>
+</li>
+<li>
+<p><strong>Dependency review</strong>: Show the full impact of changes to dependencies and see details of any vulnerable versions before you merge a pull request.</p>
+</li>
+<li>
+<p><strong>Security overview</strong>: Understand the distribution of risk across your organization.</p>
+</li>
+</ul>
+<p>The table below summarizes the availability of GitHub Code Security features for public and private repositories.</p>
+<div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th></th>
+<th>Public repository <br>without GitHub Code Security</th>
+<th>Private repository <br>without GitHub Code Security</th>
+<th>Public or private repository <br>with GitHub Code Security</th>
+</tr></thead>
+<tbody>
+<tr>
+<th>Code scanning</th>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>CodeQL CLI</th>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Copilot Autofix</th>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Security campaigns</th>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Custom auto-triage rules</th>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Dependency review</th>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Security overview</th>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For more information about features, see <a href="/en/code-security/getting-started/github-security-features">GitHub security features</a>.</p>
+<h2><a href="#github-secret-protection">GitHub Secret Protection</a></h2>
+<p>You get the following features with GitHub Secret Protection:</p>
+<ul>
+<li>
+<p><strong>Secret scanning</strong>: Detect secrets, for example keys and tokens, that have been checked into a repository and receive alerts.</p>
+</li>
+<li>
+<p><strong>Push protection</strong>: Prevent secret leaks before they happen by blocking commits containing secrets.</p>
+</li>
+<li>
+<p><strong>Copilot secret scanning</strong>: Leverage AI to detect unstructured credentials, such as passwords, that have been checked into a repository.</p>
+</li>
+<li>
+<p><strong>Custom patterns</strong>: Detect and prevent leaks for organization-specific secrets.</p>
+</li>
+<li>
+<p><strong>Delegated bypass for push protection</strong> and <strong>Delegated alert dismissal</strong>:  Implement an approval process for better control over who in your enterprise can perform sensitive actions, supporting governance at scale.</p>
+</li>
+<li>
+<p><strong>Security overview</strong>: Understand the distribution of risk across your organization.</p>
+</li>
+</ul>
+<p>The table below summarizes the availability of GitHub Secret Protection features for public and private repositories.</p>
+<div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th></th>
+<th>Public repository <br>without GitHub Secret Protection</th>
+<th>Private repository <br>without GitHub Secret Protection</th>
+<th>Public or private repository <br>with GitHub Secret Protection</th>
+</tr></thead>
+<tbody>
+<tr>
+<th>Secret scanning</th>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Push protection</th>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Copilot secret scanning</th>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Custom patterns</th>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Delegated bypass for push protection</th>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<th>Security overview</th>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For more information about individual features, see <a href="/en/code-security/getting-started/github-security-features">GitHub security features</a>.</p>
+<h2><a href="#run-an-assessment-of-your-organizations-exposure-to-secret-leaks">Run an assessment of your organization's exposure to secret leaks</a></h2>
+<p>Organizations on GitHub Team and GitHub Enterprise can run a free report to scan the code in the organization for leaked secrets. This can help you understand the current exposure of repositories in your organization to leaked secrets, as well as help you see how many existing secret leaks could have been prevented by GitHub Secret Protection. See <a href="/en/code-security/securing-your-organization/understanding-your-organizations-exposure-to-leaked-secrets/about-secret-risk-assessment">About the secret risk assessment</a>.</p>
+<h2><a href="#deploying-github-code-security-and-github-secret-protection">Deploying GitHub Code Security and GitHub Secret Protection</a></h2>
+<p>To learn about what you need to know to plan your deployment of GitHub Code Security and GitHub Secret Protection at a high level and to review the rollout phases we recommended, see <a href="/en/code-security/adopting-github-advanced-security-at-scale">Adopting GitHub Advanced Security at scale</a>.</p>
+<h2><a href="#enabling-features">Enabling features</a></h2>
+<p>You can quickly enable security features at scale with the GitHub-recommended security configuration, a collection of security enablement settings you can apply to repositories in an organization. You can then further customize Advanced Security features at the organization level with global settings. See <a href="/en/code-security/securing-your-organization/introduction-to-securing-your-organization-at-scale/about-enabling-security-features-at-scale">About enabling security features at scale</a>.</p>
+<p>If you are on a GitHub Team or GitHub Enterprise plan, license use for the entire team or  enterprise is shown on your license page. See <a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-advanced-security/viewing-your-github-advanced-security-usage">Viewing and downloading licensed use of Advanced Security</a>.</p>
+<h2><a href="#about-github-advanced-security-certification">About GitHub Advanced Security Certification</a></h2>
+<p>You can highlight your knowledge by earning a GitHub Advanced Security certificate with GitHub Certifications. The certification validates your expertise in vulnerability identification, workflow security, and robust security implementation. See <a href="/en/get-started/showcase-your-expertise-with-github-certifications/about-github-certifications">About GitHub Certifications</a>.</p>
+<h2><a href="#about-github-advanced-security-with-azure-repos">About GitHub Advanced Security with Azure Repos</a></h2>
+<p>If you want to use GitHub Advanced Security with Azure Repos, see <a href="https://resources.github.com/topics/github-advanced-security/">GitHub Advanced Security &amp; Azure DevOps</a> in our resources site. For documentation, see <a href="https://learn.microsoft.com/en-us/azure/devops/repos/security/configure-github-advanced-security-features">Configure GitHub Advanced Security for Azure DevOps</a> in Microsoft Learn.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/code-security/getting-started/github-security-features">GitHub security features</a></li>
+<li><a href="https://github.com/github/roadmap">GitHub public roadmap</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

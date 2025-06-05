@@ -1,0 +1,92 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Share automations" href="/en/actions/sharing-automations">Share automations</a><span>/</span>
+</li>
+<li>
+<a title="Create actions" href="/en/actions/sharing-automations/creating-actions">Create actions</a><span>/</span>
+</li>
+<li><a title="Dockerfile support" href="/en/actions/sharing-automations/creating-actions/dockerfile-support-for-github-actions">Dockerfile support</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Dockerfile support for GitHub Actions</h1></div></div>
+<div><div><p>When creating a <code>Dockerfile</code> for a Docker container action, you should be aware of how some Docker instructions interact with GitHub Actions and an action's metadata file.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-dockerfile-instructions"><div><span>About Dockerfile instructions</span></div></a></li>
+<li><a href="#dockerfile-instructions-and-overrides"><div><span>Dockerfile instructions and overrides</span></div></a></li>
+<li><a href="#supported-linux-capabilities"><div><span>Supported Linux capabilities</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-dockerfile-instructions">About Dockerfile instructions</a></h2>
+<p>A <code>Dockerfile</code> contains instructions and arguments that define the contents and startup behavior of a Docker container. For more information about the instructions Docker supports, see <a href="https://docs.docker.com/engine/reference/builder/">Dockerfile reference</a> in the Docker documentation.</p>
+<h2><a href="#dockerfile-instructions-and-overrides">Dockerfile instructions and overrides</a></h2>
+<p>Some Docker instructions interact with GitHub Actions, and an action's metadata file can override some Docker instructions. Ensure that you are familiar with how your Dockerfile interacts with GitHub Actions to prevent any unexpected behavior.</p>
+<h3><a href="#user">USER</a></h3>
+<p>Docker actions must be run by the default Docker user (root). Do not use the <code>USER</code> instruction in your <code>Dockerfile</code>, because you won't be able to access the <code>GITHUB_WORKSPACE</code> directory. For more information, see <a href="/en/actions/learn-github-actions/variables#default-environment-variables">Store information in variables</a> and <a href="https://docs.docker.com/engine/reference/builder/#user">USER reference</a> in the Docker documentation.</p>
+<h3><a href="#from">FROM</a></h3>
+<p>The first instruction in the <code>Dockerfile</code> must be <code>FROM</code>, which selects a Docker base image. For more information, see the <a href="https://docs.docker.com/engine/reference/builder/#from">FROM reference</a> in the Docker documentation.</p>
+<p>These are some best practices when setting the <code>FROM</code> argument:</p>
+<ul>
+<li>It's recommended to use official Docker images. For example, <code>python</code> or <code>ruby</code>.</li>
+<li>Use a version tag if it exists, preferably with a major version. For example, use <code>node:10</code> instead of <code>node:latest</code>.</li>
+<li>It's recommended to use Docker images based on the <a href="https://www.debian.org/">Debian</a> operating system.</li>
+</ul>
+<h3><a href="#workdir">WORKDIR</a></h3>
+<p>GitHub sets the working directory path in the <code>GITHUB_WORKSPACE</code> environment variable. It's recommended to not use the <code>WORKDIR</code> instruction in your <code>Dockerfile</code>. Before the action executes, GitHub will mount the <code>GITHUB_WORKSPACE</code> directory on top of anything that was at that location in the Docker image and set <code>GITHUB_WORKSPACE</code> as the working directory. For more information, see <a href="/en/actions/learn-github-actions/variables#default-environment-variables">Store information in variables</a> and the <a href="https://docs.docker.com/engine/reference/builder/#workdir">WORKDIR reference</a> in the Docker documentation.</p>
+<h3><a href="#entrypoint">ENTRYPOINT</a></h3>
+<p>If you define <code>entrypoint</code> in an action's metadata file, it will override the <code>ENTRYPOINT</code> defined in the <code>Dockerfile</code>. For more information, see <a href="/en/actions/creating-actions/metadata-syntax-for-github-actions#runsentrypoint">Metadata syntax for GitHub Actions</a>.</p>
+<p>The Docker <code>ENTRYPOINT</code> instruction has a <em>shell</em> form and <em>exec</em> form. The Docker <code>ENTRYPOINT</code> documentation recommends using the <em>exec</em> form of the <code>ENTRYPOINT</code> instruction. For more information about <em>exec</em> and <em>shell</em> form, see the <a href="https://docs.docker.com/engine/reference/builder/#entrypoint">ENTRYPOINT reference</a> in the Docker documentation.</p>
+<p>You should not use <code>WORKDIR</code> to specify your entrypoint in your Dockerfile. Instead, you should use an absolute path. For more information, see <a href="#workdir">WORKDIR</a>.</p>
+<p>If you configure your container to use the <em>exec</em> form of the <code>ENTRYPOINT</code> instruction, the <code>args</code> configured in the action's metadata file won't run in a command shell. If the action's <code>args</code> contain an environment variable, the variable will not be substituted. For example, using the following <em>exec</em> format will not print the value stored in <code>$GITHUB_SHA</code>, but will instead print <code>"$GITHUB_SHA"</code>.</p>
+<pre><code><span>ENTRYPOINT</span><span> [<span>"echo <span>$GITHUB_SHA</span>"</span>]</span>
+</code></pre>
+<p>If you want variable substitution, then either use the <em>shell</em> form or execute a shell directly. For example, using the following <em>exec</em> format, you can execute a shell to print the value stored in the <code>GITHUB_SHA</code> environment variable.</p>
+<pre><code><span>ENTRYPOINT</span><span> [<span>"sh"</span>, <span>"-c"</span>, <span>"echo <span>$GITHUB_SHA</span>"</span>]</span>
+</code></pre>
+<p>To supply <code>args</code> defined in the action's metadata file to a Docker container that uses the <em>exec</em> form in the <code>ENTRYPOINT</code>, we recommend creating a shell script called <code>entrypoint.sh</code> that you call from the <code>ENTRYPOINT</code> instruction:</p>
+<h4><a href="#example-dockerfile">Example <em>Dockerfile</em></a></h4>
+<pre><code><span># Container image that runs your code</span>
+<span>FROM</span> debian:<span>9.5</span>-slim
+
+<span># Copies your code file from your action repository to the filesystem path `/` of the container</span>
+<span>COPY</span><span> entrypoint.sh /entrypoint.sh</span>
+
+<span># Executes `entrypoint.sh` when the Docker container starts up</span>
+<span>ENTRYPOINT</span><span> [<span>"/entrypoint.sh"</span>]</span>
+</code></pre>
+<h4><a href="#example-entrypointsh-file">Example <em>entrypoint.sh</em> file</a></h4>
+<p>Using the example Dockerfile above, GitHub will send the <code>args</code> configured in the action's metadata file as arguments to <code>entrypoint.sh</code>. Add the <code>#!/bin/sh</code> <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">shebang</a> at the top of the <code>entrypoint.sh</code> file to explicitly use the system's <a href="https://en.wikipedia.org/wiki/POSIX">POSIX</a>-compliant shell.</p>
+<pre><code><span>#</span><span>!/bin/sh</span>
+<span>
+# </span><span>`<span>$#</span>` expands to the number of arguments and `<span>$@</span>` expands to the supplied `args`</span>
+printf '%d args:' "$#"
+printf " '%s'" "$@"
+printf '\n'
+</code></pre>
+<p>Your code must be executable. Make sure the <code>entrypoint.sh</code> file has <code>execute</code> permissions before using it in a workflow. You can modify the permission from your terminal using this command:</p>
+<pre><code>chmod +x entrypoint.sh
+</code></pre>
+<p>When an <code>ENTRYPOINT</code> shell script is not executable, you'll receive an error similar to this:</p>
+<pre><code>Error response from daemon: OCI runtime create failed: container_linux.go:348: starting container process caused "exec: \"/entrypoint.sh\": permission denied": unknown
+</code></pre>
+<h3><a href="#cmd">CMD</a></h3>
+<p>If you define <code>args</code> in the action's metadata file, <code>args</code> will override the <code>CMD</code> instruction specified in the <code>Dockerfile</code>. For more information, see <a href="/en/actions/creating-actions/metadata-syntax-for-github-actions#runsargs">Metadata syntax for GitHub Actions</a>.</p>
+<p>If you use <code>CMD</code> in your <code>Dockerfile</code>, follow these guidelines:</p>
+<ol>
+<li>Document required arguments in the action's README and omit them from the <code>CMD</code> instruction.</li>
+<li>Use defaults that allow using the action without specifying any <code>args</code>.</li>
+<li>If the action exposes a <code>--help</code> flag, or something similar, use that to make your action self-documenting.</li>
+</ol>
+<h2><a href="#supported-linux-capabilities">Supported Linux capabilities</a></h2>
+<p>GitHub Actions supports the default Linux capabilities that Docker supports. Capabilities can't be added or removed. For more information about the default Linux capabilities that Docker supports, see <a href="https://docs.docker.com/engine/security/#linux-kernel-capabilities">Linux kernel capabilities</a> in the Docker documentation. To learn more about Linux capabilities, see <a href="http://man7.org/linux/man-pages/man7/capabilities.7.html">Overview of Linux capabilities</a> in the Linux man-pages.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

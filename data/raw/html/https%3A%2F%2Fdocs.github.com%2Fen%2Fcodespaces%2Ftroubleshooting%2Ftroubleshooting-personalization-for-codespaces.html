@@ -1,0 +1,73 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Troubleshooting" href="/en/codespaces/troubleshooting">Troubleshooting</a><span>/</span>
+</li>
+<li><a title="Personalization" href="/en/codespaces/troubleshooting/troubleshooting-personalization-for-codespaces">Personalization</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Troubleshooting personalization options for GitHub Codespaces</h1></div></div>
+<div><div><p>Troubleshooting steps for common issues with dotfiles and Settings Sync.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#troubleshooting-dotfiles"><div><span>Troubleshooting dotfiles</span></div></a></li>
+<li><a href="#troubleshooting-settings-sync"><div><span>Troubleshooting Settings Sync</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>You can personalize GitHub Codespaces by using a <code>dotfiles</code> repository on GitHub or by using Settings Sync. For more information, see <a href="/en/codespaces/setting-your-user-preferences/personalizing-github-codespaces-for-your-account">Personalizing GitHub Codespaces for your account</a>.</p>
+<h2><a href="#troubleshooting-dotfiles">Troubleshooting dotfiles</a></h2>
+<p>If your codespace fails to pick up configuration settings from dotfiles, you should work through the following debugging steps.</p>
+<ol>
+<li>
+<p>Enable dotfiles by selecting <strong>Automatically install dotfiles</strong> in <a href="https://github.com/settings/codespaces">your personal GitHub Codespaces settings</a>.</p>
+<div><picture><source><img src="/assets/cb-21429/images/help/codespaces/install-custom-dotfiles.png" alt='Screenshot of the "Dotfiles" section of the codespace settings, with the "Automatically install dotfiles" option cleared.' width="720" height="139"></source></picture></div>
+</li>
+<li>
+<p>Check <code>/workspaces/.codespaces/.persistedshare/dotfiles</code> to see if your dotfiles were cloned.</p>
+<ul>
+<li>If your dotfiles were cloned, try manually re-running your install script to verify that it is executable.</li>
+<li>If your dotfiles were not cloned, check <code>/workspaces/.codespaces/.persistedshare/EnvironmentLog.txt</code> to see if there was a problem cloning them.</li>
+</ul>
+</li>
+<li>
+<p>Check <code>/workspaces/.codespaces/.persistedshare/creation.log</code> for possible issues. For more information, see <a href="/en/codespaces/troubleshooting/github-codespaces-logs#creation-logs">Creation logs</a>.</p>
+</li>
+</ol>
+<p>If the configuration from your dotfiles is correctly picked up, but part of the configuration is incompatible with codespaces, use the <code>$CODESPACES</code> environment variable to add conditional logic for codespace-specific configuration settings. For more information about configuration that may be incompatible with codespaces, see:</p>
+<ul>
+<li><a href="/en/codespaces/troubleshooting/troubleshooting-authentication-to-a-repository#problems-with-the-repository-from-which-you-created-the-codespace">Troubleshooting authentication to a repository</a></li>
+<li><a href="/en/codespaces/troubleshooting/troubleshooting-gpg-verification-for-github-codespaces#errors-caused-by-conflicting-configuration">Troubleshooting GPG verification for GitHub Codespaces</a></li>
+</ul>
+<h2><a href="#troubleshooting-settings-sync">Troubleshooting Settings Sync</a></h2>
+<p>You can turn off Settings Sync to stop syncing settings to and from an instance of VS Code.</p>
+<p>When you turn off Settings Sync in a codespace, new codespaces continue to use the settings cached from the last time your settings were pushed to the cloud. If you use the VS Code web client for codespaces, and want codespaces to use the default settings instead of your cached settings, you can disable Settings Sync. For more information, see <a href="/en/codespaces/setting-your-user-preferences/personalizing-github-codespaces-for-your-account#managing-your-preferences-for-settings-sync">Managing your preferences for Settings Sync</a>.</p>
+<p>If you want to return to using the default VS Code settings in all instances of VS Code, including the desktop application, you can clear the cache in the cloud when you turn off Settings Sync.</p>
+<ol>
+<li>
+<p>If Settings Sync is currently turned off in your instance of VS Code, and you want to clear your cached settings, you must first turn it on. For instructions, see <a href="/en/codespaces/setting-your-user-preferences/personalizing-github-codespaces-for-your-account#turning-on-settings-sync-in-a-codespace">Personalizing GitHub Codespaces for your account</a>.</p>
+</li>
+<li>
+<p>At the bottom of the Activity Bar, select <strong>Settings Sync is On</strong>.</p>
+</li>
+<li>
+<p>In the dropdown, click <strong>Settings Sync: Turn Off</strong>.</p>
+<div><picture><source><img src="/assets/cb-24345/images/help/codespaces/settings-sync-turn-off.png" alt='Screenshot of the dropdown menu with the "Settings Sync: Turn Off" option highlighted with a dark orange outline.' width="543" height="153"></source></picture></div>
+</li>
+<li>
+<p>To clear your cached settings, in the dialog, select <strong>Turn off sync on all your devices and clear the data from the cloud</strong>.</p>
+<div><picture><source><img src="/assets/cb-99137/images/help/codespaces/turn-off-sync-dialog.png" alt='Screenshot of the "Do you want to turn off sync?" dialog, with the option to clear data from the cloud selected.'></source></picture></div>
+</li>
+<li>
+<p>Click <strong>Turn off</strong>.</p>
+</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

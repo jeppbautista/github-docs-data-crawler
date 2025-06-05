@@ -1,0 +1,181 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Use cases and examples" href="/en/actions/use-cases-and-examples">Use cases and examples</a><span>/</span>
+</li>
+<li>
+<a title="Project management" href="/en/actions/use-cases-and-examples/project-management">Project management</a><span>/</span>
+</li>
+<li><a title="Schedule issue creation" href="/en/actions/use-cases-and-examples/project-management/scheduling-issue-creation">Schedule issue creation</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Scheduling issue creation</h1></div></div>
+<div><div><p>You can use GitHub Actions to create an issue on a regular basis for things like daily meetings or quarterly reviews.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#creating-the-workflow"><div><span>Creating the workflow</span></div></a></li>
+<li><a href="#expected-results"><div><span>Expected results</span></div></a></li>
+<li><a href="#next-steps"><div><span>Next steps</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>This tutorial demonstrates how to use the GitHub CLI to create an issue on a regular basis. For example, you can create an issue each week to use as the agenda for a team meeting. For more information about GitHub CLI, see <a href="/en/actions/using-workflows/using-github-cli-in-workflows">Using GitHub CLI in workflows</a>.</p>
+<p>In the tutorial, you will first make a workflow file that uses the GitHub CLI. Then, you will customize the workflow to suit your needs.</p>
+<h2><a href="#creating-the-workflow">Creating the workflow</a></h2>
+<ol>
+<li>
+<p>Choose a repository where you want to apply this project management workflow. You can use an existing repository that you have write access to, or you can create a new repository. For more information about creating a repository, see <a href="/en/repositories/creating-and-managing-repositories/creating-a-new-repository">Creating a new repository</a>.</p>
+</li>
+<li>
+<p>In your repository, create a file called <code>.github/workflows/YOUR_WORKFLOW.yml</code>, replacing <code>YOUR_WORKFLOW</code> with a name of your choice. This is a workflow file. For more information about creating new files on GitHub, see <a href="/en/repositories/working-with-files/managing-files/creating-new-files">Creating new files</a>.</p>
+</li>
+<li>
+<p>Copy the following YAML contents into your workflow file.</p>
+<div>
+<header><span>YAML</span><pre>name: Weekly Team Sync
+on:
+  schedule:
+    - cron: 20 07 * * 1
+
+jobs:
+  create_issue:
+    name: Create team sync issue
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Create team sync issue
+        run: |
+          if [[ $CLOSE_PREVIOUS == true ]]; then
+            previous_issue_number=$(gh issue list \
+              --label "$LABELS" \
+              --json number \
+              --jq '.[0].number')
+            if [[ -n $previous_issue_number ]]; then
+              gh issue close "$previous_issue_number"
+              gh issue unpin "$previous_issue_number"
+            fi
+          fi
+          new_issue_url=$(gh issue create \
+            --title "$TITLE" \
+            --assignee "$ASSIGNEES" \
+            --label "$LABELS" \
+            --body "$BODY")
+          if [[ $PINNED == true ]]; then
+            gh issue pin "$new_issue_url"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          TITLE: Team sync
+          ASSIGNEES: monalisa,doctocat,hubot
+          LABELS: weekly sync,docs-team
+          BODY: |
+            ### Agenda
+
+            - [ ] Start the recording
+            - [ ] Check-ins
+            - [ ] Discussion points
+            - [ ] Post the recording
+
+            ### Discussion Points
+            Add things to discuss below
+
+            - [Work this week](https://github.com/orgs/github/projects/3)
+          PINNED: false
+          CLOSE_PREVIOUS: false
+</pre></header><pre><code><span>name:</span> <span>Weekly</span> <span>Team</span> <span>Sync</span>
+<span>on:</span>
+  <span>schedule:</span>
+    <span>-</span> <span>cron:</span> <span>20</span> <span>07</span> <span>*</span> <span>*</span> <span>1</span>
+
+<span>jobs:</span>
+  <span>create_issue:</span>
+    <span>name:</span> <span>Create</span> <span>team</span> <span>sync</span> <span>issue</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>permissions:</span>
+      <span>issues:</span> <span>write</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>Create</span> <span>team</span> <span>sync</span> <span>issue</span>
+        <span>run:</span> <span>|
+          if [[ $CLOSE_PREVIOUS == true ]]; then
+            previous_issue_number=$(gh issue list \
+              --label "$LABELS" \
+              --json number \
+              --jq '.[0].number')
+            if [[ -n $previous_issue_number ]]; then
+              gh issue close "$previous_issue_number"
+              gh issue unpin "$previous_issue_number"
+            fi
+          fi
+          new_issue_url=$(gh issue create \
+            --title "$TITLE" \
+            --assignee "$ASSIGNEES" \
+            --label "$LABELS" \
+            --body "$BODY")
+          if [[ $PINNED == true ]]; then
+            gh issue pin "$new_issue_url"
+          fi
+</span>        <span>env:</span>
+          <span>GH_TOKEN:</span> <span>${{</span> <span>secrets.GITHUB_TOKEN</span> <span>}}</span>
+          <span>GH_REPO:</span> <span>${{</span> <span>github.repository</span> <span>}}</span>
+          <span>TITLE:</span> <span>Team</span> <span>sync</span>
+          <span>ASSIGNEES:</span> <span>monalisa,doctocat,hubot</span>
+          <span>LABELS:</span> <span>weekly</span> <span>sync,docs-team</span>
+          <span>BODY:</span> <span>|
+            ### Agenda
+</span>
+            <span>-</span> [ ] <span>Start</span> <span>the</span> <span>recording</span>
+            <span>-</span> [ ] <span>Check-ins</span>
+            <span>-</span> [ ] <span>Discussion</span> <span>points</span>
+            <span>-</span> [ ] <span>Post</span> <span>the</span> <span>recording</span>
+
+            <span>### Discussion Points</span>
+            <span>Add</span> <span>things</span> <span>to</span> <span>discuss</span> <span>below</span>
+
+            <span>-</span> [<span>Work</span> <span>this</span> <span>week</span>]<span>(https://github.com/orgs/github/projects/3)</span>
+          <span>PINNED:</span> <span>false</span>
+          <span>CLOSE_PREVIOUS:</span> <span>false</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Customize the parameters in your workflow file:</p>
+<ul>
+<li>Change the value for <code>on.schedule</code> to dictate when you want this workflow to run. In the example above, the workflow will run every Monday at 7:20 UTC. For more information about scheduled workflows, see <a href="/en/actions/using-workflows/events-that-trigger-workflows#scheduled-events">Events that trigger workflows</a>.</li>
+<li>Change the value for <code>ASSIGNEES</code> to the list of GitHub usernames that you want to assign to the issue.</li>
+<li>Change the value for <code>LABELS</code> to the list of labels that you want to apply to the issue.</li>
+<li>Change the value for <code>TITLE</code> to the title that you want the issue to have.</li>
+<li>Change the value for <code>BODY</code> to the text that you want in the issue body. The <code>|</code> character allows you to use a multi-line value for this parameter.</li>
+<li>If you want to pin this issue in your repository, set <code>PINNED</code> to <code>true</code>. For more information about pinned issues, see <a href="/en/issues/tracking-your-work-with-issues/pinning-an-issue-to-your-repository">Pinning an issue to your repository</a>.</li>
+<li>If you want to close the previous issue generated by this workflow each time a new issue is created, set <code>CLOSE_PREVIOUS</code> to <code>true</code>. The workflow will close the most recent issue that has the labels defined in the <code>labels</code> field. To avoid closing the wrong issue, use a unique label or combination of labels.</li>
+</ul>
+</li>
+<li>
+<p>Commit your workflow file to the default branch of your repository. For more information, see <a href="/en/repositories/working-with-files/managing-files/creating-new-files">Creating new files</a>.</p>
+</li>
+</ol>
+<h2><a href="#expected-results">Expected results</a></h2>
+<p>Based on the <code>schedule</code> parameter (for example, every Monday at 7:20 UTC), your workflow will create a new issue with the assignees, labels, title, and body that you specified. If you set <code>PINNED</code> to <code>true</code>, the workflow will pin the issue to your repository. If you set <code>CLOSE_PREVIOUS</code> to true, the workflow will close the most recent issue with matching labels.</p>
+<div>
+<p>
+The <code>schedule</code> event can be delayed during periods of high loads of GitHub Actions workflow runs. High load times include the start of every hour. If the load is sufficiently high enough, some queued jobs may be dropped. To decrease the chance of delay, schedule your workflow to run at a different time of the hour.</p>
+</div>
+<p>You can view the history of your workflow runs to see this workflow run periodically. For more information, see <a href="/en/actions/monitoring-and-troubleshooting-workflows/viewing-workflow-run-history">Viewing workflow run history</a>.</p>
+<h2><a href="#next-steps">Next steps</a></h2>
+<ul>
+<li>To learn more about additional things you can do with the GitHub CLI, like using an issue template, see the <a href="https://cli.github.com/manual/gh_issue_create"><code>gh issue create</code> documentation</a>.</li>
+<li>
+<a href="https://github.com/marketplace?category=&amp;type=actions&amp;verification=&amp;query=schedule+issue">Search GitHub Marketplace</a> for actions related to scheduled issues.</li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

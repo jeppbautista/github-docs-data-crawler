@@ -1,0 +1,161 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Developing in a codespace" href="/en/codespaces/developing-in-a-codespace">Developing in a codespace</a><span>/</span>
+</li>
+<li><a title="Delete a codespace" href="/en/codespaces/developing-in-a-codespace/deleting-a-codespace">Delete a codespace</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Deleting a codespace</h1></div></div>
+<div>
+<div><p>You can delete a codespace you no longer need.</p></div>
+<div>
+<h2>Tool navigation</h2>
+<nav><ul>
+<li><a href="?tool=cli"><span>GitHub CLI</span></a></li>
+<li><a href="?tool=vscode"><span>Visual Studio Code</span></a></li>
+<li><a href="?tool=webui"><span>Web browser</span></a></li>
+</ul></nav>
+</div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#overview"><div><span>Overview</span></div></a></li>
+<li><a href="#why-you-should-delete-unused-codespaces"><div><span>Why you should delete unused codespaces</span></div></a></li>
+<li><a href="#deleting-a-codespace"><div><span>Deleting a codespace</span></div></a></li>
+<li><a href="#bulk-deleting-codespaces"><div><span>Bulk deleting codespaces</span></div></a></li>
+<li><a href="#deleting-codespaces-in-your-organization"><div><span>Deleting codespaces in your organization</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#overview">Overview</a></h2>
+<p>GitHub Codespaces are automatically deleted after they have been stopped and have remained inactive for a defined number of days. The retention period for each codespace is set when the codespace is created and does not change. The default retention period is 30 days. See <a href="/en/codespaces/setting-your-user-preferences/configuring-automatic-deletion-of-your-codespaces?tool=webui">Configuring automatic deletion of your codespaces</a>.</p>
+<p>You can manually delete a codespace in a variety of ways:</p>
+<ul>
+<li>In the terminal by using GitHub CLI</li>
+<li>In Visual Studio Code</li>
+<li>In your web browser</li>
+</ul>
+<p>Use the tabs at the top of this article to display instructions for each of these ways of deleting a codespace.</p>
+<div>
+<p>
+You can't delete a codespace from within JupyterLab.</p>
+</div>
+<h2><a href="#why-you-should-delete-unused-codespaces">Why you should delete unused codespaces</a></h2>
+<p>There are costs associated with storing codespaces. You should therefore delete any codespaces you no longer need. See <a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/about-billing-for-github-codespaces">About billing for GitHub Codespaces</a>.</p>
+<p>There are limits to the number of codespaces you can create, and the number of codespaces you can run at the same time. These limits vary based on a number of factors. If you reach the maximum number of codespaces and try to create another, a message is displayed telling you that you must remove an existing codespace before you can create a new one.</p>
+<h2><a href="#deleting-a-codespace">Deleting a codespace</a></h2>
+<div>
+<ol>
+<li>
+<p>In the top-left corner of GitHub, select <a href="https://github.com/codespaces">github.com/codespaces</a>.</p>
+</li>
+<li>
+<p>To the right of the codespace you want to delete, click </p>
+<div><picture><source><img src="/assets/cb-89126/images/help/codespaces/delete-codespace.png" alt='Screenshot of a list of codespaces with the dropdown menu for one of them displayed, showing the "Delete" option.' width="1440" height="549"></source></picture></div>
+</li>
+</ol>
+</div>
+<div>
+<p>
+You may have prebuild codespaces that are consuming additional storage which are not displayed on this dashboard. To delete them, follow the steps for “<a href="/en/codespaces/prebuilding-your-codespaces/managing-prebuilds#deleting-a-prebuild-configuration">Deleting a prebuild configuration</a>.”</p>
+</div>
+<div>
+<p>You can delete codespaces from within VS Code when you are not currently working in a codespace.</p>
+<ol>
+<li>
+<p>In VS Code, in the Activity Bar, click the Remote Explorer icon.</p>
+<div><picture><source><img src="/assets/cb-48473/images/help/codespaces/click-remote-explorer-icon-vscode.png" alt='Screenshot of the Activity Bar. The icon for the "Remote Explorer" side bar (a rectangle overlaid by a circle) is highlighted with an orange outline.'></source></picture></div>
+<div>
+<p>
+If the Remote Explorer is not displayed in the Activity Bar:</p>
+<ol>
+<li>Access the Command Palette. For example, by pressing <kbd>Shift</kbd>+<kbd>Command</kbd>+<kbd>P</kbd> (Mac) / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd> (Windows/Linux).</li>
+<li>Type: <code>details</code>.</li>
+<li>Click <strong>Codespaces: Details</strong>.</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Under "GitHub Codespaces," right-click the codespace you want to delete.</p>
+</li>
+<li>
+<p>Click <strong>Delete Codespace</strong>.</p>
+</li>
+</ol>
+</div>
+<div>
+<div>
+<p>
+To learn more about GitHub CLI, see <a href="/en/github-cli/github-cli/about-github-cli">About GitHub CLI</a>.</p>
+</div>
+<p>To delete a codespace use the <code>gh codespace delete</code> subcommand and then choose a codespace from the list that's displayed.</p>
+<pre><code>gh codespace delete
+</code></pre>
+<p>If you have unsaved changes, you'll be prompted to confirm deletion. You can use the <code>--force</code> flag to force deletion, avoiding this prompt.</p>
+<p>For more information about this command, see <a href="https://cli.github.com/manual/gh_codespace_delete">the GitHub CLI manual</a>.</p>
+</div>
+<h2><a href="#bulk-deleting-codespaces">Bulk deleting codespaces</a></h2>
+<div>
+<p>You can use GitHub CLI to delete several or all of your codespaces with a single command. For more information, click the "GitHub CLI" tab near the top of this page.</p>
+</div>
+<div>
+<p>You can use GitHub CLI to delete several or all of your codespaces with a single command. For more information, click the "GitHub CLI" tab near the top of this page.</p>
+</div>
+<div>
+<p>You can delete several or all of your codespaces with a single command, using <code>gh codespace delete</code> followed by one of these flags:</p>
+<p><code>--all</code> - Delete all of your codespaces.</p>
+<p><code>--repo REPOSITORY</code> - Delete all of your codespaces for this repository. Or use together with the <code>--days</code> flag to filter by age of the codespace.</p>
+<p><code>--days NUMBER</code> - Delete all of your codespaces that are older than the specified number of days. Can be used together with the <code>--repo</code> flag.</p>
+<p>By default you are prompted to confirm deletion of any codespaces that contain unsaved changes. You can use the <code>--force</code> flag to skip this confirmation.</p>
+<h3><a href="#example">Example</a></h3>
+<p>Delete all of the codespaces for the <code>octo-org/octo-repo</code> repository that you created more than 7 days ago.</p>
+<pre><code>gh codespace delete --repo octo-org/octo-repo --days 7
+</code></pre>
+</div>
+<h2><a href="#deleting-codespaces-in-your-organization">Deleting codespaces in your organization</a></h2>
+<p>As an organization owner, you can use GitHub CLI to delete any codespace in your organization.</p>
+<div>
+<p>For more information, click the "GitHub CLI" tab near the top of this page.</p>
+</div>
+<div>
+<p>For more information, click the "GitHub CLI" tab near the top of this page.</p>
+</div>
+<div>
+<ol>
+<li>
+<p>Enter one of these commands to display a list of codespaces.</p>
+<ul>
+<li>
+<code>gh codespace delete --org ORGANIZATION</code> - Lists the current codespaces in the specified organization.</li>
+<li>
+<code>gh codespace delete --org ORGANIZATION --user USER</code> - Lists only those codespaces created by the specified user.
+You must be an owner of the specified organization.</li>
+</ul>
+</li>
+<li>
+<p>In the list of codespaces, navigate to the codespace you want to delete.</p>
+</li>
+<li>
+<p>To delete the selected codespace press <kbd>Enter</kbd>.</p>
+<p>If the codespace contains unsaved changes you will be prompted to confirm deletion.</p>
+</li>
+</ol>
+</div>
+<p>You can also use the REST API to delete codespaces for your organization. See <a href="/en/rest/codespaces/organizations#delete-a-codespace-from-the-organization">REST API endpoints for Codespaces organizations</a>.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/codespaces/about-codespaces/understanding-the-codespace-lifecycle">Understanding the codespace lifecycle</a></li>
+<li><a href="/en/codespaces/setting-your-user-preferences/configuring-automatic-deletion-of-your-codespaces">Configuring automatic deletion of your codespaces</a></li>
+<li><a href="/en/codespaces/managing-codespaces-for-your-organization/restricting-the-retention-period-for-codespaces">Restricting the retention period for codespaces</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

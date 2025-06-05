@@ -1,0 +1,178 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Use GitHub Copilot" href="/en/copilot/using-github-copilot">Use GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="AI models" href="/en/copilot/using-github-copilot/ai-models">AI models</a><span>/</span>
+</li>
+<li><a title="Examples for AI model comparison" href="/en/copilot/using-github-copilot/ai-models/comparing-ai-models-using-different-tasks">Examples for AI model comparison</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Comparing AI models using different tasks</h1></div></div>
+<div><div><p>Explore real-world examples of common developer tasks along with sample prompts, responses, and guidance to help you choose the right AI model for your workflow.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#overview"><div><span>Overview</span></div></a></li>
+<li><a href="#gpt-4o"><div><span>GPT-4o</span></div></a></li>
+<li><a href="#o3-mini"><div><span>o3-mini</span></div></a></li>
+<li><a href="#gemini-20-flash"><div><span>Gemini 2.0 Flash</span></div></a></li>
+<li><a href="#claude-35-sonnet"><div><span>Claude 3.5 Sonnet</span></div></a></li>
+<li><a href="#claude-37-sonnet"><div><span>Claude 3.7 Sonnet</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#overview">Overview</a></h2>
+<p>Each AI model supported in Copilot Chat has different strengths. To help you decide which model to use, this article provides real-world examples of common developer tasks along with sample prompts, responses, and guidance on why a particular model is a good fit.</p>
+<p>These examples show how models vary in their reasoning style, response depth, and ability to handle visual input. Use them to compare output quality and choose the right model for your specific workflow.</p>
+<p>For a full list of supported models and side-by-side feature comparisons, see <a href="/en/copilot/using-github-copilot/ai-models/choosing-the-right-ai-model-for-your-task">Choosing the right AI model for your task</a>.</p>
+<h2><a href="#gpt-4o">GPT-4o</a></h2>
+<p>GPT-4o is a good choice for common development tasks that benefit from speed, responsiveness, and general-purpose reasoning. If you're working on tasks that require broad knowledge, fast iteration, or basic code understanding, GPT-4o is likely the model to use.</p>
+<h3><a href="#example-scenario">Example scenario</a></h3>
+<p>Consider a scenario where you are writing helper functions for access control in a Python service. You want to add docstrings to clarify the purpose of the function.</p>
+<p>Below is the helper function that grants editor access to a document:</p>
+<pre><code><span>def</span> <span>grant_editor_access</span>(<span>user_id, doc_id</span>):
+    access = AccessManager()
+    access.assign_role(
+        resource_type=<span>"document"</span>,
+        resource_id=doc_id,
+        role=<span>"editor"</span>,
+        user_id=user_id
+    )
+</code></pre>
+<h3><a href="#example-prompt">Example prompt</a></h3>
+<p><code>Add a docstring to the function that explains what it does.</code></p>
+<h3><a href="#example-response">Example response</a></h3>
+<div>
+<p> The following response is an example. Copilot Chat responses are non-deterministic, so you may get a different response from the one shown here.</p>
+</div>
+<pre><code><span>def</span> <span>grant_editor_access</span>(<span>user_id, doc_id</span>):
+    <span>"""
+    Grants editor access to a specific document for a given user.
+
+    This function uses the AccessManager to assign the "editor" role
+    to the specified user for the provided document ID.
+
+    Args:
+        user_id (str): The ID of the user to grant access to.
+        doc_id (str): The ID of the document to which access is being granted.
+    """</span>
+    access = AccessManager()
+    access.assign_role(
+        resource_type=<span>"document"</span>,
+        resource_id=doc_id,
+        role=<span>"editor"</span>,
+        user_id=user_id
+    )
+</code></pre>
+<h3><a href="#why-gpt-4o-is-a-good-fit">Why GPT-4o is a good fit</a></h3>
+<ul>
+<li>The function is short and self-contained, making it ideal for quick docstring generation.</li>
+<li>GPT-4o can recognize the pattern and provide a clear, concise explanation.</li>
+<li>The task doesn't require deep reasoning or complex logic.</li>
+</ul>
+<h2><a href="#o3-mini">o3-mini</a></h2>
+<p>OpenAI o3-mini is a fast, cost-effective reasoning model designed to deliver coding performance while maintaining lower latency and resource usage. o3-mini outperforms o1 on coding benchmarks with response times that are comparable to o1-mini. Copilot is configured to use OpenAI's "medium" reasoning effort.</p>
+<h3><a href="#example-scenario-1">Example scenario</a></h3>
+<p>Consider a scenario where you are working on a software licensing system. You have a list of user records, each stored as a dictionary with fields like <code>name</code>, <code>active</code>, and <code>signup_date</code>. You want to find only the active users, sorted by their signup date, so that the newest users appear last.</p>
+<p>Below is list of users you are working with:</p>
+<pre><code>users = [
+    {<span>"name"</span>: <span>"Alice"</span>, <span>"active"</span>: <span>True</span>, <span>"signup_date"</span>: <span>"2023-12-10"</span>},
+    {<span>"name"</span>: <span>"Bob"</span>, <span>"active"</span>: <span>False</span>, <span>"signup_date"</span>: <span>"2023-11-05"</span>},
+    {<span>"name"</span>: <span>"Charlie"</span>, <span>"active"</span>: <span>True</span>, <span>"signup_date"</span>: <span>"2024-01-15"</span>}
+]
+</code></pre>
+<h3><a href="#example-prompt-1">Example prompt</a></h3>
+<p><code>Filter the list of users to only include active users, and sort them by signup_date.</code></p>
+<h3><a href="#example-response-1">Example response</a></h3>
+<div>
+<p> The following response is an example. Copilot Chat responses are non-deterministic, so you may get a different response from the one shown here.</p>
+</div>
+<pre><code><span># Filter to only include active users</span>
+active_users = [user <span>for</span> user <span>in</span> users <span>if</span> user[<span>"active"</span>]]
+
+<span># Sort active users by signup_date</span>
+active_users_sorted = <span>sorted</span>(active_users, key=<span>lambda</span> user: user[<span>"signup_date"</span>])
+
+<span>print</span>(active_users_sorted)
+</code></pre>
+<h3><a href="#why-o3-mini-is-a-good-fit">Why o3-mini is a good fit</a></h3>
+<ul>
+<li>The task involves simple filtering and sorting, which doesn’t require deep reasoning.</li>
+<li>Its fast responses make it ideal for quick iteration during development.</li>
+</ul>
+<h2><a href="#gemini-20-flash">Gemini 2.0 Flash</a></h2>
+<p>Gemini 2.0 Flash supports image input so that developers can bring visual context into tasks like UI inspection, diagram analysis, or layout debugging. This makes Gemini 2.0 Flash particularly useful for scenarios where image-based input enhances problem-solving, such as asking Copilot to analyze a UI screenshot for accessibility issues or to help understand a visual bug in a layout.</p>
+<h3><a href="#example-scenario-2">Example scenario</a></h3>
+<p>You’re designing a shopping cart system and have a UML class diagram that outlines the relationships between <code>Cart</code>, <code>Product</code>, <code>User</code>, and <code>Order</code>. Instead of writing out the system from scratch, you want to upload the image of the diagram and ask Copilot to generate the  classes.</p>
+<p><picture><source><img src="/assets/cb-14364/images/help/copilot/shopping-cart-uml.png" alt="Screenshot of a shopping cart UML diagram, showing the class details for Cart, Product, User, and Order." width="550" height="158"></source></picture></p>
+<h3><a href="#example-prompt-2">Example prompt</a></h3>
+<p><code>Use this UML diagram to generate the classes for a shopping cart system.</code></p>
+<h3><a href="#example-response-2">Example response</a></h3>
+<div>
+<p> The following response is an example. Copilot Chat responses are non-deterministic, so you may get a different response from the one shown here.</p>
+</div>
+<p>Copilot will generate a class for each of the classes in the diagram, including the relationships between them. Here’s the example code generated for the <code>Cart</code> class:</p>
+<pre><code><span>from</span> cart_item <span>import</span> CartItem
+<span>from</span> order <span>import</span> Order
+
+<span>class</span> <span>Cart</span>:
+    <span>def</span> <span>__init__</span>(<span>self, cart_id, user_id</span>):
+        self.cart_id = cart_id
+        self.user_id = user_id
+        self.items = []
+
+    <span>def</span> <span>add_item</span>(<span>self, item</span>):
+        self.items.append(item)
+
+    <span>def</span> <span>remove_item</span>(<span>self, item</span>):
+        self.items = [i <span>for</span> i <span>in</span> self.items <span>if</span> i != item]
+
+    <span>def</span> <span>calculate_total</span>(<span>self</span>):
+        <span>return</span> <span>sum</span>(item.quantity * item.product.price <span>for</span> item <span>in</span> self.items)
+
+    <span>def</span> <span>place_order</span>(<span>self</span>):
+        <span># Implementation for placing an order</span>
+        <span>return</span> Order(<span>""</span>, <span>None</span>, <span>0</span>)
+</code></pre>
+<h3><a href="#why-gemini-20-flash-is-a-good-fit">Why Gemini 2.0 Flash is a good fit</a></h3>
+<ul>
+<li>It can interpret visual assets, such as UML diagrams, wireframes, or flowcharts, to generate code scaffolding or suggest architecture.</li>
+<li>It can be useful for reviewing screenshots of UI layouts or form designs and generating.</li>
+</ul>
+<h2><a href="#claude-35-sonnet">Claude 3.5 Sonnet</a></h2>
+<p>Claude 3.5 Sonnet is a good choice for everyday coding support—including writing documentation, answering language-specific questions, or generating boilerplate code. It offers helpful, direct answers without over-complicating the task.
+If you're working within cost constraints, Claude 3.5 Sonnet is recommended as it delivers solid performance on many of the same tasks as Claude 3.7 Sonnet, but with significantly lower resource usage.</p>
+<h3><a href="#example-scenario-3">Example scenario</a></h3>
+<p>Consider a scenario where you are implementing both unit tests and integration tests for an application. You want to ensure that the tests are comprehensive and cover any edge cases that you may and may not have thought of.</p>
+<p>For a complete walkthrough of the scenario, see <a href="/en/copilot/using-github-copilot/guides-on-using-github-copilot/writing-tests-with-github-copilot">Writing tests with GitHub Copilot</a>.</p>
+<h3><a href="#why-claude-35-sonnet-is-a-good-fit">Why Claude 3.5 Sonnet is a good fit</a></h3>
+<ul>
+<li>It performs well on everyday coding tasks like test generation, boilerplate scaffolding, and validation logic.</li>
+<li>The task leans into multi-step reasoning, but still stays within the confidence zone of a less advanced model because the logic isn’t too deep.</li>
+</ul>
+<h2><a href="#claude-37-sonnet">Claude 3.7 Sonnet</a></h2>
+<p>Claude 3.7 Sonnet excels across the software development lifecycle, from initial design to bug fixes, maintenance to optimizations. It is particularly well-suited for multi-file refactoring or architectural planning, where understanding context across components is important.</p>
+<h3><a href="#example-scenario-4">Example scenario</a></h3>
+<p>Consider a scenario where you're modernizing a legacy COBOL application by rewriting it in Node.js. The project involves understanding unfamiliar source code, converting logic across languages, iteratively building the replacement, and verifying correctness through a test suite.</p>
+<p>For a complete walkthrough of the scenario, see <a href="/en/copilot/using-github-copilot/guides-on-using-github-copilot/modernizing-legacy-code-with-github-copilot">Modernizing legacy code with GitHub Copilot</a>.</p>
+<h3><a href="#why-claude-37-sonnet-is-a-good-fit">Why Claude 3.7 Sonnet is a good fit</a></h3>
+<ul>
+<li>Claude 3.7 Sonnet handles complex context well, making it suited for workflows that span multiple files or languages.</li>
+<li>Its hybrid reasoning architecture allows it to switch between quick answers and deeper, step-by-step problem-solving.</li>
+</ul>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/copilot/using-github-copilot/ai-models/choosing-the-right-ai-model-for-your-task">Choosing the right AI model for your task</a></li>
+<li><a href="/en/copilot/copilot-chat-cookbook">Copilot Chat Cookbook</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

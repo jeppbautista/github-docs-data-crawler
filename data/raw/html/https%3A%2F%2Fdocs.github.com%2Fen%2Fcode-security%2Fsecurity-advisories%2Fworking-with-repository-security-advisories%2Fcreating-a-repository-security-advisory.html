@@ -1,0 +1,197 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Security advisories" href="/en/code-security/security-advisories">Security advisories</a><span>/</span>
+</li>
+<li>
+<a title="Repository security advisories" href="/en/code-security/security-advisories/working-with-repository-security-advisories">Repository security advisories</a><span>/</span>
+</li>
+<li><a title="Create repository advisories" href="/en/code-security/security-advisories/working-with-repository-security-advisories/creating-a-repository-security-advisory">Create repository advisories</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Creating a repository security advisory</h1></div></div>
+<div>
+<div><p>You can create a draft security advisory to privately discuss and fix a security vulnerability in your open source project.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Repository owners, organization owners, security managers, and users with the <strong>admin</strong> role</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#creating-a-security-advisory"><div><span>Creating a security advisory</span></div></a></li>
+<li><a href="#next-steps"><div><span>Next steps</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<p>
+If you are a security researcher, you should directly contact maintainers to ask them to create security advisories or issue CVEs on your behalf in repositories that you don't administer. However, if private vulnerability reporting is enabled for the repository, you can <em>privately</em> report a vulnerability yourself. For more information, see <a href="/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability">Privately reporting a security vulnerability</a>.</p>
+</div>
+<h2><a href="#creating-a-security-advisory">Creating a security advisory</a></h2>
+<p>You can also use the REST API to create repository security advisories. For more information, see <a href="/en/rest/security-advisories/repository-advisories">REST API endpoints for repository security advisories</a>.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under the repository name, click <strong>Security</strong>.
+</p>
+<div><picture><source><img src="/assets/cb-17801/images/help/repository/security-tab.png" alt='Screenshot of a repository header showing the tabs. The "Security" tab is highlighted by a dark orange outline.' width="720" height="89"></source></picture></div>
+</li>
+<li>
+<p>In the left sidebar, under "Reporting", click </p>
+</li>
+<li>
+<p>Click <strong>New draft security advisory</strong> to open the draft advisory form. The fields marked with an asterisk are required.</p>
+</li>
+<li>
+<p>In the <strong>Title</strong> field, type a title for your security advisory.</p>
+</li>
+<li>
+<p>Use the <strong>CVE identifier</strong> dropdown menu to specify whether you already have a CVE identifier or plan to request one from GitHub later. If you have an existing CVE identifier, select <strong>I have an existing CVE identifier</strong> to display an <strong>Existing CVE</strong> field, and type the CVE identifier in the field. For more information, see <a href="/en/code-security/security-advisories/working-with-repository-security-advisories/about-repository-security-advisories#cve-identification-numbers">About repository security advisories</a>.</p>
+</li>
+<li>
+<p>In the <strong>Description</strong> field, type a description of the security vulnerability including its impact, any patches or workarounds available, and any references.</p>
+</li>
+<li>
+<p>Under "Affected products", define the ecosystem, package name, affected/patched versions, and vulnerable functions for the security vulnerability that this security advisory describes. If applicable, you can add multiple affected products to the same advisory by clicking <strong>Add another affected product</strong>.</p>
+<p>For information about how to specify information on the form, including affected versions, see <a href="/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/best-practices-for-writing-repository-security-advisories">Best practices for writing repository security advisories</a>.</p>
+</li>
+<li>
+<p>Define the severity of the security vulnerability using the <strong>Severity</strong> dropdown menu. If you want to calculate a CVSS score, select <strong>Assess severity using CVSS</strong> and then select the appropriate values in the <strong>Calculator</strong>. GitHub calculates the score according to the <a href="https://www.first.org/cvss/calculator">Common Vulnerability Scoring System Calculator</a>.</p>
+</li>
+<li>
+<p>Under "Weaknesses", in the <strong>Common weakness enumerator</strong> field, type common weakness enumerators (CWEs) that describe the kinds of security weaknesses that this security advisory reports. For a full list of CWEs, see the <a href="https://cwe.mitre.org/index.html">Common Weakness Enumeration</a> from MITRE.</p>
+</li>
+<li>
+<p>Optionally, under "Credits", add credits by searching for a GitHub username, the email address associated with their GitHub account, or their full name.</p>
+<ul>
+<li>
+<p>Use the dropdown menu next to the name of the person you're crediting to assign a credit type. For more information about credit types, see the <a href="#about-credits-for-repository-security-advisories">About credits for repository security advisories</a> section.</p>
+<div><picture><source><img src="/assets/cb-21132/images/help/security/security-advisories-choose-credit-type.png" alt='Screenshot of a draft security advisory. A dropdown menu, labeled "Choose a credit type," is highlighted with an orange outline.'></source></picture></div>
+</li>
+<li>
+<p>Optionally, to remove someone, click </p>
+</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Create draft security advisory</strong>.</p>
+</li>
+</ol>
+<p>The people listed in the "Credits" section will receive an email or web notification inviting them to accept credit. If a person accepts, their username will be publicly visible once the security advisory is published.</p>
+<h3><a href="#about-credits-for-repository-security-advisories">About credits for repository security advisories</a></h3>
+<p>You can credit people who helped discover, report, or fix a security vulnerability. If you credit someone, they can choose to accept or decline credit.</p>
+<p>You can assign different types of credit to people.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Credit type</th>
+<th>Reason</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Finder</td>
+<td>Identifies the vulnerability</td>
+</tr>
+<tr>
+<td>Reporter</td>
+<td>Notifies the vendor of the vulnerability to a CNA</td>
+</tr>
+<tr>
+<td>Analyst</td>
+<td>Validates the vulnerability to ensure accuracy or severity</td>
+</tr>
+<tr>
+<td>Coordinator</td>
+<td>Facilitates the coordinated response process</td>
+</tr>
+<tr>
+<td>Remediation developer</td>
+<td>Prepares a code change or other remediation plans</td>
+</tr>
+<tr>
+<td>Remediation reviewer</td>
+<td>Reviews vulnerability remediation plans or code changes for effectiveness and completeness</td>
+</tr>
+<tr>
+<td>Remediation verifier</td>
+<td>Tests and verifies the vulnerability or its remediation</td>
+</tr>
+<tr>
+<td>Tool</td>
+<td>Names of tools used in vulnerability discovery or identification</td>
+</tr>
+<tr>
+<td>Sponsor</td>
+<td>Supports the vulnerability identification or remediation activities</td>
+</tr>
+</tbody>
+</table>
+<p>If someone accepts credit, the person's username appears in the "Credits" section of the security advisory. Anyone with read access to the repository can see the advisory and the people who accepted credit for it.</p>
+<div>
+<p>
+If you believe you should be credited for a security advisory, please contact the creator of the advisory and to ask for the advisory to be edited to include your credit. Only the creator of the advisory can credit you, so please don't contact GitHub Support about credits for security advisories.</p>
+</div>
+<h2><a href="#next-steps">Next steps</a></h2>
+<ul>
+<li>Comment on the draft security advisory to discuss the vulnerability with your team.</li>
+<li>Add collaborators to the security advisory. For more information, see <a href="/en/code-security/security-advisories/working-with-repository-security-advisories/adding-a-collaborator-to-a-repository-security-advisory">Adding a collaborator to a repository security advisory</a>.</li>
+<li>Privately collaborate to fix the vulnerability in a temporary private fork. For more information, see <a href="/en/code-security/security-advisories/working-with-repository-security-advisories/collaborating-in-a-temporary-private-fork-to-resolve-a-repository-security-vulnerability">Collaborating in a temporary private fork to resolve a repository security vulnerability</a>.</li>
+<li>Add individuals who should receive credit for contributing to the security advisory. For more information, see <a href="/en/code-security/security-advisories/working-with-repository-security-advisories/editing-a-repository-security-advisory#about-credits-for-security-advisories">Editing a repository security advisory</a>.</li>
+<li>Publish the security advisory to notify your community of the security vulnerability. For more information, see <a href="/en/code-security/security-advisories/working-with-repository-security-advisories/publishing-a-repository-security-advisory">Publishing a repository security advisory</a>.</li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

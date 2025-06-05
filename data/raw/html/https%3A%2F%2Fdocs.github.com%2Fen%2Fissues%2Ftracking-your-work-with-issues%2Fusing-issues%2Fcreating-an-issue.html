@@ -1,0 +1,314 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Issues" href="/en/issues">GitHub Issues</a><span>/</span>
+</li>
+<li>
+<a title="Issues" href="/en/issues/tracking-your-work-with-issues">Issues</a><span>/</span>
+</li>
+<li>
+<a title="Using issues" href="/en/issues/tracking-your-work-with-issues/using-issues">Using issues</a><span>/</span>
+</li>
+<li><a title="Create an issue" href="/en/issues/tracking-your-work-with-issues/using-issues/creating-an-issue">Create an issue</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Creating an issue</h1></div></div>
+<div>
+<div><p>Issues can be created in a variety of ways, so you can choose the most convenient method for your workflow.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>People with read access can create an issue in a repository where issues are enabled.</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#creating-an-issue-from-a-repository"><div><span>Creating an issue from a repository</span></div></a></li>
+<li><a href="#creating-an-issue-with-github-cli"><div><span>Creating an issue with GitHub CLI</span></div></a></li>
+<li><a href="#creating-an-issue-from-a-comment"><div><span>Creating an issue from a comment</span></div></a></li>
+<li><a href="#creating-an-issue-from-code"><div><span>Creating an issue from code</span></div></a></li>
+<li><a href="#creating-an-issue-from-discussion"><div><span>Creating an issue from discussion</span></div></a></li>
+<li><a href="#creating-an-issue-from-a-project"><div><span>Creating an issue from a project</span></div></a></li>
+<li><a href="#creating-an-issue-from-a-task-list-item"><div><span>Creating an issue from a task list item</span></div></a></li>
+<li><a href="#creating-an-issue-from-a-url-query"><div><span>Creating an issue from a URL query</span></div></a></li>
+<li><a href="#creating-an-issue-with-copilot-chat-on-github"><div><span>Creating an issue with Copilot Chat on GitHub</span></div></a></li>
+<li><a href="#creating-an-issue-from-copilot-chat-in-vs-code"><div><span>Creating an issue from Copilot Chat in VS Code</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>Issues can be used to keep track of bugs, enhancements, or other requests. For more information, see <a href="/en/issues/tracking-your-work-with-issues/about-issues">About issues</a>.</p>
+<p>Repository administrators can disable issues for a repository. For more information, see <a href="/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/disabling-issues">Disabling issues</a>.</p>
+<h2><a href="#creating-an-issue-from-a-repository">Creating an issue from a repository</a></h2>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click </p>
+<div><picture><source><img src="/assets/cb-51267/images/help/repository/repo-tabs-issues-global-nav-update.png" alt='Screenshot of the main page of a repository. In the horizontal navigation bar, a tab, labeled "Issues," is outlined in dark orange.' width="1440" height="115"></source></picture></div>
+</li>
+<li>
+<p>Click <strong>New issue</strong>.</p>
+</li>
+<li>
+<p>If your repository uses issue templates, next to the type of issue you'd like to open, click <strong>Get started</strong>.</p>
+<p>If the type of issue you'd like to open isn't included in the available options, click <strong>Open a blank issue</strong>.</p>
+<div><picture><source><img src="/assets/cb-35262/images/help/issues/blank-issue-link.png" alt='Screenshot of the template chooser for an issue. Below the template choices, a link, labeled "Open a blank issue," is outlined in dark orange.' width="699" height="306"></source></picture></div>
+</li>
+<li>
+<p>In the "Title" field, type a title for your issue.</p>
+</li>
+<li>
+<p>In the comment body field, type a description of your issue.</p>
+</li>
+<li>
+<p>If you're a project maintainer, you can <a href="/en/issues/tracking-your-work-with-issues/assigning-issues-and-pull-requests-to-other-github-users">assign the issue to someone</a>, <a href="/en/issues/planning-and-tracking-with-projects/managing-items-in-your-project/adding-items-to-your-project#assigning-a-project-from-within-an-issue-or-pull-request">add it to a project</a>, <a href="/en/issues/using-labels-and-milestones-to-track-work/associating-milestones-with-issues-and-pull-requests">associate it with a milestone</a>, <a href="/en/issues/tracking-your-work-with-issues/using-issues/editing-an-issue#adding-or-changing-the-issue-type">set the issue type</a>, or <a href="/en/issues/using-labels-and-milestones-to-track-work/managing-labels">apply a label</a>.</p>
+</li>
+<li>
+<p>When you're finished, click <strong>Submit new issue</strong>.</p>
+</li>
+</ol>
+<h2><a href="#creating-an-issue-with-github-cli">Creating an issue with GitHub CLI</a></h2>
+<p>GitHub CLI is an open source tool for using GitHub from your computer's command line. When you're working from the command line, you can use the GitHub CLI to save time and avoid switching context. To learn more about GitHub CLI, see <a href="/en/github-cli/github-cli/about-github-cli">About GitHub CLI</a>.</p>
+<p>To create an issue, use the <code>gh issue create</code> subcommand. To skip the interactive prompts, include the <code>--body</code> and the <code>--title</code> flags.</p>
+<pre><code>gh issue create --title "My new issue" --body "Here are more details."
+</code></pre>
+<p>You can also specify assignees, labels, milestones, and projects.</p>
+<pre><code>gh issue create --title "My new issue" --body "Here are more details." --assignee @me,monalisa --label "bug,help wanted" --project onboarding --milestone "learning codebase"
+</code></pre>
+<h2><a href="#creating-an-issue-from-a-comment">Creating an issue from a comment</a></h2>
+<p>You can open a new issue from a comment in an issue or pull request. When you open an issue from a comment, the issue contains a snippet showing where the comment was originally posted.</p>
+<ol>
+<li>
+<p>Navigate to the comment that you would like to open an issue from.</p>
+</li>
+<li>
+<p>In that comment, click </p>
+<div><picture><source><img src="/assets/cb-57633/images/help/pull_requests/kebab-in-pull-request-review-comment.png" alt="Screenshot of a comment on a pull request. The kebab button is outlined in dark orange." width="720" height="125"></source></picture></div>
+</li>
+<li>
+<p>Click <strong>Reference in new issue</strong>.</p>
+</li>
+<li>
+<p>Use the "Repository" dropdown menu, and select the repository you want to open the issue in.</p>
+</li>
+<li>
+<p>Type a descriptive title and body for the issue.</p>
+</li>
+<li>
+<p>Click <strong>Create issue</strong>.</p>
+</li>
+<li>
+<p>If you're a project maintainer, you can <a href="/en/issues/tracking-your-work-with-issues/assigning-issues-and-pull-requests-to-other-github-users">assign the issue to someone</a>, <a href="/en/issues/planning-and-tracking-with-projects/managing-items-in-your-project/adding-items-to-your-project#assigning-a-project-from-within-an-issue-or-pull-request">add it to a project</a>, <a href="/en/issues/using-labels-and-milestones-to-track-work/associating-milestones-with-issues-and-pull-requests">associate it with a milestone</a>, <a href="/en/issues/tracking-your-work-with-issues/using-issues/editing-an-issue#adding-or-changing-the-issue-type">set the issue type</a>, or <a href="/en/issues/using-labels-and-milestones-to-track-work/managing-labels">apply a label</a>.</p>
+</li>
+<li>
+<p>When you're finished, click <strong>Submit new issue</strong>.</p>
+</li>
+</ol>
+<h2><a href="#creating-an-issue-from-code">Creating an issue from code</a></h2>
+<p>You can open a new issue from a specific line or lines of code in a file or pull request. When you open an issue from code, the issue contains a snippet showing the line or range of code you chose. You can only open an issue in the same repository where the code is stored.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Locate the code you want to reference in an issue:</p>
+<ul>
+<li>To open an issue about code in a file, navigate to the file.</li>
+<li>To open an issue about code in a pull request, navigate to the pull request and click <strong>View</strong>.</li>
+</ul>
+</li>
+<li>
+<p>Choose whether to select a single line or a range.</p>
+<ul>
+<li>To select a single line of code, click the line number to highlight the line.</li>
+<li>To select a range of code, click the number of the first line in the range to highlight the line of code. Then, hover over the last line of the code range, press <kbd>Shift</kbd>, and click the line number to highlight the range.</li>
+</ul>
+</li>
+<li>
+<p>To the left of the code range, click <strong>Reference in new issue</strong>.</p>
+<div><picture><source><img src="/assets/cb-40280/images/help/repository/open-new-issue-specific-line.png" alt="Screenshot of a file, with 8 lines selected. To the left of the first selected line, a button labeled with a kebab icon is outlined in dark orange." width="720" height="185"></source></picture></div>
+</li>
+<li>
+<p>In the "Title" field, type a title for your issue.</p>
+</li>
+<li>
+<p>In the comment body field, type a description of your issue.</p>
+</li>
+<li>
+<p>If you're a project maintainer, you can <a href="/en/issues/tracking-your-work-with-issues/assigning-issues-and-pull-requests-to-other-github-users">assign the issue to someone</a>, <a href="/en/issues/planning-and-tracking-with-projects/managing-items-in-your-project/adding-items-to-your-project#assigning-a-project-from-within-an-issue-or-pull-request">add it to a project</a>, <a href="/en/issues/using-labels-and-milestones-to-track-work/associating-milestones-with-issues-and-pull-requests">associate it with a milestone</a>, <a href="/en/issues/tracking-your-work-with-issues/using-issues/editing-an-issue#adding-or-changing-the-issue-type">set the issue type</a>, or <a href="/en/issues/using-labels-and-milestones-to-track-work/managing-labels">apply a label</a>.</p>
+</li>
+<li>
+<p>When you're finished, click <strong>Submit new issue</strong>.</p>
+</li>
+</ol>
+<h2><a href="#creating-an-issue-from-discussion">Creating an issue from discussion</a></h2>
+<p>People with triage permission to a repository can create an issue from a discussion.</p>
+<p>When you create an issue from a discussion, the contents of the discussion post will be automatically included in the issue body, and any labels will be retained. Creating an issue from a discussion does not convert the discussion to an issue or delete the existing discussion. For more information about GitHub Discussions, see <a href="/en/discussions/collaborating-with-your-community-using-discussions/about-discussions">About discussions</a>.</p>
+<ol>
+<li>
+<p>Under your repository or organization name, click </p>
+<div><picture><source><img src="/assets/cb-51242/images/help/discussions/repository-discussions-tab-global-nav-update.png" alt='Screenshot of the tabs in a GitHub repository. The "Discussions" option is outlined in dark orange.'></source></picture></div>
+</li>
+<li>
+<p>In the list of discussions, click the discussion you want to view.</p>
+</li>
+<li>
+<p>In the right sidebar, click </p>
+<div><picture><source><img src="/assets/cb-33946/images/help/discussions/create-issue-from-discussion.png" alt='Screenshot of the sidebar in a discussion. The "Create issue from discussion" option is outlined in dark orange.'></source></picture></div>
+</li>
+<li>
+<p>In the "Title" field, type a title for your issue.</p>
+</li>
+<li>
+<p>In the comment body field, type a description of your issue.</p>
+</li>
+<li>
+<p>If you're a project maintainer, you can <a href="/en/issues/tracking-your-work-with-issues/assigning-issues-and-pull-requests-to-other-github-users">assign the issue to someone</a>, <a href="/en/issues/planning-and-tracking-with-projects/managing-items-in-your-project/adding-items-to-your-project#assigning-a-project-from-within-an-issue-or-pull-request">add it to a project</a>, <a href="/en/issues/using-labels-and-milestones-to-track-work/associating-milestones-with-issues-and-pull-requests">associate it with a milestone</a>, <a href="/en/issues/tracking-your-work-with-issues/using-issues/editing-an-issue#adding-or-changing-the-issue-type">set the issue type</a>, or <a href="/en/issues/using-labels-and-milestones-to-track-work/managing-labels">apply a label</a>.</p>
+</li>
+<li>
+<p>When you're finished, click <strong>Submit new issue</strong>.</p>
+</li>
+</ol>
+<h2><a href="#creating-an-issue-from-a-project">Creating an issue from a project</a></h2>
+<p>You can quickly create issues without leaving your project. When using a view that is grouped by a field, creating an issue in that group will automatically set the new issue's field to the group's value. For example, if you group your view by "Status", when you create an issue in the "Todo" group, the new issue's "Status" will automatically be set to "Todo." For more information about Projects, see <a href="/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects">About Projects</a>.</p>
+<ol>
+<li>
+<p>Navigate to your project.</p>
+</li>
+<li>
+<p>At the bottom of a table, group of items, or a column in board layout, click </p>
+<div><picture><source><img src="/assets/cb-10671/images/help/projects-v2/omnibar-add.png" alt='Screenshot showing the bottom row of a table view. The "+" button is highlighted with an orange outline.' width="306" height="121"></source></picture></div>
+</li>
+<li>
+<p>Click <strong>Create new issue</strong>.</p>
+</li>
+<li>
+<p>At the top of the "Create new issue" dialog, select the repository where you want the new issue to be created.</p>
+<div><picture><source><img src="/assets/cb-33121/images/help/projects-v2/issue-create-form.png" alt='Screenshot showing the "Create new issue" dialog.' width="625" height="421"></source></picture></div>
+</li>
+<li>
+<p>Below the repository dropdown, type a title for the new issue.</p>
+</li>
+<li>
+<p>Optionally, use the fields below the title field to set assignees, labels, and milestones, and add the new issue to other projects.</p>
+</li>
+<li>
+<p>Optionally, type a description for your issue.</p>
+</li>
+<li>
+<p>Optionally, if you want to create more issues, select <strong>Create more</strong> and the dialog will reopen when you create your issue.</p>
+</li>
+<li>
+<p>Click <strong>Create</strong>.</p>
+</li>
+</ol>
+<h2><a href="#creating-an-issue-from-a-task-list-item">Creating an issue from a task list item</a></h2>
+<p>Within an issue, you can use task lists to break work into smaller tasks and track the full set of work to completion. If a task requires further tracking or discussion, you can convert the task to an issue by hovering over the task and clicking <a href="/en/get-started/writing-on-github/working-with-advanced-formatting/about-task-lists">About tasklists</a>.</p>
+<h2><a href="#creating-an-issue-from-a-url-query">Creating an issue from a URL query</a></h2>
+<p>You can use query parameters to open issues. Query parameters are optional parts of a URL you can customize to share a specific web page view, such as search filter results or an issue template on GitHub. To create your own query parameters, you must match the key and value pair.</p>
+<div>
+<p>
+You can also create issue templates that open with default labels, assignees, and an issue title. For more information, see <a href="/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests">Using templates to encourage useful issues and pull requests</a>.</p>
+</div>
+<p>You must have the proper permissions for any action to use the equivalent query parameter. For example, you must have permission to add a label to an issue to use the <code>labels</code> query parameter. For more information, see <a href="/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization">Repository roles for an organization</a>.</p>
+<p>If you create an invalid URL using query parameters, or if you don't have the proper permissions, the URL will return a <code>404 Not Found</code> error page. If you create a URL that exceeds the server limit, the URL will return a <code>414 URI Too Long</code> error page.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Query parameter</th>
+<th>Example</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>
+<code>https:/<wbr>/<wbr>github.com/<wbr>octo-org/<wbr>octo-repo/<wbr>issues/<wbr>new?labels=bug&amp;title=New+bug+report</wbr></wbr></wbr></wbr></wbr></wbr></code> creates an issue with the label "bug" and title "New bug report."</td>
+</tr>
+<tr>
+<td><code>body</code></td>
+<td>
+<code>https:/<wbr>/<wbr>github.com/<wbr>octo-org/<wbr>octo-repo/<wbr>issues/<wbr>new?title=New+bug+report&amp;body=Describe+the+problem.</wbr></wbr></wbr></wbr></wbr></wbr></code> creates an issue with the title "New bug report" and the comment "Describe the problem" in the issue body.</td>
+</tr>
+<tr>
+<td><code>labels</code></td>
+<td>
+<code>https:/<wbr>/<wbr>github.com/<wbr>octo-org/<wbr>octo-repo/<wbr>issues/<wbr>new?labels=help+wanted,bug</wbr></wbr></wbr></wbr></wbr></wbr></code> creates an issue with the labels "help wanted" and "bug".</td>
+</tr>
+<tr>
+<td><code>milestone</code></td>
+<td>
+<code>https:/<wbr>/<wbr>github.com/<wbr>octo-org/<wbr>octo-repo/<wbr>issues/<wbr>new?milestone=testing+milestones</wbr></wbr></wbr></wbr></wbr></wbr></code> creates an issue with the milestone "testing milestones."</td>
+</tr>
+<tr>
+<td><code>assignees</code></td>
+<td>
+<code>https:/<wbr>/<wbr>github.com/<wbr>octo-org/<wbr>octo-repo/<wbr>issues/<wbr>new?assignees=octocat</wbr></wbr></wbr></wbr></wbr></wbr></code> creates an issue and assigns it to @octocat.</td>
+</tr>
+<tr>
+<td><code>projects</code></td>
+<td>
+<code>https:/<wbr>/<wbr>github.com/<wbr>octo-org/<wbr>octo-repo/<wbr>issues/<wbr>new?title=Bug+fix&amp;projects=octo-org/<wbr>1</wbr></wbr></wbr></wbr></wbr></wbr></wbr></code> creates an issue with the title "Bug fix" and adds it to the organization's project 1.</td>
+</tr>
+<tr>
+<td><code>template</code></td>
+<td>
+<code>https:/<wbr>/<wbr>github.com/<wbr>octo-org/<wbr>octo-repo/<wbr>issues/<wbr>new?template=issue_template.md</wbr></wbr></wbr></wbr></wbr></wbr></code> creates an issue with a template in the issue body. The <code>template</code> query parameter works with templates stored in an <code>ISSUE_TEMPLATE</code> subdirectory within the root, <code>docs/</code> or <code>.github/</code> directory in a repository. For more information, see <a href="/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests">Using templates to encourage useful issues and pull requests</a>.</td>
+</tr>
+</tbody>
+</table>
+<p>You can also use URL query parameters to fill custom text fields that you have defined in issue form templates. Query parameters for issue form fields can also be passed to the issue template chooser. For more information, see <a href="/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-githubs-form-schema#keys">Syntax for GitHub's form schema</a>.</p>
+<h2><a href="#creating-an-issue-with-copilot-chat-on-github">Creating an issue with Copilot Chat on GitHub</a></h2>
+<div>
+<p>
+This feature is in public preview and subject to change.</p>
+</div>
+<p>Creating issues manually can be repetitive and time-consuming. With Copilot, you can create issues faster by prompting in natural language, or even by uploading a screenshot. Copilot fills out the title, body, labels, assignees, and more, using your repository’s templates and structure. See <a href="/en/copilot/using-github-copilot/using-github-copilot-to-create-issues">Using GitHub Copilot to create issues</a>.</p>
+<h2><a href="#creating-an-issue-from-copilot-chat-in-vs-code">Creating an issue from Copilot Chat in VS Code</a></h2>
+<p>You can also create an issue directly from Copilot Chat in VS Code, using the Model Context Protocol (MCP). See <a href="/en/copilot/customizing-copilot/extending-copilot-chat-with-mcp">Extending Copilot Chat with the Model Context Protocol (MCP)</a>.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/get-started/writing-on-github">Writing on GitHub</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

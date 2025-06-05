@@ -1,0 +1,258 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Manage workflows and deployments" href="/en/actions/managing-workflow-runs-and-deployments">Manage workflows and deployments</a><span>/</span>
+</li>
+<li>
+<a title="Manage deployments" href="/en/actions/managing-workflow-runs-and-deployments/managing-deployments">Manage deployments</a><span>/</span>
+</li>
+<li><a title="Manage environments" href="/en/actions/managing-workflow-runs-and-deployments/managing-deployments/managing-environments-for-deployment">Manage environments</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Managing environments for deployment</h1></div></div>
+<div>
+<div><p>You can create environments and secure those environments with deployment protection rules. A job that references an environment must follow any protection rules for the environment before running or accessing the environment's secrets.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Repository owners</p></div></div>
+<div><div><p>Environments, environment secrets, and deployment protection rules are available in public repositories for all current GitHub plans. They are not available on legacy plans, such as Bronze, Silver, or Gold. For access to environments, environment secrets, and deployment branches in private or internal repositories, you must use GitHub Pro, GitHub Team, or GitHub Enterprise. If you are on a GitHub Free, GitHub Pro, or GitHub Team plan, other deployment protection rules, such as a wait timer or required reviewers, are only available for public repositories.</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-environments"><div><span>About environments</span></div></a></li>
+<li><a href="#deployment-protection-rules"><div><span>Deployment protection rules</span></div></a></li>
+<li><a href="#environment-secrets"><div><span>Environment secrets</span></div></a></li>
+<li><a href="#environment-variables"><div><span>Environment variables</span></div></a></li>
+<li><a href="#creating-an-environment"><div><span>Creating an environment</span></div></a></li>
+<li><a href="#deleting-an-environment"><div><span>Deleting an environment</span></div></a></li>
+<li><a href="#how-environments-relate-to-deployments"><div><span>How environments relate to deployments</span></div></a></li>
+<li><a href="#next-steps"><div><span>Next steps</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-environments">About environments</a></h2>
+<p>Environments are used to describe a general deployment target like <code>production</code>, <code>staging</code>, or <code>development</code>. When a GitHub Actions workflow deploys to an environment, the environment is displayed on the main page of the repository. For more information about viewing deployments to environments, see <a href="/en/actions/deployment/managing-your-deployments/viewing-deployment-history">Viewing deployment history</a>.</p>
+<p>You can configure environments with protection rules and secrets. When a workflow job references an environment, the job won't start until all of the environment's protection rules pass. A job also cannot access secrets that are defined in an environment until all the deployment protection rules pass.</p>
+<p>Optionally, you can bypass an environment's protection rules and force all pending jobs referencing the environment to proceed. For more information, see <a href="/en/actions/managing-workflow-runs/reviewing-deployments#bypassing-environment-protection-rules">Reviewing deployments</a>.</p>
+<div>
+<p>
+Users with GitHub Free plans can only configure environments for public repositories. If you convert a repository from public to private, any configured protection rules or environment secrets will be ignored, and you will not be able to configure any environments. If you convert your repository back to public, you will have access to any previously configured protection rules and environment secrets.</p>
+<p>Organizations with GitHub Team and users with GitHub Pro can configure environments for private repositories. For more information, see <a href="/en/get-started/learning-about-github/githubs-plans">GitHub’s plans</a>.</p>
+</div>
+<h2><a href="#deployment-protection-rules">Deployment protection rules</a></h2>
+<p>Deployment protection rules require specific conditions to pass before a job referencing the environment can proceed. You can use deployment protection rules to require a manual approval, delay a job, or restrict the environment to certain branches. You can also create and implement custom protection rules powered by GitHub Apps to use third-party systems to control deployments referencing environments configured on GitHub.</p>
+<p>Third-party systems can be observability systems, change management systems, code quality systems, or other manual configurations that you use to assess readiness before deployments are safely rolled out to environments.</p>
+<div>
+<p>
+Any number of GitHub Apps-based deployment protection rules can be installed on a repository. However, a maximum of 6 deployment protection rules can be enabled on any environment at the same time.</p>
+</div>
+<h3><a href="#required-reviewers">Required reviewers</a></h3>
+<p>Use required reviewers to require a specific person or team to approve workflow jobs that reference the environment. You can list up to six users or teams as reviewers. The reviewers must have at least read access to the repository. Only one of the required reviewers needs to approve the job for it to proceed.</p>
+<p>You also have the option to prevent self-reviews for deployments to protected environments. If you enable this setting, users who initiate a deployment cannot approve the deployment job, even if they are a required reviewer. This ensures that deployments to protected environments are always reviewed by more than one person.</p>
+<p>For more information on reviewing jobs that reference an environment with required reviewers, see <a href="/en/actions/managing-workflow-runs/reviewing-deployments">Reviewing deployments</a>.</p>
+<div>
+<p>
+If you are on a GitHub Free, GitHub Pro, or GitHub Team plan, required reviewers are only available for public repositories.</p>
+</div>
+<h3><a href="#wait-timer">Wait timer</a></h3>
+<p>Use a wait timer to delay a job for a specific amount of time after the job is initially triggered. The time (in minutes) must be an integer between 1 and 43,200 (30 days). Wait time will not count towards your billable time.</p>
+<div>
+<p>
+If you are on a GitHub Free, GitHub Pro, or GitHub Team plan, wait timers are only available for public repositories.</p>
+</div>
+<h3><a href="#deployment-branches-and-tags">Deployment branches and tags</a></h3>
+<p>Use deployment branches and tags to restrict which branches and tags can deploy to the environment. Below are the options for deployment branches and tags for an environment:</p>
+<ul>
+<li>
+<p><strong>No restriction:</strong> No restriction on which branch or tag can deploy to the environment.</p>
+</li>
+<li>
+<p><strong>Protected branches only:</strong> Only branches with branch protection rules enabled can deploy to the environment. If no branch protection rules are defined for any branch in the repository, then all branches can deploy. For more information about branch protection rules, see <a href="/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches">About protected branches</a>.</p>
+<div>
+<p>
+Deployment workflow runs triggered by tags with the same name as a protected branch and forks with branches that match the protected branch name cannot deploy to the environment.</p>
+</div>
+</li>
+<li>
+<p><strong>Selected branches and tags:</strong> Only branches and tags that match your specified name patterns can deploy to the environment.</p>
+<p>If you specify <code>releases/*</code> as a deployment branch or tag rule, only a branch or tag whose name begins with <code>releases/</code> can deploy to the environment. (Wildcard characters will not match <code>/</code>. To match branches or tags that begin with <code>release/</code> and contain an additional single slash, use <code>release/*/*</code>.) If you add <code>main</code> as a branch rule, a branch named <code>main</code> can also deploy to the environment. For more information about syntax options for deployment branches, see the <a href="https://ruby-doc.org/core-2.5.1/File.html#method-c-fnmatch">Ruby <code>File.fnmatch</code> documentation</a>.</p>
+<div>
+<p>
+Name patterns must be configured for branches or tags individually.</p>
+</div>
+</li>
+</ul>
+<div>
+<p>
+Deployment branches and tags are available for all public repositories. For users on GitHub Pro or GitHub Team plans, deployment branches and tags are also available for private repositories.</p>
+</div>
+<h3><a href="#allow-administrators-to-bypass-configured-protection-rules">Allow administrators to bypass configured protection rules</a></h3>
+<p>By default, administrators can bypass the protection rules and force deployments to specific environments. For more information, see <a href="/en/actions/managing-workflow-runs/reviewing-deployments#bypassing-environment-protection-rules">Reviewing deployments</a>.</p>
+<p>Alternatively, you can configure environments to disallow bypassing the protection rules for all deployments to the environment.</p>
+<div>
+<p>
+Allowing administrators to bypass protection rules is only available for public repositories for users on GitHub Free, GitHub Pro, and GitHub Team plans.</p>
+</div>
+<h3><a href="#custom-deployment-protection-rules">Custom deployment protection rules</a></h3>
+<div>
+<p>
+Custom deployment protection rules are currently in public preview and subject to change.</p>
+</div>
+<p>You can enable your own custom protection rules to gate deployments with third-party services. For example, you can use services such as Datadog, Honeycomb, and ServiceNow to provide automated approvals for deployments to GitHub. For more information, see <a href="/en/actions/deployment/protecting-deployments/creating-custom-deployment-protection-rules">Creating custom deployment protection rules</a>.</p>
+<p>Once custom deployment protection rules have been created and installed on a repository, you can enable the custom deployment protection rule for any environment in the repository. For more information about configuring and enabling custom deployment protection rules, see <a href="/en/actions/deployment/protecting-deployments/configuring-custom-deployment-protection-rules">Configuring custom deployment protection rules</a>.</p>
+<div>
+<p>
+Custom deployment protection rules are only available for public repositories for users on GitHub Free, GitHub Pro, and GitHub Team plans.</p>
+</div>
+<h2><a href="#environment-secrets">Environment secrets</a></h2>
+<p>Secrets stored in an environment are only available to workflow jobs that reference the environment. If the environment requires approval, a job cannot access environment secrets until one of the required reviewers approves it. For more information about secrets, see <a href="/en/actions/security-for-github-actions/security-guides/about-secrets">About secrets</a>.</p>
+<div>
+<ul>
+<li>Workflows that run on self-hosted runners are not run in an isolated container, even if they use environments. Environment secrets should be treated with the same level of security as repository and organization secrets. For more information, see <a href="/en/actions/security-guides/security-hardening-for-github-actions#hardening-for-self-hosted-runners">Security hardening for GitHub Actions</a>.</li>
+<li>If you are using GitHub Free, environment secrets are only available in public repositories. For access to environment secrets in private or internal repositories, you must use GitHub Pro, GitHub Team, or GitHub Enterprise. For more information on switching your plan, see <a href="/en/billing/managing-the-plan-for-your-github-account/upgrading-your-accounts-plan">Upgrading your account's plan</a>.</li>
+</ul>
+</div>
+<h2><a href="#environment-variables">Environment variables</a></h2>
+<p>Variables stored in an environment are only available to workflow jobs that reference the environment. These variables are only accessible using the <a href="/en/actions/learn-github-actions/contexts#vars-context"><code>vars</code></a> context. For more information, see <a href="/en/actions/learn-github-actions/variables">Store information in variables</a>.</p>
+<div>
+<p>
+Environment variables are available for all public repositories. For users on GitHub Pro or GitHub Team plans, environment variables are also available for private repositories.</p>
+</div>
+<h2><a href="#creating-an-environment">Creating an environment</a></h2>
+<p>To configure an environment in a personal account repository, you must be the repository owner. To configure an environment in an organization repository, you must have <code>admin</code> access.</p>
+<div>
+<ul>
+<li>Creation of an environment in a private repository is available to organizations with GitHub Team and users with GitHub Pro.</li>
+<li>Some features for environments have no or limited availability for private repositories. If you are unable to access a feature described in the instructions below, please see the documentation linked in the related step for availability information.</li>
+</ul>
+</div>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click <strong>Settings</strong>.</p>
+<div><picture><source><img src="/assets/cb-28260/images/help/repository/repo-actions-settings.png" alt='Screenshot of a repository header showing the tabs. The "Settings" tab is highlighted by a dark orange outline.' width="720" height="71"></source></picture></div>
+</li>
+<li>
+<p>In the left sidebar, click <strong>Environments</strong>.</p>
+</li>
+<li>
+<p>Click <strong>New environment</strong>.</p>
+</li>
+<li>
+<p>Enter a name for the environment, then click <strong>Configure environment</strong>. Environment names are not case sensitive. An environment name may not exceed 255 characters and must be unique within the repository.</p>
+</li>
+<li>
+<p>Optionally, specify people or teams that must approve workflow jobs that use this environment. For more information, see <a href="#required-reviewers">Required reviewers</a>.</p>
+<ol>
+<li>Select <strong>Required reviewers</strong>.</li>
+<li>Enter up to 6 people or teams. Only one of the required reviewers needs to approve the job for it to proceed.</li>
+<li>Optionally, to prevent users from approving workflows runs that they triggered, select <strong>Prevent self-review</strong>.</li>
+<li>Click <strong>Save protection rules</strong>.</li>
+</ol>
+</li>
+<li>
+<p>Optionally, specify the amount of time to wait before allowing workflow jobs that use this environment to proceed. For more information, see <a href="#wait-timer">Wait timer</a>.</p>
+<ol>
+<li>Select <strong>Wait timer</strong>.</li>
+<li>Enter the number of minutes to wait.</li>
+<li>Click <strong>Save protection rules</strong>.</li>
+</ol>
+</li>
+<li>
+<p>Optionally, disallow bypassing configured protection rules. For more information, see <a href="#allow-administrators-to-bypass-configured-protection-rules">Allow administrators to bypass configured protection rules</a>.</p>
+<ol>
+<li>Deselect <strong>Allow administrators to bypass configured protection rules</strong>.</li>
+<li>Click <strong>Save protection rules</strong>.</li>
+</ol>
+</li>
+<li>
+<p>Optionally, enable any custom deployment protection rules that have been created with GitHub Apps. For more information, see <a href="#custom-deployment-protection-rules">Custom deployment protection rules</a>.</p>
+<ol>
+<li>Select the custom protection rule you want to enable.</li>
+<li>Click <strong>Save protection rules</strong>.</li>
+</ol>
+</li>
+<li>
+<p>Optionally, specify what branches and tags can deploy to this environment. For more information, see <a href="/en/actions/deployment/targeting-different-environments/managing-environments-for-deployment#deployment-branches-and-tags">Deployment branches and tags</a>.</p>
+<ol>
+<li>
+<p>Select the desired option in the <strong>Deployment branches</strong> dropdown.</p>
+</li>
+<li>
+<p>If you chose <strong>Selected branches and tags</strong>, to add a new rule, click <strong>Add deployment branch or tag rule</strong></p>
+</li>
+<li>
+<p>In the "Ref type" dropdown menu, depending on what rule you want to apply, click </p>
+</li>
+<li>
+<p>Enter the name pattern for the branch or tag that you want to allow.</p>
+<div>
+<p>
+Name patterns must be configured for branches or tags individually.</p>
+</div>
+</li>
+<li>
+<p>Click <strong>Add rule</strong>.</p>
+</li>
+</ol>
+</li>
+<li>
+<p>Optionally, add environment secrets. These secrets are only available to workflow jobs that use the environment. Additionally, workflow jobs that use this environment can only access these secrets after any configured rules (for example, required reviewers) pass. For more information, see <a href="#environment-secrets">Environment secrets</a>.</p>
+<ol>
+<li>Under <strong>Environment secrets</strong>, click <strong>Add Secret</strong>.</li>
+<li>Enter the secret name.</li>
+<li>Enter the secret value.</li>
+<li>Click <strong>Add secret</strong>.</li>
+</ol>
+</li>
+<li>
+<p>Optionally, add environment variables. These variables are only available to workflow jobs that use the environment, and are only accessible using the <a href="/en/actions/learn-github-actions/contexts#vars-context"><code>vars</code></a> context. For more information, see <a href="#environment-variables">Environment variables</a>.</p>
+<ol>
+<li>Under <strong>Environment variables</strong>, click <strong>Add Variable</strong>.</li>
+<li>Enter the variable name.</li>
+<li>Enter the variable value.</li>
+<li>Click <strong>Add variable</strong>.</li>
+</ol>
+</li>
+</ol>
+<p>You can also create and configure environments through the REST API. For more information, see <a href="/en/rest/deployments/environments">REST API endpoints for deployment environments</a>, <a href="/en/rest/actions/secrets">REST API endpoints for GitHub Actions Secrets</a>, <a href="/en/rest/actions/variables">REST API endpoints for GitHub Actions variables</a>, and <a href="/en/rest/deployments/branch-policies">REST API endpoints for deployment branch policies</a>.</p>
+<p>Running a workflow that references an environment that does not exist will create an environment with the referenced name. If the environment is created from running implicit page builds (for example, from a branch or folder source), the source branch will be added as a protection rule to the environment. Otherwise, the newly created environment will not have any protection rules or secrets configured. Anyone that can edit workflows in the repository can create environments via a workflow file, but only repository admins can configure the environment.</p>
+<h2><a href="#deleting-an-environment">Deleting an environment</a></h2>
+<p>To configure an environment in a personal account repository, you must be the repository owner. To configure an environment in an organization repository, you must have <code>admin</code> access.</p>
+<p>Deleting an environment will delete all secrets and protection rules associated with the environment. Any jobs currently waiting because of protection rules from the deleted environment will automatically fail.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click <strong>Settings</strong>.</p>
+<div><picture><source><img src="/assets/cb-28260/images/help/repository/repo-actions-settings.png" alt='Screenshot of a repository header showing the tabs. The "Settings" tab is highlighted by a dark orange outline.' width="720" height="71"></source></picture></div>
+</li>
+<li>
+<p>In the left sidebar, click <strong>Environments</strong>.</p>
+</li>
+<li>
+<p>Next to the environment that you want to delete, click </p>
+</li>
+<li>
+<p>Click <strong>I understand, delete this environment</strong>.</p>
+</li>
+</ol>
+<p>You can also delete environments through the REST API. For more information, see <a href="/en/rest/repos#environments">REST API endpoints for repositories</a>.</p>
+<h2><a href="#how-environments-relate-to-deployments">How environments relate to deployments</a></h2>
+<p>When a workflow job that references an environment runs, it creates a deployment object with the <code>environment</code> property set to the name of your environment. As the workflow progresses, it also creates deployment status objects with the <code>environment</code> property set to the name of your environment, the <code>environment_url</code> property set to the URL for environment (if specified in the workflow), and the <code>state</code> property set to the status of the job.</p>
+<p>You can access these objects through the REST API or GraphQL API. You can also subscribe to these webhook events. For more information, see <a href="/en/rest/repos#deployments">REST API endpoints for repositories</a>, <a href="/en/graphql/reference/objects#deployment">Objects</a> (GraphQL API), or <a href="/en/webhooks-and-events/webhooks/webhook-events-and-payloads#deployment">Webhook events and payloads</a>.</p>
+<h2><a href="#next-steps">Next steps</a></h2>
+<p>GitHub Actions provides several features for managing your deployments. For more information, see <a href="/en/actions/deployment/about-deployments/deploying-with-github-actions">Deploying with GitHub Actions</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,106 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Code scanning" href="/en/code-security/code-scanning">Code scanning</a><span>/</span>
+</li>
+<li>
+<a title="Manage code scanning" href="/en/code-security/code-scanning/managing-your-code-scanning-configuration">Manage code scanning</a><span>/</span>
+</li>
+<li><a title="CodeQL query suites" href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/codeql-query-suites">CodeQL query suites</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>CodeQL query suites</h1></div></div>
+<div>
+<div><p>You can choose from different built-in CodeQL query suites to use in your CodeQL code scanning setup.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div>
+<p>CodeQL is available for the following repository types:</p>
+<ul>
+<li>Public repositories on GitHub.com, see <a href="https://github.com/github/codeql-cli-binaries/blob/main/LICENSE.md">GitHub CodeQL Terms and Conditions</a>
+</li>
+<li>Organization-owned repositories on GitHub Team with <a href="/en/get-started/learning-about-github/about-github-advanced-security">GitHub Code Security</a> enabled</li>
+</ul>
+</div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-codeql-query-suites"><div><span>About CodeQL query suites</span></div></a></li>
+<li><a href="#built-in-codeql-query-suites"><div><span>Built-in CodeQL query suites</span></div></a></li>
+<li><a href="#query-lists-for-the-default-query-suites"><div><span>Query lists for the default query suites</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-codeql-query-suites">About CodeQL query suites</a></h2>
+<p>With CodeQL code scanning, you can select a specific group of CodeQL queries, called a CodeQL query suite, to run against your code. The following built-in query suites are available through GitHub:</p>
+<ul>
+<li>
+<code>default</code> query suite.</li>
+<li>
+<code>security-extended</code> query suite. This suite is referred to as the "Extended" query suite on GitHub.</li>
+</ul>
+<p>Currently, both the <code>default</code> query suite and the <code>security-extended</code> query suite are available for default setup for code scanning. Additionally, organization owners and security managers can recommend a query suite for use with default setup throughout their organization. For more information on configuring default setup for individual repositories, see <a href="/en/code-security/code-scanning/enabling-code-scanning/configuring-default-setup-for-code-scanning">Configuring default setup for code scanning</a>. For more information on configuring default setup at scale and recommending a query suite, see <a href="/en/code-security/code-scanning/enabling-code-scanning/configuring-default-setup-for-code-scanning-at-scale">Configuring default setup for code scanning at scale</a>.</p>
+<p>To use a custom query suite, you must configure advanced setup for CodeQL code scanning. For more information on advanced setups and creating a query suite, see <a href="/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/configuring-advanced-setup-for-code-scanning#configuring-advanced-setup-for-code-scanning-with-codeql">Configuring advanced setup for code scanning</a> and <a href="/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/creating-codeql-query-suites">Creating CodeQL query suites</a>.</p>
+<h2><a href="#built-in-codeql-query-suites">Built-in CodeQL query suites</a></h2>
+<p>The built-in CodeQL query suites, <code>default</code> and <code>security-extended</code>, are created and maintained by GitHub. Both of these query suites are available for every CodeQL-supported language. For more information on CodeQL-supported languages, see <a href="/en/code-security/code-scanning/introduction-to-code-scanning/about-code-scanning-with-codeql#about-codeql">About code scanning with CodeQL</a>.</p>
+<h3><a href="#default-query-suite"><code>default</code> query suite</a></h3>
+<ul>
+<li>The <code>default</code> query suite is the group of queries run by default in CodeQL code scanning on GitHub.</li>
+<li>The queries in the <code>default</code> query suite are highly precise and return few false positive code scanning results. Relative to the <code>security-extended</code> query suite, the <code>default</code> suite returns fewer low-confidence code scanning results.</li>
+<li>This query suite is available for use with default setup for code scanning.</li>
+</ul>
+<h3><a href="#security-extended-query-suite"><code>security-extended</code> query suite</a></h3>
+<ul>
+<li>The <code>security-extended</code> query suite consists of all the queries in the <code>default</code> query suite, plus additional queries with slightly lower precision and severity.</li>
+<li>Relative to the <code>default</code> query suite, the <code>security-extended</code> suite may return a greater number of false positive code scanning results.</li>
+<li>This query suite is available for use with default setup for code scanning, and is referred to as the "Extended" query suite on GitHub.</li>
+</ul>
+<h2><a href="#query-lists-for-the-default-query-suites">Query lists for the default query suites</a></h2>
+<p>For each language, the following article lists which queries are included in the <code>default</code> and the <code>security-extended</code> suites. Where Copilot Autofix is available for a language, details of which queries are supported are also included.</p>
+<ul>
+<li>
+<p><a href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/actions-built-in-queries">Actions queries for CodeQL analysis</a></p>
+</li>
+<li>
+<p><a href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/c-cpp-built-in-queries">C and C++ queries for CodeQL analysis</a></p>
+</li>
+<li>
+<p><a href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/csharp-built-in-queries">C# queries for CodeQL analysis</a></p>
+</li>
+<li>
+<p><a href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/github-actions-built-in-queries">GitHub Actions queries for CodeQL analysis</a></p>
+</li>
+<li>
+<p><a href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/go-built-in-queries">Go queries for CodeQL analysis</a></p>
+</li>
+<li>
+<p><a href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/java-kotlin-built-in-queries">Java and Kotlin queries for CodeQL analysis</a></p>
+</li>
+<li>
+<p><a href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/javascript-typescript-built-in-queries">JavaScript and TypeScript queries for CodeQL analysis</a></p>
+</li>
+<li>
+<p><a href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/python-built-in-queries">Python queries for CodeQL analysis</a></p>
+</li>
+<li>
+<p><a href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/ruby-built-in-queries">Ruby queries for CodeQL analysis</a></p>
+</li>
+<li>
+<p><a href="/en/code-security/code-scanning/managing-your-code-scanning-configuration/swift-built-in-queries">Swift queries for CodeQL analysis</a></p>
+</li>
+</ul>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/creating-codeql-query-suites">Creating CodeQL query suites</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

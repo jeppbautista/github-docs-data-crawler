@@ -1,0 +1,808 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Write workflows" href="/en/actions/writing-workflows">Write workflows</a><span>/</span>
+</li>
+<li>
+<a title="Choose what workflows do" href="/en/actions/writing-workflows/choosing-what-your-workflow-does">Choose what workflows do</a><span>/</span>
+</li>
+<li><a title="Variables" href="/en/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables">Variables</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Store information in variables</h1></div></div>
+<div><div><p>GitHub sets default variables for each GitHub Actions workflow run. You can also set custom variables for use in a single workflow or multiple workflows.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-variables"><div><span>About variables</span></div></a></li>
+<li><a href="#defining-environment-variables-for-a-single-workflow"><div><span>Defining environment variables for a single workflow</span></div></a></li>
+<li><a href="#defining-configuration-variables-for-multiple-workflows"><div><span>Defining configuration variables for multiple workflows</span></div></a></li>
+<li><a href="#using-contexts-to-access-variable-values"><div><span>Using contexts to access variable values</span></div></a></li>
+<li><a href="#default-environment-variables"><div><span>Default environment variables</span></div></a></li>
+<li><a href="#detecting-the-operating-system"><div><span>Detecting the operating system</span></div></a></li>
+<li><a href="#passing-values-between-steps-and-jobs-in-a-workflow"><div><span>Passing values between steps and jobs in a workflow</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-variables">About variables</a></h2>
+<p>Variables provide a way to store and reuse non-sensitive configuration information. You can store any configuration data such as compiler flags, usernames, or server names as variables. Variables are interpolated on the runner machine that runs your workflow. Commands that run in actions or workflow steps can create, read, and modify variables.</p>
+<p>You can set your own custom variables or use the default environment variables that GitHub sets automatically. For more information, see <a href="#default-environment-variables">Default environment variables</a>.</p>
+<p>You can set a custom variable in two ways.</p>
+<ul>
+<li>To define an environment variable for use in a single workflow, you can use the <code>env</code> key in the workflow file. For more information, see <a href="#defining-environment-variables-for-a-single-workflow">Defining environment variables for a single workflow</a>.</li>
+<li>To define a configuration variable across multiple workflows, you can define it at the organization, repository, or environment level. For more information, see <a href="#defining-configuration-variables-for-multiple-workflows">Defining configuration variables for multiple workflows</a>.</li>
+</ul>
+<div>
+<p>
+By default, variables render unmasked in your build outputs. If you need greater security for sensitive information, such as passwords, use secrets instead. For more information, see <a href="/en/actions/security-for-github-actions/security-guides/about-secrets">About secrets</a>.</p>
+</div>
+<h2><a href="#defining-environment-variables-for-a-single-workflow">Defining environment variables for a single workflow</a></h2>
+<p>To set a custom environment variable for a single workflow, you can define it using the <code>env</code> key in the workflow file. The scope of a custom variable set by this method is limited to the element in which it is defined. You can define variables that are scoped for:</p>
+<ul>
+<li>The entire workflow, by using <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#env"><code>env</code></a> at the top level of the workflow file.</li>
+<li>The contents of a job within a workflow, by using <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idenv"><code>jobs.&lt;job_id&gt;.env</code></a>.</li>
+<li>A specific step within a job, by using <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsenv"><code>jobs.&lt;job_id&gt;.steps[*].env</code></a>.</li>
+</ul>
+<div>
+<header><span>YAML</span><pre>name: Greeting on variable day
+
+on:
+  workflow_dispatch
+
+env:
+  DAY_OF_WEEK: Monday
+
+jobs:
+  greeting_job:
+    runs-on: ubuntu-latest
+    env:
+      Greeting: Hello
+    steps:
+      - name: "Say Hello Mona it's Monday"
+        run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK!"
+        env:
+          First_Name: Mona
+</pre></header><pre><code><span>name:</span> <span>Greeting</span> <span>on</span> <span>variable</span> <span>day</span>
+
+<span>on:</span>
+  <span>workflow_dispatch</span>
+
+<span>env:</span>
+  <span>DAY_OF_WEEK:</span> <span>Monday</span>
+
+<span>jobs:</span>
+  <span>greeting_job:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>env:</span>
+      <span>Greeting:</span> <span>Hello</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>"Say Hello Mona it's Monday"</span>
+        <span>run:</span> <span>echo</span> <span>"$Greeting $First_Name. Today is $DAY_OF_WEEK!"</span>
+        <span>env:</span>
+          <span>First_Name:</span> <span>Mona</span>
+</code></pre>
+</div>
+<p>You can access <code>env</code> variable values using runner environment variables or using contexts. The example above shows three custom variables being used as runner environment variables in an <code>echo</code> command: <code>$DAY_OF_WEEK</code>, <code>$Greeting</code>, and <code>$First_Name</code>. The values for these variables are set, and scoped, at the workflow, job, and step level respectively. The interpolation of these variables happens on the runner.</p>
+<p>The commands in the <code>run</code> steps of a workflow, or a referenced action, are processed by the shell you are using on the runner. The instructions in the other parts of a workflow are processed by GitHub Actions and are not sent to the runner. You can use either runner environment variables or contexts in <code>run</code> steps, but in the parts of a workflow that are not sent to the runner you must use contexts to access variable values. For more information, see <a href="#using-contexts-to-access-variable-values">Using contexts to access variable values</a>.</p>
+<p>Because runner environment variable interpolation is done after a workflow job is sent to a runner machine, you must use the appropriate syntax for the shell that's used on the runner. In this example, the workflow specifies <code>ubuntu-latest</code>. By default, Linux runners use the bash shell, so you must use the syntax <code>$NAME</code>. By default, Windows runners use PowerShell, so you would use the syntax <code>$env:NAME</code>. For more information about shells, see <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell">Workflow syntax for GitHub Actions</a>.</p>
+<h3><a href="#naming-conventions-for-environment-variables">Naming conventions for environment variables</a></h3>
+<p>When you set an environment variable, you cannot use any of the default environment variable names. For a complete list of default environment variables, see <a href="#default-environment-variables">Default environment variables</a> below. If you attempt to override the value of one of these default variables, the assignment is ignored.</p>
+<div>
+<p>
+You can list the entire set of environment variables that are available to a workflow step by using <span><code>run: env</code></span> in a step and then examining the output for the step.</p>
+</div>
+<h2><a href="#defining-configuration-variables-for-multiple-workflows">Defining configuration variables for multiple workflows</a></h2>
+<p>You can create configuration variables for use across multiple workflows, and can define them at either the <a href="#creating-configuration-variables-for-an-organization">organization</a>, <a href="#creating-configuration-variables-for-a-repository">repository</a>, or <a href="#creating-configuration-variables-for-an-environment">environment</a> level.</p>
+<p>For example, you can use configuration variables to set default values for parameters passed to build tools at an organization level, but then allow repository owners to override these parameters on a case-by-case basis.</p>
+<p>When you define configuration variables, they are automatically available in the <code>vars</code> context. For more information, see <a href="#using-the-vars-context-to-access-configuration-variable-values">Using the <code>vars</code> context to access configuration variable values</a>.</p>
+<h3><a href="#configuration-variable-precedence">Configuration variable precedence</a></h3>
+<p>If a variable with the same name exists at multiple levels, the variable at the lowest level takes precedence. For example, if an organization-level variable has the same name as a repository-level variable, then the repository-level variable takes precedence. Similarly, if an organization, repository, and environment all have a variable with the same name, the environment-level variable takes precedence.</p>
+<p>For reusable workflows, the variables from the caller workflow's repository are used. Variables from the repository that contains the called workflow are not made available to the caller workflow.</p>
+<h3><a href="#naming-conventions-for-configuration-variables">Naming conventions for configuration variables</a></h3>
+<p>The following rules apply to configuration variable names:</p>
+<ul>
+<li>Can only contain alphanumeric characters (<code>[a-z]</code>, <code>[A-Z]</code>, <code>[0-9]</code>) or underscores (<code>_</code>). Spaces are not allowed.</li>
+<li>Must not start with the <code>GITHUB_</code> prefix.</li>
+<li>Must not start with a number.</li>
+<li>Are case insensitive.</li>
+<li>Must be unique to the repository, organization, or enterprise where they are created.</li>
+</ul>
+<h3><a href="#creating-configuration-variables-for-a-repository">Creating configuration variables for a repository</a></h3>
+<p>To create secrets or variables on GitHub for a personal account repository, you must be the repository owner. To create secrets or variables on GitHub for an organization repository, you must have <code>admin</code> access. Lastly, to create secrets or variables for a personal account repository or an organization repository through the REST API, you must have collaborator access.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click <strong>Settings</strong>.</p>
+<div><picture><source><img src="/assets/cb-28260/images/help/repository/repo-actions-settings.png" alt='Screenshot of a repository header showing the tabs. The "Settings" tab is highlighted by a dark orange outline.' width="720" height="71"></source></picture></div>
+</li>
+<li>
+<p>In the "Security" section of the sidebar, select <strong>Actions</strong>.</p>
+</li>
+<li>
+<p>Click the <strong>Variables</strong> tab.
+</p>
+<div><picture><source><img src="/assets/cb-57426/images/help/repository/actions-variables-tab.png" alt='Screenshot of the "Actions secrets and variables" page. The "Variables" tab is outlined in dark orange.' width="720" height="180"></source></picture></div>
+</li>
+<li>
+<p>Click <strong>New repository variable</strong>.</p>
+</li>
+<li>
+<p>In the <strong>Name</strong> field, enter a name for your variable.</p>
+</li>
+<li>
+<p>In the <strong>Value</strong> field, enter the value for your variable.</p>
+</li>
+<li>
+<p>Click <strong>Add variable</strong>.</p>
+</li>
+</ol>
+<h3><a href="#creating-configuration-variables-for-an-environment">Creating configuration variables for an environment</a></h3>
+<p>To create secrets or variables for an environment in a personal account repository, you must be the repository owner. To create secrets or variables for an environment in an organization repository, you must have <code>admin</code> access. For more information on environments, see <a href="/en/actions/deployment/targeting-different-environments/managing-environments-for-deployment">Managing environments for deployment</a>.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click <strong>Settings</strong>.</p>
+<div><picture><source><img src="/assets/cb-28260/images/help/repository/repo-actions-settings.png" alt='Screenshot of a repository header showing the tabs. The "Settings" tab is highlighted by a dark orange outline.' width="720" height="71"></source></picture></div>
+</li>
+<li>
+<p>In the left sidebar, click <strong>Environments</strong>.</p>
+</li>
+<li>
+<p>Click on the environment that you want to add a variable to.</p>
+</li>
+<li>
+<p>Under <strong>Environment variables</strong>, click <strong>Add variable</strong>.</p>
+</li>
+<li>
+<p>In the <strong>Name</strong> field, enter a name for your variable.</p>
+</li>
+<li>
+<p>In the <strong>Value</strong> field, enter the value for your variable.</p>
+</li>
+<li>
+<p>Click <strong>Add variable</strong>.</p>
+</li>
+</ol>
+<h3><a href="#creating-configuration-variables-for-an-organization">Creating configuration variables for an organization</a></h3>
+<div>
+<p>
+Organization-level secrets and variables are not accessible by private repositories for GitHub Free. For more information about upgrading your GitHub subscription, see <a href="/en/billing/managing-billing-for-your-github-account/upgrading-your-github-subscription">Upgrading your account's plan</a>.</p>
+</div>
+<p>When creating a secret or variable in an organization, you can use a policy to limit access by repository. For example, you can grant access to all repositories, or limit access to only private repositories or a specified list of repositories.</p>
+<p>Organization owners can create secrets or variables at the organization level.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the organization.</p>
+</li>
+<li>
+<p>Under your organization name, click <strong>Settings</strong>.</p>
+<div><picture><source><img src="/assets/cb-49309/images/help/discussions/org-settings-global-nav-update.png" alt="Screenshot of the tabs in an organization's profile. The &quot;Settings&quot; tab is outlined in dark orange." width="1440" height="106"></source></picture></div>
+</li>
+<li>
+<p>In the "Security" section of the sidebar, select <strong>Actions</strong>.</p>
+</li>
+<li>
+<p>Click the <strong>Variables</strong> tab.</p>
+<div><picture><source><img src="/assets/cb-57426/images/help/repository/actions-variables-tab.png" alt='Screenshot of the "Actions secrets and variables" page. The "Variables" tab is outlined in dark orange.' width="720" height="180"></source></picture></div>
+</li>
+<li>
+<p>Click <strong>New organization variable</strong>.</p>
+</li>
+<li>
+<p>In the <strong>Name</strong> field, enter a name for your variable.</p>
+</li>
+<li>
+<p>In the <strong>Value</strong> field, enter the value for your variable.</p>
+</li>
+<li>
+<p>From the <strong>Repository access</strong> dropdown list, choose an access policy.</p>
+</li>
+<li>
+<p>Click <strong>Add variable</strong>.</p>
+</li>
+</ol>
+<h3><a href="#limits-for-configuration-variables">Limits for configuration variables</a></h3>
+<p>Individual variables are limited to 48 KB in size.</p>
+<p>You can store up to 1,000 organization variables, 500 variables per repository, and 100 variables per environment. The total combined size limit for organization and repository variables is 256 KB per workflow run.</p>
+<p>A workflow created in a repository can access the following number of variables:</p>
+<ul>
+<li>Up to 500 repository variables, if the total size of repository variables is less than 256 KB. If the total size of repository variables exceeds 256 KB, only the repository variables that fall below the limit will be available (as sorted alphabetically by variable name).</li>
+<li>Up to 1,000 organization variables, if the total combined size of repository and organization variables is less than 256 KB. If the total combined size of organization and repository variables exceeds 256 KB, only the organization variables that fall below that limit will be available (after accounting for repository variables and as sorted alphabetically by variable name).</li>
+<li>Up to 100 environment-level variables.</li>
+</ul>
+<div>
+<p>
+Environment-level variables do not count toward the 256 KB total size limit. If you exceed the combined size limit for repository and organization variables and still need additional variables, you can use an environment and define additional variables in the environment.</p>
+</div>
+<h2><a href="#using-contexts-to-access-variable-values">Using contexts to access variable values</a></h2>
+<p>Contexts are a way to access information about workflow runs, variables, runner environments, jobs, and steps. For more information, see <a href="/en/actions/learn-github-actions/contexts">Accessing contextual information about workflow runs</a>. There are many other contexts that you can use for a variety of purposes in your workflows. For details of where you can use specific contexts within a workflow, see <a href="/en/actions/learn-github-actions/contexts#context-availability">Accessing contextual information about workflow runs</a>.</p>
+<p>You can access environment variable values using the <code>env</code> context and configuration variable values using the <code>vars</code> context.</p>
+<h3><a href="#using-the-env-context-to-access-environment-variable-values">Using the <code>env</code> context to access environment variable values</a></h3>
+<p>In addition to runner environment variables, GitHub Actions allows you to set and read <code>env</code> key values using contexts. Environment variables and contexts are intended for use at different points in the workflow.</p>
+<p>The <code>run</code> steps in a workflow, or in a referenced action, are processed by a runner. As a result, you can use runner environment variables here, using the appropriate syntax for the shell you are using on the runner - for example, <code>$NAME</code> for the bash shell on a Linux runner, or <code>$env:NAME</code> for PowerShell on a Windows runner. In most cases you can also use contexts, with the syntax <code>${{ CONTEXT.PROPERTY }}</code>, to access the same value. The difference is that the context will be interpolated and replaced by a string before the job is sent to a runner.</p>
+<p>However, you cannot use runner environment variables in parts of a workflow that are processed by GitHub Actions and are not sent to the runner. Instead, you must use contexts. For example, an <code>if</code> conditional, which determines whether a job or step is sent to the runner, is always processed by GitHub Actions. You must therefore use a context in an <code>if</code> conditional statement to access the value of an variable.</p>
+<div>
+<header><span>YAML</span><pre>name: Conditional env variable
+
+on: workflow_dispatch
+
+env:
+  DAY_OF_WEEK: Monday
+
+jobs:
+  greeting_job:
+    runs-on: ubuntu-latest
+    env:
+      Greeting: Hello
+    steps:
+      - name: "Say Hello Mona it's Monday"
+        if: ${{ env.DAY_OF_WEEK == 'Monday' }}
+        run: echo "$Greeting $First_Name. Today is $DAY_OF_WEEK!"
+        env:
+          First_Name: Mona
+</pre></header><pre><code><span>name:</span> <span>Conditional</span> <span>env</span> <span>variable</span>
+
+<span>on:</span> <span>workflow_dispatch</span>
+
+<span>env:</span>
+  <span>DAY_OF_WEEK:</span> <span>Monday</span>
+
+<span>jobs:</span>
+  <span>greeting_job:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>env:</span>
+      <span>Greeting:</span> <span>Hello</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>"Say Hello Mona it's Monday"</span>
+        <span>if:</span> <span>${{</span> <span>env.DAY_OF_WEEK</span> <span>==</span> <span>'Monday'</span> <span>}}</span>
+        <span>run:</span> <span>echo</span> <span>"$Greeting $First_Name. Today is $DAY_OF_WEEK!"</span>
+        <span>env:</span>
+          <span>First_Name:</span> <span>Mona</span>
+</code></pre>
+</div>
+<p>In this modification of the earlier example, we've introduced an <code>if</code> conditional. The workflow step is now only run if <code>DAY_OF_WEEK</code> is set to "Monday". We access this value from the <code>if</code> conditional statement by using the <a href="/en/actions/learn-github-actions/contexts#env-context"><code>env</code> context</a>. The <code>env</code> context is not required for the variables referenced within the <code>run</code> command. They are referenced as runner environment variables and are interpolated after the job is received by the runner. We could, however, have chosen to interpolate those variables before sending the job to the runner, by using contexts. The resulting output would be the same.</p>
+<pre><code><span>run:</span> <span>echo</span> <span>"$<span>{{ env.Greeting }}</span> $<span>{{ env.First_Name }}</span>. Today is $<span>{{ env.DAY_OF_WEEK }}</span>!"</span>
+</code></pre>
+<div>
+<p>
+Contexts are usually denoted using the dollar sign and curly braces, as <code>${{ context.property }}</code>. In an <code>if</code> conditional, the <code>${{</code> and <code>}}</code> are optional, but if you use them they must enclose the entire comparison statement, as shown above.</p>
+</div>
+<p>You will commonly use either the <code>env</code> or <code>github</code> context to access variable values in parts of the workflow that are processed before jobs are sent to runners.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Context</th>
+<th>Use case</th>
+<th>Example</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>env</code></td>
+<td>Reference custom variables defined in the workflow.</td>
+<td><span><code>${{ env.MY_VARIABLE }}</code></span></td>
+</tr>
+<tr>
+<td><code>github</code></td>
+<td>Reference information about the workflow run and the event that triggered the run.</td>
+<td><span><code>${{ github.repository }}</code></span></td>
+</tr>
+</tbody>
+</table>
+<div>
+<p>
+When creating workflows and actions, you should always consider whether your code might execute untrusted input from possible attackers. Certain contexts should be treated as untrusted input, as an attacker could insert their own malicious content. For more information, see <a href="/en/actions/security-guides/security-hardening-for-github-actions#understanding-the-risk-of-script-injections">Security hardening for GitHub Actions</a>.</p>
+</div>
+<h3><a href="#using-the-vars-context-to-access-configuration-variable-values">Using the <code>vars</code> context to access configuration variable values</a></h3>
+<p>Configuration variables can be accessed across the workflow using <code>vars</code> context. For more information, see <a href="/en/actions/learn-github-actions/contexts#vars-context">Accessing contextual information about workflow runs</a>.</p>
+<p>If a configuration variable has not been set, the return value of a context referencing the variable will be an empty string.</p>
+<p>The following example shows using configuration variables with the <code>vars</code> context across a workflow. Each of the following configuration variables have been defined at the repository, organization, or environment levels.</p>
+<div>
+<header><span>YAML</span><pre>on:
+  workflow_dispatch:
+env:
+  # Setting an environment variable with the value of a configuration variable
+  env_var: ${{ vars.ENV_CONTEXT_VAR }}
+
+jobs:
+  display-variables:
+    name: ${{ vars.JOB_NAME }}
+    # You can use configuration variables with the `vars` context for dynamic jobs
+    if: ${{ vars.USE_VARIABLES == 'true' }}
+    runs-on: ${{ vars.RUNNER }}
+    environment: ${{ vars.ENVIRONMENT_STAGE }}
+    steps:
+    - name: Use variables
+      run: |
+        echo "repository variable : $REPOSITORY_VAR"
+        echo "organization variable : $ORGANIZATION_VAR"
+        echo "overridden variable : $OVERRIDE_VAR"
+        echo "variable from shell environment : $env_var"
+      env:
+        REPOSITORY_VAR: ${{ vars.REPOSITORY_VAR }}
+        ORGANIZATION_VAR: ${{ vars.ORGANIZATION_VAR }}
+        OVERRIDE_VAR: ${{ vars.OVERRIDE_VAR }}
+        
+    - name: ${{ vars.HELLO_WORLD_STEP }}
+      if: ${{ vars.HELLO_WORLD_ENABLED == 'true' }}
+      uses: actions/hello-world-javascript-action@main
+      with:
+        who-to-greet: ${{ vars.GREET_NAME }}
+</pre></header><pre><code><span>on:</span>
+  <span>workflow_dispatch:</span>
+<span>env:</span>
+  <span># Setting an environment variable with the value of a configuration variable</span>
+  <span>env_var:</span> <span>${{</span> <span>vars.ENV_CONTEXT_VAR</span> <span>}}</span>
+
+<span>jobs:</span>
+  <span>display-variables:</span>
+    <span>name:</span> <span>${{</span> <span>vars.JOB_NAME</span> <span>}}</span>
+    <span># You can use configuration variables with the `vars` context for dynamic jobs</span>
+    <span>if:</span> <span>${{</span> <span>vars.USE_VARIABLES</span> <span>==</span> <span>'true'</span> <span>}}</span>
+    <span>runs-on:</span> <span>${{</span> <span>vars.RUNNER</span> <span>}}</span>
+    <span>environment:</span> <span>${{</span> <span>vars.ENVIRONMENT_STAGE</span> <span>}}</span>
+    <span>steps:</span>
+    <span>-</span> <span>name:</span> <span>Use</span> <span>variables</span>
+      <span>run:</span> <span>|
+        echo "repository variable : $REPOSITORY_VAR"
+        echo "organization variable : $ORGANIZATION_VAR"
+        echo "overridden variable : $OVERRIDE_VAR"
+        echo "variable from shell environment : $env_var"
+</span>      <span>env:</span>
+        <span>REPOSITORY_VAR:</span> <span>${{</span> <span>vars.REPOSITORY_VAR</span> <span>}}</span>
+        <span>ORGANIZATION_VAR:</span> <span>${{</span> <span>vars.ORGANIZATION_VAR</span> <span>}}</span>
+        <span>OVERRIDE_VAR:</span> <span>${{</span> <span>vars.OVERRIDE_VAR</span> <span>}}</span>
+        
+    <span>-</span> <span>name:</span> <span>${{</span> <span>vars.HELLO_WORLD_STEP</span> <span>}}</span>
+      <span>if:</span> <span>${{</span> <span>vars.HELLO_WORLD_ENABLED</span> <span>==</span> <span>'true'</span> <span>}}</span>
+      <span>uses:</span> <span>actions/hello-world-javascript-action@main</span>
+      <span>with:</span>
+        <span>who-to-greet:</span> <span>${{</span> <span>vars.GREET_NAME</span> <span>}}</span>
+</code></pre>
+</div>
+<h2><a href="#default-environment-variables">Default environment variables</a></h2>
+<p>The default environment variables that GitHub sets are available to every step in a workflow.</p>
+<p>Because default environment variables are set by GitHub and not defined in a workflow, they are not accessible through the <code>env</code> context. However, most of the default variables have a corresponding, and similarly named, context property. For example, the value of the <code>GITHUB_REF</code> variable can be read during workflow processing using the <code>${{ github.ref }}</code> context property.</p>
+<p>You can't overwrite the value of the default environment variables named <code>GITHUB_*</code> and <code>RUNNER_*</code>. Currently you can overwrite the value of the <code>CI</code> variable. However, it's not guaranteed that this will always be possible. For more information about setting environment variables, see <a href="#defining-environment-variables-for-a-single-workflow">Defining environment variables for a single workflow</a> and <a href="/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable">Workflow commands for GitHub Actions</a>.</p>
+<p>We strongly recommend that actions use variables to access the filesystem rather than using hardcoded file paths. GitHub sets variables for actions to use in all runner environments.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Variable</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>CI</code></td>
+<td>Always set to <code>true</code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_ACTION</code></td>
+<td>The name of the action currently running, or the <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsid"><code>id</code></a> of a step. For example, for an action, <code>__repo-owner_name-of-action-repo</code>.<br><br>GitHub removes special characters, and uses the name <code>__run</code> when the current step runs a script without an <code>id</code>. If you use the same script or action more than once in the same job, the name will include a suffix that consists of the sequence number preceded by an underscore. For example, the first script you run will have the name <code>__run</code>, and the second script will be named <code>__run_2</code>. Similarly, the second invocation of <code>actions/checkout</code> will be <code>actionscheckout2</code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_ACTION_<wbr>PATH</wbr></code></td>
+<td>The path where an action is located. This property is only supported in composite actions. You can use this path to change directories to where the action is located and access other files in that same repository. For example, <code>/<wbr>home/<wbr>runner/<wbr>work/<wbr>_actions/<wbr>repo-owner/<wbr>name-of-action-repo/<wbr>v1</wbr></wbr></wbr></wbr></wbr></wbr></wbr></code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_ACTION_<wbr>REPOSITORY</wbr></code></td>
+<td>For a step executing an action, this is the owner and repository name of the action. For example, <code>actions/checkout</code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_ACTIONS</code></td>
+<td>Always set to <code>true</code> when GitHub Actions is running the workflow. You can use this variable to differentiate when tests are being run locally or by GitHub Actions.</td>
+</tr>
+<tr>
+<td><code>GITHUB_ACTOR</code></td>
+<td>The name of the person or app that initiated the workflow. For example, <code>octocat</code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_ACTOR_ID</code></td>
+<td>The account ID of the person or app that triggered the initial workflow run. For example, <code>1234567</code>. Note that this is different from the actor username.</td>
+</tr>
+<tr>
+<td><code>GITHUB_API_URL</code></td>
+<td>Returns the API URL. For example: <code>https:/<wbr>/<wbr>api.github.com</wbr></wbr></code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_BASE_REF</code></td>
+<td>The name of the base ref or target branch of the pull request in a workflow run. This is only set when the event that triggers a workflow run is either <code>pull_request</code> or <code>pull_request_<wbr>target</wbr></code>. For example, <code>main</code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_ENV</code></td>
+<td>The path on the runner to the file that sets variables from workflow commands. The path to this file is unique to the current step and changes for each step in a job. For example, <code>/<wbr>home/<wbr>runner/<wbr>work/<wbr>_temp/<wbr>_runner_file_<wbr>commands/<wbr>set_env_87406d6e-4979-4d42-98e1-3dab1f48b13a</wbr></wbr></wbr></wbr></wbr></wbr></wbr></code>. For more information, see <a href="/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable">Workflow commands for GitHub Actions</a>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_EVENT_NAME</code></td>
+<td>The name of the event that triggered the workflow. For example, <code>workflow_dispatch</code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_EVENT_PATH</code></td>
+<td>The path to the file on the runner that contains the full event webhook payload. For example, <code>/<wbr>github/<wbr>workflow/<wbr>event.json</wbr></wbr></wbr></code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_GRAPHQL_<wbr>URL</wbr></code></td>
+<td>Returns the GraphQL API URL. For example: <code>https:/<wbr>/<wbr>api.github.com/<wbr>graphql</wbr></wbr></wbr></code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_HEAD_REF</code></td>
+<td>The head ref or source branch of the pull request in a workflow run. This property is only set when the event that triggers a workflow run is either <code>pull_request</code> or <code>pull_request_<wbr>target</wbr></code>. For example, <code>feature-branch-1</code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_JOB</code></td>
+<td>The <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_id">job_id</a> of the current job. For example, <code>greeting_job</code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_OUTPUT</code></td>
+<td>The path on the runner to the file that sets the current step's outputs from workflow commands. The path to this file is unique to the current step and changes for each step in a job. For example, <code>/<wbr>home/<wbr>runner/<wbr>work/<wbr>_temp/<wbr>_runner_file_<wbr>commands/<wbr>set_output_a50ef383-b063-46d9-9157-57953fc9f3f0</wbr></wbr></wbr></wbr></wbr></wbr></wbr></code>. For more information, see <a href="/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-output-parameter">Workflow commands for GitHub Actions</a>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_PATH</code></td>
+<td>The path on the runner to the file that sets system <code>PATH</code> variables from workflow commands. The path to this file is unique to the current step and changes for each step in a job. For example, <code>/<wbr>home/<wbr>runner/<wbr>work/<wbr>_temp/<wbr>_runner_file_<wbr>commands/<wbr>add_path_899b9445-ad4a-400c-aa89-249f18632cf5</wbr></wbr></wbr></wbr></wbr></wbr></wbr></code>. For more information, see <a href="/en/actions/using-workflows/workflow-commands-for-github-actions#adding-a-system-path">Workflow commands for GitHub Actions</a>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_REF</code></td>
+<td>The fully-formed ref of the branch or tag that triggered the workflow run. For workflows triggered by <code>push</code>, this is the branch or tag ref that was pushed. For workflows triggered by <code>pull_request</code>, this is the pull request merge branch. For workflows triggered by <code>release</code>, this is the release tag created. For other triggers, this is the branch or tag ref that triggered the workflow run. This is only set if a branch or tag is available for the event type. The ref given is fully-formed, meaning that for branches the format is <code>refs/<wbr>heads/<wbr>&lt;branch_name&gt;</wbr></wbr></code>. For pull requests events except <code>pull_request_<wbr>target</wbr></code>, it is <code>refs/<wbr>pull/<wbr>&lt;pr_number&gt;/<wbr>merge</wbr></wbr></wbr></code>. <code>pull_request_<wbr>target</wbr></code> events have the <code>ref</code> from the base branch. For tags it is <code>refs/<wbr>tags/<wbr>&lt;tag_name&gt;</wbr></wbr></code>. For example, <code>refs/<wbr>heads/<wbr>feature-branch-1</wbr></wbr></code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_REF_NAME</code></td>
+<td>The short ref name of the branch or tag that triggered the workflow run. This value matches the branch or tag name shown on GitHub. For example, <code>feature-branch-1</code>.<br><br>For pull requests, the format is <code>&lt;pr_number&gt;/<wbr>merge</wbr></code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_REF_PROTECTED</code></td>
+<td>
+<code>true</code> if branch protections or <a href="/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/managing-rulesets-for-a-repository">rulesets</a> are configured for the ref that triggered the workflow run.</td>
+</tr>
+<tr>
+<td><code>GITHUB_REF_TYPE</code></td>
+<td>The type of ref that triggered the workflow run. Valid values are <code>branch</code> or <code>tag</code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_REPOSITORY</code></td>
+<td>The owner and repository name. For example, <code>octocat/<wbr>Hello-World</wbr></code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_REPOSITORY_<wbr>ID</wbr></code></td>
+<td>The ID of the repository. For example, <code>123456789</code>. Note that this is different from the repository name.</td>
+</tr>
+<tr>
+<td><code>GITHUB_REPOSITORY_<wbr>OWNER</wbr></code></td>
+<td>The repository owner's name. For example, <code>octocat</code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_REPOSITORY_<wbr>OWNER_ID</wbr></code></td>
+<td>The repository owner's account ID. For example, <code>1234567</code>. Note that this is different from the owner's name.</td>
+</tr>
+<tr>
+<td><code>GITHUB_RETENTION_<wbr>DAYS</wbr></code></td>
+<td>The number of days that workflow run logs and artifacts are kept. For example, <code>90</code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_RUN_ATTEMPT</code></td>
+<td>A unique number for each attempt of a particular workflow run in a repository. This number begins at 1 for the workflow run's first attempt, and increments with each re-run. For example, <code>3</code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_RUN_ID</code></td>
+<td>A unique number for each workflow run within a repository. This number does not change if you re-run the workflow run. For example, <code>1658821493</code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_RUN_NUMBER</code></td>
+<td>A unique number for each run of a particular workflow in a repository. This number begins at 1 for the workflow's first run, and increments with each new run. This number does not change if you re-run the workflow run. For example, <code>3</code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_SERVER_URL</code></td>
+<td>The URL of the GitHub server. For example: <code>https:/<wbr>/<wbr>github.com</wbr></wbr></code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_SHA</code></td>
+<td>The commit SHA that triggered the workflow. The value of this commit SHA depends on the event that triggered the workflow. For more information, see <a href="/en/actions/using-workflows/events-that-trigger-workflows">Events that trigger workflows</a>. For example, <code>ffac537e6cbbf934b08745a378932722df287a53</code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_STEP_SUMMARY</code></td>
+<td>The path on the runner to the file that contains job summaries from workflow commands. The path to this file is unique to the current step and changes for each step in a job. For example, <code>/<wbr>home/<wbr>runner/<wbr>_layout/<wbr>_work/<wbr>_temp/<wbr>_runner_file_<wbr>commands/<wbr>step_summary_<wbr>1cb22d7f-5663-41a8-9ffc-13472605c76c</wbr></wbr></wbr></wbr></wbr></wbr></wbr></wbr></wbr></code>. For more information, see <a href="/en/actions/using-workflows/workflow-commands-for-github-actions#adding-a-job-summary">Workflow commands for GitHub Actions</a>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_TRIGGERING_<wbr>ACTOR</wbr></code></td>
+<td>The username of the user that initiated the workflow run. If the workflow run is a re-run, this value may differ from <code>github.actor</code>. Any workflow re-runs will use the privileges of <code>github.actor</code>, even if the actor initiating the re-run (<code>github.triggering_actor</code>) has different privileges.</td>
+</tr>
+<tr>
+<td><code>GITHUB_WORKFLOW</code></td>
+<td>The name of the workflow. For example, <code>My test workflow</code>. If the workflow file doesn't specify a <code>name</code>, the value of this variable is the full path of the workflow file in the repository.</td>
+</tr>
+<tr>
+<td><code>GITHUB_WORKFLOW_<wbr>REF</wbr></code></td>
+<td>The ref path to the workflow. For example, <code>octocat/<wbr>hello-world/<wbr>.github/<wbr>workflows/<wbr>my-workflow.yml@refs/<wbr>heads/<wbr>my_branch</wbr></wbr></wbr></wbr></wbr></wbr></code>.</td>
+</tr>
+<tr>
+<td><code>GITHUB_WORKFLOW_<wbr>SHA</wbr></code></td>
+<td>The commit SHA for the workflow file.</td>
+</tr>
+<tr>
+<td><code>GITHUB_WORKSPACE</code></td>
+<td>The default working directory on the runner for steps, and the default location of your repository when using the <a href="https://github.com/actions/checkout"><code>checkout</code></a> action. For example, <code>/<wbr>home/<wbr>runner/<wbr>work/<wbr>my-repo-name/<wbr>my-repo-name</wbr></wbr></wbr></wbr></wbr></code>.</td>
+</tr>
+<tr>
+<td><code>RUNNER_ARCH</code></td>
+<td>The architecture of the runner executing the job. Possible values are <code>X86</code>, <code>X64</code>, <code>ARM</code>, or <code>ARM64</code>.</td>
+</tr>
+<tr>
+<td><code>RUNNER_DEBUG</code></td>
+<td>This is set only if <a href="/en/actions/monitoring-and-troubleshooting-workflows/enabling-debug-logging">debug logging</a> is enabled, and always has the value of <code>1</code>. It can be useful as an indicator to enable additional debugging or verbose logging in your own job steps.</td>
+</tr>
+<tr>
+<td><code>RUNNER_ENVIRONMENT</code></td>
+<td>The environment of the runner executing the job. Possible values are: <code>github-hosted</code> for GitHub-hosted runners provided by GitHub, and <code>self-hosted</code> for self-hosted runners configured by the repository owner.</td>
+</tr>
+<tr>
+<td><code>RUNNER_NAME</code></td>
+<td>The name of the runner executing the job. This name may not be unique in a workflow run as runners at the repository and organization levels could use the same name. For example, <code>Hosted Agent</code>
+</td>
+</tr>
+<tr>
+<td><code>RUNNER_OS</code></td>
+<td>The operating system of the runner executing the job. Possible values are <code>Linux</code>, <code>Windows</code>, or <code>macOS</code>. For example, <code>Windows</code>
+</td>
+</tr>
+<tr>
+<td><code>RUNNER_TEMP</code></td>
+<td>The path to a temporary directory on the runner. This directory is emptied at the beginning and end of each job. Note that files will not be removed if the runner's user account does not have permission to delete them. For example, <code>D:\a\_temp</code>
+</td>
+</tr>
+<tr>
+<td><code>RUNNER_TOOL_CACHE</code></td>
+<td>The path to the directory containing preinstalled tools for GitHub-hosted runners. For more information, see <a href="/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-software">Using GitHub-hosted runners</a>. For example, <code>C:\<wbr>hostedtoolcache\<wbr>windows</wbr></wbr></code>
+</td>
+</tr>
+</tbody>
+</table>
+<div>
+<p>
+If you need to use a workflow run's URL from within a job, you can combine these variables: <code>$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID</code></p>
+</div>
+<h2><a href="#detecting-the-operating-system">Detecting the operating system</a></h2>
+<p>You can write a single workflow file that can be used for different operating systems by using the <code>RUNNER_OS</code> default environment variable and the corresponding context property <span><code>${{ runner.os }}</code></span>. For example, the following workflow could be run successfully if you changed the operating system from <code>macos-latest</code> to <code>windows-latest</code> without having to alter the syntax of the environment variables, which differs depending on the shell being used by the runner.</p>
+<div>
+<header><span>YAML</span><pre>on: workflow_dispatch
+
+jobs:
+  if-Windows-else:
+    runs-on: macos-latest
+    steps:
+      - name: condition 1
+        if: runner.os == 'Windows'
+        run: echo "The operating system on the runner is $env:RUNNER_OS."
+      - name: condition 2
+        if: runner.os != 'Windows'
+        run: echo "The operating system on the runner is not Windows, it's $RUNNER_OS."
+</pre></header><pre><code><span>on:</span> <span>workflow_dispatch</span>
+
+<span>jobs:</span>
+  <span>if-Windows-else:</span>
+    <span>runs-on:</span> <span>macos-latest</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>condition</span> <span>1</span>
+        <span>if:</span> <span>runner.os</span> <span>==</span> <span>'Windows'</span>
+        <span>run:</span> <span>echo</span> <span>"The operating system on the runner is $env:RUNNER_OS."</span>
+      <span>-</span> <span>name:</span> <span>condition</span> <span>2</span>
+        <span>if:</span> <span>runner.os</span> <span>!=</span> <span>'Windows'</span>
+        <span>run:</span> <span>echo</span> <span>"The operating system on the runner is not Windows, it's $RUNNER_OS."</span>
+</code></pre>
+</div>
+<p>In this example, the two <code>if</code> statements check the <code>os</code> property of the <code>runner</code> context to determine the operating system of the runner. <code>if</code> conditionals are processed by GitHub Actions, and only steps where the check resolves as <code>true</code> are sent to the runner. Here one of the checks will always be <code>true</code> and the other <code>false</code>, so only one of these steps is sent to the runner. Once the job is sent to the runner, the step is executed and the environment variable in the <code>echo</code> command is interpolated using the appropriate syntax (<code>$env:NAME</code> for PowerShell on Windows, and <code>$NAME</code> for bash and sh on Linux and macOS). In this example, the statement <code>runs-on: macos-latest</code> means that the second step will be run.</p>
+<h2><a href="#passing-values-between-steps-and-jobs-in-a-workflow">Passing values between steps and jobs in a workflow</a></h2>
+<p>If you generate a value in one step of a job, you can use the value in subsequent steps of the same job by assigning the value to an existing or new environment variable and then writing this to the <code>GITHUB_ENV</code> environment file. The environment file can be used directly by an action, or from a shell command in the workflow file by using the <code>run</code> keyword. For more information, see <a href="/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-environment-variable">Workflow commands for GitHub Actions</a>.</p>
+<p>If you want to pass a value from a step in one job in a workflow to a step in another job in the workflow, you can define the value as a job output. You can then reference this job output from a step in another job. For more information, see <a href="/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idoutputs">Workflow syntax for GitHub Actions</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,35 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Organizations" href="/en/organizations">Organizations</a><span>/</span>
+</li>
+<li>
+<a title="Manage OAuth access" href="/en/organizations/managing-oauth-access-to-your-organizations-data">Manage OAuth access</a><span>/</span>
+</li>
+<li><a title="Restrict OAuth apps" href="/en/organizations/managing-oauth-access-to-your-organizations-data/enabling-oauth-app-access-restrictions-for-your-organization">Restrict OAuth apps</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Enabling OAuth app access restrictions for your organization</h1></div></div>
+<div><div><p>Organization owners can enable OAuth app access restrictions to prevent untrusted apps from accessing the organization's resources while allowing organization members to use OAuth apps for their personal accounts.</p></div></div>
+<div><div><div>
+<p>When you create a new organization, OAuth app access restrictions are enabled by default. Organization owners can <a href="/en/organizations/managing-oauth-access-to-your-organizations-data/disabling-oauth-app-access-restrictions-for-your-organization">disable OAuth app access restrictions</a> at any time.</p>
+<p>Even if you restrict OAuth apps access in your organization, users can still authorize privileged OAuth apps and use them to access data from the organization. For more information, see <a href="/en/apps/oauth-apps/using-oauth-apps/privileged-oauth-apps">Privileged OAuth apps</a>.</p>
+<div>
+<ul>
+<li>Enabling OAuth app access restrictions will revoke organization access for all previously authorized OAuth apps and SSH keys. For more information, see <a href="/en/organizations/managing-oauth-access-to-your-organizations-data/about-oauth-app-access-restrictions">About OAuth app access restrictions</a>.</li>
+<li>Once you've set up OAuth app access restrictions, make sure to reauthorize any OAuth app that require access to the organization's private data on an ongoing basis. All organization members will need to create new SSH keys, and the organization will need to create new deploy keys as needed.</li>
+<li>When OAuth app access restrictions are enabled, applications can use an OAuth token to access information about GitHub Marketplace transactions.</li>
+</ul>
+</div>
+<ol>
+<li>In the upper-right corner of GitHub, select your profile photo, then click </li>
+<li>Next to the organization, click <strong>Settings</strong>.</li>
+<li>In the "Third-party Access" section of the sidebar, click </li>
+<li>Under "Third-party application access policy," click <strong>Setup application access restrictions</strong>.</li>
+<li>After you review the information about third-party access restrictions, click <strong>Restrict third-party application access</strong>.</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

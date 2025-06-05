@@ -1,0 +1,533 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Self-hosted runners" href="/en/actions/hosting-your-own-runners">Self-hosted runners</a><span>/</span>
+</li>
+<li>
+<a title="Actions Runner Controller" href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller">Actions Runner Controller</a><span>/</span>
+</li>
+<li><a title="About ARC" href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/about-actions-runner-controller">About ARC</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>About Actions Runner Controller</h1></div></div>
+<div><div><p>You can host your own runners and customize the environment used to run jobs in your GitHub Actions workflows.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-actions-runner-controller"><div><span>About Actions Runner Controller</span></div></a></li>
+<li><a href="#actions-runner-controller-components"><div><span>Actions Runner Controller components</span></div></a></li>
+<li><a href="#executing-workflows"><div><span>Executing workflows</span></div></a></li>
+<li><a href="#scaling-runners"><div><span>Scaling runners</span></div></a></li>
+<li><a href="#software-installed-in-the-arc-runner-image"><div><span>Software installed in the ARC runner image</span></div></a></li>
+<li><a href="#assets-and-releases"><div><span>Assets and releases</span></div></a></li>
+<li><a href="#legal-notice"><div><span>Legal notice</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p><a href="#legal-notice">Legal notice</a></p>
+<h2><a href="#about-actions-runner-controller">About Actions Runner Controller</a></h2>
+<p>Actions Runner Controller (ARC) is a Kubernetes operator that orchestrates and scales self-hosted runners for GitHub Actions. For more information, see <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/operator/">Operator pattern</a> in the Kubernetes documentation.</p>
+<p>With ARC, you can create runner scale sets that automatically scale based on the number of workflows running in your repository, organization, or enterprise. Because controlled runners can be ephemeral and based on containers, new runner instances can scale up or down rapidly and cleanly. For more information about autoscaling, see <a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners/autoscaling-with-self-hosted-runners">Autoscaling with self-hosted runners</a>.</p>
+<p>The following diagram illustrates the architecture of ARC's autoscaling runner scaleset mode.</p>
+<div>
+<p>
+To view the following diagram in a larger size, see the <a href="https://github.com/actions/actions-runner-controller/blob/master/docs/gha-runner-scale-set-controller/README.md#how-it-works">Autoscaling Runner Scale Sets mode</a> documentation in the Actions Runner Controller repository.</p>
+</div>
+<p><picture><source><img src="/assets/cb-497738/images/help/actions/arc-diagram.png" alt="Diagram showing ARC's autoscaling runner ScaleSet mode."></source></picture></p>
+<ol>
+<li>Actions Runner Controller is installed using the supplied Helm charts, and the controller manager pod is deployed in the specified namespace. A new AutoScalingRunnerSet resource is deployed via the supplied Helm charts or a customized manifest file. The AutoScalingRunnerSet Controller calls GitHub's APIs to fetch the runner group ID that the runner scale set will belong to.</li>
+<li>The AutoScalingRunnerSet Controller calls the APIs one more time to either fetch or create a runner scale set in the GitHub Actions service before creating the Runner ScaleSet Listener resource.</li>
+<li>A Runner ScaleSet Listener pod is deployed by the AutoScalingListener Controller. In this pod, the listener application connects to the GitHub Actions Service to authenticate and establish an HTTPS long poll connection. The listener stays idle until it receives a <code>Job Available</code> message from the GitHub Actions Service.</li>
+<li>When a workflow run is triggered from a repository, the GitHub Actions Service dispatches individual job runs to the runners or runner scalesets where the <code>runs-on</code> key matches the name of the runner scaleset or labels of self-hosted runners.</li>
+<li>When the Runner ScaleSet Listener receives the <code>Job Available</code> message, it checks whether it can scale up to the desired count. If it can, the Runner ScaleSet Listener acknowledges the message.</li>
+<li>The Runner ScaleSet Listener uses a Service Account and a Role bound to that account to make an HTTPS call through the Kubernetes APIs to patch the Ephemeral RunnerSet resource with the number of desired replicas count.</li>
+<li>The Ephemeral RunnerSet attempts to create new runners and the EphemeralRunner Controller requests a Just-in-Time (JIT) configuration token to register these runners. The controller attempts to create runner pods. If the pod's status is <code>failed</code>, the controller retries up to 5 times. After 24 hours the GitHub Actions Service unassigns the job if no runner accepts it.</li>
+<li>Once the runner pod is created, the runner application in the pod uses the JIT configuration token to register itself with the GitHub Actions Service. It then establishes another HTTPS long poll connection to receive the job details it needs to execute.</li>
+<li>The GitHub Actions Service acknowledges the runner registration and dispatches the job run details.</li>
+<li>Throughout the job run execution, the runner continuously communicates the logs and job run status back to the GitHub Actions Service.</li>
+<li>When the runner completes its job successfully, the EphemeralRunner Controller checks with the GitHub Actions Service to see if runner can be deleted. If it can, the Ephemeral RunnerSet deletes the runner.</li>
+</ol>
+<h2><a href="#actions-runner-controller-components">Actions Runner Controller components</a></h2>
+<p>ARC consists of a set of resources, some of which are created specifically for ARC. An ARC deployment applies these resources onto a Kubernetes cluster. Once applied, it creates a set of Pods that contain your self-hosted runners' containers. With ARC, GitHub can treat these runner containers as self-hosted runners and allocate jobs to them as needed.</p>
+<p>Each resource that is deployed by ARC is given a name composed of:</p>
+<ul>
+<li>An installation name, which is the installation name you specify when you install the Helm chart.</li>
+<li>A resource identification suffix, which is a string that identifies the resource type. This value is not configurable.</li>
+</ul>
+<div>
+<p>
+Different versions of Kubernetes have different length limits for names of resources. The length limit for the resource name is calculated by adding the length of the installation name and the length of the resource identification suffix. If the resource name is longer than the reserved length, you will receive an error.</p>
+</div>
+<h3><a href="#resources-deployed-by-gha-runner-scale-set-controller">Resources deployed by <code>gha-runner-scale-set-controller</code></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Template</th>
+<th>Resource Kind</th>
+<th>Name</th>
+<th>Reserved Length</th>
+<th>Description</th>
+<th>Notes</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>deployment.yaml</code></td>
+<td>Deployment</td>
+<td>INSTALLATION_NAME-gha-rs-controller</td>
+<td>18</td>
+<td>The resource running controller-manager</td>
+<td>The pods created by this resource have the ReplicaSet suffix and the Pod suffix.</td>
+</tr>
+<tr>
+<td><code>serviceaccount.yaml</code></td>
+<td>ServiceAccount</td>
+<td>INSTALLATION_NAME-gha-rs-controller</td>
+<td>18</td>
+<td>This is created if <code>service<wbr>Account.create</wbr></code> in <code>values.yaml</code> is set to true.</td>
+<td>The name can be customized in <code>values.yaml</code>
+</td>
+</tr>
+<tr>
+<td><code>manager_cluster_<wbr>role.yaml</wbr></code></td>
+<td>ClusterRole</td>
+<td>INSTALLATION_NAME-gha-rs-controller</td>
+<td>18</td>
+<td>ClusterRole for the controller manager</td>
+<td>This is created if the value of <code>flags.watch<wbr>Single<wbr>Namespace</wbr></wbr></code> is empty.</td>
+</tr>
+<tr>
+<td><code>manager_cluster_<wbr>role_binding.yaml</wbr></code></td>
+<td>ClusterRoleBinding</td>
+<td>INSTALLATION_NAME-gha-rs-controller</td>
+<td>18</td>
+<td>ClusterRoleBinding for the controller manager</td>
+<td>This is created if the value of <code>flags.watch<wbr>Single<wbr>Namespace</wbr></wbr></code> is empty.</td>
+</tr>
+<tr>
+<td><code>manager_single_<wbr>namespace_controller_<wbr>role.yaml</wbr></wbr></code></td>
+<td>Role</td>
+<td>INSTALLATION_NAME-gha-rs-controller-single-namespace</td>
+<td>35</td>
+<td>Role for the controller manager</td>
+<td>This is created if the value of <code>flags.watch<wbr>Single<wbr>Namespace</wbr></wbr></code> is set.</td>
+</tr>
+<tr>
+<td><code>manager_single_<wbr>namespace_controller_<wbr>role_binding.yaml</wbr></wbr></code></td>
+<td>RoleBinding</td>
+<td>INSTALLATION_NAME-gha-rs-controller-single-namespace</td>
+<td>35</td>
+<td>RoleBinding for the controller manager</td>
+<td>This is created if the value of <code>flags.watch<wbr>Single<wbr>Namespace</wbr></wbr></code> is set.</td>
+</tr>
+<tr>
+<td><code>manager_single_<wbr>namespace_watch_<wbr>role.yaml</wbr></wbr></code></td>
+<td>Role</td>
+<td>INSTALLATION_NAME-gha-rs-controller-single-namespace-watch</td>
+<td>41</td>
+<td>Role for the controller manager for the namespace configured</td>
+<td>This is created if the value of <code>flags.watch<wbr>Single<wbr>Namespace</wbr></wbr></code> is set.</td>
+</tr>
+<tr>
+<td><code>manager_single_<wbr>namespace_watch_<wbr>role_binding.yaml</wbr></wbr></code></td>
+<td>RoleBinding</td>
+<td>INSTALLATION_NAME-gha-rs-controller-single-namespace-watch</td>
+<td>41</td>
+<td>RoleBinding for the controller manager for the namespace configured</td>
+<td>This is created if the value of <code>flags.watch<wbr>Single<wbr>Namespace</wbr></wbr></code> is set.</td>
+</tr>
+<tr>
+<td><code>manager_listener_<wbr>role.yaml</wbr></code></td>
+<td>Role</td>
+<td>INSTALLATION_NAME-gha-rs-controller-listener</td>
+<td>26</td>
+<td>Role for the listener</td>
+<td>This is always created.</td>
+</tr>
+<tr>
+<td><code>manager_listener_<wbr>role_binding.yaml </wbr></code></td>
+<td>RoleBinding</td>
+<td>INSTALLATION_NAME-gha-rs-controller-listener</td>
+<td>26</td>
+<td>RoleBinding for the listener</td>
+<td>This is always created and binds the listener role with the service account, which is either created by <code>serviceaccount.yaml</code> or configured with <code>values.yaml</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3><a href="#resources-deployed-by-gha-runner-scale-set">Resources deployed by <code>gha-runner-scale-set</code></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Template</th>
+<th>Resource Kind</th>
+<th>Name</th>
+<th>Reserved Length</th>
+<th>Description</th>
+<th>Notes</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>autoscalingrunnerset.yaml</code></td>
+<td>AutoscalingRunnerSet</td>
+<td>INSTALLATION_NAME</td>
+<td>0</td>
+<td>Top level resource working with scale sets</td>
+<td>The name is limited to 45 characters in length.</td>
+</tr>
+<tr>
+<td><code>no_permission_<wbr>service_account.yaml</wbr></code></td>
+<td>ServiceAccount</td>
+<td>INSTALLATION_NAME-gha-rs-no-permission</td>
+<td>21</td>
+<td>Service account mounted to the runner container</td>
+<td>This is created if the container mode is not "kubernetes" and <code>template.spec.service<wbr>Account<wbr>Name</wbr></wbr></code> is not specified.</td>
+</tr>
+<tr>
+<td><code>githubsecret.yaml</code></td>
+<td>Secret</td>
+<td>INSTALLATION_NAME-gha-rs-github-secret</td>
+<td>20</td>
+<td>Secret containing values needed to authenticate to the GitHub API</td>
+<td>This is created if <code>github<wbr>Config<wbr>Secret</wbr></wbr></code> is an object. If a string is provided, this secret will not be created.</td>
+</tr>
+<tr>
+<td><code>manager_role.yaml</code></td>
+<td>Role</td>
+<td>INSTALLATION_NAME-gha-rs-manager</td>
+<td>15</td>
+<td>Role provided to the manager to be able to reconcile on resources in the autoscaling runner set's namespace</td>
+<td>This is always created.</td>
+</tr>
+<tr>
+<td><code>manager_role_<wbr>binding.yaml</wbr></code></td>
+<td>RoleBinding</td>
+<td>INSTALLATION_NAME-gha-rs-manager</td>
+<td>15</td>
+<td>Binding manager_role to the manager service account.</td>
+<td>This is always created.</td>
+</tr>
+<tr>
+<td><code>kube_mode_role.yaml</code></td>
+<td>Role</td>
+<td>INSTALLATION_NAME-gha-rs-kube-mode</td>
+<td>17</td>
+<td>Role providing necessary permissions for the hook</td>
+<td>This is created when the container mode is set to "kubernetes" and <code>template.spec.service<wbr>Account</wbr></code> is not provided.</td>
+</tr>
+<tr>
+<td><code>kube_mode_serviceaccount.yaml</code></td>
+<td>ServiceAccount</td>
+<td>INSTALLATION_NAME-gha-rs-kube-mode</td>
+<td>17</td>
+<td>Service account bound to the runner pod.</td>
+<td>This is created when the container mode is set to "kubernetes" and <code>template.spec.service<wbr>Account</wbr></code> is not provided.</td>
+</tr>
+</tbody>
+</table>
+<h3><a href="#about-custom-resources">About custom resources</a></h3>
+<p>ARC consists of several custom resource definitions (CRDs). For more information on custom resources, see <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/">Custom Resources</a> in the Kubernetes documentation. You can find the list of custom resource definitions used for ARC in the following API schema definitions.</p>
+<ul>
+<li><a href="https://pkg.go.dev/github.com/actions/actions-runner-controller/apis/actions.github.com/v1alpha1">actions.github.com/v1alpha1</a></li>
+<li><a href="https://pkg.go.dev/github.com/actions/actions-runner-controller/apis/actions.summerwind.net/v1alpha1">actions.summerwind.net/v1alpha1</a></li>
+</ul>
+<p>Because custom resources are extensions of the Kubernetes API, they won't be available in a default Kubernetes installation. You will need to install these custom resources to use ARC. For more information on installing custom resources, see <a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/quickstart-for-actions-runner-controller">Quickstart for Actions Runner Controller</a>.</p>
+<p>Once the custom resources are installed, you can deploy ARC into your Kubernetes cluster. For information about deploying ARC, see <a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/deploying-runner-scale-sets-with-actions-runner-controller">Deploying runner scale sets with Actions Runner Controller</a>.</p>
+<h3><a href="#about-the-runner-container-image">About the runner container image</a></h3>
+<p>GitHub maintains a <a href="https://github.com/actions/runner/pkgs/container/actions-runner">minimal runner container image</a>. A new image will be published with every runner binaries release. The most recent image will have the runner binaries version and <code>latest</code> as tags.</p>
+<p>This image contains the least amount of packages necessary for the container runtime and the runner binaries. To install additional software, you can create your own runner image. You can use ARC's runner image as a base, or use the corresponding setup actions. For instance, <code>actions/setup-java</code> for Java or <code>actions/setup-node</code> for Node.</p>
+<p>You can find the definition of ARC's runner image in <a href="https://github.com/actions/runner/blob/main/images/Dockerfile">this Dockerfile</a> and the definition of the base image in <a href="https://github.com/dotnet/dotnet-docker/blob/main/src/runtime-deps/8.0/bookworm-slim/amd64/Dockerfile">this Dockerfile</a>.</p>
+<h4><a href="#creating-your-own-runner-image">Creating your own runner image</a></h4>
+<p>You can create your own runner image that meets your requirements. Your runner image must fulfill the following conditions.</p>
+<ul>
+<li>
+<p>Use a base image that can run the self-hosted runner application. For more information, see <a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners">Managing self-hosted runners</a>.</p>
+</li>
+<li>
+<p>The <a href="https://github.com/actions/runner/releases">runner binary</a> must be placed under <code>/home/runner/</code> and launched using <code>/home/runner/run.sh</code>.</p>
+</li>
+<li>
+<p>If you use Kubernetes mode, the <a href="https://github.com/actions/runner-container-hooks/releases">runner container hooks</a> must be placed under <code>/home/runner/k8s</code>.</p>
+</li>
+</ul>
+<p>You can use the following example Dockerfile to start creating your own runner image.</p>
+<div>
+<header><span>Dockerfile</span><pre>FROM mcr.microsoft.com/dotnet/runtime-deps:6.0 as build
+
+# Replace value with the latest runner release version
+# source: https://github.com/actions/runner/releases
+# ex: 2.303.0
+ARG RUNNER_VERSION=""
+ARG RUNNER_ARCH="x64"
+# Replace value with the latest runner-container-hooks release version
+# source: https://github.com/actions/runner-container-hooks/releases
+# ex: 0.3.1
+ARG RUNNER_CONTAINER_HOOKS_VERSION=""
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV RUNNER_MANUALLY_TRAP_SIG=1
+ENV ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=1
+
+RUN apt update -y &amp;&amp; apt install curl unzip -y
+
+RUN adduser --disabled-password --gecos "" --uid 1001 runner \
+    &amp;&amp; groupadd docker --gid 123 \
+    &amp;&amp; usermod -aG sudo runner \
+    &amp;&amp; usermod -aG docker runner \
+    &amp;&amp; echo "%sudo ALL=(ALL:ALL) NOPASSWD:ALL" &gt; /etc/sudoers \
+    &amp;&amp; echo "Defaults env_keep += \"DEBIAN_FRONTEND\"" &gt;&gt; /etc/sudoers
+
+WORKDIR /home/runner
+
+RUN curl -f -L -o runner.tar.gz https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-${RUNNER_ARCH}-${RUNNER_VERSION}.tar.gz \
+    &amp;&amp; tar xzf ./runner.tar.gz \
+    &amp;&amp; rm runner.tar.gz
+
+RUN curl -f -L -o runner-container-hooks.zip https://github.com/actions/runner-container-hooks/releases/download/v${RUNNER_CONTAINER_HOOKS_VERSION}/actions-runner-hooks-k8s-${RUNNER_CONTAINER_HOOKS_VERSION}.zip \
+    &amp;&amp; unzip ./runner-container-hooks.zip -d ./k8s \
+    &amp;&amp; rm runner-container-hooks.zip
+
+USER runner
+</pre></header><pre><code><span>FROM</span> mcr.microsoft.com/dotnet/runtime-deps:<span>6.0</span> as build
+
+<span># Replace value with the latest runner release version</span>
+<span># source: https://github.com/actions/runner/releases</span>
+<span># ex: 2.303.0</span>
+<span>ARG</span> RUNNER_VERSION=<span>""</span>
+<span>ARG</span> RUNNER_ARCH=<span>"x64"</span>
+<span># Replace value with the latest runner-container-hooks release version</span>
+<span># source: https://github.com/actions/runner-container-hooks/releases</span>
+<span># ex: 0.3.1</span>
+<span>ARG</span> RUNNER_CONTAINER_HOOKS_VERSION=<span>""</span>
+
+<span>ENV</span> DEBIAN_FRONTEND=noninteractive
+<span>ENV</span> RUNNER_MANUALLY_TRAP_SIG=<span>1</span>
+<span>ENV</span> ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT=<span>1</span>
+
+<span>RUN</span><span> apt update -y &amp;&amp; apt install curl unzip -y</span>
+
+<span>RUN</span><span> adduser --disabled-password --gecos <span>""</span> --uid 1001 runner \
+    &amp;&amp; groupadd docker --gid 123 \
+    &amp;&amp; usermod -aG sudo runner \
+    &amp;&amp; usermod -aG docker runner \
+    &amp;&amp; <span>echo</span> <span>"%sudo ALL=(ALL:ALL) NOPASSWD:ALL"</span> &gt; /etc/sudoers \
+    &amp;&amp; <span>echo</span> <span>"Defaults env_keep += \"DEBIAN_FRONTEND\""</span> &gt;&gt; /etc/sudoers</span>
+
+<span>WORKDIR</span><span> /home/runner</span>
+
+<span>RUN</span><span> curl -f -L -o runner.tar.gz https://github.com/actions/runner/releases/download/v<span>${RUNNER_VERSION}</span>/actions-runner-linux-<span>${RUNNER_ARCH}</span>-<span>${RUNNER_VERSION}</span>.tar.gz \
+    &amp;&amp; tar xzf ./runner.tar.gz \
+    &amp;&amp; <span>rm</span> runner.tar.gz</span>
+
+<span>RUN</span><span> curl -f -L -o runner-container-hooks.zip https://github.com/actions/runner-container-hooks/releases/download/v<span>${RUNNER_CONTAINER_HOOKS_VERSION}</span>/actions-runner-hooks-k8s-<span>${RUNNER_CONTAINER_HOOKS_VERSION}</span>.zip \
+    &amp;&amp; unzip ./runner-container-hooks.zip -d ./k8s \
+    &amp;&amp; <span>rm</span> runner-container-hooks.zip</span>
+
+<span>USER</span> runner
+</code></pre>
+</div>
+<h2><a href="#executing-workflows">Executing workflows</a></h2>
+<p>After installation and configuration are complete, you can use ARC to execute workflow runs. A workflow can be created in the same repository that can target a self hosted runner created by ARC. For more information about targeting workflows to run on self-hosted runners, see <a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners/using-self-hosted-runners-in-a-workflow">Using self-hosted runners in a workflow</a>.</p>
+<h3><a href="#using-arc-runners-in-a-workflow">Using ARC runners in a workflow</a></h3>
+<p>You cannot use additional labels to target runners created by ARC. You can only use the installation name of the runner scale set that you specified during the installation or by defining the value of the <code>runnerScaleSetName</code> field in your <a href="https://github.com/actions/actions-runner-controller/blob/master/charts/gha-runner-scale-set/values.yaml"><code>values.yaml</code></a> file. These are used as the 'single label' to use as your <code>runs-on</code> target. For more information, see <a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/using-actions-runner-controller-runners-in-a-workflow">Using Actions Runner Controller runners in a workflow</a>.</p>
+<h2><a href="#scaling-runners">Scaling runners</a></h2>
+<p>You can scale runners statically or dynamically depending on your needs. For more information, see <a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/deploying-runner-scale-sets-with-actions-runner-controller#scaling-runners">Deploying runner scale sets with Actions Runner Controller</a>.</p>
+<h2><a href="#software-installed-in-the-arc-runner-image">Software installed in the ARC runner image</a></h2>
+<p>The ARC <a href="https://github.com/actions/runner/pkgs/container/actions-runner">runner image</a> is bundled with the following software:</p>
+<ul>
+<li><a href="https://github.com/actions/runner">Runner binaries</a></li>
+<li><a href="https://github.com/actions/runner-container-hooks">Runner container hooks</a></li>
+<li>Docker (required for Docker-in-Docker mode)</li>
+</ul>
+<p>For more information, see <a href="https://github.com/actions/runner/blob/main/images/Dockerfile">ARC's runner image Dockerfile</a> in the Actions repository.</p>
+<h2><a href="#assets-and-releases">Assets and releases</a></h2>
+<p>ARC is released as two Helm charts and one container image. The Helm charts are only published as Open Container Initiative (OCI) packages. ARC does not provide tarballs or Helm repositories via GitHub Pages.</p>
+<p>You can find the latest releases of ARC's Helm charts and container image on GitHub Packages:</p>
+<ul>
+<li><a href="https://github.com/actions/actions-runner-controller/pkgs/container/actions-runner-controller-charts%2Fgha-runner-scale-set-controller"><code>gha-runner-scale-set-controller</code> Helm chart</a></li>
+<li><a href="https://github.com/actions/actions-runner-controller/pkgs/container/actions-runner-controller-charts%2Fgha-runner-scale-set"><code>gha-runner-scale-set</code> Helm chart</a></li>
+<li><a href="https://github.com/actions/actions-runner-controller/pkgs/container/gha-runner-scale-set-controller"><code>gha-runner-scale-set-controller</code> container image</a></li>
+</ul>
+<p>The supported runner image is released as a separate container image, which you can find at <a href="https://github.com/actions/runner/pkgs/container/actions-runner"><code>actions-runner</code></a> on GitHub Packages.</p>
+<h2><a href="#legal-notice">Legal notice</a></h2>
+<p>Portions have been adapted from <a href="https://github.com/actions/actions-runner-controller/">https://github.com/actions/actions-runner-controller/</a> under the Apache-2.0 license:</p>
+<pre><code>Copyright 2019 Moto Ishizawa
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</code></pre>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

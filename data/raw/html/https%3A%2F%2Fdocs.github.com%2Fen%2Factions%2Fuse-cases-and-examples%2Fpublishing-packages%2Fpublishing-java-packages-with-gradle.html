@@ -1,0 +1,464 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Use cases and examples" href="/en/actions/use-cases-and-examples">Use cases and examples</a><span>/</span>
+</li>
+<li>
+<a title="Publish packages" href="/en/actions/use-cases-and-examples/publishing-packages">Publish packages</a><span>/</span>
+</li>
+<li><a title="Publish Java packages with Gradle" href="/en/actions/use-cases-and-examples/publishing-packages/publishing-java-packages-with-gradle">Publish Java packages with Gradle</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Publishing Java packages with Gradle</h1></div></div>
+<div><div><p>You can use Gradle to publish Java packages to a registry as part of your continuous integration (CI) workflow.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#about-package-configuration"><div><span>About package configuration</span></div></a></li>
+<li><a href="#publishing-packages-to-the-maven-central-repository"><div><span>Publishing packages to the Maven Central Repository</span></div></a></li>
+<li><a href="#publishing-packages-to-github-packages"><div><span>Publishing packages to GitHub Packages</span></div></a></li>
+<li><a href="#publishing-packages-to-the-maven-central-repository-and-github-packages"><div><span>Publishing packages to the Maven Central Repository and GitHub Packages</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>This guide shows you how to create a workflow that publishes Java packages to GitHub Packages and the Maven Central Repository. With a single workflow, you can publish packages to a single repository or to multiple repositories.</p>
+<div>
+<p> The examples used in this guide refer to the Legacy OSSRH service. See <a href="https://central.sonatype.org/faq/what-is-different-between-central-portal-and-legacy-ossrh/#publishing">Publishing</a> in the Maven Central Repository documentation.</p>
+</div>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<p>We recommend that you have a basic understanding of workflow files and configuration options. For more information, see <a href="/en/actions/learn-github-actions">Writing workflows</a>.</p>
+<p>For more information about creating a CI workflow for your Java project with Gradle, see <a href="/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle">Building and testing Java with Gradle</a>.</p>
+<p>You may also find it helpful to have a basic understanding of the following:</p>
+<ul>
+<li><a href="/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry">Working with the Apache Maven registry</a></li>
+<li><a href="/en/actions/learn-github-actions/variables">Store information in variables</a></li>
+<li><a href="/en/actions/security-guides/using-secrets-in-github-actions">Using secrets in GitHub Actions</a></li>
+<li><a href="/en/actions/security-guides/automatic-token-authentication">Automatic token authentication</a></li>
+</ul>
+<h2><a href="#about-package-configuration">About package configuration</a></h2>
+<p>The <code>groupId</code> and <code>artifactId</code> fields in the <code>MavenPublication</code> section of the <em>build.gradle</em> file create a unique identifier for your package that registries use to link your package to a registry. This is similar to the <code>groupId</code> and <code>artifactId</code> fields of the Maven <em>pom.xml</em> file. For more information, see the <a href="https://docs.gradle.org/current/userguide/publishing_maven.html">Maven Publish Plugin</a> in the Gradle documentation.</p>
+<p>The <em>build.gradle</em> file also contains configuration for the distribution management repositories that Gradle will publish packages to. Each repository must have a name, a deployment URL, and credentials for authentication.</p>
+<h2><a href="#publishing-packages-to-the-maven-central-repository">Publishing packages to the Maven Central Repository</a></h2>
+<p>Each time you create a new release, you can trigger a workflow to publish your package. The workflow in the example below runs when the <code>release</code> event triggers with type <code>created</code>. The workflow publishes the package to the Maven Central Repository if CI tests pass. For more information on the <code>release</code> event, see <a href="/en/actions/using-workflows/events-that-trigger-workflows#release">Events that trigger workflows</a>.</p>
+<p>You can define a new Maven repository in the publishing block of your <em>build.gradle</em> file that points to your package repository. For example, if you were deploying to the Maven Central Repository through the OSSRH hosting project, your <em>build.gradle</em> could specify a repository with the name <code>"OSSRH"</code>.</p>
+<div>
+<header><span>Groovy</span><pre>plugins {
+  ...
+  id 'maven-publish'
+}
+
+publishing {
+  ...
+
+  repositories {
+    maven {
+      name = "OSSRH"
+      url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+      credentials {
+        username = System.getenv("MAVEN_USERNAME")
+        password = System.getenv("MAVEN_PASSWORD")
+      }
+    }
+  }
+}
+</pre></header><pre><code>plugins {
+  ...
+  id <span>'maven-publish'</span>
+}
+
+publishing {
+  ...
+
+  repositories {
+    maven {
+      name = <span>"OSSRH"</span>
+      url = <span>"https://oss.sonatype.org/service/local/staging/deploy/maven2/"</span>
+      credentials {
+        username = System.getenv(<span>"MAVEN_USERNAME"</span>)
+        password = System.getenv(<span>"MAVEN_PASSWORD"</span>)
+      }
+    }
+  }
+}
+</code></pre>
+</div>
+<p>With this configuration, you can create a workflow that publishes your package to the Maven Central Repository by running the <code>gradle publish</code> command. In the deploy step, you’ll need to set environment variables for the username and password or token that you use to authenticate to the Maven repository. For more information, see <a href="/en/actions/security-guides/using-secrets-in-github-actions">Using secrets in GitHub Actions</a>.</p>
+<div>
+<header><span>YAML</span><pre># This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# GitHub recommends pinning actions to a commit SHA.
+# To get a newer version, you will need to update the SHA.
+# You can also reference a tag or branch, but the action may change without warning.
+
+name: Publish package to the Maven Central Repository
+on:
+  release:
+    types: [created]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+
+      - name: Publish package
+        run: ./gradlew publish
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+</pre></header><pre><code>
+<span># This workflow uses actions that are not certified by GitHub.</span>
+<span># They are provided by a third-party and are governed by</span>
+<span># separate terms of service, privacy policy, and support</span>
+<span># documentation.</span>
+
+<span># GitHub recommends pinning actions to a commit SHA.</span>
+<span># To get a newer version, you will need to update the SHA.</span>
+<span># You can also reference a tag or branch, but the action may change without warning.</span>
+
+<span>name:</span> <span>Publish</span> <span>package</span> <span>to</span> <span>the</span> <span>Maven</span> <span>Central</span> <span>Repository</span>
+<span>on:</span>
+  <span>release:</span>
+    <span>types:</span> [<span>created</span>]
+<span>jobs:</span>
+  <span>publish:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>steps:</span>
+      <span>-</span> <span>uses:</span> <span>actions/checkout@v4</span>
+      <span>-</span> <span>name:</span> <span>Set</span> <span>up</span> <span>Java</span>
+        <span>uses:</span> <span>actions/setup-java@v4</span>
+        <span>with:</span>
+          <span>java-version:</span> <span>'11'</span>
+          <span>distribution:</span> <span>'temurin'</span>
+
+      <span>-</span> <span>name:</span> <span>Setup</span> <span>Gradle</span>
+        <span>uses:</span> <span>gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582</span> <span># v4.0.0</span>
+
+      <span>-</span> <span>name:</span> <span>Publish</span> <span>package</span>
+        <span>run:</span> <span>./gradlew</span> <span>publish</span>
+        <span>env:</span>
+          <span>MAVEN_USERNAME:</span> <span>${{</span> <span>secrets.OSSRH_USERNAME</span> <span>}}</span>
+          <span>MAVEN_PASSWORD:</span> <span>${{</span> <span>secrets.OSSRH_TOKEN</span> <span>}}</span>
+</code></pre>
+</div>
+<p>This workflow performs the following steps:</p>
+<ol>
+<li>
+<p>Checks out a copy of project's repository.</p>
+</li>
+<li>
+<p>Sets up the Java JDK.</p>
+</li>
+<li>
+<p>Sets up the Gradle environment. The <a href="https://github.com/gradle/actions"><code>gradle/actions/setup-gradle</code></a> action takes care of caching state between workflow runs, and provides a detailed summary of all Gradle executions.</p>
+</li>
+<li>
+<p>Executes the Gradle <code>publish</code> task to publish to the <code>OSSRH</code> Maven repository. The <code>MAVEN_USERNAME</code> environment variable will be set with the contents of your <code>OSSRH_USERNAME</code> secret, and the <code>MAVEN_PASSWORD</code> environment variable will be set with the contents of your <code>OSSRH_TOKEN</code> secret.</p>
+<p>For more information about using secrets in your workflow, see <a href="/en/actions/security-guides/using-secrets-in-github-actions">Using secrets in GitHub Actions</a>.</p>
+</li>
+</ol>
+<h2><a href="#publishing-packages-to-github-packages">Publishing packages to GitHub Packages</a></h2>
+<p>Each time you create a new release, you can trigger a workflow to publish your package. The workflow in the example below runs when the <code>release</code> event triggers with type <code>created</code>. The workflow publishes the package to GitHub Packages if CI tests pass. For more information on the <code>release</code> event, see <a href="/en/actions/using-workflows/events-that-trigger-workflows#release">Events that trigger workflows</a>.</p>
+<p>You can define a new Maven repository in the publishing block of your <em>build.gradle</em> that points to GitHub Packages. In that repository configuration, you can also take advantage of environment variables set in your CI workflow run. You can use the <code>GITHUB_ACTOR</code> environment variable as a username, and you can set the <code>GITHUB_TOKEN</code> environment variable with your <code>GITHUB_TOKEN</code> secret.</p>
+<p>The <code>GITHUB_TOKEN</code> secret is set to an access token for the repository each time a job in a workflow begins. You should set the permissions for this access token in the workflow file to grant read access for the <code>contents</code> permission and write access for the <code>packages</code> permission. For more information, see <a href="/en/actions/security-guides/automatic-token-authentication">Automatic token authentication</a>.</p>
+<p>For example, if your organization is named "octocat" and your repository is named "hello-world", then the GitHub Packages configuration in <em>build.gradle</em> would look similar to the below example.</p>
+<div>
+<header><span>Groovy</span><pre>plugins {
+  ...
+  id 'maven-publish'
+}
+
+publishing {
+  ...
+
+  repositories {
+    maven {
+      name = "GitHubPackages"
+      url = "https://maven.pkg.github.com/octocat/hello-world"
+      credentials {
+        username = System.getenv("GITHUB_ACTOR")
+        password = System.getenv("GITHUB_TOKEN")
+      }
+    }
+  }
+}
+</pre></header><pre><code>plugins {
+  ...
+  id <span>'maven-publish'</span>
+}
+
+publishing {
+  ...
+
+  repositories {
+    maven {
+      name = <span>"GitHubPackages"</span>
+      url = <span>"https://maven.pkg.github.com/octocat/hello-world"</span>
+      credentials {
+        username = System.getenv(<span>"GITHUB_ACTOR"</span>)
+        password = System.getenv(<span>"GITHUB_TOKEN"</span>)
+      }
+    }
+  }
+}
+</code></pre>
+</div>
+<p>With this configuration, you can create a workflow that publishes your package to GitHub Packages by running the <code>gradle publish</code> command.</p>
+<div>
+<header><span>YAML</span><pre># This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# GitHub recommends pinning actions to a commit SHA.
+# To get a newer version, you will need to update the SHA.
+# You can also reference a tag or branch, but the action may change without warning.
+
+name: Publish package to GitHub Packages
+on:
+  release:
+    types: [created]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+
+      - name: Publish package
+        run: ./gradlew publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+</pre></header><pre><code>
+<span># This workflow uses actions that are not certified by GitHub.</span>
+<span># They are provided by a third-party and are governed by</span>
+<span># separate terms of service, privacy policy, and support</span>
+<span># documentation.</span>
+
+<span># GitHub recommends pinning actions to a commit SHA.</span>
+<span># To get a newer version, you will need to update the SHA.</span>
+<span># You can also reference a tag or branch, but the action may change without warning.</span>
+
+<span>name:</span> <span>Publish</span> <span>package</span> <span>to</span> <span>GitHub</span> <span>Packages</span>
+<span>on:</span>
+  <span>release:</span>
+    <span>types:</span> [<span>created</span>]
+<span>jobs:</span>
+  <span>publish:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>permissions:</span>
+      <span>contents:</span> <span>read</span>
+      <span>packages:</span> <span>write</span>
+    <span>steps:</span>
+      <span>-</span> <span>uses:</span> <span>actions/checkout@v4</span>
+      <span>-</span> <span>uses:</span> <span>actions/setup-java@v4</span>
+        <span>with:</span>
+          <span>java-version:</span> <span>'11'</span>
+          <span>distribution:</span> <span>'temurin'</span>
+      <span>-</span> <span>name:</span> <span>Setup</span> <span>Gradle</span>
+        <span>uses:</span> <span>gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582</span> <span># v4.0.0</span>
+
+      <span>-</span> <span>name:</span> <span>Publish</span> <span>package</span>
+        <span>run:</span> <span>./gradlew</span> <span>publish</span>
+        <span>env:</span>
+          <span>GITHUB_TOKEN:</span> <span>${{</span> <span>secrets.GITHUB_TOKEN</span> <span>}}</span>
+</code></pre>
+</div>
+<p>This workflow performs the following steps:</p>
+<ol>
+<li>
+<p>Checks out a copy of project's repository.</p>
+</li>
+<li>
+<p>Sets up the Java JDK.</p>
+</li>
+<li>
+<p>Sets up the Gradle environment. The <a href="https://github.com/gradle/actions"><code>gradle/actions/setup-gradle</code></a> action takes care of caching state between workflow runs, and provides a detailed summary of all Gradle executions.</p>
+</li>
+<li>
+<p>Executes the Gradle <code>publish</code> task to publish to GitHub Packages. The <code>GITHUB_TOKEN</code> environment variable will be set with the content of the <code>GITHUB_TOKEN</code> secret. The <code>permissions</code> key specifies the access that the <code>GITHUB_TOKEN</code> secret will allow.</p>
+<p>For more information about using secrets in your workflow, see <a href="/en/actions/security-guides/using-secrets-in-github-actions">Using secrets in GitHub Actions</a>.</p>
+</li>
+</ol>
+<h2><a href="#publishing-packages-to-the-maven-central-repository-and-github-packages">Publishing packages to the Maven Central Repository and GitHub Packages</a></h2>
+<p>You can publish your packages to both the Maven Central Repository and GitHub Packages by configuring each in your <em>build.gradle</em> file.</p>
+<p>Ensure your <em>build.gradle</em> file includes a repository for both your GitHub repository and your Maven Central Repository provider.</p>
+<p>For example, if you deploy to the Central Repository through the OSSRH hosting project, you might want to specify it in a distribution management repository with the <code>name</code> set to <code>OSSRH</code>. If you deploy to GitHub Packages, you might want to specify it in a distribution management repository with the <code>name</code> set to <code>GitHubPackages</code>.</p>
+<p>If your organization is named "octocat" and your repository is named "hello-world", then the configuration in <em>build.gradle</em> would look similar to the below example.</p>
+<div>
+<header><span>Groovy</span><pre>plugins {
+  ...
+  id 'maven-publish'
+}
+
+publishing {
+  ...
+
+  repositories {
+    maven {
+      name = "OSSRH"
+      url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+      credentials {
+        username = System.getenv("MAVEN_USERNAME")
+        password = System.getenv("MAVEN_PASSWORD")
+      }
+    }
+    maven {
+      name = "GitHubPackages"
+      url = "https://maven.pkg.github.com/octocat/hello-world"
+      credentials {
+        username = System.getenv("GITHUB_ACTOR")
+        password = System.getenv("GITHUB_TOKEN")
+      }
+    }
+  }
+}
+</pre></header><pre><code>plugins {
+  ...
+  id <span>'maven-publish'</span>
+}
+
+publishing {
+  ...
+
+  repositories {
+    maven {
+      name = <span>"OSSRH"</span>
+      url = <span>"https://oss.sonatype.org/service/local/staging/deploy/maven2/"</span>
+      credentials {
+        username = System.getenv(<span>"MAVEN_USERNAME"</span>)
+        password = System.getenv(<span>"MAVEN_PASSWORD"</span>)
+      }
+    }
+    maven {
+      name = <span>"GitHubPackages"</span>
+      url = <span>"https://maven.pkg.github.com/octocat/hello-world"</span>
+      credentials {
+        username = System.getenv(<span>"GITHUB_ACTOR"</span>)
+        password = System.getenv(<span>"GITHUB_TOKEN"</span>)
+      }
+    }
+  }
+}
+</code></pre>
+</div>
+<p>With this configuration, you can create a workflow that publishes your package to both the Maven Central Repository and GitHub Packages by running the <code>gradle publish</code> command.</p>
+<div>
+<header><span>YAML</span><pre># This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# GitHub recommends pinning actions to a commit SHA.
+# To get a newer version, you will need to update the SHA.
+# You can also reference a tag or branch, but the action may change without warning.
+
+name: Publish package to the Maven Central Repository and GitHub Packages
+on:
+  release:
+    types: [created]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+
+      - name: Publish package
+        run: ./gradlew publish
+        env: 
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+</pre></header><pre><code>
+<span># This workflow uses actions that are not certified by GitHub.</span>
+<span># They are provided by a third-party and are governed by</span>
+<span># separate terms of service, privacy policy, and support</span>
+<span># documentation.</span>
+
+<span># GitHub recommends pinning actions to a commit SHA.</span>
+<span># To get a newer version, you will need to update the SHA.</span>
+<span># You can also reference a tag or branch, but the action may change without warning.</span>
+
+<span>name:</span> <span>Publish</span> <span>package</span> <span>to</span> <span>the</span> <span>Maven</span> <span>Central</span> <span>Repository</span> <span>and</span> <span>GitHub</span> <span>Packages</span>
+<span>on:</span>
+  <span>release:</span>
+    <span>types:</span> [<span>created</span>]
+<span>jobs:</span>
+  <span>publish:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>permissions:</span>
+      <span>contents:</span> <span>read</span>
+      <span>packages:</span> <span>write</span>
+    <span>steps:</span>
+      <span>-</span> <span>uses:</span> <span>actions/checkout@v4</span>
+      <span>-</span> <span>name:</span> <span>Set</span> <span>up</span> <span>Java</span>
+        <span>uses:</span> <span>actions/setup-java@v4</span>
+        <span>with:</span>
+          <span>java-version:</span> <span>'11'</span>
+          <span>distribution:</span> <span>'temurin'</span>
+      <span>-</span> <span>name:</span> <span>Setup</span> <span>Gradle</span>
+        <span>uses:</span> <span>gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582</span> <span># v4.0.0</span>
+
+      <span>-</span> <span>name:</span> <span>Publish</span> <span>package</span>
+        <span>run:</span> <span>./gradlew</span> <span>publish</span>
+        <span>env:</span> 
+          <span>MAVEN_USERNAME:</span> <span>${{</span> <span>secrets.OSSRH_USERNAME</span> <span>}}</span>
+          <span>MAVEN_PASSWORD:</span> <span>${{</span> <span>secrets.OSSRH_TOKEN</span> <span>}}</span>
+          <span>GITHUB_TOKEN:</span> <span>${{</span> <span>secrets.GITHUB_TOKEN</span> <span>}}</span>
+</code></pre>
+</div>
+<p>This workflow performs the following steps:</p>
+<ol>
+<li>
+<p>Checks out a copy of project's repository.</p>
+</li>
+<li>
+<p>Sets up the Java JDK.</p>
+</li>
+<li>
+<p>Sets up the Gradle environment. The <a href="https://github.com/gradle/actions"><code>gradle/actions/setup-gradle</code></a> action takes care of caching state between workflow runs, and provides a detailed summary of all Gradle executions.</p>
+</li>
+<li>
+<p>Executes the Gradle <code>publish</code> task to publish to the <code>OSSRH</code> Maven repository and GitHub Packages. The <code>MAVEN_USERNAME</code> environment variable will be set with the contents of your <code>OSSRH_USERNAME</code> secret, and the <code>MAVEN_PASSWORD</code> environment variable will be set with the contents of your <code>OSSRH_TOKEN</code> secret. The <code>GITHUB_TOKEN</code> environment variable will be set with the content of the <code>GITHUB_TOKEN</code> secret. The <code>permissions</code> key specifies the access that the <code>GITHUB_TOKEN</code> secret will allow.</p>
+<p>For more information about using secrets in your workflow, see <a href="/en/actions/security-guides/using-secrets-in-github-actions">Using secrets in GitHub Actions</a>.</p>
+</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

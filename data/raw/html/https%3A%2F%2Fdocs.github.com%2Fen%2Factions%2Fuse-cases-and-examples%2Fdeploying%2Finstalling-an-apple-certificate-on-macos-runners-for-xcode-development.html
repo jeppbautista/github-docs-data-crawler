@@ -1,0 +1,192 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Use cases and examples" href="/en/actions/use-cases-and-examples">Use cases and examples</a><span>/</span>
+</li>
+<li>
+<a title="Deployment" href="/en/actions/use-cases-and-examples/deploying">Deployment</a><span>/</span>
+</li>
+<li><a title="Sign Xcode applications" href="/en/actions/use-cases-and-examples/deploying/installing-an-apple-certificate-on-macos-runners-for-xcode-development">Sign Xcode applications</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Installing an Apple certificate on macOS runners for Xcode development</h1></div></div>
+<div><div><p>You can sign Xcode apps within your continuous integration (CI) workflow by installing an Apple code signing certificate on GitHub Actions runners.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#creating-secrets-for-your-certificate-and-provisioning-profile"><div><span>Creating secrets for your certificate and provisioning profile</span></div></a></li>
+<li><a href="#add-a-step-to-your-workflow"><div><span>Add a step to your workflow</span></div></a></li>
+<li><a href="#required-clean-up-on-self-hosted-runners"><div><span>Required clean-up on self-hosted runners</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>This guide shows you how to add a step to your continuous integration (CI) workflow that installs an Apple code signing certificate and provisioning profile on GitHub Actions runners. This will allow you to sign your Xcode apps for publishing to the Apple App Store, or distributing it to test groups.</p>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<p>You should be familiar with YAML and the syntax for GitHub Actions. For more information, see:</p>
+<ul>
+<li><a href="/en/actions/learn-github-actions">Writing workflows</a></li>
+<li><a href="/en/actions/using-workflows/workflow-syntax-for-github-actions">Workflow syntax for GitHub Actions</a></li>
+</ul>
+<p>You should have an understanding of Xcode app building and signing. For more information, see the <a href="https://developer.apple.com/documentation/">Apple developer documentation</a>.</p>
+<h2><a href="#creating-secrets-for-your-certificate-and-provisioning-profile">Creating secrets for your certificate and provisioning profile</a></h2>
+<p>The signing process involves storing certificates and provisioning profiles, transferring them to the runner, importing them to the runner's keychain, and using them in your build.</p>
+<p>To use your certificate and provisioning profile on a runner, we strongly recommend that you use GitHub secrets. For more information on creating secrets and using them in a workflow, see <a href="/en/actions/security-guides/using-secrets-in-github-actions">Using secrets in GitHub Actions</a>.</p>
+<p>Create secrets in your repository or organization for the following items:</p>
+<ul>
+<li>
+<p>Your Apple signing certificate.</p>
+<ul>
+<li>
+<p>This is your <code>p12</code> certificate file. For more information on exporting your signing certificate from Xcode, see the <a href="https://help.apple.com/xcode/mac/current/#/dev154b28f09">Xcode documentation</a>.</p>
+</li>
+<li>
+<p>You should convert your certificate to Base64 when saving it as a secret. In this example, the secret is named <code>BUILD_CERTIFICATE_BASE64</code>.</p>
+</li>
+<li>
+<p>Use the following command to convert your certificate to Base64 and copy it to your clipboard:</p>
+<pre><code>base64 -i BUILD_CERTIFICATE.p12 | pbcopy
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>The password for your Apple signing certificate.</p>
+<ul>
+<li>In this example, the secret is named <code>P12_PASSWORD</code>.</li>
+</ul>
+</li>
+<li>
+<p>Your Apple provisioning profile.</p>
+<ul>
+<li>
+<p>For more information on exporting your provisioning profile from Xcode, see the <a href="https://help.apple.com/xcode/mac/current/#/deva899b4fe5">Xcode documentation</a>.</p>
+</li>
+<li>
+<p>You should convert your provisioning profile to Base64 when saving it as a secret. In this example, the secret is named <code>BUILD_PROVISION_PROFILE_BASE64</code>.</p>
+</li>
+<li>
+<p>Use the following command to convert your provisioning profile to Base64 and copy it to your clipboard:</p>
+<pre><code>base64 -i PROVISIONING_PROFILE.mobileprovision | pbcopy
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>A keychain password.</p>
+<ul>
+<li>A new keychain will be created on the runner, so the password for the new keychain can be any new random string. In this example, the secret is named <code>KEYCHAIN_PASSWORD</code>.</li>
+</ul>
+</li>
+</ul>
+<h2><a href="#add-a-step-to-your-workflow">Add a step to your workflow</a></h2>
+<p>This example workflow includes a step that imports the Apple certificate and provisioning profile from the GitHub secrets, and installs them on the runner.</p>
+<div>
+<header><span>YAML</span><pre>name: App build
+on: push
+
+jobs:
+  build_with_signing:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install the Apple certificate and provisioning profile
+        env:
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        run: |
+          # create variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+
+          # import certificate and provisioning profile from secrets
+          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
+          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
+
+          # create temporary keychain
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+          # import certificate to keychain
+          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+          # apply provisioning profile
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+      - name: Build app
+          # ...
+</pre></header><pre><code><span>name:</span> <span>App</span> <span>build</span>
+<span>on:</span> <span>push</span>
+
+<span>jobs:</span>
+  <span>build_with_signing:</span>
+    <span>runs-on:</span> <span>macos-latest</span>
+
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>Checkout</span> <span>repository</span>
+        <span>uses:</span> <span>actions/checkout@v4</span>
+      <span>-</span> <span>name:</span> <span>Install</span> <span>the</span> <span>Apple</span> <span>certificate</span> <span>and</span> <span>provisioning</span> <span>profile</span>
+        <span>env:</span>
+          <span>BUILD_CERTIFICATE_BASE64:</span> <span>${{</span> <span>secrets.BUILD_CERTIFICATE_BASE64</span> <span>}}</span>
+          <span>P12_PASSWORD:</span> <span>${{</span> <span>secrets.P12_PASSWORD</span> <span>}}</span>
+          <span>BUILD_PROVISION_PROFILE_BASE64:</span> <span>${{</span> <span>secrets.BUILD_PROVISION_PROFILE_BASE64</span> <span>}}</span>
+          <span>KEYCHAIN_PASSWORD:</span> <span>${{</span> <span>secrets.KEYCHAIN_PASSWORD</span> <span>}}</span>
+        <span>run:</span> <span>|
+          # create variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+</span>
+          <span># import certificate and provisioning profile from secrets</span>
+          <span>echo</span> <span>-n</span> <span>"$BUILD_CERTIFICATE_BASE64"</span> <span>|</span> <span>base64</span> <span>--decode</span> <span>-o</span> <span>$CERTIFICATE_PATH</span>
+          <span>echo</span> <span>-n</span> <span>"$BUILD_PROVISION_PROFILE_BASE64"</span> <span>|</span> <span>base64</span> <span>--decode</span> <span>-o</span> <span>$PP_PATH</span>
+
+          <span># create temporary keychain</span>
+          <span>security</span> <span>create-keychain</span> <span>-p</span> <span>"$KEYCHAIN_PASSWORD"</span> <span>$KEYCHAIN_PATH</span>
+          <span>security</span> <span>set-keychain-settings</span> <span>-lut</span> <span>21600</span> <span>$KEYCHAIN_PATH</span>
+          <span>security</span> <span>unlock-keychain</span> <span>-p</span> <span>"$KEYCHAIN_PASSWORD"</span> <span>$KEYCHAIN_PATH</span>
+
+          <span># import certificate to keychain</span>
+          <span>security</span> <span>import</span> <span>$CERTIFICATE_PATH</span> <span>-P</span> <span>"$P12_PASSWORD"</span> <span>-A</span> <span>-t</span> <span>cert</span> <span>-f</span> <span>pkcs12</span> <span>-k</span> <span>$KEYCHAIN_PATH</span>
+          <span>security</span> <span>set-key-partition-list</span> <span>-S</span> <span>apple-tool:,apple:</span> <span>-k</span> <span>"$KEYCHAIN_PASSWORD"</span> <span>$KEYCHAIN_PATH</span>
+          <span>security</span> <span>list-keychain</span> <span>-d</span> <span>user</span> <span>-s</span> <span>$KEYCHAIN_PATH</span>
+
+          <span># apply provisioning profile</span>
+          <span>mkdir</span> <span>-p</span> <span>~/Library/MobileDevice/Provisioning\</span> <span>Profiles</span>
+          <span>cp</span> <span>$PP_PATH</span> <span>~/Library/MobileDevice/Provisioning\</span> <span>Profiles</span>
+      <span>-</span> <span>name:</span> <span>Build</span> <span>app</span>
+          <span># ...</span>
+</code></pre>
+</div>
+<div>
+<p>
+For iOS build targets, your provisioning profile should have the extension <code>.mobileprovision</code>. For macOS build targets, the extension should be <code>.provisionprofile</code>. The example workflow above should be updated to reflect your target platform.</p>
+</div>
+<h2><a href="#required-clean-up-on-self-hosted-runners">Required clean-up on self-hosted runners</a></h2>
+<p>GitHub-hosted runners are isolated virtual machines that are automatically destroyed at the end of the job execution. This means that the certificates and provisioning profile used on the runner during the job will be destroyed with the runner when the job is completed.</p>
+<p>On self-hosted runners, the <code>$RUNNER_TEMP</code> directory is cleaned up at the end of the job execution, but the keychain and provisioning profile might still exist on the runner.</p>
+<p>If you use self-hosted runners, you should add a final step to your workflow to help ensure that these sensitive files are deleted at the end of the job. The workflow step shown below is an example of how to do this.</p>
+<pre><code><span>-</span> <span>name:</span> <span>Clean</span> <span>up</span> <span>keychain</span> <span>and</span> <span>provisioning</span> <span>profile</span>
+  <span>if:</span> <span>${{</span> <span>always()</span> <span>}}</span>
+  <span>run:</span> <span>|
+    security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+    rm ~/Library/MobileDevice/Provisioning\ Profiles/build_pp.mobileprovision
+</span></code></pre>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

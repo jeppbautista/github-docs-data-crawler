@@ -1,0 +1,83 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Monitor &amp; troubleshoot" href="/en/actions/monitoring-and-troubleshooting-workflows">Monitor &amp; troubleshoot</a><span>/</span>
+</li>
+<li>
+<a title="Troubleshoot" href="/en/actions/monitoring-and-troubleshooting-workflows/troubleshooting-workflows">Troubleshoot</a><span>/</span>
+</li>
+<li><a title="Working with GitHub Support" href="/en/actions/monitoring-and-troubleshooting-workflows/troubleshooting-workflows/working-with-support-for-github-actions">Working with GitHub Support</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Working with Support for GitHub Actions</h1></div></div>
+<div><div><p>Learn how GitHub Support can assist with GitHub Actions</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#providing-diagnostic-and-troubleshooting-information"><div><span>Providing diagnostic and troubleshooting information</span></div></a></li>
+<li><a href="#scope-of-support"><div><span>Scope of support</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>You can <a href="/en/support/contacting-github-support">contact GitHub Support</a> for assistance with GitHub Actions.</p>
+<h2><a href="#providing-diagnostic-and-troubleshooting-information">Providing diagnostic and troubleshooting information</a></h2>
+<p>The contents of private and internal repositories are not visible to GitHub Support, so GitHub Support may request additional information to understand the complete context of your inquiry and reproduce any unexpected behavior. You can accelerate the resolution of your inquiry by providing this information when you initially raise a ticket with GitHub Support.</p>
+<p>Some information that GitHub Support will request can include, but is not limited to, the following:</p>
+<ul>
+<li>
+<p>The URL of the workflow run.</p>
+<p>For example: <code>https://github.com/ORG/REPO/actions/runs/0123456789</code></p>
+</li>
+<li>
+<p>The workflow <code>.yml</code> file(s) attached to the ticket as <code>.txt</code> files. For more information about workflows, see <a href="/en/actions/using-workflows/about-workflows#about-workflows">About workflows</a>.</p>
+</li>
+<li>
+<p>A copy of your workflow run logs for an example workflow run failure. For more information about workflow run logs, see <a href="/en/actions/monitoring-and-troubleshooting-workflows/using-workflow-run-logs#downloading-logs">Using workflow run logs</a>.</p>
+</li>
+<li>
+<p>If you are running this workflow on a self-hosted runner, self-hosted runner logs which can be found under the <code>_diag</code> folder within the runner. For more information about self-hosted runners, see <a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners/monitoring-and-troubleshooting-self-hosted-runners#reviewing-the-self-hosted-runner-application-log-files">Monitoring and troubleshooting self-hosted runners</a>.</p>
+<p>Self-hosted runner log file names are be formatted: <code>Runner_YYYY####-xxxxxx-utc.log</code> and <code>Worker_YYYY####-xxxxxx-utc.log</code>.</p>
+</li>
+</ul>
+<div>
+<p>
+Attach files to your support ticket by changing the file's extension to <code>.txt</code> or <code>.zip</code>. If you include textual data such as log or workflow file snippets inline in your ticket, ensure they are formatted correctly as Markdown code blocks. For more information about proper Markdown formatting, see <a href="/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#quoting-code">Basic writing and formatting syntax</a>.</p>
+<p>If the information you provide is unreadable due to the loss of formatting by improper Markdown syntax, GitHub Support may request that resubmit the information either as an attachment or with the correct Markdown formatting.</p>
+</div>
+<div>
+<p>
+Ensure all files and text provided to GitHub Support have been properly redacted to remove sensitive information such as tokens and other secrets.</p>
+</div>
+<h3><a href="#ephemeral-runner-application-log-files">Ephemeral Runner Application Log Files</a></h3>
+<p>GitHub Support may request the runner application log files from ephemeral runners. GitHub expects and recommends that you have implemented a mechanism to forward and preserve the runner application log files from self-hosted ephemeral runners. For more information about runner application log files and troubleshooting self-hosted runners, see <a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners/monitoring-and-troubleshooting-self-hosted-runners#reviewing-the-self-hosted-runner-application-log-files">Monitoring and troubleshooting self-hosted runners</a>.</p>
+<h3><a href="#actions-runner-controller">Actions Runner Controller</a></h3>
+<p>If you are using Actions Runner Controller (ARC), GitHub Support may ask you to submit the complete logs for the controller, listeners, and runner pods. For more information about collecting Actions Runner Controller's logs, see <a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/troubleshooting-actions-runner-controller-errors#checking-the-logs-of-the-controller-and-runner-set-listener">Troubleshooting Actions Runner Controller errors</a>.</p>
+<p>For more information about the scope of support for Actions Runner Controller, see <a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/about-support-for-actions-runner-controller">About support for Actions Runner Controller</a>.</p>
+<h3><a href="#codeql-and-github-actions">CodeQL and GitHub Actions</a></h3>
+<p>If you are requesting assistance with a CodeQL analysis workflow, GitHub Support may request a copy of the CodeQL debugging artifacts. For more information about debugging artifacts for a CodeQL analysis workflow, see <a href="/en/code-security/code-scanning/troubleshooting-code-scanning/logs-not-detailed-enough#creating-codeql-debugging-artifacts">Logs are not detailed enough</a>.</p>
+<p>To provide the debugging artifacts to GitHub Support, please download the CodeQL debugging artifacts from a sample workflow run and attach it to your ticket as a <code>.zip</code> file. For more information on downloading workflow artifacts, see <a href="/en/actions/managing-workflow-runs/downloading-workflow-artifacts">Downloading workflow artifacts</a>.</p>
+<p>If the CodeQL debugging artifacts <code>.zip</code> file is too large to upload to the ticket, please advise GitHub Support, and we will work with you to determine the next steps.</p>
+<h2><a href="#scope-of-support">Scope of support</a></h2>
+<p>If your support request is outside of the scope of what our team can help you with, we may recommend next steps to resolve your issue outside of GitHub Support. Your support request is possibly out of GitHub Support's scope if the request is primarily about:</p>
+<ul>
+<li>Third party integrations, such as Jira</li>
+<li>CI/CD, such as Jenkins</li>
+<li>Writing scripts</li>
+<li>Configuration of external authentication systems, such as SAML identity providers</li>
+<li>Open source projects</li>
+<li>Writing or debugging new queries for CodeQL</li>
+<li>Cloud provider configurations, such as virtual network setup, custom firewall, or proxy rules</li>
+<li>Container orchestration, such as Kubernetes setup, or networking</li>
+<li>Detailed assistance with workflows and data management</li>
+<li>Preview features. Public preview, private preview, and technical preview features are out of GitHub Support's scope.</li>
+</ul>
+<p>For detailed assistance with workflows and data management, consult <a href="https://github.com/services/">GitHub Expert Services</a>, which offer specialized support to help you optimize your use of the platform.</p>
+<p>If you're uncertain if the issue is out of scope, open a ticket and we're happy to help you determine the best way to proceed.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

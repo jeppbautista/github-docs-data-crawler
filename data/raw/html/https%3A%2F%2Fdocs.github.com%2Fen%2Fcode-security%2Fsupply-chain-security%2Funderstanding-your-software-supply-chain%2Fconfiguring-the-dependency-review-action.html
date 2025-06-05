@@ -1,0 +1,403 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Supply chain security" href="/en/code-security/supply-chain-security">Supply chain security</a><span>/</span>
+</li>
+<li>
+<a title="Understand your supply chain" href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain">Understand your supply chain</a><span>/</span>
+</li>
+<li><a title="Configure dependency review action" href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/configuring-the-dependency-review-action">Configure dependency review action</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Configuring the dependency review action</h1></div></div>
+<div>
+<div><p>You can use the dependency review action to catch vulnerabilities before they are added to your project.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Repository owners, organization owners, security managers, and users with the <strong>admin</strong> role</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-the-dependency-review-action"><div><span>About the dependency review action</span></div></a></li>
+<li><a href="#configuring-the-dependency-review-action"><div><span>Configuring the dependency review action</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-the-dependency-review-action">About the dependency review action</a></h2>
+<p>The "dependency review action" refers to the specific action that can report on differences in a pull request within the GitHub Actions  context, and add enforcement mechanisms to the GitHub Actions workflow.</p>
+<p>The dependency review action scans your pull requests for dependency changes and raises an error if any new dependencies have known vulnerabilities. The action is supported by an API endpoint that compares the dependencies between two revisions and reports any differences.</p>
+<p>For more information about the action and the API endpoint, see the <a href="https://github.com/actions/dependency-review-action"><code>dependency-review-action</code></a> documentation, and <a href="/en/rest/dependency-graph/dependency-review">REST API endpoints for dependency review</a>.</p>
+<p>Organization owners can roll out dependency review at scale by enforcing the use of the dependency review action across repositories in the organization. This involves the use of repository rulesets for which you'll set the dependency review action as a required workflow, which means that pull requests can only be merged once the workflow passes all the required checks. For more information, see <a href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/enforcing-dependency-review-across-an-organization">Enforcing dependency review across an organization</a>.</p>
+<p>Here is a list of common configuration options. For more information, and a full list of options, see <a href="https://github.com/marketplace/actions/dependency-review">Dependency Review</a> on the GitHub Marketplace.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Option</th>
+<th>Required</th>
+<th>Usage</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>fail-on-severity</code></td>
+<td></td>
+<td>Defines the threshold for level of severity (<code>low</code>, <code>moderate</code>, <code>high</code>, <code>critical</code>).<br>The action will fail on any pull requests that introduce vulnerabilities of the specified severity level or higher.</td>
+</tr>
+<tr>
+<td><code>allow-licenses</code></td>
+<td></td>
+<td>Contains a list of allowed licenses. You can find the possible values for this parameter in the <a href="/en/rest/licenses">Licenses</a> page of the API documentation.<br>The action will fail on pull requests that introduce dependencies with licenses that do not match the list.</td>
+</tr>
+<tr>
+<td><code>deny-licenses</code></td>
+<td></td>
+<td>Contains a list of prohibited licenses. You can find the possible values for this parameter in the <a href="/en/rest/licenses">Licenses</a> page of the API documentation.<br>The action will fail on pull requests that introduce dependencies with licenses that match the list.</td>
+</tr>
+<tr>
+<td><code>fail-on-scopes</code></td>
+<td></td>
+<td>Contains a list of strings representing the build environments you want to support (<code>development</code>, <code>runtime</code>, <code>unknown</code>). <br>The action will fail on pull requests that introduce vulnerabilities in the scopes that match the list.</td>
+</tr>
+<tr>
+<td><code>comment-summary-in-pr</code></td>
+<td></td>
+<td>Enable or disable the reporting of the review summary as a comment in the pull request. If enabled, you must give the workflow or job the <code>pull-requests: write</code> permission. With each execution, a new comment will overwrite the existing one.</td>
+</tr>
+<tr>
+<td><code>allow-ghsas</code></td>
+<td></td>
+<td>Contains a list of GitHub Advisory Database IDs that can be skipped during detection. You can find the possible values for this parameter in the <a href="https://github.com/advisories">GitHub Advisory Database</a>.</td>
+</tr>
+<tr>
+<td><code>config-file</code></td>
+<td></td>
+<td>Specifies a path to a configuration file. The configuration file can be local to the repository or a file located in an external repository.</td>
+</tr>
+<tr>
+<td><code>external-repo-token</code></td>
+<td></td>
+<td>Specifies a token for fetching the configuration file, if the file resides in a private external repository. The token must have read access to the repository.</td>
+</tr>
+</tbody>
+</table>
+<div>
+<p>
+The <code>allow-licenses</code> and <code>deny-licenses</code> options are mutually exclusive.</p>
+</div>
+<h2><a href="#configuring-the-dependency-review-action">Configuring the dependency review action</a></h2>
+<p>There are two methods of configuring the dependency review action:</p>
+<ul>
+<li>Inlining the configuration options in your workflow file.</li>
+<li>Referencing a configuration file in your workflow file.</li>
+</ul>
+<p>Notice that all of the examples use a short version number for the action (<code>v3</code>) instead of a semver release number (for example, <code>v3.0.8</code>). This ensures that you use the most recent minor version of the action.</p>
+<h3><a href="#using-inline-configuration-to-set-up-the-dependency-review-action">Using inline configuration to set up the dependency review action</a></h3>
+<ol>
+<li>
+<p>Add a new YAML workflow to your <code>.github/workflows</code> folder.</p>
+<div>
+<header><span>YAML</span><pre>name: 'Dependency Review'
+on: [pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+     - name: 'Checkout Repository'
+       uses: actions/checkout@v4
+     - name: Dependency Review
+       uses: actions/dependency-review-action@v4
+</pre></header><pre><code><span>name:</span> <span>'Dependency Review'</span>
+<span>on:</span> [<span>pull_request</span>]
+
+<span>permissions:</span>
+  <span>contents:</span> <span>read</span>
+
+<span>jobs:</span>
+  <span>dependency-review:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>steps:</span>
+     <span>-</span> <span>name:</span> <span>'Checkout Repository'</span>
+       <span>uses:</span> <span>actions/checkout@v4</span>
+     <span>-</span> <span>name:</span> <span>Dependency</span> <span>Review</span>
+       <span>uses:</span> <span>actions/dependency-review-action@v4</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Specify your settings.</p>
+<p>This dependency review action example file illustrates how you can use the available configuration options.</p>
+<div>
+<header><span>YAML</span><pre>name: 'Dependency Review'
+on: [pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'Checkout Repository'
+      uses: actions/checkout@v4
+    - name: Dependency Review
+      uses: actions/dependency-review-action@v4
+      with:
+        # Possible values: "critical", "high", "moderate", "low"
+        fail-on-severity: critical
+
+        
+        # You can only include one of these two options: `allow-licenses` and `deny-licenses`
+        # ([String]). Only allow these licenses (optional)
+        # Possible values: Any SPDX-compliant license identifiers or expressions from https://spdx.org/licenses/
+        allow-licenses: GPL-3.0, BSD-3-Clause, MIT
+        # ([String]). Block the pull request on these licenses (optional)
+        # Possible values: Any SPDX-compliant license identifiers or expressions from https://spdx.org/licenses/
+        deny-licenses: LGPL-2.0, BSD-2-Clause
+        
+        # ([String]). Skip these GitHub Advisory Database IDs during detection (optional)
+        # Possible values: Any valid GitHub Advisory Database ID from https://github.com/advisories
+        allow-ghsas: GHSA-abcd-1234-5679, GHSA-efgh-1234-5679
+        # ([String]). Block pull requests that introduce vulnerabilities in the scopes that match this list (optional)
+        # Possible values: "development", "runtime", "unknown"
+        fail-on-scopes: development, runtime
+</pre></header><pre><code><span>name:</span> <span>'Dependency Review'</span>
+<span>on:</span> [<span>pull_request</span>]
+
+<span>permissions:</span>
+  <span>contents:</span> <span>read</span>
+
+<span>jobs:</span>
+  <span>dependency-review:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>steps:</span>
+    <span>-</span> <span>name:</span> <span>'Checkout Repository'</span>
+      <span>uses:</span> <span>actions/checkout@v4</span>
+    <span>-</span> <span>name:</span> <span>Dependency</span> <span>Review</span>
+      <span>uses:</span> <span>actions/dependency-review-action@v4</span>
+      <span>with:</span>
+        <span># Possible values: "critical", "high", "moderate", "low"</span>
+        <span>fail-on-severity:</span> <span>critical</span>
+
+        
+        <span># You can only include one of these two options: `allow-licenses` and `deny-licenses`</span>
+        <span># ([String]). Only allow these licenses (optional)</span>
+        <span># Possible values: Any SPDX-compliant license identifiers or expressions from https://spdx.org/licenses/</span>
+        <span>allow-licenses:</span> <span>GPL-3.0,</span> <span>BSD-3-Clause,</span> <span>MIT</span>
+        <span># ([String]). Block the pull request on these licenses (optional)</span>
+        <span># Possible values: Any SPDX-compliant license identifiers or expressions from https://spdx.org/licenses/</span>
+        <span>deny-licenses:</span> <span>LGPL-2.0,</span> <span>BSD-2-Clause</span>
+        
+        <span># ([String]). Skip these GitHub Advisory Database IDs during detection (optional)</span>
+        <span># Possible values: Any valid GitHub Advisory Database ID from https://github.com/advisories</span>
+        <span>allow-ghsas:</span> <span>GHSA-abcd-1234-5679,</span> <span>GHSA-efgh-1234-5679</span>
+        <span># ([String]). Block pull requests that introduce vulnerabilities in the scopes that match this list (optional)</span>
+        <span># Possible values: "development", "runtime", "unknown"</span>
+        <span>fail-on-scopes:</span> <span>development,</span> <span>runtime</span>
+</code></pre>
+</div>
+</li>
+</ol>
+<h3><a href="#using-a-configuration-file-to-set-up-dependency-review-action">Using a configuration file to set up dependency review action</a></h3>
+<ol>
+<li>
+<p>Add a new YAML workflow to your <code>.github/workflows</code> folder and use <code>config-file</code> to specify that you are using a configuration file.</p>
+<div>
+<header><span>YAML</span><pre>name: 'Dependency Review'
+on: [pull_request]
+
+permissions:
+ contents: read
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'Checkout Repository'
+      uses: actions/checkout@v4
+    - name: Dependency Review
+      uses: actions/dependency-review-action@v4
+      with:
+       # ([String]). Representing a path to a configuration file local to the repository or in an external repository.
+       # Possible values: An absolute path to a local file or an external file.
+       config-file: './.github/dependency-review-config.yml'
+       # Optional alternative syntax for an external file: OWNER/REPOSITORY/FILENAME@BRANCH (uncomment if preferred)
+       # config-file: 'github/octorepo/dependency-review-config.yml@main'
+
+       # ([Token]) Use if your configuration file resides in a private external repository.
+       # Possible values: Any GitHub token with read access to the private external repository.
+       external-repo-token: 'ghp_123456789abcde'
+</pre></header><pre><code><span>name:</span> <span>'Dependency Review'</span>
+<span>on:</span> [<span>pull_request</span>]
+
+<span>permissions:</span>
+ <span>contents:</span> <span>read</span>
+
+<span>jobs:</span>
+  <span>dependency-review:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>steps:</span>
+    <span>-</span> <span>name:</span> <span>'Checkout Repository'</span>
+      <span>uses:</span> <span>actions/checkout@v4</span>
+    <span>-</span> <span>name:</span> <span>Dependency</span> <span>Review</span>
+      <span>uses:</span> <span>actions/dependency-review-action@v4</span>
+      <span>with:</span>
+       <span># ([String]). Representing a path to a configuration file local to the repository or in an external repository.</span>
+       <span># Possible values: An absolute path to a local file or an external file.</span>
+       <span>config-file:</span> <span>'./.github/dependency-review-config.yml'</span>
+       <span># Optional alternative syntax for an external file: OWNER/REPOSITORY/FILENAME@BRANCH (uncomment if preferred)</span>
+       <span># config-file: 'github/octorepo/dependency-review-config.yml@main'</span>
+
+       <span># ([Token]) Use if your configuration file resides in a private external repository.</span>
+       <span># Possible values: Any GitHub token with read access to the private external repository.</span>
+       <span>external-repo-token:</span> <span>'ghp_123456789abcde'</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Create the configuration file in the path you have specified.</p>
+<p>This YAML example file illustrates how you can use the available configuration options.</p>
+<div>
+<header><span>YAML</span><pre>  # Possible values: "critical", "high", "moderate", "low"
+  fail-on-severity: critical
+
+  # You can only include one of these two options: `allow-licenses` and `deny-licenses`
+  # ([String]). Only allow these licenses (optional)
+  # Possible values: Any SPDX-compliant license identifiers or expressions from https://spdx.org/licenses/
+  allow-licenses:
+    - GPL-3.0
+    - BSD-3-Clause
+    - MIT
+   # ([String]). Block the pull request on these licenses (optional)
+   # Possible values: Any SPDX-compliant license identifiers or expressions from https://spdx.org/licenses/
+  deny-licenses:
+    - LGPL-2.0
+    - BSD-2-Clause
+
+   # ([String]). Skip these GitHub Advisory Database IDs during detection (optional)
+   # Possible values: Any valid GitHub Advisory Database ID from https://github.com/advisories
+  allow-ghsas:
+    - GHSA-abcd-1234-5679
+    - GHSA-efgh-1234-5679
+   # ([String]). Block pull requests that introduce vulnerabilities in the scopes that match this list (optional)
+   # Possible values: "development", "runtime", "unknown"
+  fail-on-scopes:
+    - development
+    - runtime
+</pre></header><pre><code>  <span># Possible values: "critical", "high", "moderate", "low"</span>
+  <span>fail-on-severity:</span> <span>critical</span>
+
+  <span># You can only include one of these two options: `allow-licenses` and `deny-licenses`</span>
+  <span># ([String]). Only allow these licenses (optional)</span>
+  <span># Possible values: Any SPDX-compliant license identifiers or expressions from https://spdx.org/licenses/</span>
+  <span>allow-licenses:</span>
+    <span>-</span> <span>GPL-3.0</span>
+    <span>-</span> <span>BSD-3-Clause</span>
+    <span>-</span> <span>MIT</span>
+   <span># ([String]). Block the pull request on these licenses (optional)</span>
+   <span># Possible values: Any SPDX-compliant license identifiers or expressions from https://spdx.org/licenses/</span>
+  <span>deny-licenses:</span>
+    <span>-</span> <span>LGPL-2.0</span>
+    <span>-</span> <span>BSD-2-Clause</span>
+
+   <span># ([String]). Skip these GitHub Advisory Database IDs during detection (optional)</span>
+   <span># Possible values: Any valid GitHub Advisory Database ID from https://github.com/advisories</span>
+  <span>allow-ghsas:</span>
+    <span>-</span> <span>GHSA-abcd-1234-5679</span>
+    <span>-</span> <span>GHSA-efgh-1234-5679</span>
+   <span># ([String]). Block pull requests that introduce vulnerabilities in the scopes that match this list (optional)</span>
+   <span># Possible values: "development", "runtime", "unknown"</span>
+  <span>fail-on-scopes:</span>
+    <span>-</span> <span>development</span>
+    <span>-</span> <span>runtime</span>
+</code></pre>
+</div>
+</li>
+</ol>
+<p>For further details about the configuration options, see <a href="https://github.com/actions/dependency-review-action#readme"><code>dependency-review-action</code></a>.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/customizing-your-dependency-review-action-configuration">Customizing your dependency review action configuration</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

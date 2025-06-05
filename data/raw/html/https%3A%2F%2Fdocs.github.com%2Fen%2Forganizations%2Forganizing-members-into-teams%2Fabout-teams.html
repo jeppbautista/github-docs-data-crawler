@@ -1,0 +1,76 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Organizations" href="/en/organizations">Organizations</a><span>/</span>
+</li>
+<li>
+<a title="Organize members into teams" href="/en/organizations/organizing-members-into-teams">Organize members into teams</a><span>/</span>
+</li>
+<li><a title="About teams" href="/en/organizations/organizing-members-into-teams/about-teams">About teams</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>About teams</h1></div></div>
+<div><div><p>Teams are groups of organization members that reflect your company or group's structure with cascading access permissions and mentions.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-teams"><div><span>About teams</span></div></a></li>
+<li><a href="#team-visibility"><div><span>Team visibility</span></div></a></li>
+<li><a href="#team-pages"><div><span>Team pages</span></div></a></li>
+<li><a href="#nested-teams"><div><span>Nested teams</span></div></a></li>
+<li><a href="#preparing-to-nest-teams-in-your-organization"><div><span>Preparing to nest teams in your organization</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-teams">About teams</a></h2>
+<p>You can use teams to manage access for people in an organization, and for sending notifications. Organization owners and team maintainers can give teams admin, read, or write access to organization repositories. Organization members can send a notification to an entire team by mentioning the team's name. Teams can only be made up of members of your organization, outside collaborators are unable to be on a team.</p>
+<p>Organization owners and team maintainers can disable team notifications. For more information, see <a href="/en/organizations/organizing-members-into-teams/configuring-team-notifications">Configuring team notifications</a>.</p>
+<p>Organization members can also send a notification to an entire team by requesting a review from that team. Organization members can request reviews from specific teams with read access to the repository where the pull request is opened. Teams can be designated as owners of certain types or areas of code in a CODEOWNERS file.</p>
+<p>For more information, see:</p>
+<ul>
+<li><a href="/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/managing-team-access-to-an-organization-repository">Managing team access to an organization repository</a></li>
+<li><a href="/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#mentioning-people-and-teams">Basic writing and formatting syntax</a></li>
+<li><a href="/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners">About code owners</a></li>
+</ul>
+<p>Organizations that use GitHub Enterprise Cloud can use team synchronization to automatically add and remove organization members to teams through an identity provider. For more information, see <a href="/en/enterprise-cloud@latest/organizations/organizing-members-into-teams/synchronizing-a-team-with-an-identity-provider-group">Synchronizing a team with an identity provider group</a> in the GitHub Enterprise Cloud documentation.</p>
+<h2><a href="#team-visibility">Team visibility</a></h2>
+<p>Teams can be visible or secret:</p>
+<ul>
+<li>Visible teams can be <a href="/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#mentioning-people-and-teams">viewed and @mentioned</a> by every organization member.</li>
+<li>Secret teams are only visible to the people on the team and people with owner permissions. They're great for hiding teams with sensitive names or members, such as those used for working with external partners or clients. Secret teams cannot be nested under parent teams or have child teams.</li>
+</ul>
+<p>People who are not members of the organization cannot view any teams.</p>
+<p>You can view all the teams you belong to on your personal dashboard. For more information, see <a href="/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-personal-account-settings/about-your-personal-dashboard#finding-your-top-repositories-and-teams">About your personal dashboard</a>.</p>
+<h2><a href="#team-pages">Team pages</a></h2>
+<p>Each team has its own page within an organization. On a team's page, you can view team members, child teams, and the team's repositories. Organization owners and team maintainers can access team settings and update the team's description and profile picture from the team's page.</p>
+<div>
+<p>
+Team Discussions are retired. You can read more about this on the <a href="https://github.blog/changelog/2023-02-08-sunset-notice-team-discussions/">GitHub Blog</a>.</p>
+<p>You can use GitHub Discussions to create organization-level discussions. For more information about GitHub Discussions, see <a href="/en/discussions">GitHub Discussions documentation</a>.</p>
+</div>
+<h2><a href="#nested-teams">Nested teams</a></h2>
+<p>You can reflect your group or company's hierarchy within your GitHub organization with multiple levels of nested teams. A parent team can have multiple child teams, while each child team only has one parent team. You cannot nest secret teams.</p>
+<p>Child teams inherit the parent's access permissions, simplifying permissions management for large groups. Members of child teams also receive notifications when the parent team is @mentioned, simplifying communication with multiple groups of people.</p>
+<p>For example, if your team structure is Employees &gt; Engineering &gt; Application Engineering &gt; Identity, granting Engineering write access to a repository means Application Engineering and Identity also get that access. If you @mention the Identity Team or any team at the bottom of the organization hierarchy, they're the only ones who will receive a notification.</p>
+<p>To easily understand who shares a parent team's permissions and mentions, you can see all of the members of a parent team's child teams on the Members tab of the parent team's page. Members of a child team are not direct members of the parent team.</p>
+<p>You can choose a parent when you create the team, or you can move a team in your organization's hierarchy later. For more information see, <a href="/en/organizations/organizing-members-into-teams/moving-a-team-in-your-organizations-hierarchy">Moving a team in your organization’s hierarchy</a>.</p>
+<h2><a href="#preparing-to-nest-teams-in-your-organization">Preparing to nest teams in your organization</a></h2>
+<p>If your organization already has existing teams, you should audit each team's repository access permissions before you nest teams above or below it. You should also consider the new structure you'd like to implement for your organization.</p>
+<p>At the top of the team hierarchy, you should give parent teams repository access permissions that are safe for every member of the parent team and its child teams. As you move toward the bottom of the hierarchy, you can grant child teams additional, more granular access to more sensitive repositories.</p>
+<ol>
+<li>Remove all members from existing teams</li>
+<li>Audit and adjust each team's repository access permissions and give each team a parent</li>
+<li>Create any new teams you'd like to, choose a parent for each new team, and give them repository access</li>
+<li>Add people directly to teams</li>
+</ol>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/organizations/organizing-members-into-teams/creating-a-team">Creating a team</a></li>
+<li><a href="/en/organizations/organizing-members-into-teams/adding-organization-members-to-a-team">Adding organization members to a team</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

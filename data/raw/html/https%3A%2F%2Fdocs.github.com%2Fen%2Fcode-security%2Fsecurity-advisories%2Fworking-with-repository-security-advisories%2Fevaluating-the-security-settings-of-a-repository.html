@@ -1,0 +1,108 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Security advisories" href="/en/code-security/security-advisories">Security advisories</a><span>/</span>
+</li>
+<li>
+<a title="Repository security advisories" href="/en/code-security/security-advisories/working-with-repository-security-advisories">Repository security advisories</a><span>/</span>
+</li>
+<li><a title="Evaluate repository security" href="/en/code-security/security-advisories/working-with-repository-security-advisories/evaluating-the-security-settings-of-a-repository">Evaluate repository security</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Evaluating the security settings of a repository</h1></div></div>
+<div>
+<div><p>Security researchers can assess the security settings of a public repository, suggest a security policy and report a vulnerability.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div>
+<p><strong>Anyone</strong> can:</p>
+<ul>
+<li>View a public repository's security settings.</li>
+<li>Contact the repository maintainers regarding a security issue.</li>
+</ul>
+</div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-evaluating-a-repositorys-security-settings"><div><span>About evaluating a repository's security settings</span></div></a></li>
+<li><a href="#suggesting-a-security-policy-for-a-repository"><div><span>Suggesting a security policy for a repository</span></div></a></li>
+<li><a href="#reporting-a-vulnerability-in-a-repository"><div><span>Reporting a vulnerability in a repository</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-evaluating-a-repositorys-security-settings">About evaluating a repository's security settings</a></h2>
+<p>Evaluating a public repository's security settings can help security researchers understand the repository's security posture. This information can help you decide whether to engage with the repository maintainers, for example, by reporting a vulnerability in the repository.</p>
+<p>If a repository is public, high level information about the repository's security settings is available to anyone. For example, you can see whether the repository has a security policy, and whether private vulnerability reporting is enabled. You can also view published and closed security advisories for the repository. If no security policy is associated with a repository, you can suggest one. If the repository has private vulnerability reporting enabled, you can privately report security vulnerabilities directly to repository maintainers.</p>
+<p>If you have admin permissions to the repository, and the repository is owned by an organization, you can see more detailed information about the repository's security settings through the security overview. For more information on the security overview, see <a href="/en/code-security/security-overview/about-security-overview">About security overview</a>.</p>
+<p>If a repository is private, you can only see the security settings if you have admin permissions to the repository or have been granted special security permissions covering the repository, for example, as an organization-wide security manager.</p>
+<p>If you would like to evaluate the security posture of repositories at scale, you can use the API to check whether or not some security settings are enabled for repositories, such as private vulnerability reporting. For more information, see <a href="/en/rest/repos/repos#check-if-private-vulnerability-reporting-is-enabled-for-a-repository">REST API endpoints for repositories</a>.</p>
+<h2><a href="#suggesting-a-security-policy-for-a-repository">Suggesting a security policy for a repository</a></h2>
+<p>If you do not have admin or security permissions for a public repository, you can still suggest a security policy to the repository maintainers if one doesn't already exist. The repository maintainers can then choose to accept or reject your suggestion. If the repository maintainers accept your suggestion, the security policy will be associated with the repository.</p>
+<ol>
+<li>On GitHub, navigate to the main page of the repository.</li>
+<li>Under the repository name, click <strong>Security</strong>.
+<div><picture><source><img src="/assets/cb-17801/images/help/repository/security-tab.png" alt='Screenshot of a repository header showing the tabs. The "Security" tab is highlighted by a dark orange outline.' width="720" height="89"></source></picture></div>
+</li>
+<li>If the repository has a security policy, it will be displayed. If no security policy is associated with the repository, click <strong>Suggest a policy</strong>.</li>
+<li>A SECURITY.md file will be created in the repository's default branch. The file will contain a template for a security policy. You can edit the file to add your suggested security policy.</li>
+<li>When you are done, click <strong>Commit changes</strong>.</li>
+<li>Fill out the <strong>Commit changes</strong> dialog.
+<ul>
+<li>Under "Commit message", enter a commit message.</li>
+<li>Optionally, under "Extended description", describe the changes being made.</li>
+<li>Select "Create a new branch for this commit and start a pull request"</li>
+<li>Click <strong>Commit changes</strong>.</li>
+</ul>
+</li>
+<li>Click <strong>Create pull request</strong>.</li>
+<li>Optionally, leave a comment.</li>
+<li>Click <strong>Create pull request</strong>.</li>
+</ol>
+<h2><a href="#reporting-a-vulnerability-in-a-repository">Reporting a vulnerability in a repository</a></h2>
+<p>If you do not have admin or security permissions for a public repository, you can still privately report a security vulnerability to repository maintainers if private vulnerability reporting is enabled. The repository maintainers can then choose to accept or reject your report. If the repository maintainers accept your report, a security advisory will be created for the repository.</p>
+<div>
+<p>
+If the repository doesn't have private vulnerability reporting enabled, you need to initiate the reporting process by following the instructions in the security policy for the repository, or create an issue asking the maintainers for a preferred security contact. For more information, see <a href="/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/about-coordinated-disclosure-of-security-vulnerabilities#about-reporting-and-disclosing-vulnerabilities-in-projects-on-github">About coordinated disclosure of security vulnerabilities</a>.</p>
+</div>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under the repository name, click <strong>Security</strong>.
+</p>
+<div><picture><source><img src="/assets/cb-17801/images/help/repository/security-tab.png" alt='Screenshot of a repository header showing the tabs. The "Security" tab is highlighted by a dark orange outline.' width="720" height="89"></source></picture></div>
+</li>
+<li>
+<p>Click <strong>Report a vulnerability</strong> to open the advisory form.</p>
+</li>
+<li>
+<p>Fill in the advisory details form.</p>
+<div>
+<p>
+In this form, only the title and description are mandatory. (In the general draft security advisory form, which the repository maintainer initiates, specifying the ecosystem is also required.) However, we recommend security researchers provide as much information as possible on the form so that the maintainers can make an informed decision about the submitted report. You can adopt the template used by our security researchers from the GitHub Security Lab, which is available on the <a href="https://github.com/github/securitylab/blob/main/docs/report-template.md"><code>github/securitylab</code> repository</a>.</p>
+</div>
+<p>For more information about the fields available and guidance on filling in the form, see <a href="/en/code-security/security-advisories/working-with-repository-security-advisories/creating-a-repository-security-advisory">Creating a repository security advisory</a> and <a href="/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/best-practices-for-writing-repository-security-advisories">Best practices for writing repository security advisories</a>.</p>
+</li>
+<li>
+<p>At the bottom of the form, click <strong>Submit report</strong>. GitHub will display a message letting you know that maintainers have been notified and that you have a pending credit for this security advisory.</p>
+<div>
+<p>
+When the report is submitted, GitHub automatically adds the reporter of the vulnerability as a collaborator and as a credited user on the proposed advisory.</p>
+</div>
+</li>
+<li>
+<p>Optionally, click <strong>Start a temporary private fork</strong> if you want to start to fix the issue. Note that only the repository maintainer can merge changes from that private fork into the parent repository.</p>
+<div><picture><source><img src="/assets/cb-51900/images/help/security/advisory-start-a-temporary-private-fork-button.png" alt='Screenshot of the bottom of a security advisory. A button, labeled "Start a temporary fork" is outlined in dark orange.' width="687" height="296"></source></picture></div>
+</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

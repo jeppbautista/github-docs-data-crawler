@@ -1,0 +1,38 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="CodeQL for VS Code" href="/en/code-security/codeql-for-vs-code">CodeQL for VS Code</a><span>/</span>
+</li>
+<li>
+<a title="Troubleshooting CodeQL for VS Code" href="/en/code-security/codeql-for-vs-code/troubleshooting-codeql-for-vs-code">Troubleshooting CodeQL for VS Code</a><span>/</span>
+</li>
+<li><a title="Problem with controller repository" href="/en/code-security/codeql-for-vs-code/troubleshooting-codeql-for-vs-code/warning-problem-with-controller-repository">Problem with controller repository</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Problem with controller repository</h1></div></div>
+<div><div><p>If you see this warning, update your controller repository to a private repository.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-this-warning"><div><span>About this warning</span></div></a></li>
+<li><a href="#confirming-the-cause-of-the-problem"><div><span>Confirming the cause of the problem</span></div></a></li>
+<li><a href="#fixing-the-problem"><div><span>Fixing the problem</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-this-warning">About this warning</a></h2>
+<pre><code>Publicly visible controller repository can't be used to analyze private repositories. NUMBER private repositories were not analyzed.
+</code></pre>
+<p>If you run variant analysis on a custom list of repositories, you may receive this warning as a banner in Visual Studio Code, where NUMBER is the number of private repositories that have not been analyzed.</p>
+<h2><a href="#confirming-the-cause-of-the-problem">Confirming the cause of the problem</a></h2>
+<p>When you run variant analysis, you'll see any errors and warnings displayed in the "Variant Analysis Results" view.</p>
+<h2><a href="#fixing-the-problem">Fixing the problem</a></h2>
+<p>To analyze private repositories, you should edit your settings to update your controller repository to a private repository. For information on how to edit the controller repository, see <a href="/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension/customizing-settings#configuring-settings-for-variant-analysis">Customizing settings</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,35 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Apps" href="/en/apps">Apps</a><span>/</span>
+</li>
+<li>
+<a title="Creating GitHub Apps" href="/en/apps/creating-github-apps">Creating GitHub Apps</a><span>/</span>
+</li>
+<li>
+<a title="Authenticate with a GitHub App" href="/en/apps/creating-github-apps/authenticating-with-a-github-app">Authenticate with a GitHub App</a><span>/</span>
+</li>
+<li><a title="Authenticate on behalf of users" href="/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-with-a-github-app-on-behalf-of-a-user">Authenticate on behalf of users</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Authenticating with a GitHub App on behalf of a user</h1></div></div>
+<div><div><p>Your GitHub App can perform actions on behalf of a user, like creating an issue, posting a comment, or creating a deployment.</p></div></div>
+<div><div><div>
+<p>Your app can make API requests on behalf of a user. API requests made by an app on behalf of a user will be attributed to that user. For example, if your app posts a comment on behalf of a user, the GitHub UI will show the user's avatar photo along with the app's identicon badge as the author of the issue.</p>
+<p><picture><source><img src="/assets/cb-32990/images/help/apps/github-app-acting-on-your-behalf.png" alt="Screenshot of a comment that has a user avatar with an overlaid app identicon badge. The avatar is highlighted with an orange outline." width="500" height="85"></source></picture></p>
+<p>Similarly, if the request triggers a corresponding entry in the audit logs and security logs, the logs will list the user as the actor but will state that the "programmatic_access_type" is "GitHub App user-to-server token".</p>
+<p>To make an API request on behalf of a user, the user must authorize your app. If an app is installed on an organization that includes multiple members, each member will need to authorize the app before the app can act on their behalf. An app does not need to be installed in order for a user to authorize the app.</p>
+<p>When a user installs an app on their account or organization, they grant the app permission to access the organization and repository resources that it requested. During the installation process, they will also see a list of account permissions that the app can request for individual users. When a user authorizes an app, they grant the app permission to act on their behalf, and they grant the account permissions that the app requested.</p>
+<p>Once a user has authorized your app, you can generate a user access token, which is a type of OAuth token. You should send the user access token in the <code>Authorization</code> header of your subsequent API requests. For more information about prompting a user to authorize your app and generating a user access token, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app">Generating a user access token for a GitHub App</a>.</p>
+<p>Requests made with a user access token are sometimes called "user-to-server" requests.</p>
+<p>A token has the same capabilities to access resources and perform actions on those resources that the owner of the token has, and is further limited by any scopes or permissions granted to the token. A token cannot grant additional access capabilities to a user.</p>
+<p>If you want to attribute app activity to the app instead of to a user, you should authenticate as an app installation instead. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app-installation">Authenticating as a GitHub App installation</a>.</p>
+<div>
+<p>
+If a user reports that they cannot see resources owned by their organization after authorizing your GitHub App and the organization uses SAML SSO, instruct the user to start an active SAML session for their organization before reauthorizing. For more information, see <a href="/en/enterprise-cloud@latest/apps/using-github-apps/saml-and-github-apps">SAML and GitHub Apps</a> in the GitHub Enterprise Cloud documentation.</p>
+</div>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

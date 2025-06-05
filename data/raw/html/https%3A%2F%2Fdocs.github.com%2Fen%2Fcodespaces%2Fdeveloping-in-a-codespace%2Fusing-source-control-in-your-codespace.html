@@ -1,0 +1,366 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Developing in a codespace" href="/en/codespaces/developing-in-a-codespace">Developing in a codespace</a><span>/</span>
+</li>
+<li><a title="Source control" href="/en/codespaces/developing-in-a-codespace/using-source-control-in-your-codespace">Source control</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Using source control in your codespace</h1></div></div>
+<div>
+<div><p>After making changes to a file in your codespace you can quickly commit the changes and push your update to the remote repository.</p></div>
+<div>
+<h2>Tool navigation</h2>
+<nav><ul>
+<li><a href="?tool=vscode"><span>Visual Studio Code</span></a></li>
+<li><a href="?tool=webui"><span>Web browser</span></a></li>
+</ul></nav>
+</div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-source-control-in-github-codespaces"><div><span>About source control in GitHub Codespaces</span></div></a></li>
+<li><a href="#about-automatic-forking"><div><span>About automatic forking</span></div></a></li>
+<li><a href="#publishing-a-codespace-created-from-a-template"><div><span>Publishing a codespace created from a template</span></div></a></li>
+<li><a href="#creating-or-switching-branches"><div><span>Creating or switching branches</span></div></a></li>
+<li><a href="#committing-your-changes"><div><span>Committing your changes</span></div></a></li>
+<li><a href="#pulling-changes-from-the-remote-repository"><div><span>Pulling changes from the remote repository</span></div></a></li>
+<li><a href="#setting-your-codespace-to-automatically-fetch-new-changes"><div><span>Setting your codespace to automatically fetch new changes</span></div></a></li>
+<li><a href="#raising-a-pull-request"><div><span>Raising a pull request</span></div></a></li>
+<li><a href="#pushing-changes-to-your-remote-repository"><div><span>Pushing changes to your remote repository</span></div></a></li>
+<li><a href="#publishing-a-codespace-created-from-a-template-1"><div><span>Publishing a codespace created from a template</span></div></a></li>
+<li><a href="#creating-or-switching-branches-1"><div><span>Creating or switching branches</span></div></a></li>
+<li><a href="#committing-your-changes-1"><div><span>Committing your changes</span></div></a></li>
+<li><a href="#pulling-changes-from-the-remote-repository-1"><div><span>Pulling changes from the remote repository</span></div></a></li>
+<li><a href="#setting-your-codespace-to-automatically-fetch-new-changes-1"><div><span>Setting your codespace to automatically fetch new changes</span></div></a></li>
+<li><a href="#raising-a-pull-request-1"><div><span>Raising a pull request</span></div></a></li>
+<li><a href="#pushing-changes-to-your-remote-repository-1"><div><span>Pushing changes to your remote repository</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-source-control-in-github-codespaces">About source control in GitHub Codespaces</a></h2>
+<p>You can perform all the Git actions you need directly within your codespace. For example, you can fetch changes from a remote repository, switch branches, create a new branch, commit and push changes, and create a pull request. You can use the integrated terminal within your codespace to enter Git commands, or you can click icons and menu options to complete all the most common Git tasks. This guide explains how to use the graphical user interface for source control.</p>
+<div>
+<p>For more information about Git support in Visual Studio Code, see <a href="https://code.visualstudio.com/docs/editor/versioncontrol#_git-support">Using Version Control in VS Code</a> in the Visual Studio Code documentation.</p>
+</div>
+<div>
+<p>Source control in the Visual Studio Code web client uses the same workflow as the Visual Studio Code desktop application. For more information, see <a href="https://code.visualstudio.com/docs/editor/versioncontrol#_git-support">Using Version Control in VS Code</a> in the Visual Studio Code documentation.</p>
+</div>
+<p>A typical workflow for updating a file using GitHub Codespaces would be:</p>
+<ul>
+<li>From the default branch of your repository on GitHub, create a codespace. See <a href="/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository">Creating a codespace for a repository</a>.</li>
+<li>In your codespace, create a new branch to work on.</li>
+<li>Make your changes and save them.</li>
+<li>Commit the change.</li>
+<li>Raise a pull request.</li>
+</ul>
+<div>
+<p>
+By default, GitHub Codespaces uses the HTTPS protocol to transfer data to and from a remote repository, and authenticates with a <code>GITHUB_TOKEN</code> configured with read and write access to the repository from which you create the codespace. If you're having issues with authentication, see <a href="/en/codespaces/troubleshooting/troubleshooting-authentication-to-a-repository">Troubleshooting authentication to a repository</a>.</p>
+</div>
+<h2><a href="#about-automatic-forking">About automatic forking</a></h2>
+<p>To create a codespace for a repository for which you only have read access, you must have permission to fork the repository.</p>
+<p>You do not need to fork the repository before you create the codespace. For example, you can create a codespace from the repository to look at the project and make experimental changes, then delete the codespace if you no longer need it.</p>
+<p>If you make a commit from the codespace, or push a new branch, GitHub Codespaces either creates a fork of the repository under your account and links it to your codespace, or it links your codespace to an existing fork if you already have one for the repository. You can then push your changes to the fork and create a pull request to propose the changes to the upstream repository.</p>
+<p>If you make a commit from the command line, you will see a prompt asking if you would like to proceed with linking your codespace to a new or existing fork. Enter <code>y</code> to proceed. If you commit changes from the <strong>Source Control</strong> view in VS Code, your codespace is automatically linked to a fork without you being prompted.</p>
+<div>
+<ul>
+<li>If you delete your fork repository, then any codespaces linked to the fork are deleted, even if you originally created them from the upstream repository.</li>
+<li>If you make a commit from the command line and refuse the new fork by entering <code>n</code>, you should push your changes from the command line rather than from VS Code's Source Control view. If you use the Source Control view, VS Code will still try to create a fork for you on push.</li>
+</ul>
+</div>
+<p>When GitHub Codespaces creates a fork, or links your codespace to an existing fork, the following things happen.</p>
+<ul>
+<li>The access token associated with your codespace is updated to include <code>read</code> and <code>write</code> permission to your fork, in addition to <code>read</code> permission to the upstream repository.</li>
+<li>In your Git settings, the upstream repository is reassigned to the name <code>upstream</code>, and the fork is added as a new remote repository under the name <code>origin</code>.</li>
+</ul>
+<p>By default, source control commands that you access from your editor's user interface, such as the <strong>Sync Changes</strong> button in VS Code, target your fork. If you're working from the command line, you can use <code>origin</code> to refer to your fork and <code>upstream</code> to refer to the upstream repository. For example, you can fetch changes from the upstream repository to ensure your codespace is up to date with the latest changes to the project.</p>
+<pre><code>git fetch upstream
+</code></pre>
+<p>When you have made some changes, you can push them to a feature branch of your fork.</p>
+<pre><code>git push origin my-feature-branch
+</code></pre>
+<p>For more information, see <a href="/en/pull-requests/collaborating-with-pull-requests/working-with-forks/about-forks">About forks</a>.</p>
+<div>
+<h2><a href="#publishing-a-codespace-created-from-a-template">Publishing a codespace created from a template</a></h2>
+<p>When you create a codespace from a template repository or a template on the "Your codespaces" page, the work you do won't be stored in a repository on GitHub until you publish your codespace. For more information, see <a href="/en/codespaces/developing-in-codespaces/creating-a-codespace-from-a-template#publishing-to-a-repository-on-github">Creating a codespace from a template</a>.</p>
+<p>If you're working in a codespace, you can publish it from the VS Code web client or desktop application.</p>
+<ol>
+<li>
+<p>In the Activity Bar, click the <strong>Source Control</strong> view.</p>
+<div><picture><source><img src="/assets/cb-33788/images/help/codespaces/source-control-activity-bar-button.png" alt="Screenshot of the VS Code Activity Bar with the source control button highlighted with an orange outline." width="458" height="239"></source></picture></div>
+</li>
+<li>
+<p>To stage your changes, click <strong>+</strong> next to the file you've added or changed, or next to <strong>Changes</strong> if you've changed multiple files and you want to stage them all.</p>
+<div><picture><source><img src="/assets/cb-33843/images/help/codespaces/codespaces-commit-stage.png" alt='Screenshot of the "Source control" side bar with the staging button (a plus sign), to the right of "Changes," highlighted with a dark orange outline.' width="459" height="189"></source></picture></div>
+<div>
+<p>
+If you start from GitHub's blank template, you will not see a list of changes unless you have already initialized your directory as a Git repository. To publish codespaces created from the blank template, click <strong>Publish to GitHub</strong> in the "Source Control" view, then skip to step 5.</p>
+</div>
+</li>
+<li>
+<p>To commit your staged changes, type a commit message describing the change you've made, then click <strong>Commit</strong>.</p>
+<div><picture><source><img src="/assets/cb-38443/images/help/codespaces/vscode-commit-button.png" alt='Screenshot of the "Source control" side bar with a commit message and, below it, the "Commit" button both highlighted with a dark orange outline.' width="459" height="205"></source></picture></div>
+</li>
+<li>
+<p>Click <strong>Publish Branch</strong>.</p>
+<div><picture><source><img src="/assets/cb-15968/images/help/codespaces/vscode-publish-branch-button.png" alt='Screenshot of the "Source control" side bar showing the "Publish Branch" button.' width="436" height="177"></source></picture></div>
+</li>
+<li>
+<p>In the "Repository Name" dropdown, type a name for your new repository, then select <strong>Publish to GitHub private repository</strong> or <strong>Publish to GitHub public repository</strong>.</p>
+<div><picture><source><img src="/assets/cb-24667/images/help/codespaces/choose-new-repository.png" alt="Screenshot of the repository name dropdown in VS Code. Two options are shown, for publishing to a private or a public repository." width="627" height="108"></source></picture></div>
+<p>The owner of the new repository will be the GitHub account with which you created the codespace.</p>
+</li>
+<li>
+<p>Optionally, in the pop-up that appears in the lower right corner of the editor, click <strong>Open on GitHub</strong> to view the new repository on GitHub.</p>
+<div><picture><source><img src="/assets/cb-33916/images/help/codespaces/open-on-github.png" alt='Screenshot of a confirmation message for a successfully published repository, showing the "Open on GitHub" button.' width="626" height="159"></source></picture></div>
+</li>
+</ol>
+<h2><a href="#creating-or-switching-branches">Creating or switching branches</a></h2>
+<ol>
+<li>
+<p>If the current branch is not shown in the status bar, at the bottom of your codespace, right-click the status bar and select <strong>Source control</strong>.</p>
+</li>
+<li>
+<p>Click the branch name in the status bar.</p>
+<div><picture><source><img src="/assets/cb-13223/images/help/codespaces/branch-in-status-bar.png" alt="Screenshot of the branch name displayed in the status bar of VS Code." width="462" height="133"></source></picture></div>
+</li>
+<li>
+<p>In the dropdown, either click the branch you want to switch to, or enter the name for a new branch and click <strong>Create new branch</strong>.</p>
+<div><picture><source><img src="/assets/cb-33999/images/help/codespaces/create-new-branch.png" alt="Screenshot of the dropdown for creating a new branch in VS Code." width="624" height="201"></source></picture></div>
+</li>
+</ol>
+<div>
+<p>
+If someone has recently changed a file on the remote repository, in the branch you switched to, you may not see those changes until you pull the changes into your codespace.</p>
+</div>
+<h2><a href="#committing-your-changes">Committing your changes</a></h2>
+<ol>
+<li>
+<p>In the Activity Bar, click the <strong>Source Control</strong> view.</p>
+<div><picture><source><img src="/assets/cb-33788/images/help/codespaces/source-control-activity-bar-button.png" alt="Screenshot of the VS Code Activity Bar with the source control button highlighted with an orange outline." width="458" height="239"></source></picture></div>
+</li>
+<li>
+<p>To stage your changes, click <strong>Changes</strong> if you've changed multiple files and you want to stage them all.</p>
+<div><picture><source><img src="/assets/cb-33843/images/help/codespaces/codespaces-commit-stage.png" alt='Screenshot of the "Source control" side bar with the staging button (a plus sign), to the right of "Changes," highlighted with a dark orange outline.' width="459" height="189"></source></picture></div>
+</li>
+<li>
+<p>In the text box, type a commit message describing the change you've made.</p>
+<div><picture><source><img src="/assets/cb-37655/images/help/codespaces/codespaces-commit-commit-message.png" alt='Screenshot of the "Source control" side bar with a commit message entered into the text box above the "Commit" button.' width="461" height="205"></source></picture></div>
+</li>
+<li>
+<p>Click the down arrow at the right side of the <strong>Commit</strong> button, and select <strong>Commit &amp; Push</strong> from the dropdown menu.</p>
+<div><picture><source><img src="/assets/cb-51942/images/help/codespaces/commit-and-push-option.png" alt='Screenshot of the dropdown for the "Commit" button. The option "Commit &amp; Push" is highlighted with a dark orange outline.' width="564" height="243"></source></picture></div>
+</li>
+</ol>
+<h2><a href="#pulling-changes-from-the-remote-repository">Pulling changes from the remote repository</a></h2>
+<p>You can pull changes from the remote repository into your codespace at any time.</p>
+<ol>
+<li>
+<p>In the Activity Bar, click the <strong>Source Control</strong> view.</p>
+<div><picture><source><img src="/assets/cb-33788/images/help/codespaces/source-control-activity-bar-button.png" alt="Screenshot of the VS Code Activity Bar with the source control button highlighted with an orange outline." width="458" height="239"></source></picture></div>
+</li>
+<li>
+<p>At the top of the side bar, click </p>
+<div><picture><source><img src="/assets/cb-29402/images/help/codespaces/source-control-ellipsis-button.png" alt='Screenshot of the "Source control" side bar. The ellipsis button (three dots) is highlighted with a dark orange outline.' width="459" height="180"></source></picture></div>
+</li>
+<li>
+<p>In the dropdown menu, click <strong>Pull</strong>.</p>
+</li>
+</ol>
+<p>If the dev container configuration has been changed since you created the codespace, you can apply the changes by rebuilding the container for the codespace. For more information, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers#applying-changes-to-your-configuration">Introduction to dev containers</a>.</p>
+<h2><a href="#setting-your-codespace-to-automatically-fetch-new-changes">Setting your codespace to automatically fetch new changes</a></h2>
+<p>You can set your codespace to automatically fetch details of any new commits that have been made to the remote repository. This allows you to see whether your local copy of the repository is out of date, in which case you may choose to pull in the new changes.</p>
+<p>If the fetch operation detects new changes on the remote repository, you'll see the number of new commits in the status bar. You can then pull the changes into your local copy.</p>
+<ol>
+<li>
+<p>Click the <strong>Manage</strong> button at the bottom of the Activity Bar.</p>
+<div><picture><source><img src="/assets/cb-16791/images/help/codespaces/manage-button.png" alt="Screenshot of the bottom of the Activity Bar. The Manage button (labeled with a gear symbol) is highlighted with a dark orange outline." width="355" height="130"></source></picture></div>
+</li>
+<li>
+<p>In the menu, click <strong>Settings</strong>.</p>
+</li>
+<li>
+<p>On the Settings page, search for: <code>autofetch</code>.</p>
+<div><picture><source><img src="/assets/cb-40238/images/help/codespaces/autofetch-search.png" alt='Screenshot of the "Settings" tab. The search text "autofetch" is highlighted with a dark orange outline.' width="696" height="226"></source></picture></div>
+</li>
+<li>
+<p>To fetch details of updates for all remotes registered for the current repository, set <strong>Git: Autofetch</strong> to <code>all</code>.</p>
+<div><picture><source><img src="/assets/cb-19837/images/help/codespaces/autofetch-all.png" alt='Screenshot of the "Git: Autofetch" setting, set to "all."' width="482" height="154"></source></picture></div>
+</li>
+<li>
+<p>If you want to change the number of seconds between each automatic fetch, edit the value of <strong>Git: Autofetch Period</strong>.</p>
+</li>
+</ol>
+<h2><a href="#raising-a-pull-request">Raising a pull request</a></h2>
+<ol>
+<li>
+<p>After you've committed changes to your local copy of the repository, click the pull request icon at the top of the "Source Control" side bar.</p>
+<div><picture><source><img src="/assets/cb-10961/images/help/codespaces/codespaces-commit-pr-button.png" alt='Screenshot of the top of the "Source Control" side bar. The pull request icon is highlighted with a dark orange outline.' width="351" height="76"></source></picture></div>
+</li>
+<li>
+<p>Check that the local branch and repository you're merging from, and the remote branch and repository you're merging into, are correct. Then give the pull request a title and a description.</p>
+<div><picture><source><img src="/assets/cb-59671/images/help/codespaces/codespaces-commit-pr.png" alt='Screenshot of the "GitHub Pull Request" side bar with a form for creating a pull request, including "Title" and "Description" fields.' width="351" height="568"></source></picture></div>
+</li>
+<li>
+<p>Click <strong>Create</strong>.</p>
+</li>
+</ol>
+<h2><a href="#pushing-changes-to-your-remote-repository">Pushing changes to your remote repository</a></h2>
+<p>You can push changes you've saved and committed. This applies those changes to the upstream branch on the remote repository. You might want to do this if you're not yet ready to create a pull request, or if you prefer to create a pull request on GitHub.</p>
+<ol>
+<li>
+<p>At the top of the side bar, click </p>
+<div><picture><source><img src="/assets/cb-9377/images/help/codespaces/source-control-ellipsis-button-nochanges.png" alt='Screenshot of the "Source control" side bar. The ellipsis button (three dots) is highlighted with a dark orange outline.' width="358" height="73"></source></picture></div>
+</li>
+<li>
+<p>In the dropdown menu, click <strong>Push</strong>.</p>
+</li>
+</ol>
+</div>
+<div>
+<h2><a href="#publishing-a-codespace-created-from-a-template-1">Publishing a codespace created from a template</a></h2>
+<p>When you create a codespace from a template repository or a template on the "Your codespaces" page, the work you do won't be stored in a repository on GitHub until you publish your codespace. For more information, see <a href="/en/codespaces/developing-in-codespaces/creating-a-codespace-from-a-template#publishing-to-a-repository-on-github">Creating a codespace from a template</a>.</p>
+<p>If you're working in a codespace, you can publish it from the VS Code web client or desktop application.</p>
+<ol>
+<li>
+<p>In the Activity Bar, click the <strong>Source Control</strong> view.</p>
+<div><picture><source><img src="/assets/cb-33788/images/help/codespaces/source-control-activity-bar-button.png" alt="Screenshot of the VS Code Activity Bar with the source control button highlighted with an orange outline."></source></picture></div>
+</li>
+<li>
+<p>To stage your changes, click <strong>+</strong> next to the file you've added or changed, or next to <strong>Changes</strong> if you've changed multiple files and you want to stage them all.</p>
+<div><picture><source><img src="/assets/cb-33843/images/help/codespaces/codespaces-commit-stage.png" alt='Screenshot of the "Source control" side bar with the staging button (a plus sign), to the right of "Changes," highlighted with a dark orange outline.'></source></picture></div>
+<div>
+<p>
+If you start from GitHub's blank template, you will not see a list of changes unless you have already initialized your directory as a Git repository. To publish codespaces created from the blank template, click <strong>Publish to GitHub</strong> in the "Source Control" view, then skip to step 5.</p>
+</div>
+</li>
+<li>
+<p>To commit your staged changes, type a commit message describing the change you've made, then click <strong>Commit</strong>.</p>
+<div><picture><source><img src="/assets/cb-38443/images/help/codespaces/vscode-commit-button.png" alt='Screenshot of the "Source control" side bar with a commit message and, below it, the "Commit" button both highlighted with a dark orange outline.'></source></picture></div>
+</li>
+<li>
+<p>Click <strong>Publish Branch</strong>.</p>
+<div><picture><source><img src="/assets/cb-15968/images/help/codespaces/vscode-publish-branch-button.png" alt='Screenshot of the "Source control" side bar showing the "Publish Branch" button.'></source></picture></div>
+</li>
+<li>
+<p>In the "Repository Name" dropdown, type a name for your new repository, then select <strong>Publish to GitHub private repository</strong> or <strong>Publish to GitHub public repository</strong>.</p>
+<div><picture><source><img src="/assets/cb-24667/images/help/codespaces/choose-new-repository.png" alt="Screenshot of the repository name dropdown in VS Code. Two options are shown, for publishing to a private or a public repository."></source></picture></div>
+<p>The owner of the new repository will be the GitHub account with which you created the codespace.</p>
+</li>
+<li>
+<p>Optionally, in the pop-up that appears in the lower right corner of the editor, click <strong>Open on GitHub</strong> to view the new repository on GitHub.</p>
+<div><picture><source><img src="/assets/cb-33916/images/help/codespaces/open-on-github.png" alt='Screenshot of a confirmation message for a successfully published repository, showing the "Open on GitHub" button.'></source></picture></div>
+</li>
+</ol>
+<h2><a href="#creating-or-switching-branches-1">Creating or switching branches</a></h2>
+<ol>
+<li>
+<p>If the current branch is not shown in the status bar, at the bottom of your codespace, right-click the status bar and select <strong>Source control</strong>.</p>
+</li>
+<li>
+<p>Click the branch name in the status bar.</p>
+<div><picture><source><img src="/assets/cb-13223/images/help/codespaces/branch-in-status-bar.png" alt="Screenshot of the branch name displayed in the status bar of VS Code."></source></picture></div>
+</li>
+<li>
+<p>In the dropdown, either click the branch you want to switch to, or enter the name for a new branch and click <strong>Create new branch</strong>.</p>
+<div><picture><source><img src="/assets/cb-33999/images/help/codespaces/create-new-branch.png" alt="Screenshot of the dropdown for creating a new branch in VS Code."></source></picture></div>
+</li>
+</ol>
+<div>
+<p>
+If someone has recently changed a file on the remote repository, in the branch you switched to, you may not see those changes until you pull the changes into your codespace.</p>
+</div>
+<h2><a href="#committing-your-changes-1">Committing your changes</a></h2>
+<ol>
+<li>
+<p>In the Activity Bar, click the <strong>Source Control</strong> view.</p>
+<div><picture><source><img src="/assets/cb-33788/images/help/codespaces/source-control-activity-bar-button.png" alt="Screenshot of the VS Code Activity Bar with the source control button highlighted with an orange outline."></source></picture></div>
+</li>
+<li>
+<p>To stage your changes, click <strong>Changes</strong> if you've changed multiple files and you want to stage them all.</p>
+<div><picture><source><img src="/assets/cb-33843/images/help/codespaces/codespaces-commit-stage.png" alt='Screenshot of the "Source control" side bar with the staging button (a plus sign), to the right of "Changes," highlighted with a dark orange outline.'></source></picture></div>
+</li>
+<li>
+<p>In the text box, type a commit message describing the change you've made.</p>
+<div><picture><source><img src="/assets/cb-37655/images/help/codespaces/codespaces-commit-commit-message.png" alt='Screenshot of the "Source control" side bar with a commit message entered into the text box above the "Commit" button.'></source></picture></div>
+</li>
+<li>
+<p>Click the down arrow at the right side of the <strong>Commit</strong> button, and select <strong>Commit &amp; Push</strong> from the dropdown menu.</p>
+<div><picture><source><img src="/assets/cb-51942/images/help/codespaces/commit-and-push-option.png" alt='Screenshot of the dropdown for the "Commit" button. The option "Commit &amp; Push" is highlighted with a dark orange outline.'></source></picture></div>
+</li>
+</ol>
+<h2><a href="#pulling-changes-from-the-remote-repository-1">Pulling changes from the remote repository</a></h2>
+<p>You can pull changes from the remote repository into your codespace at any time.</p>
+<ol>
+<li>
+<p>In the Activity Bar, click the <strong>Source Control</strong> view.</p>
+<div><picture><source><img src="/assets/cb-33788/images/help/codespaces/source-control-activity-bar-button.png" alt="Screenshot of the VS Code Activity Bar with the source control button highlighted with an orange outline."></source></picture></div>
+</li>
+<li>
+<p>At the top of the side bar, click </p>
+<div><picture><source><img src="/assets/cb-29402/images/help/codespaces/source-control-ellipsis-button.png" alt='Screenshot of the "Source control" side bar. The ellipsis button (three dots) is highlighted with a dark orange outline.'></source></picture></div>
+</li>
+<li>
+<p>In the dropdown menu, click <strong>Pull</strong>.</p>
+</li>
+</ol>
+<p>If the dev container configuration has been changed since you created the codespace, you can apply the changes by rebuilding the container for the codespace. For more information, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers#applying-changes-to-your-configuration">Introduction to dev containers</a>.</p>
+<h2><a href="#setting-your-codespace-to-automatically-fetch-new-changes-1">Setting your codespace to automatically fetch new changes</a></h2>
+<p>You can set your codespace to automatically fetch details of any new commits that have been made to the remote repository. This allows you to see whether your local copy of the repository is out of date, in which case you may choose to pull in the new changes.</p>
+<p>If the fetch operation detects new changes on the remote repository, you'll see the number of new commits in the status bar. You can then pull the changes into your local copy.</p>
+<ol>
+<li>
+<p>Click the <strong>Manage</strong> button at the bottom of the Activity Bar.</p>
+<div><picture><source><img src="/assets/cb-16791/images/help/codespaces/manage-button.png" alt="Screenshot of the bottom of the Activity Bar. The Manage button (labeled with a gear symbol) is highlighted with a dark orange outline."></source></picture></div>
+</li>
+<li>
+<p>In the menu, click <strong>Settings</strong>.</p>
+</li>
+<li>
+<p>On the Settings page, search for: <code>autofetch</code>.</p>
+<div><picture><source><img src="/assets/cb-40238/images/help/codespaces/autofetch-search.png" alt='Screenshot of the "Settings" tab. The search text "autofetch" is highlighted with a dark orange outline.'></source></picture></div>
+</li>
+<li>
+<p>To fetch details of updates for all remotes registered for the current repository, set <strong>Git: Autofetch</strong> to <code>all</code>.</p>
+<div><picture><source><img src="/assets/cb-19837/images/help/codespaces/autofetch-all.png" alt='Screenshot of the "Git: Autofetch" setting, set to "all."'></source></picture></div>
+</li>
+<li>
+<p>If you want to change the number of seconds between each automatic fetch, edit the value of <strong>Git: Autofetch Period</strong>.</p>
+</li>
+</ol>
+<h2><a href="#raising-a-pull-request-1">Raising a pull request</a></h2>
+<ol>
+<li>
+<p>After you've committed changes to your local copy of the repository, click the pull request icon at the top of the "Source Control" side bar.</p>
+<div><picture><source><img src="/assets/cb-10961/images/help/codespaces/codespaces-commit-pr-button.png" alt='Screenshot of the top of the "Source Control" side bar. The pull request icon is highlighted with a dark orange outline.'></source></picture></div>
+</li>
+<li>
+<p>Check that the local branch and repository you're merging from, and the remote branch and repository you're merging into, are correct. Then give the pull request a title and a description.</p>
+<div><picture><source><img src="/assets/cb-59671/images/help/codespaces/codespaces-commit-pr.png" alt='Screenshot of the "GitHub Pull Request" side bar with a form for creating a pull request, including "Title" and "Description" fields.'></source></picture></div>
+</li>
+<li>
+<p>Click <strong>Create</strong>.</p>
+</li>
+</ol>
+<h2><a href="#pushing-changes-to-your-remote-repository-1">Pushing changes to your remote repository</a></h2>
+<p>You can push changes you've saved and committed. This applies those changes to the upstream branch on the remote repository. You might want to do this if you're not yet ready to create a pull request, or if you prefer to create a pull request on GitHub.</p>
+<ol>
+<li>
+<p>At the top of the side bar, click </p>
+<div><picture><source><img src="/assets/cb-9377/images/help/codespaces/source-control-ellipsis-button-nochanges.png" alt='Screenshot of the "Source control" side bar. The ellipsis button (three dots) is highlighted with a dark orange outline.'></source></picture></div>
+</li>
+<li>
+<p>In the dropdown menu, click <strong>Push</strong>.</p>
+</li>
+</ol>
+</div>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

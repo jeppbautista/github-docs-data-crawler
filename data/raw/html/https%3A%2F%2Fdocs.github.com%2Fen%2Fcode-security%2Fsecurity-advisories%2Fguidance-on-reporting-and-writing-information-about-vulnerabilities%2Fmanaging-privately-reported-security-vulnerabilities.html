@@ -1,0 +1,86 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Security advisories" href="/en/code-security/security-advisories">Security advisories</a><span>/</span>
+</li>
+<li>
+<a title="Guidance on reporting and writing" href="/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities">Guidance on reporting and writing</a><span>/</span>
+</li>
+<li><a title="Manage vulnerability reports" href="/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/managing-privately-reported-security-vulnerabilities">Manage vulnerability reports</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Managing privately reported security vulnerabilities</h1></div></div>
+<div>
+<div><p>Repository maintainers can manage security vulnerabilities that have been privately reported to them by security researchers for repositories where private vulnerability reporting is enabled.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Repository owners, organization owners, security managers, and users with the <strong>admin</strong> role</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-privately-reporting-a-security-vulnerability"><div><span>About privately reporting a security vulnerability</span></div></a></li>
+<li><a href="#managing-security-vulnerabilities-that-are-privately-reported"><div><span>Managing security vulnerabilities that are privately reported</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>Owners and administrators of public repositories can enable private vulnerability reporting on their repositories. For more information, see <a href="/en/code-security/security-advisories/working-with-repository-security-advisories/configuring-private-vulnerability-reporting-for-a-repository">Configuring private vulnerability reporting for a repository</a>.</p>
+<h2><a href="#about-privately-reporting-a-security-vulnerability">About privately reporting a security vulnerability</a></h2>
+<p>Private vulnerability reporting makes it easy for security researchers to report vulnerabilities directly to you using a simple form.</p>
+<p>When a security researcher reports a vulnerability privately, you are notified and can choose to either accept it, ask more questions, or reject it. If you accept the report, you're ready to collaborate on a fix for the vulnerability in private with the security researcher.</p>
+<h2><a href="#managing-security-vulnerabilities-that-are-privately-reported">Managing security vulnerabilities that are privately reported</a></h2>
+<p>When a new vulnerability is privately reported on a repository where private vulnerability reporting is enabled, GitHub notifies repository maintainers and security managers if:</p>
+<ul>
+<li>They're watching the repository for all activity.</li>
+<li>They have notifications enabled for the repository.</li>
+</ul>
+<p>For more information about configuring notification preferences, see <a href="/en/code-security/security-advisories/working-with-repository-security-advisories/configuring-private-vulnerability-reporting-for-a-repository#configuring-notifications-for-private-vulnerability-reporting">Configuring private vulnerability reporting for a repository</a>.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under the repository name, click <strong>Security</strong>.
+</p>
+<div><picture><source><img src="/assets/cb-17801/images/help/repository/security-tab.png" alt='Screenshot of a repository header showing the tabs. The "Security" tab is highlighted by a dark orange outline.' width="720" height="89"></source></picture></div>
+</li>
+<li>
+<p>In the left sidebar, under "Reporting", click </p>
+</li>
+<li>
+<p>Click the advisory you want to review. An advisory that was reported privately has a status of <code>Triage</code>.</p>
+<div><picture><source><img src="/assets/cb-62902/images/help/security/advisory-list.png" alt='Screenshot of a "Security Advisories" list.' width="679" height="262"></source></picture></div>
+</li>
+<li>
+<p>Carefully review the report, then choose how to proceed.</p>
+<ul>
+<li>
+<p>To collaborate on a patch in private, click <strong>Start a temporary private fork</strong> to create a place for further discussions with the contributor. This does not change the status of the proposed advisory from <code>Triage</code>.</p>
+</li>
+<li>
+<p>To accept the reported vulnerability, click <strong>Accept and open as draft</strong> to accept the vulnerability report as a draft advisory on GitHub. If you choose this option:</p>
+<ul>
+<li>This doesn't make the report public.</li>
+<li>The report becomes a draft repository security advisory and you can work on it in the same way as any draft advisory that you create.
+For more information on security advisories, see <a href="/en/code-security/security-advisories/working-with-repository-security-advisories/about-repository-security-advisories">About repository security advisories</a>.</li>
+</ul>
+</li>
+<li>
+<p>To ask for more information, or to open a discussion with the reporter, you can comment on the advisory. Any comments are visible only to the reporter and to any collaborators on the advisory.</p>
+</li>
+<li>
+<p>If you have enough information to determine that the problem the reporter describes is not a security risk, click <strong>Close security advisory</strong>. Where possible, you should add a comment explaining why you don't consider the report a security risk before you close the advisory.</p>
+<div><picture><source><img src="/assets/cb-83825/images/help/security/advisory-maintainer-options.png" alt="Screenshot showing the options available to the repository maintainer when reviewing an externally submitted vulnerability report."></source></picture></div>
+</li>
+</ul>
+</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

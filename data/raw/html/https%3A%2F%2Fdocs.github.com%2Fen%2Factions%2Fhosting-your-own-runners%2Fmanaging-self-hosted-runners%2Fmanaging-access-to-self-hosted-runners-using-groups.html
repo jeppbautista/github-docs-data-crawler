@@ -1,0 +1,163 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Self-hosted runners" href="/en/actions/hosting-your-own-runners">Self-hosted runners</a><span>/</span>
+</li>
+<li>
+<a title="Manage self-hosted runners" href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners">Manage self-hosted runners</a><span>/</span>
+</li>
+<li><a title="Manage access with runner groups" href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners/managing-access-to-self-hosted-runners-using-groups">Manage access with runner groups</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Managing access to self-hosted runners using groups</h1></div></div>
+<div>
+<div><p>You can use policies to limit access to self-hosted runners that have been added to an organization.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Enterprise accounts, organizations owned by enterprise accounts, and organizations using GitHub Team or GitHub Free plans can create and manage additional runner groups using self-hosted runners.<br><br></p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-runner-groups"><div><span>About runner groups</span></div></a></li>
+<li><a href="#creating-a-self-hosted-runner-group-for-an-organization"><div><span>Creating a self-hosted runner group for an organization</span></div></a></li>
+<li><a href="#changing-which-repositories-can-access-a-runner-group"><div><span>Changing which repositories can access a runner group</span></div></a></li>
+<li><a href="#changing-the-name-of-a-runner-group"><div><span>Changing the name of a runner group</span></div></a></li>
+<li><a href="#automatically-adding-a-self-hosted-runner-to-a-group"><div><span>Automatically adding a self-hosted runner to a group</span></div></a></li>
+<li><a href="#moving-a-self-hosted-runner-to-a-group"><div><span>Moving a self-hosted runner to a group</span></div></a></li>
+<li><a href="#removing-a-self-hosted-runner-group"><div><span>Removing a self-hosted runner group</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-runner-groups">About runner groups</a></h2>
+<p>To control access to runners at the organization level, organizations using the GitHub Team plan can use runner groups. Runner groups are used to collect sets of runners and create a security boundary around them.</p>
+<p>When you grant access to a runner group, you can see the runner group listed in the organization's runner settings. Optionally, you can assign additional granular repository access policies to the runner group.</p>
+<p>When new runners are created, they are automatically assigned to the default group unless otherwise specified. Runners can only be in one group at a time. You can move runners from one runner group to another. For more information, see <a href="#moving-a-runner-to-a-group">Moving a runner to a group</a>.</p>
+<p>For information on how to route jobs to runners in a specific group, see <a href="/en/actions/using-jobs/choosing-the-runner-for-a-job#choosing-runners-in-a-group">Choosing the runner for a job</a>.</p>
+<h2><a href="#creating-a-self-hosted-runner-group-for-an-organization">Creating a self-hosted runner group for an organization</a></h2>
+<div>
+<p>
+We recommend that you only use self-hosted runners with private repositories. This is because forks of your public repository can potentially run dangerous code on your self-hosted runner machine by creating a pull request that executes the code in a workflow.</p>
+<p>For more information, see <a href="/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions">Security hardening for GitHub Actions</a>.</p>
+</div>
+<div>
+<p>
+When creating a runner group, you must choose a policy that defines which repositories have access to the runner group. To change which repositories and workflows can access the runner group, organization owners can set a policy for the organization. For more information, see <a href="/en/enterprise-cloud@latest/admin/policies/enforcing-policies-for-your-enterprise/enforcing-policies-for-github-actions-in-your-enterprise#disabling-repository-level-self-hosted-runners">Enforcing policies for GitHub Actions in your enterprise</a>.</p>
+</div>
+<p>All organizations have a single default runner group. Organization owners using the GitHub Team plan can create additional organization-level runner groups.</p>
+<p>If no group is specified during the registration process, runners are automatically added to the default group. You can later move the runner from the default group to a custom group. For more information, see <a href="#moving-a-runner-to-a-group">Moving a runner to a group</a>.</p>
+<p>For information about how to create a runner group with the REST API, see <a href="/en/rest/actions#self-hosted-runner-groups">REST API endpoints for GitHub Actions</a>.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the organization.</p>
+</li>
+<li>
+<p>Under your organization name, click <strong>Settings</strong>.</p>
+<div><picture><source><img src="/assets/cb-49309/images/help/discussions/org-settings-global-nav-update.png" alt="Screenshot of the tabs in an organization's profile. The &quot;Settings&quot; tab is outlined in dark orange." width="1440" height="106"></source></picture></div>
+</li>
+<li>
+<p>In the left sidebar, click <strong>Runner groups</strong>.</p>
+</li>
+<li>
+<p>In the "Runner groups" section, click <strong>New runner group</strong>.</p>
+</li>
+<li>
+<p>Enter a name for your runner group.</p>
+</li>
+<li>
+<p>Assign a policy for repository access.</p>
+<p>You can configure a runner group to be accessible to a specific list of repositories, or to all repositories in the organization. By default, only private repositories can access runners in a runner group, but you can override this. This setting can't be overridden if configuring an organization's runner group that was shared by an enterprise.</p>
+</li>
+<li>
+<p>Click <strong>Create group</strong> to create the group and apply the policy.</p>
+</li>
+</ol>
+<h2><a href="#changing-which-repositories-can-access-a-runner-group">Changing which repositories can access a runner group</a></h2>
+<div>
+<p>
+We recommend that you only use self-hosted runners with private repositories. This is because forks of your public repository can potentially run dangerous code on your self-hosted runner machine by creating a pull request that executes the code in a workflow.</p>
+<p>For more information, see <a href="/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions">Security hardening for GitHub Actions</a>.</p>
+</div>
+<p>For runner groups in an organization, you can change what repositories in the organization can access a runner group.</p>
+<ol>
+<li>
+<p>Navigate to the main page of the organization where your runner groups are located.</p>
+</li>
+<li>
+<p>Click </p>
+</li>
+<li>
+<p>In the left sidebar, click <strong>Runner groups</strong>.</p>
+</li>
+<li>
+<p>In the list of groups, click the runner group you'd like to configure.</p>
+</li>
+<li>
+<p>Under "Repository access," use the dropdown menu to click <strong>Selected repositories</strong>.</p>
+<ol>
+<li>To the right of the dropdown menu, click </li>
+<li>In the popup, use the checkboxes to select repositories that can access this runner group.</li>
+</ol>
+</li>
+<li>
+<p>Click <strong>Save group</strong>.</p>
+</li>
+</ol>
+<h2><a href="#changing-the-name-of-a-runner-group">Changing the name of a runner group</a></h2>
+<ol>
+<li>Navigate to the main page of the organization where your runner groups are located.</li>
+<li>Click </li>
+<li>In the left sidebar, click <strong>Runner groups</strong>.</li>
+<li>In the list of groups, click the runner group you'd like to configure.</li>
+<li>Enter the new runner group name in the text field under "Group name."</li>
+<li>Click <strong>Save</strong>.</li>
+</ol>
+<h2><a href="#automatically-adding-a-self-hosted-runner-to-a-group">Automatically adding a self-hosted runner to a group</a></h2>
+<p>You can use the configuration script to automatically add a new runner to a group. For example, this command registers a new runner and uses the <code>--runnergroup</code> parameter to add it to a group named <code>rg-runnergroup</code>.</p>
+<pre><code>./config.sh --url $org_or_enterprise_url --token $token --runnergroup rg-runnergroup
+</code></pre>
+<p>The command will fail if the runner group doesn't exist:</p>
+<pre><code>Could not find any self-hosted runner group named "rg-runnergroup".
+</code></pre>
+<h2><a href="#moving-a-self-hosted-runner-to-a-group">Moving a self-hosted runner to a group</a></h2>
+<p>If you don't specify a runner group during the registration process, your new runners are automatically assigned to the default group, and can then be moved to another group.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the organization.</p>
+</li>
+<li>
+<p>Under your organization name, click <strong>Settings</strong>.</p>
+<div><picture><source><img src="/assets/cb-49309/images/help/discussions/org-settings-global-nav-update.png" alt="Screenshot of the tabs in an organization's profile. The &quot;Settings&quot; tab is outlined in dark orange." width="1440" height="106"></source></picture></div>
+</li>
+<li>
+<p>In the left sidebar, click <strong>Runners</strong>.</p>
+</li>
+<li>
+<p>In the "Runners" list, click the runner that you want to configure.</p>
+</li>
+<li>
+<p>Select the <strong>Runner group</strong> drop-down.</p>
+</li>
+<li>
+<p>In "Move runner to group", choose a destination group for the runner.</p>
+</li>
+</ol>
+<h2><a href="#removing-a-self-hosted-runner-group">Removing a self-hosted runner group</a></h2>
+<p>In order to remove a runner group, you must first move or remove all of the runners from the group.</p>
+<ol>
+<li>Navigate to the main page of the organization where your runner groups are located.</li>
+<li>Click </li>
+<li>In the left sidebar, click <strong>Runner groups</strong>.</li>
+<li>In the list of groups, to the right of the group you want to delete, click </li>
+<li>To remove the group, click <strong>Remove group</strong>.</li>
+<li>Review the confirmation prompts, and click <strong>Remove this runner group</strong>.</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

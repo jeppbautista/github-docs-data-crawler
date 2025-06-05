@@ -1,0 +1,80 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="CodeQL CLI" href="/en/code-security/codeql-cli">CodeQL CLI</a><span>/</span>
+</li>
+<li>
+<a title="Advanced functionality" href="/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli">Advanced functionality</a><span>/</span>
+</li>
+<li><a title="Testing query help files" href="/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/testing-query-help-files">Testing query help files</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Testing query help files</h1></div></div>
+<div>
+<div><p>You can use the CodeQL CLI to preview your query help files as Markdown and ensure they are valid.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div>
+<p>CodeQL is available for the following repository types:</p>
+<ul>
+<li>Public repositories on GitHub.com, see <a href="https://github.com/github/codeql-cli-binaries/blob/main/LICENSE.md">GitHub CodeQL Terms and Conditions</a>
+</li>
+<li>Organization-owned repositories on GitHub Team with <a href="/en/get-started/learning-about-github/about-github-advanced-security">GitHub Code Security</a> enabled</li>
+</ul>
+</div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-testing-query-help-files"><div><span>About testing query help files</span></div></a></li>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#running-codeql-generate-query-help"><div><span>Running codeql generate query-help</span></div></a></li>
+<li><a href="#results"><div><span>Results</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-testing-query-help-files">About testing query help files</a></h2>
+<p>Test query help files by rendering them as Markdown to ensure they are valid before uploading them to the CodeQL repository or using them in code scanning.</p>
+<p>Query help is documentation that accompanies a query to explain how the query works, as well as providing information about the potential problem that the query identifies. It is good practice to write query help for all new queries. For more information, see <a href="https://github.com/github/codeql/blob/main/CONTRIBUTING.md">Contributing to CodeQL</a> in the CodeQL repository.</p>
+<p>The CodeQL CLI includes a command to test query help and render the content as markdown, so that you can easily preview the content in your IDE. Use the command to validate query help files before uploading them to the CodeQL repository or sharing them with other users. From CodeQL CLI 2.7.1 onwards, you can also include the markdown-rendered query help in SARIF files
+generated during CodeQL analyses so that the query help can be displayed in the code scanning UI. For more information, see <a href="/en/code-security/codeql-cli/getting-started-with-the-codeql-cli/analyzing-your-code-with-codeql-queries">Analyzing your code with CodeQL queries</a>.</p>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<ul>
+<li>The query help (<code>.qhelp</code>) file must have an accompanying query (<code>.ql</code>) file with an identical base name.</li>
+<li>The query help file should follow the standard structure and style for query help documentation. For more information, see the <a href="https://github.com/github/codeql/blob/main/docs/query-help-style-guide.md">Query help style guide</a> in the CodeQL repository.</li>
+</ul>
+<h2><a href="#running-codeql-generate-query-help">Running <code>codeql generate query-help</code></a></h2>
+<p>You can test query help files by running the following command:</p>
+<pre><code>codeql generate query-help &lt;qhelp|query|dir|suite&gt; --format=&lt;format&gt; [--output=&lt;dir|file&gt;]
+</code></pre>
+<p>For this command <code>&lt;qhelp|query|dir|suite&gt;</code> must be the path to a <code>.qhelp</code> file, the path to a <code>.ql</code> file, the path to a directory containing queries and query help files, or the path to a query suite.</p>
+<p>You must specify a <code>--format</code> option, which defines how the query help is rendered. Currently, you must specify <code>markdown</code> to render the query help as markdown.</p>
+<p>The <code>--output</code> option defines a file path where the rendered query help will be saved.</p>
+<ul>
+<li>For directories containing <code>.qhelp</code> files or a query suites defining one or more <code>.qhelp</code> files, you must specify an <code>--output</code> directory. Filenames within the output directory will be derived from the <code>.qhelp</code> file names.</li>
+<li>For single <code>.qhelp</code> or <code>.ql</code> files, you may specify an <code>--output</code> option. If you don’t specify an output path, the rendered query help is written to <code>stdout</code>.</li>
+</ul>
+<p>For full details of all the options you can use when testing query help files, see <a href="/en/code-security/codeql-cli/codeql-cli-manual/generate-query-help">generate query-help</a>.</p>
+<h2><a href="#results">Results</a></h2>
+<p>When you run the command, CodeQL attempts to render each <code>.qhelp</code> file that has an accompanying <code>.ql</code> file. For single files, the rendered content will be printed to <code>stdout</code> if you don’t specify an <code>--output</code> option. For all other use cases, the rendered content is saved to the specified output path.</p>
+<p>By default, the CodeQL CLI will print a warning message if:</p>
+<ul>
+<li>Any of the query help is invalid, along with a description of the invalid query help elements</li>
+<li>Any <code>.qhelp</code> files specified in the command don’t have the same base name as an accompanying <code>.ql</code> file</li>
+<li>Any <code>.ql</code> files specified in the command don’t have the same base name as an accompanying <code>.qhelp</code> file</li>
+</ul>
+<p>You can tell the CodeQL CLI how to handle these warnings by including a <code>--warnings</code> option in your command. For more information, see <a href="/en/code-security/codeql-cli/codeql-cli-manual/generate-query-help#--warningsmode">generate query-help</a>.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="https://codeql.github.com/docs/writing-codeql-queries/query-help-files/#query-help-files">Query help files</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

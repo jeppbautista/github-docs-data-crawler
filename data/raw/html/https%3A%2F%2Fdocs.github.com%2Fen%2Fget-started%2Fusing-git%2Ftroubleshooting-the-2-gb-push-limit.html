@@ -1,0 +1,88 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Get started" href="/en/get-started">Get started</a><span>/</span>
+</li>
+<li>
+<a title="Using Git" href="/en/get-started/using-git">Using Git</a><span>/</span>
+</li>
+<li><a title="Maximum push limit" href="/en/get-started/using-git/troubleshooting-the-2-gb-push-limit">Maximum push limit</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Troubleshooting the 2 GB push limit</h1></div></div>
+<div><div><p>Learn how to work around the 2 GB push limit.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-the-push-limit"><div><span>About the push limit</span></div></a></li>
+<li><a href="#splitting-up-a-large-push"><div><span>Splitting up a large push</span></div></a></li>
+<li><a href="#starting-from-scratch"><div><span>Starting from scratch</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-the-push-limit">About the push limit</a></h2>
+<p>GitHub has a maximum 2 GB limit for a single push. You might hit this limit when trying to upload very large repositories for the first time, importing large repositories from other platforms, or when trying to rewrite the history of large existing repositories.</p>
+<p>If you hit this limit, you may see one of the following error messages:</p>
+<ul>
+<li><code>fatal: the remote end hung up unexpectedly</code></li>
+<li><code>remote: fatal: pack exceeds maximum allowed size</code></li>
+</ul>
+<p>You can either split up your push into smaller parts, or delete the Git history and start from scratch. If you have made a single commit that's larger than 2 GB and you can't delete the Git history and start from scratch, then you will need to perform an interactive rebase to split the large commit into multiple smaller ones.</p>
+<h2><a href="#splitting-up-a-large-push">Splitting up a large push</a></h2>
+<p>You can avoid hitting the limit by breaking your push into smaller parts, each of which should be under 2 GB in size. If a branch is within this size limit, you can push it all at once. However, if a branch is larger than 2 GB, you'll need to split the push into even smaller portions and push only a few commits at a time.</p>
+<ol>
+<li>
+<p>If you haven't configured the remote yet, add the repository as a new remote. For more information, see <a href="/en/get-started/git-basics/managing-remote-repositories#adding-a-remote-repository">Managing remote repositories</a>.</p>
+</li>
+<li>
+<p>To find suitable commits spread out along the history of the main branch in your local repository, run the following command:</p>
+<pre><code>git log --oneline --reverse refs/heads/BRANCH-NAME | awk 'NR % 1000 == 0'
+</code></pre>
+<p>This command reveals every 1000th commit. You can increase or decrease the number to adjust the step size.</p>
+</li>
+<li>
+<p>Push each of these commits one at a time to your GitHub hosted repository.</p>
+<pre><code>git push REMOTE-NAME +&lt;YOUR_COMMIT_SHA_NUMBER&gt;:refs/heads/BRANCH-NAME
+</code></pre>
+<p>If you see the message <code>remote: fatal: pack exceeds maximum allowed size</code>, reduce the step size in step 2 and try again.</p>
+</li>
+<li>
+<p>Go through the same process for every commit you identified in the history from step 2.</p>
+</li>
+<li>
+<p>If this is the first time this repository is being pushed to GitHub, perform a final mirror push to ensure any remaining refs are pushed up.</p>
+<pre><code>git push REMOTE-NAME --mirror
+</code></pre>
+<p>If this is still too large, you'll need to push up other branches in stages using the same steps.</p>
+</li>
+</ol>
+<p>Once you're familiar with the procedure, you can automate steps 2 to 4 to simplify the process. For example:</p>
+<pre><code>step_commits=$(git log --oneline --reverse refs/heads/BRANCH-NAME | awk 'NR % 1000 == 0')
+echo "$step_commits" | while read commit message; do git push REMOTE-NAME +$commit:refs/heads/BRANCH-NAME; done
+</code></pre>
+<h2><a href="#starting-from-scratch">Starting from scratch</a></h2>
+<p>If the repository does not have any history, or your initial commit was over 2 GB on its own and you don't mind resetting the Git history, you can also start from scratch.</p>
+<ol>
+<li>
+<p>On your local copy, delete the hidden <code>.git</code> folder to remove all the previous Git history and convert it back into a normal folder full of files.</p>
+</li>
+<li>
+<p>Create a new empty folder.</p>
+</li>
+<li>
+<p>Run <code>git init</code> and <code>git lfs install</code> on the new folder, and add the new empty GitHub repository as a remote.</p>
+</li>
+<li>
+<p>If you already use Git Large File Storage and have all of the Git LFS tracking rules you intend to use already listed in the <code>.gitattributes</code> file in the old folder, that should be the first file you copy across to the new folder. You should ensure the tracking rules are in place before you add any other files, so that there's no chance things intended for Git LFS will be committed to regular Git storage.</p>
+<p>If you do not already use Git LFS, you can skip this step, or you can set up the tracking rules you intend to use in the <code>.gitattributes</code> file in the new folder before you copy any other files across. For more information, see <a href="/en/repositories/working-with-files/managing-large-files/configuring-git-large-file-storage">Configuring Git Large File Storage</a>.</p>
+</li>
+<li>
+<p>Move batches of files that are smaller than 2 GB from the old folder to the new folder. After each batch is moved, create a commit and push it before moving the next batch. You can take a cautious approach and stick to around 2 GB. Alternatively, if you have a folder with files meant for Git LFS, you can ignore those files when considering the 2 GB limit per batch.</p>
+</li>
+</ol>
+<p>Once the old folder is empty, the GitHub repository should contain everything. If you are using Git LFS, all files meant for Git LFS should be pushed to Git LFS storage.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

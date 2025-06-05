@@ -1,0 +1,92 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Building communities" href="/en/communities">Building communities</a><span>/</span>
+</li>
+<li>
+<a title="Healthy contributions" href="/en/communities/setting-up-your-project-for-healthy-contributions">Healthy contributions</a><span>/</span>
+</li>
+<li><a title="Contributor guidelines" href="/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors">Contributor guidelines</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Setting guidelines for repository contributors</h1></div></div>
+<div><div><p>You can create guidelines to communicate how people should contribute to your project.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-contributing-guidelines"><div><span>About contributing guidelines</span></div></a></li>
+<li><a href="#adding-a-contributing-file"><div><span>Adding a CONTRIBUTING file</span></div></a></li>
+<li><a href="#examples-of-contribution-guidelines"><div><span>Examples of contribution guidelines</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-contributing-guidelines">About contributing guidelines</a></h2>
+<p>To help your project contributors do good work, you can add a file with contribution guidelines to your project repository's root, <code>docs</code>, or <code>.github</code> folder. When someone opens a pull request or creates an issue, they will see a link to that file. The link to the contributing guidelines also appears on your repository's <code>contribute</code> page. For an example of a <code>contribute</code> page, see <a href="https://github.com/github/docs/contribute">github/docs/contribute</a>.</p>
+<p>For the repository owner, contribution guidelines are a way to communicate how people should contribute.</p>
+<p>For contributors, the guidelines help them verify that they're submitting well-formed pull requests and opening useful issues.</p>
+<p>For both owners and contributors, contribution guidelines save time and hassle caused by improperly created pull requests or issues that have to be rejected and re-submitted.</p>
+<p>You can create default contribution guidelines for your organization or personal account. For more information, see <a href="/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file">Creating a default community health file</a>.</p>
+<div>
+<p>
+Repository maintainers can set specific guidelines for issues by creating an issue or pull request template for the repository. For more information, see <a href="/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/about-issue-and-pull-request-templates">About issue and pull request templates</a>.</p>
+</div>
+<h2><a href="#adding-a-contributing-file">Adding a <em>CONTRIBUTING</em> file</a></h2>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Above the list of files, select the <strong>Add file</strong> </p>
+<p>Alternatively, you can click </p>
+<div><picture><source><img src="/assets/cb-60263/images/help/repository/add-file-buttons.png" alt='Screenshot of the main page of a repository highlighting both the "Add file" and the "plus sign" icon, described above, with an orange outline.' width="1440" height="270"></source></picture></div>
+</li>
+<li>
+<p>Decide whether to store your contributing guidelines in your repository's root, <code>docs</code>, or <code>.github</code> directory. Then, in the filename field, type the name and extension for the file. Contributing guidelines filenames are not case sensitive. Files are rendered in rich text format if the file extension is in a supported format. For more information, see <a href="/en/repositories/working-with-files/using-files/working-with-non-code-files#rendering-differences-in-prose-documents">Working with non-code files</a>.</p>
+<ul>
+<li>To make your contributing guidelines visible in the repository's root directory, type <em>CONTRIBUTING</em>.</li>
+<li>To make your contributing guidelines visible in the repository's <code>docs</code> directory, type <em>docs/</em> to create the new directory, then <em>CONTRIBUTING</em>.</li>
+<li>If a repository contains more than one <em>CONTRIBUTING</em> file, then the file shown in links is chosen from locations in the following order: the <code>.github</code> directory, then the repository's root directory, and finally the <code>docs</code> directory.</li>
+</ul>
+</li>
+<li>
+<p>In the new file, add contribution guidelines. These could include:</p>
+<ul>
+<li>Steps for creating good issues or pull requests.</li>
+<li>Links to external documentation, mailing lists, or a code of conduct.</li>
+<li>Community and behavioral expectations.</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Commit changes...</strong></p>
+</li>
+<li>
+<p>In the "Commit message" field, type a short, meaningful commit message that describes the change you made to the file. You can attribute the commit to more than one author in the commit message. For more information, see <a href="/en/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/creating-a-commit-with-multiple-authors">Creating a commit with multiple authors</a>.</p>
+</li>
+<li>
+<p>Below the commit message fields, decide whether to add your commit to the current branch or to a new branch. If your current branch is the default branch, you should choose to create a new branch for your commit and then create a pull request. For more information, see <a href="/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request">Creating a pull request</a>.</p>
+<div><picture><source><img src="/assets/cb-27122/images/help/repository/choose-commit-branch.png" alt="Screenshot of a GitHub pull request showing a radio button to commit directly to the main branch or to create a new branch. New branch is selected." width="669" height="166"></source></picture></div>
+</li>
+<li>
+<p>Click <strong>Commit changes</strong> or <strong>Propose changes</strong>.</p>
+</li>
+</ol>
+<h2><a href="#examples-of-contribution-guidelines">Examples of contribution guidelines</a></h2>
+<p>If you're stumped, here are some good examples of contribution guidelines:</p>
+<ul>
+<li>The GitHub Docs <a href="/en/contributing">contribution guidelines</a>.</li>
+<li>The Ruby on Rails <a href="https://github.com/rails/rails/blob/main/CONTRIBUTING.md">contribution guidelines</a>.</li>
+<li>The Open Government <a href="https://github.com/opengovernment/opengovernment/blob/master/CONTRIBUTING.md">contribution guidelines</a>.</li>
+</ul>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li>The Open Source Guides' section <a href="https://opensource.guide/starting-a-project/">Starting an Open Source Project</a>
+</li>
+<li><a href="https://skills.github.com/">GitHub Skills</a></li>
+<li><a href="/en/communities/setting-up-your-project-for-healthy-contributions/adding-a-license-to-a-repository">Adding a license to a repository</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

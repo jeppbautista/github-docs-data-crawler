@@ -1,0 +1,142 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Get started" href="/en/get-started">Get started</a><span>/</span>
+</li>
+<li>
+<a title="Explore projects" href="/en/get-started/exploring-projects-on-github">Explore projects</a><span>/</span>
+</li>
+<li><a title="Contribute to a project" href="/en/get-started/exploring-projects-on-github/contributing-to-a-project">Contribute to a project</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Contributing to a project</h1></div></div>
+<div><div><p>Learn how to contribute to a project through forking.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-forking"><div><span>About forking</span></div></a></li>
+<li><a href="#creating-your-own-copy-of-a-project"><div><span>Creating your own copy of a project</span></div></a></li>
+<li><a href="#cloning-a-fork-to-your-computer"><div><span>Cloning a fork to your computer</span></div></a></li>
+<li><a href="#creating-a-branch-to-work-on"><div><span>Creating a branch to work on</span></div></a></li>
+<li><a href="#making-and-pushing-changes"><div><span>Making and pushing changes</span></div></a></li>
+<li><a href="#making-a-pull-request"><div><span>Making a pull request</span></div></a></li>
+<li><a href="#familiarizing-yourself-with-a-project"><div><span>Familiarizing yourself with a project</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>Contributing to a project on GitHub is an essential skill for developers and collaborators working together to achieve shared goals. Whether you're fixing bugs, adding features, or improving documentation, the process of contributing ensures structured and efficient collaboration.</p>
+<p>By following the GitHub flow of forking repositories, creating branches, and submitting pull requests, you can propose changes to a project and get feedback without disrupting other people's work.</p>
+<p>This guide provides instructions on contributing to a project using the GitHub UI and the command line. For more information on contributing with GitHub Desktop, see <a href="/en/desktop/adding-and-cloning-repositories/cloning-and-forking-repositories-from-github-desktop">Cloning and forking repositories from GitHub Desktop</a>. For the same with GitHub CLI (Command Line Interface), see <a href="/en/github-cli/github-cli/quickstart">GitHub CLI quickstart</a>.</p>
+<h2><a href="#about-forking">About forking</a></h2>
+<p>If you want to contribute to someone else's project but don’t have permission to make changes directly, you can create your own copy of the project, make updates, and then suggest those updates for inclusion in the main project. This process is often called a "fork and pull request" workflow.</p>
+<p>When you create your own copy (or "fork") of a project, it’s like making a new workspace that shares code with the original project. This is useful for open-source projects or anytime you don’t have write access to the original project.</p>
+<p>Once you’ve made your changes in your copy, you can submit them as a pull request, which is a way to propose changes back to the main project. For more information, see <a href="/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo">Fork a repository</a>.</p>
+<h2><a href="#creating-your-own-copy-of-a-project">Creating your own copy of a project</a></h2>
+<p>This tutorial uses <a href="https://github.com/octocat/Spoon-Knife">the Spoon-Knife project</a>, a test repository that's hosted on GitHub that lets you test the fork and pull request workflow.</p>
+<ol>
+<li>
+<p>Navigate to the <code>Spoon-Knife</code> project at <a href="https://github.com/octocat/Spoon-Knife">https://github.com/octocat/Spoon-Knife</a>.</p>
+</li>
+<li>
+<p>In the top-right corner of the page, click <strong>Fork</strong>.</p>
+<div><picture><source><img src="/assets/cb-34352/images/help/repository/fork-button.png" alt='Screenshot of the main page of repository. A button, labeled with a fork icon and "Fork 59.3k," is outlined in dark orange.' width="1440" height="357"></source></picture></div>
+</li>
+<li>
+<p>Under "Owner," select the dropdown menu and click an owner for the forked repository.</p>
+<div>
+<p> If your username is grayed out, it's because the fork already exists. Instead, you should bring your existing fork up to date. For more information, see <a href="/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork#syncing-a-fork-branch-from-the-web-ui">Syncing a fork</a>.</p>
+</div>
+</li>
+<li>
+<p>By default, forks are named the same as their upstream repositories. Optionally, to further distinguish your fork, in the "Repository name" field, type a name.</p>
+</li>
+<li>
+<p>Optionally, in the "Description" field, type a description of your fork.</p>
+</li>
+<li>
+<p>Optionally, select <strong>Copy the DEFAULT branch only</strong>.</p>
+<p>For many forking scenarios, such as contributing to open-source projects, you only need to copy the default branch. If you do not select this option, all branches will be copied into the new fork.</p>
+</li>
+<li>
+<p>Click <strong>Create fork</strong>.</p>
+</li>
+</ol>
+<div>
+<p>
+If you want to copy additional branches from the upstream repository, you can do so from the <strong>Branches</strong> page. For more information, see <a href="/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-and-deleting-branches-within-your-repository">Creating and deleting branches within your repository</a>.</p>
+</div>
+<h2><a href="#cloning-a-fork-to-your-computer">Cloning a fork to your computer</a></h2>
+<p>You've successfully forked the Spoon-Knife repository, but so far, it only exists on GitHub. To be able to work on the project, you will need to clone it to your computer.</p>
+<p>You can clone your fork with the command line, GitHub CLI, or GitHub Desktop.</p>
+<ol>
+<li>
+<p>On GitHub, navigate to <strong>your fork</strong> of the Spoon-Knife repository.</p>
+</li>
+<li>
+<p>Above the list of files, click </p>
+<div><picture><source><img src="/assets/cb-13128/images/help/repository/code-button.png" alt='Screenshot of the list of files on the landing page of a repository. The "Code" button is highlighted with a dark orange outline.' width="401" height="120"></source></picture></div>
+</li>
+<li>
+<p>Copy the URL for the repository.</p>
+<ul>
+<li>
+<p>To clone the repository using HTTPS, under "HTTPS", click </p>
+</li>
+<li>
+<p>To clone the repository using an SSH key, including a certificate issued by your organization's SSH certificate authority, click <strong>SSH</strong>, then click </p>
+</li>
+<li>
+<p>To clone a repository using GitHub CLI, click <strong>GitHub CLI</strong>, then click </p>
+<div><picture><source><img src="/assets/cb-60499/images/help/repository/https-url-clone-cli.png" alt='Screenshot of the "Code" dropdown menu. To the right of the HTTPS URL for the repository, a copy icon is outlined in dark orange.' width="463" height="347"></source></picture></div>
+</li>
+</ul>
+</li>
+<li>
+<p>On Mac or Linux, open Terminal. On Windows, open Git Bash.</p>
+</li>
+<li>
+<p>Change the current working directory to the location where you want the cloned directory.</p>
+</li>
+<li>
+<p>Type <code>git clone</code>, and then paste the URL you copied earlier. It will look like this, with your GitHub username instead of <code>YOUR-USERNAME</code>:</p>
+<pre><code>git clone https://github.com/YOUR-USERNAME/Spoon-Knife
+</code></pre>
+</li>
+<li>
+<p>Press <strong>Enter</strong>. Your local clone will be created.</p>
+<pre><code><span>$ </span><span>git <span>clone</span> https://github.com/YOUR-USERNAME/Spoon-Knife</span>
+<span>&gt; </span><span>Cloning into `Spoon-Knife`...</span>
+<span>&gt; </span><span>remote: Counting objects: 10, <span>done</span>.</span>
+<span>&gt; </span><span>remote: Compressing objects: 100% (8/8), <span>done</span>.</span>
+<span>&gt; </span><span>remove: Total 10 (delta 1), reused 10 (delta 1)</span>
+<span>&gt; </span><span>Unpacking objects: 100% (10/10), <span>done</span>.</span>
+</code></pre>
+</li>
+</ol>
+<h2><a href="#creating-a-branch-to-work-on">Creating a branch to work on</a></h2>
+<p>Before making changes to the project, you should create a new branch and check it out. By keeping changes in their own branch, you follow GitHub flow and ensure that it will be easier to contribute to the same project again in the future. See <a href="/en/get-started/using-github/github-flow#following-github-flow">GitHub flow</a>.</p>
+<pre><code>git branch BRANCH-NAME
+git checkout BRANCH-NAME
+</code></pre>
+<h2><a href="#making-and-pushing-changes">Making and pushing changes</a></h2>
+<p>Go ahead and make a few changes to the project using your favorite text editor, like <a href="https://code.visualstudio.com">Visual Studio Code</a>. You could, for example, change the text in <code>index.html</code> to add your GitHub username.</p>
+<p>When you're ready to submit your changes, stage and commit your changes. <code>git add .</code> tells Git that you want to include all of your changes in the next commit. <code>git commit</code> takes a snapshot of those changes.</p>
+<pre><code>git add .
+git commit -m "a short description of the change"
+</code></pre>
+<p>When you stage and commit files, you essentially tell Git, "Take a snapshot of my changes." You can continue to make more changes and take more commit snapshots.</p>
+<p>Right now, your changes only exist locally. When you're ready to push your changes up to GitHub, push your changes to the remote.</p>
+<pre><code>git push
+</code></pre>
+<h2><a href="#making-a-pull-request">Making a pull request</a></h2>
+<p>Creating a pull request is the final step in producing a fork of someone else's project. When you've made a beneficial change and want to propose it to the original repository, you'll create a pull request for a maintainer to review.</p>
+<p>To do so, navigate to the repository on GitHub where your project lives. For this example, it would be at <code>https://github.com/&lt;your_username&gt;/Spoon-Knife</code>. You'll see a banner indicating that your branch is one commit ahead of <code>octocat:main</code>. Click <strong>Contribute</strong> and then <strong>Open a pull request</strong>.</p>
+<p>GitHub will bring you to a page that shows the differences between your fork and the <code>octocat/Spoon-Knife</code> repository. Click <strong>Create pull request</strong>.</p>
+<p>GitHub will bring you to a page where you can enter a title and a description of your changes. It's important to provide as much useful information and a rationale for why you're making this pull request in the first place. The project owner needs to be able to determine whether your change is as useful to everyone as you think it is. Finally, click <strong>Create pull request</strong>.</p>
+<h2><a href="#familiarizing-yourself-with-a-project">Familiarizing yourself with a project</a></h2>
+<p>If you're new to a project, you can use Copilot to help you understand the purpose of the repository, examine files, and dive into specific lines of code. See <a href="/en/get-started/exploring-projects-on-github/using-github-copilot-to-explore-projects">Using GitHub Copilot to explore projects</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,92 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Build Copilot Extensions" href="/en/copilot/building-copilot-extensions">Build Copilot Extensions</a><span>/</span>
+</li>
+<li>
+<a title="Create a Copilot Extension" href="/en/copilot/building-copilot-extensions/creating-a-copilot-extension">Create a Copilot Extension</a><span>/</span>
+</li>
+<li><a title="Create GitHub App" href="/en/copilot/building-copilot-extensions/creating-a-copilot-extension/creating-a-github-app-for-your-copilot-extension">Create GitHub App</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Creating a GitHub App for your Copilot Extension</h1></div></div>
+<div><div><p>Learn how to create a GitHub App for your Copilot Extension.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#creating-a-github-app"><div><span>Creating a GitHub App</span></div></a></li>
+<li><a href="#next-steps"><div><span>Next steps</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>A Copilot Extension is a GitHub App that is associated with a Copilot agent. The GitHub App you associate your Copilot agent with is used to authenticate the Copilot agent with GitHub and to authorize the Copilot agent to access the Copilot Chat API. Each Copilot agent must be associated with a unique GitHub App.</p>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<ul>
+<li>You have created a Copilot agent. For more information, see <a href="/en/copilot/building-copilot-extensions/building-a-copilot-agent-for-your-copilot-extension">Building a Copilot agent for your Copilot Extension</a>.</li>
+<li>You have configured your server to deploy your Copilot agent, and you have your hostname (aka forwarding endpoint). For more information, see <a href="/en/copilot/building-copilot-extensions/creating-a-copilot-extension/configuring-your-server-to-deploy-your-copilot-agent">Configuring your server to host your Copilot extension</a>.</li>
+</ul>
+<h2><a href="#creating-a-github-app">Creating a GitHub App</a></h2>
+<ol>
+<li>
+<p>In the upper-right corner of any page on GitHub, click your profile photo.</p>
+</li>
+<li>
+<p>Navigate to your account settings.</p>
+<ul>
+<li>For an app owned by a personal account, click <strong>Settings</strong>.</li>
+<li>For an app owned by an organization:
+<ol>
+<li>Click <strong>Your organizations</strong>.</li>
+<li>To the right of the organization, click <strong>Settings</strong>.</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p>In the left sidebar, click </p>
+</li>
+<li>
+<p>In the left sidebar, click <strong>GitHub Apps</strong>.</p>
+</li>
+<li>
+<p>Click <strong>New GitHub App</strong>.</p>
+</li>
+<li>
+<p>Under "GitHub App name," enter a name for your app.</p>
+<div>
+<p> The name cannot be longer than 34 characters.</p>
+<p>Your app's name will be shown in the user interface when your app takes an action. Uppercase letters will be converted to lowercase, with spaces replaced by <code>-</code>, and accents ignored. For example, <code>My APp Näme</code> would display as <code>my-app-name</code>.</p>
+<p>The name must be unique across GitHub. You cannot use the same name as an existing GitHub account, unless it is your own user or organization name.</p>
+</div>
+</li>
+<li>
+<p>Optionally, under "Description," type a description of your app. Users and organizations will see this description when they install your app.</p>
+</li>
+<li>
+<p>Under "Homepage URL," enter a URL for your app. You can use:</p>
+<ul>
+<li>Your app's website URL.</li>
+<li>The URL of the organization or user that owns the app.</li>
+<li>The URL of the repository where your app's code is stored, if it is a public repository.</li>
+</ul>
+</li>
+<li>
+<p>Under "Webhook," deselect <strong>Active</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Create GitHub App</strong>.</p>
+</li>
+</ol>
+<h2><a href="#next-steps">Next steps</a></h2>
+<ul>
+<li><a href="/en/copilot/building-copilot-extensions/creating-a-copilot-extension/configuring-your-github-app-for-your-copilot-agent">Configuring your GitHub App for your Copilot extension</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

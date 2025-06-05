@@ -1,0 +1,106 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Manage Copilot" href="/en/copilot/managing-copilot">Manage Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Manage for organization" href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization">Manage for organization</a><span>/</span>
+</li>
+<li>
+<a title="Manage access" href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/managing-access-to-github-copilot-in-your-organization">Manage access</a><span>/</span>
+</li>
+<li><a title="Grant access" href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/managing-access-to-github-copilot-in-your-organization/granting-access-to-copilot-for-members-of-your-organization">Grant access</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Granting access to Copilot for members of your organization</h1></div></div>
+<div>
+<div><p>Grant access to GitHub Copilot for some or all of the members of your organization.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Organization owners for organizations with a  Copilot Business plan.</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#configuring-access-to-github-copilot-in-your-organization"><div><span>Configuring access to GitHub Copilot in your organization</span></div></a></li>
+<li><a href="#granting-access-to-github-copilot-for-all-current-and-future-users-in-your-organization"><div><span>Granting access to GitHub Copilot for all current and future users in your organization</span></div></a></li>
+<li><a href="#granting-access-to-github-copilot-for-specific-users-in-your-organization"><div><span>Granting access to GitHub Copilot for specific users in your organization</span></div></a></li>
+<li><a href="#using-the-api-to-grant-access-to-github-copilot"><div><span>Using the API to grant access to GitHub Copilot</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#configuring-access-to-github-copilot-in-your-organization">Configuring access to GitHub Copilot in your organization</a></h2>
+<p>After setting up a Copilot Business plan, an organization owner can grant GitHub Copilot access to members of their organization.</p>
+<p>Billing for GitHub Copilot starts when you grant an organization member access, irrespective of when they first use Copilot. If you grant an organization member access midway through a billing cycle, the cost is prorated for the remainder of the cycle. For more information, see <a href="/en/billing/managing-billing-for-github-copilot/about-billing-for-github-copilot">About billing for GitHub Copilot</a>.</p>
+<h2><a href="#granting-access-to-github-copilot-for-all-current-and-future-users-in-your-organization">Granting access to GitHub Copilot for all current and future users in your organization</a></h2>
+<ol>
+<li>In the upper-right corner of GitHub, select your profile photo, then click </li>
+<li>Next to the organization, click <strong>Settings</strong>.</li>
+<li>In the "Code, planning, and automation" section of the sidebar, click <strong>Access</strong>.</li>
+<li>If the <strong>Allow this organization to assign seats</strong> button is displayed, click this button.</li>
+<li>Click <strong>Start adding seats</strong>.</li>
+<li>To enable GitHub Copilot for all current and future users in your organization, select <strong>Purchase for all members</strong>.</li>
+<li>In the "Confirm seats purchase for all members" dialog, to confirm that you want to enable GitHub Copilot for all current and future users in your organization, click <strong>Purchase seats</strong>.</li>
+</ol>
+<h2><a href="#granting-access-to-github-copilot-for-specific-users-in-your-organization">Granting access to GitHub Copilot for specific users in your organization</a></h2>
+<ol>
+<li>
+<p>In the upper-right corner of GitHub, select your profile photo, then click </p>
+</li>
+<li>
+<p>Next to the organization, click <strong>Settings</strong>.</p>
+</li>
+<li>
+<p>In the "Code, planning, and automation" section of the sidebar, click <strong>Access</strong>.</p>
+</li>
+<li>
+<p>If the <strong>Allow this organization to assign seats</strong> button is displayed, click this button.</p>
+</li>
+<li>
+<p>Click <strong>Start adding seats</strong>.</p>
+</li>
+<li>
+<p>To enable GitHub Copilot for selected teams or users in your organization, select <strong>Purchase for selected members</strong>.</p>
+</li>
+<li>
+<p>In the "Enable Copilot access for users and teams" dialog, click one of the two tabs.</p>
+<div><picture><source><img src="/assets/cb-36645/images/help/copilot/enable-access-for-selected-members.png" alt='Screenshot of the "enable access for selected members" dialog.' width="1440" height="434"></source></picture></div>
+<ul>
+<li>
+<p>Click <strong>Users and teams</strong> to search for and add individual users or teams.</p>
+<p>To search for a user, type their username or full name in the search bar. If you select a user who is not currently a member of your organization, they will be invited to join your organization when you click <strong>Continue to purchase</strong> followed by <strong>Purchase seats</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Upload CSV</strong> to add users in bulk by uploading a CSV file.</p>
+<p>To add members in bulk, click <strong>Choose CSV to upload</strong>, and then upload a CSV file including either the username or email address for each member you want to add, separated by a comma. The file can contain a mixture of usernames and email addresses.</p>
+<div>
+<p> When you upload a CSV file, unless you're using Enterprise Managed Users, GitHub Copilot will search all users on GitHub.com for matches. If the CSV includes users who are not members of your organization, they will be invited to join your organization when you click <strong>Continue to purchase</strong> followed by <strong>Purchase seats</strong>. This warning does not apply to accounts using Enterprise Managed Users.</p>
+</div>
+<p>Review the list of users generated from your CSV file. Clear the selection of any users you do not want to add.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Continue to purchase</strong>, then click <strong>Purchase seats</strong>.</p>
+</li>
+</ol>
+<h2><a href="#using-the-api-to-grant-access-to-github-copilot">Using the API to grant access to GitHub Copilot</a></h2>
+<p>You can use GitHub's REST API to grant access to GitHub Copilot for teams, or specific users, in your organization. See <a href="/en/rest/copilot/copilot-user-management?apiVersion=2022-11-28#add-teams-to-the-copilot-subscription-for-an-organization">Add teams to the Copilot subscription for an organization</a> and <a href="/en/rest/copilot/copilot-user-management?apiVersion=2022-11-28#add-users-to-the-copilot-subscription-for-an-organization">Add users to the Copilot subscription for an organization</a>.</p>
+<p>GitHub has found that many successful rollouts offer a fully self-service model where developers can claim a license without approval. To learn about options for setting up this process, see <a href="/en/copilot/rolling-out-github-copilot-at-scale/setting-up-a-self-serve-process-for-github-copilot-licenses">Setting up a self-serve process for GitHub Copilot licenses</a>.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="https://copilot.github.trust.page">GitHub Copilot Trust Center</a></li>
+<li><a href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/managing-github-copilot-features-in-your-organization/managing-policies-for-copilot-in-your-organization">Managing policies for Copilot in your organization</a></li>
+<li><a href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/reviewing-github-copilot-activity-in-your-organization/reviewing-usage-data-for-github-copilot-in-your-organization">Reviewing user activity data for Copilot in your organization</a></li>
+<li><a href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/managing-access-to-github-copilot-in-your-organization/revoking-access-to-copilot-for-members-of-your-organization">Revoking access to Copilot for members of your organization</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

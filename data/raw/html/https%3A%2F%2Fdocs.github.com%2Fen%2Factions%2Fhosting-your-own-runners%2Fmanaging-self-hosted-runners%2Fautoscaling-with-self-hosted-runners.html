@@ -1,0 +1,86 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Self-hosted runners" href="/en/actions/hosting-your-own-runners">Self-hosted runners</a><span>/</span>
+</li>
+<li>
+<a title="Manage self-hosted runners" href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners">Manage self-hosted runners</a><span>/</span>
+</li>
+<li><a title="Autoscale self-hosted runners" href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners/autoscaling-with-self-hosted-runners">Autoscale self-hosted runners</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Autoscaling with self-hosted runners</h1></div></div>
+<div><div><p>You can automatically scale your self-hosted runners in response to webhook events.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-autoscaling"><div><span>About autoscaling</span></div></a></li>
+<li><a href="#supported-autoscaling-solutions"><div><span>Supported autoscaling solutions</span></div></a></li>
+<li><a href="#using-ephemeral-runners-for-autoscaling"><div><span>Using ephemeral runners for autoscaling</span></div></a></li>
+<li><a href="#controlling-runner-software-updates-on-self-hosted-runners"><div><span>Controlling runner software updates on self-hosted runners</span></div></a></li>
+<li><a href="#using-webhooks-for-autoscaling"><div><span>Using webhooks for autoscaling</span></div></a></li>
+<li><a href="#authentication-requirements"><div><span>Authentication requirements</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-autoscaling">About autoscaling</a></h2>
+<p>You can automatically increase or decrease the number of self-hosted runners in your environment in response to the webhook events you receive with a particular label. For example, you can create automation that adds a new self-hosted runner each time you receive a <a href="/en/webhooks-and-events/webhooks/webhook-events-and-payloads#workflow_job"><code>workflow_job</code></a> webhook event with the <a href="/en/webhooks-and-events/webhooks/webhook-events-and-payloads#workflow_job"><code>queued</code></a> activity, which notifies you that a new job is ready for processing. The webhook payload includes label data, so you can identify the type of runner the job is requesting. Once the job has finished, you can then create automation that removes the runner in response to the <code>workflow_job</code> <a href="/en/webhooks-and-events/webhooks/webhook-events-and-payloads#workflow_job"><code>completed</code></a> activity.</p>
+<h2><a href="#supported-autoscaling-solutions">Supported autoscaling solutions</a></h2>
+<p>GitHub-hosted runners inherently autoscale based on your needs. GitHub-hosted runners can be a low-maintenance and cost-effective alternative to developing or implementing autoscaling solutions. For more information, see <a href="/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners">About GitHub-hosted runners</a>.</p>
+<p>The <a href="https://github.com/actions/actions-runner-controller">actions/actions-runner-controller</a> (ARC) project is a Kubernetes-based runner autoscaler. GitHub recommends ARC if the team deploying it has expert Kubernetes knowledge and experience.</p>
+<p>For more information, see <a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/about-actions-runner-controller">About Actions Runner Controller</a> and <a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/about-support-for-actions-runner-controller">About support for Actions Runner Controller</a>.</p>
+<h2><a href="#using-ephemeral-runners-for-autoscaling">Using ephemeral runners for autoscaling</a></h2>
+<p>GitHub recommends implementing autoscaling with ephemeral self-hosted runners; autoscaling with persistent self-hosted runners is not recommended. In certain cases, GitHub cannot guarantee that jobs are not assigned to persistent runners while they are shut down. With ephemeral runners, this can be guaranteed because GitHub only assigns one job to a runner.</p>
+<p>This approach allows you to manage your runners as ephemeral systems, since you can use automation to provide a clean environment for each job. This helps limit the exposure of any sensitive resources from previous jobs, and also helps mitigate the risk of a compromised runner receiving new jobs.</p>
+<div>
+<p>The runner application log files for ephemeral runners must be forwarded to an external log storage solution for troubleshooting and diagnostic purposes. While it is not required for ephemeral runners to be deployed, GitHub recommends ensuring runner logs are forwarded and preserved externally before deploying an ephemeral runner autoscaling solution in a production environment. For more information, see <a href="/en/actions/hosting-your-own-runners/managing-self-hosted-runners/monitoring-and-troubleshooting-self-hosted-runners#reviewing-the-self-hosted-runner-application-log-files">Monitoring and troubleshooting self-hosted runners</a>.</p>
+</div>
+<p>To add an ephemeral runner to your environment, include the <code>--ephemeral</code> parameter when registering your runner using <code>config.sh</code>. For example:</p>
+<pre><code>./config.sh --url https://github.com/octo-org --token example-token --ephemeral
+</code></pre>
+<p>The GitHub Actions service will then automatically de-register the runner after it has processed one job. You can then create your own automation that wipes the runner after it has been de-registered.</p>
+<div>
+<p>
+If a job is labeled for a certain type of runner, but none matching that type are available, the job does not immediately fail at the time of queueing. Instead, the job will remain queued until the 24 hour timeout period expires.</p>
+</div>
+<p>Alternatively, you can create ephemeral, just-in-time runners using the REST API. For more information, see <a href="/en/rest/actions/self-hosted-runners">REST API endpoints for self-hosted runners</a>.</p>
+<h2><a href="#controlling-runner-software-updates-on-self-hosted-runners">Controlling runner software updates on self-hosted runners</a></h2>
+<p>By default, self-hosted runners will automatically perform a software update whenever a new version of the runner software is available. If you use ephemeral runners in containers then this can lead to repeated software updates when a new runner version is released. Turning off automatic updates allows you to update the runner version on the container image directly on your own schedule.</p>
+<p>To turn off automatic software updates and install software updates yourself, specify the <code>--disableupdate</code> flag when registering your runner using <code>config.sh</code>. For example:</p>
+<pre><code>./config.sh --url https://github.com/YOUR-ORGANIZATION --token EXAMPLE-TOKEN --disableupdate
+</code></pre>
+<p>If you disable automatic updates, you must still update your runner version regularly. New functionality in GitHub Actions requires changes in both the GitHub Actions service <em>and</em> the runner software. The runner may not be able to correctly process jobs that take advantage of new features in GitHub Actions without a software update.</p>
+<p>If you disable automatic updates, you will be required to update your runner version within 30 days of a new version being made available. You may want to subscribe to notifications for releases in the <a href="https://github.com/actions/runner/releases"><code>actions/runner</code> repository</a>. For more information, see <a href="/en/account-and-profile/managing-subscriptions-and-notifications-on-github/setting-up-notifications/configuring-notifications#about-custom-notifications">Configuring notifications</a>.</p>
+<p>For instructions on how to install the latest runner version, see the installation instructions for <a href="https://github.com/actions/runner/releases">the latest release</a>.</p>
+<div>
+<p> Any updates released for the software, including major, minor or patch releases, are considered as an available update. If you do not perform a software update within 30 days, the GitHub Actions service will not queue jobs to your runner. In addition, if a critical security update is required, the GitHub Actions service will not queue jobs to your runner until it has been updated.</p>
+</div>
+<h2><a href="#using-webhooks-for-autoscaling">Using webhooks for autoscaling</a></h2>
+<p>You can create your own autoscaling environment by using payloads received from the <a href="/en/webhooks-and-events/webhooks/webhook-events-and-payloads#workflow_job"><code>workflow_job</code></a> webhook. This webhook is available at the repository, organization, and enterprise levels, and the payload for this event contains an <code>action</code> key that corresponds to the stages of a workflow job's life-cycle; for example when jobs are <code>queued</code>, <code>in_progress</code>, and <code>completed</code>. You must then create your own scaling automation in response to these webhook payloads.</p>
+<ul>
+<li>For more information about the <code>workflow_job</code> webhook, see <a href="/en/webhooks-and-events/webhooks/webhook-events-and-payloads#workflow_job">Webhook events and payloads</a>.</li>
+<li>To learn how to work with webhooks, see <a href="/en/webhooks">Webhooks documentation</a>.</li>
+</ul>
+<h2><a href="#authentication-requirements">Authentication requirements</a></h2>
+<p>You can register and delete repository and organization self-hosted runners using <a href="/en/rest/actions/self-hosted-runners">the API</a>. To authenticate to the API, your autoscaling implementation can use an access token or a GitHub app.</p>
+<p>Your access token will require the following scope:</p>
+<ul>
+<li>For private repositories, use an access token with the <a href="/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps#available-scopes"><code>repo</code> scope</a>.</li>
+<li>For public repositories, use an access token with the <a href="/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps#available-scopes"><code>public_repo</code> scope</a>.</li>
+<li>For organizations, use an access token with the <a href="/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps#available-scopes"><code>admin:org</code> scope</a>.</li>
+</ul>
+<p>To authenticate using a GitHub App, it must be assigned the following permissions:</p>
+<ul>
+<li>For repositories, assign the <code>administration</code> permission.</li>
+<li>For organizations, assign the <code>organization_self_hosted_runners</code> permission.</li>
+</ul>
+<p>You can register and delete enterprise self-hosted runners using <a href="/en/rest/actions/self-hosted-runners">the API</a>. To authenticate to the API, your autoscaling implementation can use an access token.</p>
+<p>Your access token will require the <code>manage_runners:enterprise</code> scope.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,163 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Prebuilding your codespaces" href="/en/codespaces/prebuilding-your-codespaces">Prebuilding your codespaces</a><span>/</span>
+</li>
+<li><a title="Configure prebuilds" href="/en/codespaces/prebuilding-your-codespaces/configuring-prebuilds">Configure prebuilds</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Configuring prebuilds</h1></div></div>
+<div>
+<div><p>You can configure your project to prebuild a codespace automatically each time you push a change to your repository.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>People with admin access to a repository can configure prebuilds for the repository.</p></div></div>
+<div><div>
+<p>Repository-level settings for GitHub Codespaces are available for all repositories owned by personal accounts. <br><br></p>
+<p>For repositories owned by organizations, repository-level settings for GitHub Codespaces are available for organizations on GitHub Team and GitHub Enterprise plans. To access the settings, the organization or its parent enterprise must have added a payment method and set a spending limit for GitHub Codespaces. For more information, see <a href="/en/codespaces/managing-codespaces-for-your-organization/choosing-who-owns-and-pays-for-codespaces-in-your-organization">Choosing who owns and pays for codespaces in your organization</a> and <a href="/en/get-started/learning-about-github/githubs-plans">GitHub’s plans</a>.</p>
+</div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#configuring-prebuilds"><div><span>Configuring prebuilds</span></div></a></li>
+<li><a href="#configuring-environment-variables"><div><span>Configuring environment variables</span></div></a></li>
+<li><a href="#configuring-time-consuming-tasks-to-be-included-in-the-prebuild"><div><span>Configuring time-consuming tasks to be included in the prebuild</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>You can set up a prebuild configuration for the combination of a specific branch of your repository with a specific dev container configuration file.</p>
+<p>Any branches created from a prebuild-enabled parent branch will typically also get prebuilds for the same dev container configuration. This is because prebuilds for child branches that use the same dev container configuration as the parent branch are, for the most part, identical, so developers can benefit from faster codespace creation times on those branches also. See <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers">Introduction to dev containers</a>.</p>
+<p>Typically, when you configure prebuilds for a branch, prebuilds will be available for multiple machine types. However, if your repository is greater than 32 GB, prebuilds won't be available for 2-core and 4-core machine types, since the storage these provide is limited to 32 GB.</p>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<p>Prebuilds are created using GitHub Actions. As a result, GitHub Actions must be enabled for the repository for which you are configuring prebuilds. See <a href="/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository">Managing GitHub Actions settings for a repository</a>.</p>
+<p>You can set up prebuilds in any repository owned by a personal account. The prebuild will consume storage space that will either incur a billable charge or, for repositories owned by your personal account, will use some of your monthly included storage.</p>
+<div>
+<p>
+If you create prebuilds for a forked repository, the storage cost of those prebuilds is subtracted from your monthly included storage, while available. If you have used all of your included storage, and you have set up billing, your personal account will be billed. This is true even when the codespaces you create for a fork are paid for by the organization that owns the parent repository. See <a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/about-billing-for-github-codespaces#how-billing-is-handled-for-forked-repositories">About billing for GitHub Codespaces</a>.</p>
+</div>
+<p>For repositories owned by an organization, you can set up prebuilds if the organization is on a GitHub Team or GitHub Enterprise plan. Additionally, you must have added a payment method and set a spending limit for GitHub Codespaces on the organization account or its parent enterprise. See <a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/managing-the-spending-limit-for-github-codespaces#managing-the-github-codespaces-spending-limit-for-your-organization-account">Managing the spending limit for GitHub Codespaces</a> and <a href="/en/get-started/learning-about-github/githubs-plans">GitHub’s plans</a>.</p>
+<h2><a href="#configuring-prebuilds">Configuring prebuilds</a></h2>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click <strong>Settings</strong>.</p>
+<div><picture><source><img src="/assets/cb-28260/images/help/repository/repo-actions-settings.png" alt='Screenshot of a repository header showing the tabs. The "Settings" tab is highlighted by a dark orange outline.' width="720" height="71"></source></picture></div>
+</li>
+<li>
+<p>In the "Code &amp; automation" section of the side bar, click </p>
+</li>
+<li>
+<p>In the "Prebuild configuration" section of the page, click <strong>Set up prebuild</strong>.</p>
+<div><picture><source><img src="/assets/cb-48427/images/help/codespaces/prebuilds-set-up.png" alt='Screenshot of the "Prebuild configuration" section of the "Codespaces" settings page, showing the "Set up prebuilds" button.' width="720" height="302"></source></picture></div>
+</li>
+<li>
+<p>Choose the branch for which you want to set up prebuilds.</p>
+<div><picture><source><img src="/assets/cb-68610/images/help/codespaces/prebuilds-choose-branch.png" alt='Screenshot of the "Configuration" settings for a prebuild with a dropdown menu listing branches to select. The "main" branch is currently selected.' width="720" height="345"></source></picture></div>
+<div>
+<p>
+Any branches created from a prebuild-enabled base branch will typically also get prebuilds for the same dev container configuration. For example, if you enable prebuilds for a dev container configuration file on the default branch of the repository, branches based on the default branch will, in most cases, also get prebuilds for the same dev container configuration.</p>
+</div>
+</li>
+<li>
+<p>Optionally, in the <strong>Configuration file</strong> dropdown menu that's displayed, choose the <code>devcontainer.json</code> configuration file that you want to use for your prebuilds. See <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers#devcontainerjson">Introduction to dev containers</a>.</p>
+<div><picture><source><img src="/assets/cb-49883/images/help/codespaces/prebuilds-choose-configfile.png" alt='Screenshot of the configuration file dropdown menu. Four configuration files are listed, with ".devcontainer/devcontainer.json" currently selected.' width="720" height="293"></source></picture></div>
+</li>
+<li>
+<p>Choose how you want to automatically trigger prebuild updates.</p>
+<ul>
+<li>
+<p><strong>Every push</strong> (the default setting) - With this setting, prebuilds will be updated on every push made to the given branch. This will ensure that codespaces generated from a prebuild always contain the latest codespace configuration, including any recently added or updated dependencies.</p>
+</li>
+<li>
+<p><strong>On configuration change</strong> - With this setting, prebuilds will be updated every time any of the following files is changed:</p>
+<ul>
+<li>
+<p><code>.devcontainer/devcontainer.json</code></p>
+<div>
+<p>
+Prebuild updates are not triggered by changes to <code>devcontainer.json</code> files within subdirectories of <code>.devcontainer</code>.</p>
+</div>
+</li>
+<li>
+<p>The Dockerfile referenced in the <code>build.dockerfile</code> property of the <code>.devcontainer/devcontainer.json</code> file.</p>
+</li>
+</ul>
+<p>This setting ensures that changes to the dev container configuration files for the repository are used when a codespace is generated from a prebuild. The GitHub Actions workflow that updates the prebuilds will run less often, so this option will use fewer GitHub Actions minutes. However, this option will not guarantee that codespaces always include recently added or updated dependencies, so these may have to be added or updated manually after a codespace has been created.</p>
+</li>
+<li>
+<p><strong>Scheduled</strong> - With this setting, you can have your prebuilds updated on a custom schedule that's defined by you. This can reduce consumption of GitHub Actions minutes, however, with this option, codespaces may be created that do not use the latest dev container configuration changes.</p>
+</li>
+</ul>
+<div><picture><source><img src="/assets/cb-65096/images/help/codespaces/prebuilds-triggers.png" alt='Screenshot of the "Prebuild triggers" settings. The "Scheduled" option is selected and set to "Every day" at "1pm" and "3:30pm."' width="720" height="370"></source></picture></div>
+</li>
+<li>
+<p>Optionally, select <strong>Reduce prebuild available to only specific regions</strong> to create prebuilds only in specified regions. Select the regions in which you want prebuilds to be available.</p>
+<p>By default, prebuilds are created in all of the available regions, incurring storage charges per prebuild.</p>
+<div><picture><source><img src="/assets/cb-46139/images/help/codespaces/prebuilds-regions.png" alt='Screenshot of the "Region availability" settings. "Reduce prebuild available to only specific regions" is selected with two regions selected.' width="1440" height="715"></source></picture></div>
+<div>
+<ul>
+<li>The prebuild in each region incurs individual storage charges. You should, therefore, only enable prebuilds for regions in which you know they'll be used. See <a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/about-billing-for-github-codespaces#about-billing-for-codespaces-prebuilds">About billing for GitHub Codespaces</a>.</li>
+<li>Developers can set their default region for GitHub Codespaces, which can allow you to enable prebuilds for fewer regions. See <a href="/en/codespaces/setting-your-user-preferences/setting-your-default-region-for-github-codespaces">Setting your default region for GitHub Codespaces</a>.</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Optionally, under <strong>Template history</strong>, set the number of prebuild versions to be retained. You can input any number between 1 and 5. The default number of saved versions is 2, which means that only the latest prebuild and the previous version are saved.</p>
+<div><picture><source><img src="/assets/cb-24261/images/help/codespaces/prebuilds-template-history-setting.png" alt='Screenshot of the "Template history" setting. It is set to 2 versions.' width="720" height="123"></source></picture></div>
+<p>Depending on your prebuild trigger settings, your prebuild could change with each push or on each dev container configuration change. Retaining older versions of prebuilds enables you to create a prebuild from an older commit with a different dev container configuration than the current prebuild. This setting allows you to set the number of retained versions to a level that is appropriate for your needs.</p>
+<p>If you set the number of prebuild versions to save to 1, GitHub Codespaces will only save the latest version of the prebuild and will delete the older version each time the template is updated. This means you will not get a prebuilt codespace if you go back to an older dev container configuration.</p>
+<p>There is a storage cost associated with each prebuild version that's retained. For example, if you are generating prebuilds in 4 regions and retaining 2 versions, you will be charged for storage of up to 8 prebuilds. See <a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/about-billing-for-github-codespaces#codespaces-pricing">About billing for GitHub Codespaces</a>.</p>
+</li>
+<li>
+<p>Optionally, add users or teams to notify when the prebuild workflow run fails for this configuration. You can begin typing a username, team name, or full name, then click the name once it appears to add them to the list. The users or teams you add will receive an email when prebuild failures occur, containing a link to the workflow run logs to help with further investigation.</p>
+<div><picture><source><img src="/assets/cb-34068/images/help/codespaces/prebuilds-failure-notification-setting.png" alt='Screenshot of the "Failure notifications" setting. The team named "octocat-team" has been added.' width="720" height="192"></source></picture></div>
+<div>
+<p>
+People will only receive notifications of failed prebuilds if they have enabled notifications for failed Actions workflows in their personal settings. See <a href="/en/account-and-profile/managing-subscriptions-and-notifications-on-github/setting-up-notifications/configuring-notifications#github-actions-notification-options">Configuring notifications</a>.</p>
+</div>
+</li>
+<li>
+<p>Optionally, at the bottom of the page, click <strong>Show advanced options</strong>.</p>
+<div><picture><source><img src="/assets/cb-45746/images/help/codespaces/show-advanced-options.png" alt='Screenshot of the bottom of the prebuilds configuration page. The link "Show advanced options" is highlighted with a dark orange outline.' width="720" height="363"></source></picture></div>
+<p>In the "Advanced options" section, if you select <strong>Disable prebuild optimization</strong>, codespaces will be created without a prebuild if the latest prebuild workflow has failed or is currently running. See <a href="/en/codespaces/troubleshooting/troubleshooting-prebuilds#preventing-out-of-date-prebuilds-being-used">Troubleshooting prebuilds</a>.</p>
+</li>
+<li>
+<p>Click <strong>Create</strong>.</p>
+<p>If the dev container configuration for the repository specifies permissions for accessing other repositories, you will be shown an authorization page. For more information on how this is specified in the <code>devcontainer.json</code> file, see <a href="/en/codespaces/managing-your-codespaces/managing-repository-access-for-your-codespaces">Managing access to other repositories within your codespace</a>.</p>
+<p>Click </p>
+<div><picture><source><img src="/assets/cb-95634/images/help/codespaces/prebuild-authorization-page.png" alt="Screenshot of an authorization page for a prebuild configuration. Three permissions are listed in this request." width="720" height="533"></source></picture></div>
+<p>Click <strong>Authorize and continue</strong> to grant these permissions for creation of prebuilds. Alternatively, you can click <strong>Continue without authorizing</strong> but, if you do so, codespaces created from the resulting prebuilds may not work properly.</p>
+<div>
+<p>
+Users who create codespaces using this prebuild will also be asked to grant these permissions.</p>
+</div>
+</li>
+</ol>
+<p>After you create a prebuild configuration it is listed on the GitHub Codespaces page of your repository settings. A GitHub Actions workflow is queued and then run to create prebuilds in the regions you specified, based on the branch and dev container configuration file you selected.</p>
+<p><picture><source><img src="/assets/cb-32132/images/help/codespaces/prebuild-configs-list.png" alt='Screenshot of the list of prebuild configurations. One prebuild is listed, labeled "Currently running." To the right of it is a "See output" button.' width="720" height="211"></source></picture></p>
+<p>For information about editing and deleting prebuild configurations, see <a href="/en/codespaces/prebuilding-your-codespaces/managing-prebuilds">Managing prebuilds</a>.</p>
+<h2><a href="#configuring-environment-variables">Configuring environment variables</a></h2>
+<p>To allow the prebuild process to access environment variables required to create your development environment, you can set these either as Codespaces repository secrets or as Codespaces organization secrets. Secrets that you create in this way will be accessible by anyone who creates a codespace from this repository. See <a href="/en/codespaces/managing-codespaces-for-your-organization/managing-development-environment-secrets-for-your-repository-or-organization#adding-secrets-for-a-repository">Managing development environment secrets for your repository or organization</a>.</p>
+<p>Prebuilds cannot use any user-level secrets while building your environment, because these are not available until after the codespace has been created.</p>
+<h2><a href="#configuring-time-consuming-tasks-to-be-included-in-the-prebuild">Configuring time-consuming tasks to be included in the prebuild</a></h2>
+<p>You can use the <code>onCreateCommand</code> and <code>updateContentCommand</code> commands in your <code>devcontainer.json</code> to include time-consuming processes as part of the prebuild creation. See the Visual Studio Code documentation, <a href="https://code.visualstudio.com/docs/remote/devcontainerjson-reference#_lifecycle-scripts">devcontainer.json reference</a>.</p>
+<p><code>onCreateCommand</code> is run only once, when the prebuild is created, whereas <code>updateContentCommand</code> is run at creation of the prebuild and at subsequent updates to it. Incremental builds should be included in <code>updateContentCommand</code> since they represent the source of your project and need to be included for every prebuild update.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/codespaces/prebuilding-your-codespaces/allowing-a-prebuild-to-access-other-repositories">Allowing a prebuild to access other repositories</a></li>
+<li><a href="/en/codespaces/troubleshooting/troubleshooting-prebuilds">Troubleshooting prebuilds</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,78 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Use GitHub Copilot" href="/en/copilot/using-github-copilot">Use GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Coding agent" href="/en/copilot/using-github-copilot/coding-agent">Coding agent</a><span>/</span>
+</li>
+<li><a title="Review Copilot PRs" href="/en/copilot/using-github-copilot/coding-agent/reviewing-a-pull-request-created-by-copilot">Review Copilot PRs</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Reviewing a pull request created by Copilot</h1></div></div>
+<div>
+<div><p>After Copilot creates a pull request you should review it and comment on anything that needs changes.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Copilot coding agent is available with the GitHub Copilot Pro+ and GitHub Copilot Enterprise plans in repositories where it is enabled.<br><a href="https://github.com/features/copilot/plans?ref_cta=Copilot+plans+signup&amp;ref_loc=reviewing+a+pull+request+created+by+copilot&amp;ref_page=docs"><span>Sign up for Copilot</span> </a></p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#reviewing-copilots-changes"><div><span>Reviewing Copilot's changes</span></div></a></li>
+<li><a href="#managing-github-actions-workflow-runs"><div><span>Managing GitHub Actions workflow runs</span></div></a></li>
+<li><a href="#giving-feedback-on-copilots-work"><div><span>Giving feedback on Copilot's work</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<p> Copilot coding agent is in public preview and subject to change.</p>
+</div>
+<h2><a href="#reviewing-copilots-changes">Reviewing Copilot's changes</a></h2>
+<p>After Copilot has finished working on a coding task, and has requested a pull request review from you, you should review Copilot's work thoroughly before merging the pull request.</p>
+<div>
+<p>
+If you have the "Required approvals" rule or branch protection enabled, you won't be able to approve pull requests that you initiated by assigning the related issue to Copilot. Someone else must approve the pull request before it can be merged.</p>
+</div>
+<p>You can ask Copilot to make changes using pull request comments, or you can check out Copilot's branch and make changes yourself.</p>
+<div>
+<p>
+We recommend you batch your review comments instead of submitting them individually.</p>
+</div>
+<p>When you leave a comment on Copilot's pull request, Copilot will consider your comment, and decide whether to start a new agent session to respond.</p>
+<p>Copilot only responds to comments from people who have write access to the repository.</p>
+<p>If Copilot starts a new agent session in response to your comment, an eyes emoji (👀) is added as a reaction to the comment, and a "Copilot has started work" event is added to the pull request timeline.</p>
+<p><picture><source><img src="/assets/cb-156524/images/help/copilot/coding-agent/comment-to-agent-on-pr.png" alt='Screenshot of a pull request timeline with a review comment with the eyes reaction and a "Copilot started work" timeline event.' width="720" height="372"></source></picture></p>
+<p>Copilot may ignore a comment if it considers that the comment was not intended for it. If you are sure that you want Copilot to respond to your comment, you can @mention Copilot by including <code>@copilot</code> in your comment.</p>
+<div>
+<p>
+If you don't want Copilot to respond to comments on a pull request, you can unassign Copilot from the pull request. If you later reassign Copilot to the same pull request it will respond to new comments and push more changes. It will not respond to comment that were added while it was not assigned.</p>
+</div>
+<p>For more information, see the section "Use comments to iterate on a pull request" in <a href="/en/copilot/using-github-copilot/coding-agent/best-practices-for-using-copilot-to-work-on-tasks#using-comments-to-iterate-on-a-pull-request">Best practices for using Copilot to work on tasks</a>.</p>
+<h2><a href="#managing-github-actions-workflow-runs">Managing GitHub Actions workflow runs</a></h2>
+<p>GitHub Actions workflows will not run automatically when Copilot pushes changes to a pull request.</p>
+<p>GitHub Actions workflows can be privileged and have access to sensitive secrets, so you should review code written by Copilot before allowing workflows to run.</p>
+<p>To allow GitHub Actions workflows to run, click the <strong>Approve and run workflows</strong> button in the pull request's merge box.</p>
+<p><picture><source><img src="/assets/cb-150864/images/help/copilot/coding-agent/approve-and-run-workflows.png" alt='Screenshot of the merge box on a pull request from Copilot with the "Approve and run workflows" button.'></source></picture></p>
+<h2><a href="#giving-feedback-on-copilots-work">Giving feedback on Copilot's work</a></h2>
+<p>You can provide feedback on Copilot's work using the feedback buttons on  Copilot's pull requests and comments. We use your feedback to improve the product and the quality of Copilot's solutions.</p>
+<ol>
+<li>On a pull request or comment from Copilot, click the thumbs up (👍) or thumbs down (👎) button.</li>
+<li>If you click the thumbs down button, you're asked to provide additional information. You can, optionally, pick the reason for your negative feedback and leave a comment before clicking <strong>Submit feedback</strong>.</li>
+</ol>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/copilot/using-github-copilot/coding-agent/best-practices-for-using-copilot-to-work-on-tasks">Best practices for using Copilot to work on tasks</a></li>
+<li><a href="/en/copilot/using-github-copilot/coding-agent/using-the-copilot-coding-agent-logs">Using the Copilot coding agent logs</a></li>
+<li><a href="/en/copilot/using-github-copilot/coding-agent/troubleshooting-copilot-coding-agent">Troubleshooting Copilot coding agent</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

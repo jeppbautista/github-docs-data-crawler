@@ -1,0 +1,31 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Apps" href="/en/apps">Apps</a><span>/</span>
+</li>
+<li>
+<a title="Creating GitHub Apps" href="/en/apps/creating-github-apps">Creating GitHub Apps</a><span>/</span>
+</li>
+<li>
+<a title="Registering a GitHub App" href="/en/apps/creating-github-apps/registering-a-github-app">Registering a GitHub App</a><span>/</span>
+</li>
+<li><a title="Setup URL" href="/en/apps/creating-github-apps/registering-a-github-app/about-the-setup-url">Setup URL</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>About the setup URL</h1></div></div>
+<div><div><p>You can specify a URL that users will be redirected to after they install a GitHub App.</p></div></div>
+<div><div><div>
+<p>When you register a GitHub App, you can specify a setup URL. When users install your GitHub App, they are redirected to the setup URL. If additional setup is required after installation, you can use this URL to tell users what steps to take next.</p>
+<p>If you specify a setup URL, you can also select <strong>Redirect on update</strong> to specify that users should be redirected to the setup URL after they update an installation. An update includes adding or removing access to a repository for an installation.</p>
+<div>
+<p>
+When GitHub redirects users to the setup URL, it includes an <code>installation_id</code> query parameter. Bad actors can hit this URL with a spoofed <code>installation_id</code>. Therefore, you should not rely on the validity of the <code>installation_id</code> parameter. Instead, you should generate a user access token for the user who installed the GitHub App and then check that the installation is associated with that user. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app">Generating a user access token for a GitHub App</a>.</p>
+</div>
+<p>Although the setup URL is optional during GitHub App registration, it is required if you want to allow users to purchase your app in GitHub Marketplace. For more information, see <a href="/en/apps/publishing-apps-to-github-marketplace/using-the-github-marketplace-api-in-your-app/handling-new-purchases-and-free-trials">Handling new purchases and free trials</a>.</p>
+<p>The setup URL is different from the callback URL. Users are redirected to the setup URL after they install a GitHub App. Users are redirected to the callback URL when they authorize a GitHub App via the web application flow. For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/about-the-user-authorization-callback-url">About the user authorization callback URL</a>.</p>
+<p>For more information about registering a GitHub App, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/creating-a-github-app">Registering a GitHub App</a>. For more information about modifying a GitHub App registration, see <a href="/en/apps/maintaining-github-apps/modifying-a-github-app">Modifying a GitHub App registration</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

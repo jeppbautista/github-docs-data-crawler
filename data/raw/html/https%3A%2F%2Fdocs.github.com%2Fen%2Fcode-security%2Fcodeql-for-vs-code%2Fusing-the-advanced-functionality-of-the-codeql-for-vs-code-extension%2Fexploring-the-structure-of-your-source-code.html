@@ -1,0 +1,52 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="CodeQL for VS Code" href="/en/code-security/codeql-for-vs-code">CodeQL for VS Code</a><span>/</span>
+</li>
+<li>
+<a title="Advanced functionality" href="/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension">Advanced functionality</a><span>/</span>
+</li>
+<li><a title="Explore code structure" href="/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension/exploring-the-structure-of-your-source-code">Explore code structure</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Exploring the structure of your source code</h1></div></div>
+<div><div><p>You can use the AST viewer to display the abstract syntax tree of a CodeQL database.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-the-abstract-syntax-tree"><div><span>About the abstract syntax tree</span></div></a></li>
+<li><a href="#viewing-the-abstract-syntax-tree-of-a-source-file"><div><span>Viewing the abstract syntax tree of a source file</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-the-abstract-syntax-tree">About the abstract syntax tree</a></h2>
+<p>The abstract syntax tree (AST) of a program represents the program's syntactic structure. Nodes on the AST represent elements such as statements and expressions. A CodeQL database encodes these program elements and the relationships between them through a database schema. For more information about database schemas, see <a href="https://codeql.github.com/docs/codeql-overview/codeql-glossary/#ql-database-schema">CodeQL glossary</a> in the CodeQL documentation.</p>
+<p>CodeQL for Visual Studio Code contains an AST viewer. The viewer consists of a graph visualization view that lets you explore the AST of a file in a CodeQL database. This helps you see which CodeQL classes correspond to which parts of your source files.</p>
+<h2><a href="#viewing-the-abstract-syntax-tree-of-a-source-file">Viewing the abstract syntax tree of a source file</a></h2>
+<div>
+<p>
+If you don't have an appropriate query (usually <code>printAST.ql</code>) in your workspace, the <strong>CodeQL: View AST</strong> command in the following steps won't work. To fix this, you can update your copy of the <a href="https://github.com/github/codeql"><code>github/codeql</code></a> repository from the <code>main</code> branch. If you do this, query caches may be discarded, so your next query runs may be slower.</p>
+</div>
+<ol>
+<li>
+<p>Open the "Databases" view in the extension, and right-click the database that you want to explore. Click <strong>Add Database Source to Workspace</strong>.</p>
+</li>
+<li>
+<p>Navigate to a CodeQL database's source file in the File Explorer.</p>
+</li>
+<li>
+<p>Run <strong>CodeQL: View AST</strong> from the VS Code Command Palette. This runs a CodeQL query (usually called <code>printAST.ql</code>) over the active file, which may take a few seconds. Once the query is complete, the AST viewer will display the structure of the source file.</p>
+</li>
+<li>
+<p>To see the nested structure of the source file, click the arrows and expand the nodes.</p>
+</li>
+</ol>
+<p>You can click a node in the AST viewer to jump to it in the source code. Conversely, if you click a section of the source code, the AST viewer displays the corresponding node.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

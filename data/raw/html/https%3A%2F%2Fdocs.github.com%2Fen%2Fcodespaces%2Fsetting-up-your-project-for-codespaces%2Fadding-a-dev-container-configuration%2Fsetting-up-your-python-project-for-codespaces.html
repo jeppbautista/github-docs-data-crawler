@@ -1,0 +1,272 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Setting up your project" href="/en/codespaces/setting-up-your-project-for-codespaces">Setting up your project</a><span>/</span>
+</li>
+<li>
+<a title="Adding a dev container configuration" href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration">Adding a dev container configuration</a><span>/</span>
+</li>
+<li><a title="Setting up a Python project" href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/setting-up-your-python-project-for-codespaces">Setting up a Python project</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Setting up a Python project for GitHub Codespaces</h1></div></div>
+<div><div><p>Get started with a Python project in GitHub Codespaces by creating a custom dev container configuration.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#step-1-open-the-project-in-a-codespace"><div><span>Step 1: Open the project in a codespace</span></div></a></li>
+<li><a href="#step-2-add-a-dev-container-configuration"><div><span>Step 2: Add a dev container configuration</span></div></a></li>
+<li><a href="#step-3-modify-your-devcontainerjson-file"><div><span>Step 3: Modify your devcontainer.json file</span></div></a></li>
+<li><a href="#step-4-run-your-application"><div><span>Step 4: Run your application</span></div></a></li>
+<li><a href="#step-5-commit-your-changes"><div><span>Step 5: Commit your changes</span></div></a></li>
+<li><a href="#next-steps"><div><span>Next steps</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>This guide shows you how to set up an example Python project in GitHub Codespaces using the Visual Studio Code web client. It will step you through the process of opening the project in a codespace, and adding and modifying a predefined dev container configuration.</p>
+<p>After you complete this tutorial, you'll be able to add a dev container configuration to your own repository, using either the VS Code web client or the VS Code desktop application.</p>
+<p>For more information about dev containers, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers">Introduction to dev containers</a>.</p>
+<h2><a href="#step-1-open-the-project-in-a-codespace">Step 1: Open the project in a codespace</a></h2>
+<ol>
+<li>
+<p>Sign in to GitHub.com, if you haven't already done so.</p>
+</li>
+<li>
+<p>Go to <a href="https://github.com/microsoft/vscode-remote-try-python">https://github.com/microsoft/vscode-remote-try-python</a>.</p>
+</li>
+<li>
+<p>Click <strong>Use this template</strong>, then click <strong>Open in a codespace</strong>.</p>
+<div><picture><source><img src="/assets/cb-76823/images/help/repository/use-this-template-button.png" alt='Screenshot of the "Use this template" button and the dropdown menu expanded to show the "Open in a codespace" option.' width="400" height="169"></source></picture></div>
+</li>
+</ol>
+<p>When you create a codespace, your project is created on a remote virtual machine that is dedicated to you. By default, the container for your codespace has many languages and runtimes, including Python. It also includes a common set of tools like git, wget, rsync, openssh, and nano.</p>
+<p>You can customize your codespace by adjusting the amount of vCPUs and RAM, adding dotfiles to personalize your environment, or by modifying the tools and scripts installed. For more information, see <a href="/en/codespaces/customizing-your-codespace">Customizing your codespace</a>.</p>
+<p>GitHub Codespaces uses a file called <code>devcontainer.json</code> to configure the development container that you use when you work in a codespace. Each repository can contain one or more <code>devcontainer.json</code> files, to give you exactly the development environment you need to work on your code in a codespace.</p>
+<p>On launch, GitHub Codespaces uses a <code>devcontainer.json</code> file, and any dependent files that make up the dev container configuration, to install tools and runtimes, and perform other setup tasks that the project requires. For more information, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers">Introduction to dev containers</a>.</p>
+<h2><a href="#step-2-add-a-dev-container-configuration">Step 2: Add a dev container configuration</a></h2>
+<p>The default development container, or "dev container," for GitHub Codespaces comes with the latest Python version, package managers (pip, Miniconda), and other common tools preinstalled. However, we recommend that you configure your own dev container to include all of the tools and scripts your project needs. This will ensure a fully reproducible environment for all GitHub Codespaces users in your repository.</p>
+<p>To set up your repository to use a custom dev container, you will need to create one or more <code>devcontainer.json</code> files. You can either add these from a predefined configuration template, in Visual Studio Code, or you can write your own. For more information on dev container configurations, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers">Introduction to dev containers</a>.</p>
+<ol>
+<li>
+<p>Access the Visual Studio Code Command Palette (<kbd>Shift</kbd>+<kbd>Command</kbd>+<kbd>P</kbd> / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>), then start typing "add dev". Click <strong>Codespaces: Add Dev Container Configuration Files</strong>.</p>
+<div><picture><source><img src="/assets/cb-12613/images/help/codespaces/add-prebuilt-container-command.png" alt='Screenshot of the Command Palette, with "add dev" entered and "Codespaces: Add Dev Container Configuration Files" listed.' width="624" height="96"></source></picture></div>
+</li>
+<li>
+<p>Click <strong>Create a new configuration</strong>.</p>
+</li>
+<li>
+<p>In this example, the template repository from which you created the codespace already contains a dev container configuration, so a message is displayed telling you that the configuration file already exists. We're going to overwrite the existing configuration file, so click <strong>Continue</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Show All Definitions</strong>.</p>
+<div><picture><source><img src="/assets/cb-38549/images/help/codespaces/show-all-definitions.png" alt='Screenshot of the "Add Dev Container Configuration Files" dropdown, showing various options, including "Show All Definitions."' width="509" height="184"></source></picture></div>
+</li>
+<li>
+<p>Start typing <code>python</code> and click <strong>Python 3</strong> in the list. Other options are available if your project uses particular tools. For example, Python 3 &amp; PostgreSQL.</p>
+<div><picture><source><img src="/assets/cb-73205/images/help/codespaces/add-python-prebuilt-container.png" alt='Screenshot of the "Add Dev Container Configuration Files" dropdown, listing options for Python.' width="616" height="285"></source></picture></div>
+</li>
+<li>
+<p>Choose the version of Python you want to use for your project. In this case, select the version marked "(default)."</p>
+<div><picture><source><img src="/assets/cb-25123/images/help/codespaces/add-python-version.png" alt='Screenshot of the "Add Dev Container Configuration Files" dropdown, listing various versions of Python 3.' width="614" height="263"></source></picture></div>
+</li>
+<li>
+<p>A list of additional features is displayed. We'll install Coverage.py, a code coverage tool for Python. To install this tool, type <code>py</code>, select <code>Coverage.py (via pipx)</code>, then click <strong>OK</strong>.</p>
+<div><picture><source><img src="/assets/cb-90554/images/help/codespaces/add-python-features.png" alt='Screenshot of the "Add Dev Container Configuration Files" dropdown, with "Coverage.py" selected.' width="617" height="377"></source></picture></div>
+</li>
+<li>
+<p>A message is displayed telling you that the dev container configuration file already exists. Click <strong>Overwrite</strong>.</p>
+<p>A <code>devcontainer.json</code> file is created and is opened in the editor.</p>
+</li>
+</ol>
+<h3><a href="#details-of-your-custom-dev-container-configuration">Details of your custom dev container configuration</a></h3>
+<p>If you look in the Visual Studio Code Explorer you'll see that a <code>.devcontainer</code> directory has been added to the root of your project's repository containing the <code>devcontainer.json</code> file. This is the main configuration file for codespaces created from this repository.</p>
+<h4><a href="#devcontainerjson">devcontainer.json</a></h4>
+<p>The <code>devcontainer.json</code> file that you have added will contain values for the <code>name</code>, <code>image</code>, and <code>features</code> properties. Some additional properties that you may find useful are included but are commented out.</p>
+<p>The file will look similar to this, depending on which image you chose:</p>
+<pre><code><span>// For format details, see https://aka.ms/devcontainer.json. For config options, see the</span>
+<span>// README at: https://github.com/devcontainers/templates/tree/main/src/python</span>
+<span>{</span>
+  <span>"name"</span><span>:</span> <span>"Python 3"</span><span>,</span>
+  <span>// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile</span>
+  <span>"image"</span><span>:</span> <span>"mcr.microsoft.com/devcontainers/python:0-3.11-bullseye"</span><span>,</span>
+  <span>"features"</span><span>:</span> <span>{</span>
+    <span>"ghcr.io/devcontainers-contrib/features/coverage-py:2"</span><span>:</span> <span>{</span><span>}</span>
+  <span>}</span>
+
+  <span>// Features to add to the dev container. More info: https://containers.dev/features.</span>
+  <span>// "features": {},</span>
+
+  <span>// Use 'forwardPorts' to make a list of ports inside the container available locally.</span>
+  <span>// "forwardPorts": [],</span>
+
+  <span>// Use 'postCreateCommand' to run commands after the container is created.</span>
+  <span>// "postCreateCommand": "pip3 install --user -r requirements.txt",</span>
+
+  <span>// Configure tool-specific properties.</span>
+  <span>// "customizations": {},</span>
+
+  <span>// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.</span>
+  <span>// "remoteUser": "root"</span>
+<span>}</span>
+</code></pre>
+<ul>
+<li>
+<strong>name:</strong> You can name your dev container anything you want. A default value is supplied.</li>
+<li>
+<strong>image:</strong> The name of an image in a container registry (<a href="https://hub.docker.com/">DockerHub</a>, <a href="/en/packages/learn-github-packages/introduction-to-github-packages">GitHub Container registry</a>, or <a href="https://azure.microsoft.com/services/container-registry/">Azure Container Registry</a>) that will be used to create the dev container for the codespace.</li>
+<li>
+<strong>features:</strong> A list of one or more objects, each of which references one of the available dev container features. Features are self-contained, shareable units of installation code and development container configuration. They provide an easy way to add more tooling, runtime, or library features to your development container. You can add features either within VS Code or in the <code>devcontainer.json</code> editor on GitHub. For more information, click either the <strong>Visual Studio Code</strong> or <strong>Web browser</strong> tab in <a href="/en/codespaces/setting-up-your-project-for-codespaces/configuring-dev-containers/adding-features-to-a-devcontainer-file?tool=webui">Adding features to a devcontainer.json file</a>.</li>
+<li>
+<strong>forwardPorts:</strong> Any ports listed here will be forwarded automatically. For more information, see <a href="/en/codespaces/developing-in-codespaces/forwarding-ports-in-your-codespace">Forwarding ports in your codespace</a>.</li>
+<li>
+<strong>postCreateCommand:</strong> Use this property to run commands after your codespace is created. This can be formatted as a string (as above), an array, or an object. For more information, see the <a href="https://containers.dev/implementors/json_reference/#lifecycle-scripts">dev containers specification</a> on the Development Containers website.</li>
+<li>
+<strong>customizations:</strong> This property allows you to customize a specific tool or service when it is used for working in a codespace. For example, you can configure specific settings and extensions for VS Code. For more information, see <a href="https://containers.dev/supporting">Supporting tools and services</a> on the Development Containers website.</li>
+<li>
+<strong>remoteUser:</strong> By default, you’re running as the vscode user, but you can optionally set this to root.</li>
+</ul>
+<p>For a complete list of available properties, see the <a href="https://containers.dev/implementors/json_reference/">dev containers specification</a> on the Development Containers website.</p>
+<h4><a href="#additional-dev-container-configuration-files">Additional dev container configuration files</a></h4>
+<p>If you are familiar with Docker, you may want to use a Dockerfile, or Docker Compose, to configure your codespace environment, in addition to the <code>devcontainer.json</code> file. You can do this by adding your <code>Dockerfile</code> or <code>docker-compose.yml</code> files alongside the <code>devcontainer.json</code> file. For more information, see <a href="https://containers.dev/guide/dockerfile">Using Images, Dockerfiles, and Docker Compose</a> on the Development Containers website.</p>
+<h2><a href="#step-3-modify-your-devcontainerjson-file">Step 3: Modify your devcontainer.json file</a></h2>
+<p>With your dev container configuration added and a basic understanding of what everything does, you can now make changes to customize your environment further. In this example, you'll add properties that will:</p>
+<ul>
+<li>Install a package required by the application.</li>
+<li>Install a VS Code extension in this codespace.</li>
+</ul>
+<ol>
+<li>
+<p>In the <code>devcontainer.json</code> file, add a comma after the <code>features</code> property, and delete the two commented out lines about features.</p>
+<div>
+<header><span>JSON</span><pre>"features": {
+  "ghcr.io/devcontainers-contrib/features/coverage-py:2": {}
+},
+
+// Features to add to the dev container. More info: https://containers.dev/features.
+// "features": {},
+</pre></header><pre><code><span>"features"</span><span>:</span> <span>{</span>
+  <span>"ghcr.io/devcontainers-contrib/features/coverage-py:2"</span><span>:</span> <span>{</span><span>}</span>
+<span>}</span><span>,</span>
+
+<span>// Features to add to the dev container. More info: https://containers.dev/features.</span>
+<span>// "features": {},</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Uncomment the <code>postCreateCommand</code> property.</p>
+<div>
+<header><span>JSONC</span><pre>// Use 'postCreateCommand' to run commands after the container is created.
+"postCreateCommand": "pip3 install --user -r requirements.txt",
+</pre></header><pre><code><span>// Use 'postCreateCommand' to run commands after the container is created.</span>
+<span>"postCreateCommand"</span><span>:</span> <span>"pip3 install --user -r requirements.txt"</span><span>,</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Uncomment the <code>customizations</code> property and edit it as follows to install the "Code Spell Checker" VS Code extension.</p>
+<div>
+<header><span>JSONC</span><pre>// Configure tool-specific properties.
+"customizations": {
+  // Configure properties specific to VS Code.
+  "vscode": {
+    // Add the IDs of extensions you want installed when the container is created.
+    "extensions": [
+      "streetsidesoftware.code-spell-checker"
+    ]
+  }
+}
+</pre></header><pre><code><span>// Configure tool-specific properties.</span>
+<span>"customizations"</span><span>:</span> <span>{</span>
+  <span>// Configure properties specific to VS Code.</span>
+  <span>"vscode"</span><span>:</span> <span>{</span>
+    <span>// Add the IDs of extensions you want installed when the container is created.</span>
+    <span>"extensions"</span><span>:</span> <span>[</span>
+      <span>"streetsidesoftware.code-spell-checker"</span>
+    <span>]</span>
+  <span>}</span>
+<span>}</span>
+</code></pre>
+</div>
+<p>The <code>devcontainer.json</code> file should now look similar to this, depending on which image you chose:</p>
+<pre><code><span>// For format details, see https://aka.ms/devcontainer.json. For config options, see the</span>
+<span>// README at: https://github.com/devcontainers/templates/tree/main/src/python</span>
+<span>{</span>
+  <span>"name"</span><span>:</span> <span>"Python 3"</span><span>,</span>
+  <span>// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile</span>
+  <span>"image"</span><span>:</span> <span>"mcr.microsoft.com/devcontainers/python:0-3.11-bullseye"</span><span>,</span>
+  <span>"features"</span><span>:</span> <span>{</span>
+    <span>"ghcr.io/devcontainers-contrib/features/coverage-py:2"</span><span>:</span> <span>{</span><span>}</span>
+  <span>}</span><span>,</span>
+
+  <span>// Use 'forwardPorts' to make a list of ports inside the container available locally.</span>
+  <span>// "forwardPorts": [],</span>
+
+  <span>// Use 'postCreateCommand' to run commands after the container is created.</span>
+  <span>"postCreateCommand"</span><span>:</span> <span>"pip3 install --user -r requirements.txt"</span><span>,</span>
+
+  <span>// Configure tool-specific properties.</span>
+  <span>"customizations"</span><span>:</span> <span>{</span>
+    <span>// Configure properties specific to VS Code.</span>
+    <span>"vscode"</span><span>:</span> <span>{</span>
+      <span>// Add the IDs of extensions you want installed when the container is created.</span>
+      <span>"extensions"</span><span>:</span> <span>[</span>
+        <span>"streetsidesoftware.code-spell-checker"</span>
+      <span>]</span>
+    <span>}</span>
+  <span>}</span>
+
+  <span>// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.</span>
+  <span>// "remoteUser": "root"</span>
+<span>}</span>
+</code></pre>
+</li>
+<li>
+<p>Save your changes.</p>
+</li>
+<li>
+<p>Access the VS Code Command Palette (<kbd>Shift</kbd>+<kbd>Command</kbd>+<kbd>P</kbd> / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>), then start typing "rebuild". Click <strong>Codespaces: Rebuild Container</strong>.</p>
+<div><picture><source><img src="/assets/cb-22518/images/help/codespaces/codespaces-rebuild.png" alt='Screenshot of the Command Palette with a search for "rebuild container" and the "Codespace: Rebuild Container" option highlighted in the dropdown.' width="720" height="106"></source></picture></div>
+<div>
+<p>
+You may occasionally want to perform a full rebuild to clear your cache and rebuild your container with fresh images. For more information, see <a href="/en/codespaces/developing-in-codespaces/rebuilding-the-container-in-a-codespace#about-rebuilding-a-container">Rebuilding the container in a codespace</a>.
+Rebuilding inside your codespace ensures your changes work as expected before you commit the changes to the repository. If something does result in a failure, you’ll be placed in a codespace with a recovery container that you can rebuild from to keep adjusting your container.</p>
+</div>
+<p>After the dev container is rebuilt, and your codespace becomes available again, the <code>postCreateCommand</code> will have been run, installing the package listed in the <code>requirements.txt</code> file, and the "Code Spell Checker" extension will be available for use.</p>
+</li>
+</ol>
+<h2><a href="#step-4-run-your-application">Step 4: Run your application</a></h2>
+<p>In the previous section, you used the <code>postCreateCommand</code> to install a package for the Flask web framework. You can now use this to run the web application.</p>
+<ol>
+<li>
+<p>In the Terminal of your codespace, enter <code>python -m flask run</code>.</p>
+<div><picture><source><img src="/assets/cb-63598/images/help/codespaces/python-flask-run.png" alt='Screenshot of the Terminal tab with the command "python -m flask run" entered, and output including "Running on http://127.0.0.1:5000."' width="720" height="131"></source></picture></div>
+</li>
+<li>
+<p>When your project starts, you should see a "toast" notification message at the bottom right corner of VS Code, telling you that your application is available on a forwarded port. To view the running application, click <strong>Open in Browser</strong>.</p>
+<div><picture><source><img src="/assets/cb-30762/images/help/codespaces/codespaces-port5000-toast.png" alt='Screenshot of the port forwarding message, reading "Your application running on port 5000 is available." The "Open in Browser" button is also shown.' width="543" height="168"></source></picture></div>
+</li>
+</ol>
+<h2><a href="#step-5-commit-your-changes">Step 5: Commit your changes</a></h2>
+<p>When you've made changes to your codespace, either new code or configuration changes, you'll want to commit your changes. Committing configuration changes to your repository ensures that anyone else who creates a codespace from this repository has the same configuration. Any customization you do, such as adding VS Code extensions, will be available to all users.</p>
+<p>For this tutorial, you created a codespace from a template repository, so the code in your codespace is not yet stored in a repository. You can create a repository by publishing the current branch to GitHub.</p>
+<p>For information, see <a href="/en/codespaces/developing-in-codespaces/using-source-control-in-your-codespace?tool=webui#publishing-a-codespace-created-from-a-template">Using source control in your codespace</a>.</p>
+<h2><a href="#next-steps">Next steps</a></h2>
+<p>You should now be able to add a custom dev container configuration to your own Python project.</p>
+<p>Here are some additional resources for more advanced scenarios.</p>
+<ul>
+<li><a href="/en/codespaces/setting-up-your-project-for-codespaces/configuring-dev-containers/adding-features-to-a-devcontainer-file?tool=webui">Adding features to a devcontainer.json file</a></li>
+<li><a href="/en/codespaces/managing-your-codespaces/managing-your-account-specific-secrets-for-github-codespaces">Managing your account-specific secrets for GitHub Codespaces</a></li>
+<li><a href="/en/codespaces/managing-your-codespaces/managing-gpg-verification-for-github-codespaces">Managing GPG verification for GitHub Codespaces</a></li>
+<li><a href="/en/codespaces/developing-in-codespaces/forwarding-ports-in-your-codespace">Forwarding ports in your codespace</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

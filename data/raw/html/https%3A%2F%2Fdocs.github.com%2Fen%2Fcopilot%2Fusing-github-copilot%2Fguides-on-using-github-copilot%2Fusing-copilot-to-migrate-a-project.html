@@ -1,0 +1,718 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Use GitHub Copilot" href="/en/copilot/using-github-copilot">Use GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Guides" href="/en/copilot/using-github-copilot/guides-on-using-github-copilot">Guides</a><span>/</span>
+</li>
+<li><a title="Migrate a project" href="/en/copilot/using-github-copilot/guides-on-using-github-copilot/using-copilot-to-migrate-a-project">Migrate a project</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Using Copilot to migrate a project to another programming language</h1></div></div>
+<div><div><p>GitHub Copilot Chat can help you move a project to a different language. This guide describes what's involved in a migration process and gives an example of a PHP to Python migration.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#principles-of-migrating-a-project-to-a-new-language"><div><span>Principles of migrating a project to a new language</span></div></a></li>
+<li><a href="#using-copilot-to-help-you-migrate-a-project-to-a-new-language"><div><span>Using Copilot to help you migrate a project to a new language</span></div></a></li>
+<li><a href="#example-migrating-a-php-project-to-python"><div><span>Example: migrating a PHP project to Python</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>Migrating a project to a new programming language can be a difficult and time-consuming task. GitHub Copilot can help you with this process by explaining the changes you need to make and suggesting replacement code in the new language.</p>
+<h2><a href="#principles-of-migrating-a-project-to-a-new-language">Principles of migrating a project to a new language</a></h2>
+<p>Consider the points before you start a migration process:</p>
+<ul>
+<li>
+<p><strong>Coding knowledge</strong></p>
+<p>Make sure you have a good understanding of both programming languages. Although Copilot can translate code for you, you need to understand the choices it proposes and decide whether you want to use its suggestions or ask for an alternative suggestion.</p>
+</li>
+<li>
+<p><strong>Knowledge of the system you are migrating</strong></p>
+<p>Make sure you understand the architecture and logic of the current system, in addition to the functionality and features it provides to users. You must be able to check that the translated code performs all of the same operations as the original code and produces the same results.</p>
+</li>
+<li>
+<p><strong>Use AI to help you</strong></p>
+<p>If you don't understand a particular part of the code you are about to translate, use Copilot's "explain" feature, either on the whole file, or a selected portion of the code within a file. See <a href="/en/copilot/using-github-copilot/asking-github-copilot-questions-in-your-ide">Asking GitHub Copilot questions in your IDE</a>.</p>
+</li>
+<li>
+<p><strong>Schedule time to complete the migration</strong></p>
+<p>Conversion is a multi-stage process. The larger the project you are converting the greater the number of steps you will need to take. Make sure you allow plenty of time to complete the entire process.</p>
+</li>
+<li>
+<p><strong>Work iteratively</strong></p>
+<p>Aim to convert discreet parts of your project separately. Make sure you have verified all of the changes you've made before moving on to another part of the project. Write tests for the individual parts of the project as you proceed so that you can confirm that each of the new components works as expected.</p>
+</li>
+<li>
+<p><strong>Avoid introducing complexity to the process</strong></p>
+<p>Initially you should aim to do a like-for-like conversion. This won't be possible for all of the code in your project. However, to avoid adding complexity to the migration task, you should try to limit the number of new changes you introduce, other than translating the code and using a new framework and the appropriate dependencies.</p>
+</li>
+<li>
+<p><strong>Benchmark and refactor the translated code</strong></p>
+<p>After you've completed the initial conversion, and you have a working system, you can perform benchmarking to compare the old and new systems. You can now refactor the code in the new language. This is an opportunity to optimize the code and reduce technical debt.</p>
+</li>
+</ul>
+<h2><a href="#using-copilot-to-help-you-migrate-a-project-to-a-new-language">Using Copilot to help you migrate a project to a new language</a></h2>
+<p>Assuming you've already familiarized yourself with the existing project, a good way to start a migration is to open a branch of the repository in your editor and ask Copilot for help.</p>
+<ol>
+<li>
+<p>In your editor, open the Copilot Chat panel. See <a href="/en/copilot/using-github-copilot/asking-github-copilot-questions-in-your-ide">Asking GitHub Copilot questions in your IDE</a>.</p>
+</li>
+<li>
+<p>Ask Copilot to outline the steps you need to take to migrate the project to the new language.</p>
+<p>For example, for a migration from PHP to Python, you could ask:</p>
+<p><code>@workspace I want to migrate this project from PHP to Python. Give me a high level overview of the steps I need to take. Don't go into detail at this stage.</code></p>
+<div>
+<p>
+The <code>@workspace</code> chat participant sets the files in the current workspace as the context for the question you ask.</p>
+</div>
+<p>Copilot will typically come back with a list of steps that you need to take to migrate the project.</p>
+</li>
+<li>
+<p>Copy Copilot's response and save this somewhere to refer to throughout the process.</p>
+</li>
+<li>
+<p>Work through each step of the process, asking for detailed help from Copilot as you need it.</p>
+<p>Consider each suggestion from Copilot carefully. Make sure you understand the code that it is suggesting and assess whether it's appropriate for your project. If you are not sure, ask Copilot to explain the code to you.</p>
+<p>If you think a change suggested by Copilot is not right in some way, ask for an alternative suggestion.</p>
+</li>
+<li>
+<p>As soon as you've migrated a component to a state that you can run, check that it works as expected. If it generates an error, copy the error into the Copilot Chat view, and ask Copilot to help you fix it.</p>
+</li>
+<li>
+<p>After you've completed the initial conversion, use Copilot to help you refactor the code in the new language. For more information, see <a href="/en/copilot/using-github-copilot/guides-on-using-github-copilot/refactoring-code-with-github-copilot">Refactoring code with GitHub Copilot</a>.</p>
+</li>
+</ol>
+<h2><a href="#example-migrating-a-php-project-to-python">Example: migrating a PHP project to Python</a></h2>
+<p>The following example describes the migration of a simple web application from PHP to Python. Even if these are not the programming languages you are using for your migration, you may find it helpful to follow along with the steps described here to familiarize yourself with a project migration. The steps will be similar for migrating other small projects from one language to another.</p>
+<p><picture><source><img src="/assets/cb-257834/images/help/copilot/migration-original-website.png" alt="Screenshot of the 'Simple PHP Website' prior to migration from PHP to Python."></source></picture></p>
+<p>This example assumes:</p>
+<ul>
+<li>You are working in Visual Studio Code.</li>
+<li>You have both languages installed: PHP and Python version 3.12 or later.</li>
+</ul>
+<h3><a href="#migrating-a-simple-website-project">Migrating a simple website project</a></h3>
+<p>We are going to migrate the code in this public repository on GitHub: <a href="https://github.com/docs/simple-php-website">docs/simple-php-website</a>.</p>
+<p>The repository consists of the following files.</p>
+<pre><code>.gitignore
+.htaccess
+LICENSE
+content
+├── 404.phtml
+├── about-us.phtml
+├── contact.phtml
+├── home.phtml
+└── products.phtml
+includes
+├── config.php
+└── functions.php
+index.php
+readme.md
+template
+├── style.css
+└── template.php
+</code></pre>
+<p>This example gives the prompts you can enter into Copilot Chat to complete the migration, and the responses Copilot returned for one instance of this migration. The GPT-4o model was used to generate these responses. Copilot Chat responses are non-deterministic, so you will probably get slightly different responses to the ones shown here.</p>
+<p>During a migration process you are likely to get errors that you need to fix before moving ahead. Copilot can help you with this. The example includes some errors and shows how you can get Copilot to help you fix them.</p>
+<p>Because the responses you'll get from Copilot Chat are likely to be different to those shown here, you may encounter different errors. You may, therefore, find it easier to step through this example migration using the responses shown here, rather than those you get from Copilot yourself.</p>
+<p>After completing this example migration you can then use the same methodology on your own project.</p>
+<ol>
+<li>
+<p>Start by cloning a copy of the repository to your local machine.</p>
+</li>
+<li>
+<p>Run the application to check it works.</p>
+<p>To do this, in a terminal, navigate to the root of the cloned repository and run the following command:</p>
+<div>
+<header><span>Shell</span><pre> php -S localhost:8000
+</pre></header><pre><code> php -S localhost:8000
+</code></pre>
+</div>
+<p>Then in a browser, go to: <a href="http://localhost:8000">http://localhost:8000</a>.</p>
+</li>
+<li>
+<p>Click around the website, to get to know it, so that you'll be able to verify that the migration has been successful.</p>
+</li>
+<li>
+<p>Create a working branch in your repository and open it as a new workspace in Visual Studio Code.</p>
+</li>
+<li>
+<p>Familiarize yourself with the contents and architecture of the existing project. Copilot can help you with this:</p>
+<ol>
+<li>
+<p>Open the Copilot Chat view.</p>
+</li>
+<li>
+<p>Enter a prompt such as:</p>
+<p><code>@workspace Describe this project in detail, explaining what the various components do and how they interact.</code></p>
+</li>
+</ol>
+</li>
+<li>
+<p>Ask Copilot for a high-level overview of the migration process:</p>
+<p><code>@workspace I want to migrate this project from PHP to Python. Give me a high level overview of the steps I need to take. Don't go into detail at this stage.</code></p>
+<p>Copilot will reply with instructions such as:</p>
+<pre><code>To migrate this project from PHP to Python, follow these high-level steps:
+
+1. Set Up Python Environment:
+   - Install Python and set up a virtual environment.
+   - Install necessary packages (e.g., Flask for web framework).
+
+2. Convert Configuration:
+   - Translate the configuration settings from config.php to a Python configuration file.
+
+3. Rewrite Functions:
+   - Convert PHP functions in functions.php to Python functions.
+
+4. Create Flask Application:
+   - Set up a Flask application to handle routing and views.
+   - Map the routes to corresponding views.
+
+5. Convert Templates:
+   - Translate template.php to a Jinja2 template.
+   - Update the CSS file path in the template.
+
+6. Convert Content Pages:
+   - Convert .phtml content files to HTML or Jinja2 templates.
+
+7. Update .htaccess Rules:
+   - Translate .htaccess rewrite rules to Flask route handling.
+
+8. Run and Test:
+   - Run the Flask application and test all routes and functionalities.
+   - Ensure the site works as expected and fix any issues.
+
+9. Documentation:
+   - Update the readme.md with new instructions for running the Python project.
+</code></pre>
+</li>
+<li>
+<p>Copy Copilot's response and save this somewhere to refer to throughout the remainder of this process. You'll work through each of these steps, asking Copilot for help as you proceed.</p>
+</li>
+<li>
+<p>If you haven't already decided which Python framework you want to use, you can ask Copilot for advice:</p>
+<p><code>@workspace What Python frameworks can I use for this project once it is migrated to Python? Give me a selection of options, with a brief summary of the pros and cons of each in relation to this website project. Which framework would you recommend?</code></p>
+<p>Copilot replies with information about various frameworks, and concludes:</p>
+<pre><code>For a project like yours - which is a simple, content-driven website - Flask is highly recommended. Its simplicity, flexibility, and ease of use (especially with its templating system that can easily replace your current PHP template structure) make it a great fit.
+</code></pre>
+<p>We'll take Copilot's advice and use Flask.</p>
+</li>
+<li>
+<p>Returning to Copilot's high-level overview, the first step is to set up a Python environment and install the necessary packages. To find out how to do this, in Copilot Chat, enter:</p>
+<p><code>@workspace I want to use Flask. Tell me how to set up a virtual environment and install the necessary packages.</code></p>
+<p>Copilot will reply with instructions such as:</p>
+<pre><code>1. Create a virtual environment:
+   - Open a terminal and navigate to your project directory.
+   - Run the following command to create a virtual environment:
+     python3 -m venv venv
+
+2. Activate the virtual environment:
+   - On macOS and Linux:
+     source venv/bin/activate
+
+   - On Windows:
+     venv\Scripts\activate
+
+3. Install Flask and necessary packages:
+   - With the virtual environment activated, run the following command
+     to install Flask and other necessary packages:
+     pip install Flask
+
+4. Verify the installation:
+   - You can verify that Flask is installed by running:
+     pip list
+</code></pre>
+</li>
+<li>
+<p>Follow Copilot's instructions and use <code>pip list</code> to verify that Flask is installed.</p>
+</li>
+<li>
+<p>Returning to Copilot's overview for the migration process, the next step is to convert the configuration. Ask Copilot for help with this. For example:</p>
+<p><code>@workspace As the first step in migrating this project from PHP to Python, create a Python configuration file by converting the functions in functions.php to Python functions. Tell me where to locate the Python config file in the project.</code></p>
+<p>Copilot suggests that you create a file called <code>config.py</code> in the <code>includes</code> directory, containing the following code.</p>
+<div>
+<header><span>Python</span><pre>config = {
+   'name': 'Simple Python Website',
+   'site_url': '',
+   'pretty_uri': False,
+   'nav_menu': {
+      '': 'Home',
+      'about-us': 'About Us',
+      'products': 'Products',
+      'contact': 'Contact',
+   },
+  'template_path': 'template',
+  'content_path': 'content',
+  'version': 'v3.1',
+}
+
+def get_config(key=''):
+   return config.get(key, None)
+
+def site_name():
+   return get_config('name')
+
+def site_url():
+   return get_config('site_url')
+
+def site_version():
+   return get_config('version')
+
+def nav_menu(sep=' | '):
+   nav_menu = ''
+   nav_items = get_config('nav_menu')
+
+   for uri, name in nav_items.items():
+      query_string = request.args.get('page', '')
+      class_active = ' active' if query_string == uri else ''
+      url = f"{get_config('site_url')}/{'' if get_config('pretty_uri') or uri == '' else '?page='}{uri}"
+
+      nav_menu += f'&lt;a href="{url}" title="{name}" class="item{class_active}"&gt;{name}&lt;/a&gt;{sep}'
+
+   return nav_menu.strip(sep)
+
+def page_title():
+   page = request.args.get('page', 'Home')
+   return ' '.join(word.capitalize() for word in page.split('-'))
+
+def page_content():
+   page = request.args.get('page', 'home')
+   path = os.path.join(os.getcwd(), get_config('content_path'), f'{page}.phtml')
+
+   if not os.path.exists(path):
+      path = os.path.join(os.getcwd(), get_config('content_path'), '404.phtml')
+
+   with open(path, 'r') as file:
+      return file.read()
+
+def init():
+   template_path = os.path.join(get_config('template_path'), 'template.html')
+   with open(template_path, 'r') as file:
+      return file.read()
+</pre></header><pre><code>config = {
+   <span>'name'</span>: <span>'Simple Python Website'</span>,
+   <span>'site_url'</span>: <span>''</span>,
+   <span>'pretty_uri'</span>: <span>False</span>,
+   <span>'nav_menu'</span>: {
+      <span>''</span>: <span>'Home'</span>,
+      <span>'about-us'</span>: <span>'About Us'</span>,
+      <span>'products'</span>: <span>'Products'</span>,
+      <span>'contact'</span>: <span>'Contact'</span>,
+   },
+  <span>'template_path'</span>: <span>'template'</span>,
+  <span>'content_path'</span>: <span>'content'</span>,
+  <span>'version'</span>: <span>'v3.1'</span>,
+}
+
+<span>def</span> <span>get_config</span>(<span>key=<span>''</span></span>):
+   <span>return</span> config.get(key, <span>None</span>)
+
+<span>def</span> <span>site_name</span>():
+   <span>return</span> get_config(<span>'name'</span>)
+
+<span>def</span> <span>site_url</span>():
+   <span>return</span> get_config(<span>'site_url'</span>)
+
+<span>def</span> <span>site_version</span>():
+   <span>return</span> get_config(<span>'version'</span>)
+
+<span>def</span> <span>nav_menu</span>(<span>sep=<span>' | '</span></span>):
+   nav_menu = <span>''</span>
+   nav_items = get_config(<span>'nav_menu'</span>)
+
+   <span>for</span> uri, name <span>in</span> nav_items.items():
+      query_string = request.args.get(<span>'page'</span>, <span>''</span>)
+      class_active = <span>' active'</span> <span>if</span> query_string == uri <span>else</span> <span>''</span>
+      url = <span>f"<span>{get_config(<span>'site_url'</span>)}</span>/<span>{<span>''</span> <span>if</span> get_config(<span>'pretty_uri'</span>) <span>or</span> uri == <span>''</span> <span>else</span> <span>'?page='</span>}</span><span>{uri}</span>"</span>
+
+      nav_menu += <span>f'&lt;a href="<span>{url}</span>" title="<span>{name}</span>" class="item<span>{class_active}</span>"&gt;<span>{name}</span>&lt;/a&gt;<span>{sep}</span>'</span>
+
+   <span>return</span> nav_menu.strip(sep)
+
+<span>def</span> <span>page_title</span>():
+   page = request.args.get(<span>'page'</span>, <span>'Home'</span>)
+   <span>return</span> <span>' '</span>.join(word.capitalize() <span>for</span> word <span>in</span> page.split(<span>'-'</span>))
+
+<span>def</span> <span>page_content</span>():
+   page = request.args.get(<span>'page'</span>, <span>'home'</span>)
+   path = os.path.join(os.getcwd(), get_config(<span>'content_path'</span>), <span>f'<span>{page}</span>.phtml'</span>)
+
+   <span>if</span> <span>not</span> os.path.exists(path):
+      path = os.path.join(os.getcwd(), get_config(<span>'content_path'</span>), <span>'404.phtml'</span>)
+
+   <span>with</span> <span>open</span>(path, <span>'r'</span>) <span>as</span> file:
+      <span>return</span> file.read()
+
+<span>def</span> <span>init</span>():
+   template_path = os.path.join(get_config(<span>'template_path'</span>), <span>'template.html'</span>)
+   <span>with</span> <span>open</span>(template_path, <span>'r'</span>) <span>as</span> file:
+      <span>return</span> file.read()
+</code></pre>
+</div>
+</li>
+<li>
+<p>Create the <code>includes/config.py</code> file and delete the existing <code>includes/config.php</code> file.</p>
+</li>
+<li>
+<p>Returning to the overview again, ask Copilot to help you rewrite the PHP functions.</p>
+<p><code>@workspace Continuing the migration of this project from PHP to Python, create Python functions to replace the existing PHP functions. Tell me where to locate the Python functions in the project.</code></p>
+<p>Copilot suggests you create a file called <code>functions.py</code> in the <code>includes</code> directory, containing the following code.</p>
+<div>
+<header><span>Python</span><pre>import os
+from flask import request
+from .config import get_config
+
+def site_name():
+   return get_config('name')
+
+def site_url():
+   return get_config('site_url')
+
+def site_version():
+   return get_config('version')
+
+def nav_menu(sep=' | '):
+   nav_menu = ''
+   nav_items = get_config('nav_menu')
+
+   for uri, name in nav_items.items():
+      query_string = request.args.get('page', '')
+      class_active = ' active' if query_string == uri else ''
+      url = f"{get_config('site_url')}/{'' if get_config('pretty_uri') or uri == '' else '?page='}{uri}"
+
+      nav_menu += f'&lt;a href="{url}" title="{name}" class="item{class_active}"&gt;{name}&lt;/a&gt;{sep}'
+
+   return nav_menu.strip(sep)
+
+def page_title():
+   page = request.args.get('page', 'Home')
+   return ' '.join(word.capitalize() for word in page.split('-'))
+
+def page_content():
+   page = request.args.get('page', 'home')
+   path = os.path.join(os.getcwd(), get_config('content_path'), f'{page}.phtml')
+
+   if not os.path.exists(path):
+      path = os.path.join(os.getcwd(), get_config('content_path'), '404.phtml')
+
+   with open(path, 'r') as file:
+      return file.read()
+
+def init():
+   template_path = os.path.join(get_config('template_path'), 'template.html')
+   with open(template_path, 'r') as file:
+      return file.read()
+</pre></header><pre><code><span>import</span> os
+<span>from</span> flask <span>import</span> request
+<span>from</span> .config <span>import</span> get_config
+
+<span>def</span> <span>site_name</span>():
+   <span>return</span> get_config(<span>'name'</span>)
+
+<span>def</span> <span>site_url</span>():
+   <span>return</span> get_config(<span>'site_url'</span>)
+
+<span>def</span> <span>site_version</span>():
+   <span>return</span> get_config(<span>'version'</span>)
+
+<span>def</span> <span>nav_menu</span>(<span>sep=<span>' | '</span></span>):
+   nav_menu = <span>''</span>
+   nav_items = get_config(<span>'nav_menu'</span>)
+
+   <span>for</span> uri, name <span>in</span> nav_items.items():
+      query_string = request.args.get(<span>'page'</span>, <span>''</span>)
+      class_active = <span>' active'</span> <span>if</span> query_string == uri <span>else</span> <span>''</span>
+      url = <span>f"<span>{get_config(<span>'site_url'</span>)}</span>/<span>{<span>''</span> <span>if</span> get_config(<span>'pretty_uri'</span>) <span>or</span> uri == <span>''</span> <span>else</span> <span>'?page='</span>}</span><span>{uri}</span>"</span>
+
+      nav_menu += <span>f'&lt;a href="<span>{url}</span>" title="<span>{name}</span>" class="item<span>{class_active}</span>"&gt;<span>{name}</span>&lt;/a&gt;<span>{sep}</span>'</span>
+
+   <span>return</span> nav_menu.strip(sep)
+
+<span>def</span> <span>page_title</span>():
+   page = request.args.get(<span>'page'</span>, <span>'Home'</span>)
+   <span>return</span> <span>' '</span>.join(word.capitalize() <span>for</span> word <span>in</span> page.split(<span>'-'</span>))
+
+<span>def</span> <span>page_content</span>():
+   page = request.args.get(<span>'page'</span>, <span>'home'</span>)
+   path = os.path.join(os.getcwd(), get_config(<span>'content_path'</span>), <span>f'<span>{page}</span>.phtml'</span>)
+
+   <span>if</span> <span>not</span> os.path.exists(path):
+      path = os.path.join(os.getcwd(), get_config(<span>'content_path'</span>), <span>'404.phtml'</span>)
+
+   <span>with</span> <span>open</span>(path, <span>'r'</span>) <span>as</span> file:
+      <span>return</span> file.read()
+
+<span>def</span> <span>init</span>():
+   template_path = os.path.join(get_config(<span>'template_path'</span>), <span>'template.html'</span>)
+   <span>with</span> <span>open</span>(template_path, <span>'r'</span>) <span>as</span> file:
+      <span>return</span> file.read()
+</code></pre>
+</div>
+</li>
+<li>
+<p>Create the <code>includes/functions.py</code> file and delete the existing <code>includes/functions.php</code> file.</p>
+</li>
+<li>
+<p>Continuing with the overview, the next step is to create a Flask application. Ask Copilot to help you with this:</p>
+<p><code>@workspace Set up a Flask application to handle routing and views, and map the routes to corresponding views. Tell me the location of any files that need to be created or changed.</code></p>
+<p>Copilot suggests you create a file called <code>app.py</code> in the root of the project, containing the following code.</p>
+<div>
+<header><span>Python</span><pre>from flask import Flask, render_template, request
+import os
+
+app = Flask(__name__)
+
+config = {
+   'name': 'Simple Python Website',
+   'site_url': '',
+   'pretty_uri': False,
+   'nav_menu': {
+      '': 'Home',
+      'about-us': 'About Us',
+      'products': 'Products',
+      'contact': 'Contact',
+   },
+   'template_path': 'template',
+   'content_path': 'content',
+   'version': 'v3.1',
+}
+
+def get_config(key=''):
+   return config.get(key, None)
+
+@app.route('/')
+@app.route('/&lt;page&gt;')
+def index(page='home'):
+   page_content = get_page_content(page)
+   page_title = get_page_title(page)
+   nav_menu = get_nav_menu()
+   return render_template('template.html', page_title=page_title, page_content=page_content, nav_menu=nav_menu)
+
+def get_page_title(page):
+   return ' '.join(word.capitalize() for word in page.split('-'))
+
+def get_page_content(page):
+   path = os.path.join(os.getcwd(), get_config('content_path'), f'{page}.phtml')
+   if not os.path.exists(path):
+      path = os.path.join(os.getcwd(), get_config('content_path'), '404.phtml')
+   with open(path, 'r') as file:
+      return file.read()
+
+def get_nav_menu(sep=' | '):
+   nav_menu = ''
+   nav_items = get_config('nav_menu')
+   for uri, name in nav_items.items():
+      query_string = request.args.get('page', '')
+      class_active = ' active' if query_string == uri else ''
+      url = f"{get_config('site_url')}/{'' if get_config('pretty_uri') or uri == '' else '?page='}{uri}"
+      nav_menu += f'&lt;a href="{url}" title="{name}" class="item{class_active}"&gt;{name}&lt;/a&gt;{sep}'
+   return nav_menu.strip(sep)
+
+if __name__ == '__main__':
+   app.run(debug=True)
+</pre></header><pre><code><span>from</span> flask <span>import</span> Flask, render_template, request
+<span>import</span> os
+
+app = Flask(__name__)
+
+config = {
+   <span>'name'</span>: <span>'Simple Python Website'</span>,
+   <span>'site_url'</span>: <span>''</span>,
+   <span>'pretty_uri'</span>: <span>False</span>,
+   <span>'nav_menu'</span>: {
+      <span>''</span>: <span>'Home'</span>,
+      <span>'about-us'</span>: <span>'About Us'</span>,
+      <span>'products'</span>: <span>'Products'</span>,
+      <span>'contact'</span>: <span>'Contact'</span>,
+   },
+   <span>'template_path'</span>: <span>'template'</span>,
+   <span>'content_path'</span>: <span>'content'</span>,
+   <span>'version'</span>: <span>'v3.1'</span>,
+}
+
+<span>def</span> <span>get_config</span>(<span>key=<span>''</span></span>):
+   <span>return</span> config.get(key, <span>None</span>)
+
+<span>@app.route(<span><span>'/'</span></span>)</span>
+<span>@app.route(<span><span>'/&lt;page&gt;'</span></span>)</span>
+<span>def</span> <span>index</span>(<span>page=<span>'home'</span></span>):
+   page_content = get_page_content(page)
+   page_title = get_page_title(page)
+   nav_menu = get_nav_menu()
+   <span>return</span> render_template(<span>'template.html'</span>, page_title=page_title, page_content=page_content, nav_menu=nav_menu)
+
+<span>def</span> <span>get_page_title</span>(<span>page</span>):
+   <span>return</span> <span>' '</span>.join(word.capitalize() <span>for</span> word <span>in</span> page.split(<span>'-'</span>))
+
+<span>def</span> <span>get_page_content</span>(<span>page</span>):
+   path = os.path.join(os.getcwd(), get_config(<span>'content_path'</span>), <span>f'<span>{page}</span>.phtml'</span>)
+   <span>if</span> <span>not</span> os.path.exists(path):
+      path = os.path.join(os.getcwd(), get_config(<span>'content_path'</span>), <span>'404.phtml'</span>)
+   <span>with</span> <span>open</span>(path, <span>'r'</span>) <span>as</span> file:
+      <span>return</span> file.read()
+
+<span>def</span> <span>get_nav_menu</span>(<span>sep=<span>' | '</span></span>):
+   nav_menu = <span>''</span>
+   nav_items = get_config(<span>'nav_menu'</span>)
+   <span>for</span> uri, name <span>in</span> nav_items.items():
+      query_string = request.args.get(<span>'page'</span>, <span>''</span>)
+      class_active = <span>' active'</span> <span>if</span> query_string == uri <span>else</span> <span>''</span>
+      url = <span>f"<span>{get_config(<span>'site_url'</span>)}</span>/<span>{<span>''</span> <span>if</span> get_config(<span>'pretty_uri'</span>) <span>or</span> uri == <span>''</span> <span>else</span> <span>'?page='</span>}</span><span>{uri}</span>"</span>
+      nav_menu += <span>f'&lt;a href="<span>{url}</span>" title="<span>{name}</span>" class="item<span>{class_active}</span>"&gt;<span>{name}</span>&lt;/a&gt;<span>{sep}</span>'</span>
+   <span>return</span> nav_menu.strip(sep)
+
+<span>if</span> __name__ == <span>'__main__'</span>:
+   app.run(debug=<span>True</span>)
+</code></pre>
+</div>
+<p>Copilot also suggests renaming <code>template/template.php</code> to <code>template/template.html</code> and updating the file to use Jinja2 templating syntax:</p>
+<div>
+<header><span>HTML</span><pre>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+   &lt;meta charset="utf-8" /&gt;
+   &lt;meta http-equiv="x-ua-compatible" content="ie=edge"/&gt;
+   &lt;meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/&gt;
+   &lt;title&gt;{{ page_title }} | {{ get_config('name') }}&lt;/title&gt;
+   &lt;link href="{{ get_config('site_url') }}/template/style.css" rel="stylesheet" type="text/css" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class="wrap"&gt;
+
+   &lt;header&gt;
+      &lt;h1&gt;{{ get_config('name') }}&lt;/h1&gt;
+      &lt;nav class="menu"&gt;
+         {{ nav_menu|safe }}
+      &lt;/nav&gt;
+   &lt;/header&gt;
+
+   &lt;article&gt;
+      &lt;h2&gt;{{ page_title }}&lt;/h2&gt;
+      {{ page_content|safe }}
+   &lt;/article&gt;
+
+   &lt;footer&gt;
+      &lt;small&gt;&amp;copy;{{ get_config('version') }} {{ get_config('name') }}.&lt;br&gt;{{ get_config('version') }}&lt;/small&gt;
+   &lt;/footer&gt;
+
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+</pre></header><pre><code>
+<span>&lt;!DOCTYPE <span>html</span>&gt;</span>
+<span>&lt;<span>html</span>&gt;</span>
+<span>&lt;<span>head</span>&gt;</span>
+   <span>&lt;<span>meta</span> <span>charset</span>=<span>"utf-8"</span> /&gt;</span>
+   <span>&lt;<span>meta</span> <span>http-equiv</span>=<span>"x-ua-compatible"</span> <span>content</span>=<span>"ie=edge"</span>/&gt;</span>
+   <span>&lt;<span>meta</span> <span>name</span>=<span>"viewport"</span> <span>content</span>=<span>"width=device-width, initial-scale=1, shrink-to-fit=no"</span>/&gt;</span>
+   <span>&lt;<span>title</span>&gt;</span>{{ page_title }} | {{ get_config('name') }}<span>&lt;/<span>title</span>&gt;</span>
+   <span>&lt;<span>link</span> <span>href</span>=<span>"{{ get_config('site_url') }}/template/style.css"</span> <span>rel</span>=<span>"stylesheet"</span> <span>type</span>=<span>"text/css"</span> /&gt;</span>
+<span>&lt;/<span>head</span>&gt;</span>
+<span>&lt;<span>body</span>&gt;</span>
+<span>&lt;<span>div</span> <span>class</span>=<span>"wrap"</span>&gt;</span>
+
+   <span>&lt;<span>header</span>&gt;</span>
+      <span>&lt;<span>h1</span>&gt;</span>{{ get_config('name') }}<span>&lt;/<span>h1</span>&gt;</span>
+      <span>&lt;<span>nav</span> <span>class</span>=<span>"menu"</span>&gt;</span>
+         {{ nav_menu|safe }}
+      <span>&lt;/<span>nav</span>&gt;</span>
+   <span>&lt;/<span>header</span>&gt;</span>
+
+   <span>&lt;<span>article</span>&gt;</span>
+      <span>&lt;<span>h2</span>&gt;</span>{{ page_title }}<span>&lt;/<span>h2</span>&gt;</span>
+      {{ page_content|safe }}
+   <span>&lt;/<span>article</span>&gt;</span>
+
+   <span>&lt;<span>footer</span>&gt;</span>
+      <span>&lt;<span>small</span>&gt;</span><span>&amp;copy;</span>{{ get_config('version') }} {{ get_config('name') }}.<span>&lt;<span>br</span>&gt;</span>{{ get_config('version') }}<span>&lt;/<span>small</span>&gt;</span>
+   <span>&lt;/<span>footer</span>&gt;</span>
+
+<span>&lt;/<span>div</span>&gt;</span>
+<span>&lt;/<span>body</span>&gt;</span>
+<span>&lt;/<span>html</span>&gt;</span>
+
+</code></pre>
+</div>
+</li>
+<li>
+<p>Create the <code>app.py</code> and <code>template/template.html</code> files as suggested.</p>
+</li>
+<li>
+<p>Copilot may also suggest that, having created these files, you now run <code>python app.py</code> in the terminal, from the root of the repository, and then browse to <a href="http://127.0.0.1:5000">http://127.0.0.1:5000</a>.</p>
+<div>
+<p>
+Depending on how Python is installed on your computer, you may need to use the command <code>python3 app.py</code> instead of <code>python app.py</code> to ensure the correct version of Python is used.</p>
+</div>
+<p>When you do this you will see error messages in the browser.</p>
+</li>
+<li>
+<p>Copy the initial <code>TemplateNotFound</code> error message to the Copilot Chat view and ask how you can fix this. For example:</p>
+<p><code>@workspace When I run `python3 app.py`, I get the following error in the browser: `jinja2.exceptions.TemplateNotFound: template.html`. How can I fix this?</code></p>
+<p>Copilot replies that the error indicates that Flask is unable to locate the <code>template.html</code> file.</p>
+<p>It tells you that, by default, Flask looks for templates in a folder named <code>templates</code> in the root directory of your project. However, your <code>template.html</code> file is located in the <code>template</code> directory. To fix this, you need to specify the correct template folder when creating the Flask app. It advises you to update your <code>app.py</code> file, changing the assignment <code>app = Flask(__name__)</code> to include the <code>template_folder</code> parameter:</p>
+<div>
+<header><span>Python</span><pre>app = Flask(__name__, template_folder='template')
+</pre></header><pre><code>app = Flask(__name__, template_folder=<span>'template'</span>)
+</code></pre>
+</div>
+</li>
+<li>
+<p>Assuming the Flask development server is still running, if you refresh the browser page at <a href="http://127.0.0.1:5000/">http://127.0.0.1:5000/</a>, you will now see a new error relating to the <code>get_config</code> function.</p>
+<p>Copy this error message to the Copilot Chat view and ask for help.</p>
+<p><code>@workspace When I run `python3 app.py`, I get the following error in the browser: `jinja2.exceptions.UndefinedError: 'get_config' is undefined.` How can I fix this?</code></p>
+<p>Copilot replies that the error occurs because <code>get_config</code> is not available in the Jinja2 template context. It advises you to add the following code to the <code>app.py</code> file, directly before the line <code>@app.route('/')</code>:</p>
+<div>
+<header><span>Python</span><pre>app.jinja_env.globals.update(get_config=get_config)
+</pre></header><pre><code>app.jinja_env.<span>globals</span>.update(get_config=get_config)
+</code></pre>
+</div>
+</li>
+<li>
+<p>Refresh your browser and you should now see the website.</p>
+<div><picture><source><img src="/assets/cb-142784/images/help/copilot/migration-no-css-website.png" alt="Screenshot of the 'Simple Python Website' without CSS styling." width="720" height="370"></source></picture></div>
+<p>However, none of the CSS styles are being applied. We'll fix this next.</p>
+</li>
+<li>
+<p>Ask Copilot:</p>
+<p><code>@workspace The deployed website does not use the CSS styles. How can I fix this?</code></p>
+<p>Copilot tells you that Flask expects your CSS file to be in a directory called <code>static</code>. It suggests moving the existing <code>style.css</code> file from the <code>template</code> directory into a new <code>static</code> directory, and then updating the path to the <code>style.css</code> file within the <code>head</code> portion of the <code>template.html</code> file. Change this to:</p>
+<div>
+<header><span>HTML</span><pre>&lt;link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"&gt;
+
+</pre></header><pre><code>
+<span>&lt;<span>link</span> <span>rel</span>=<span>"stylesheet"</span> <span>href</span>=<span>"{{ url_for('static', filename='style.css') }}"</span>&gt;</span>
+
+</code></pre>
+</div>
+<p>When you refresh the browser, the website should now render correctly.</p>
+<p>To complete the initial migration, continue working through the steps in the high-level overview that Copilot gave you, asking for help as you need it.</p>
+</li>
+</ol>
+<h3><a href="#completing-the-migration">Completing the migration</a></h3>
+<p>Further work to successfully complete the migration process would involve:</p>
+<ul>
+<li>
+<strong>Checking</strong> the initial migration thoroughly.</li>
+<li>
+<strong>Bug fixing</strong>. For example, at present in the example described here, the page links only work if you set <code>pretty_uri</code> to <code>True</code> in the <code>config</code> section of the <code>app.py</code> file. If you want the option of using query string parameters in the page URLs, or if you want to remove this option from the code, you can ask Copilot to help you do this.</li>
+<li>
+<strong>Writing tests</strong> for the migrated project.</li>
+<li>
+<strong>Cleaning up</strong> the project by removing any files that are no longer needed.</li>
+<li>
+<strong>Refactoring</strong> the code in the new language. The migration process has resulted in a Python project whose architecture is based on that of the original PHP project. Having done the initial migration, you can now refactor the code to make best use of features of the Python language and the Flask framework.</li>
+<li>
+<strong>Updating the documentation</strong>. The <code>readme.md</code> file is now out of date and needs to be rewritten.</li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

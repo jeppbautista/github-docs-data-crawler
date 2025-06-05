@@ -1,0 +1,251 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="Dependabot" href="/en/code-security/dependabot">Dependabot</a><span>/</span>
+</li>
+<li>
+<a title="Dependabot security updates" href="/en/code-security/dependabot/dependabot-security-updates">Dependabot security updates</a><span>/</span>
+</li>
+<li><a title="Customize Dependabot PRs" href="/en/code-security/dependabot/dependabot-security-updates/customizing-dependabot-security-prs">Customize Dependabot PRs</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Customizing pull requests for Dependabot security updates</h1></div></div>
+<div>
+<div><p>Learn how to customize Dependabot pull requests for security updates to align with your project's security priorities and workflows.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Users with <strong>write</strong> access</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-customizing-pull-requests-for-security-updates"><div><span>About customizing pull requests for security updates</span></div></a></li>
+<li><a href="#prioritizing-meaningful-updates"><div><span>Prioritizing meaningful updates</span></div></a></li>
+<li><a href="#automatically-adding-reviewers-and-assignees"><div><span>Automatically adding reviewers and assignees</span></div></a></li>
+<li><a href="#labeling-pull-requests-with-custom-labels"><div><span>Labeling pull requests with custom labels</span></div></a></li>
+<li><a href="#adding-a-prefix-to-commit-messages"><div><span>Adding a prefix to commit messages</span></div></a></li>
+<li><a href="#associating-pull-requests-with-a-milestone"><div><span>Associating pull requests with a milestone</span></div></a></li>
+<li><a href="#changing-the-separator-in-the-pull-request-branch-name"><div><span>Changing the separator in the pull request branch name</span></div></a></li>
+<li><a href="#example-1-configuration-for-security-updates-only"><div><span>Example 1: configuration for security updates only</span></div></a></li>
+<li><a href="#example-2-configuration-for-version-updates-and-security-updates"><div><span>Example 2: configuration for version updates and security updates</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-customizing-pull-requests-for-security-updates">About customizing pull requests for security updates</a></h2>
+<p>You can customize how Dependabot raises pull requests for security updates, so that they best fit your project's security priorities and processes. For example:</p>
+<ul>
+<li>
+<strong>Optimize Dependabot pull requests to prioritize meaningful updates</strong> by grouping multiple updates into a single pull request.</li>
+<li>Applying custom labels to <strong>integrate Dependabot's pull requests</strong> into your existing workflows.</li>
+</ul>
+<p>Similar to version updates, customization options for security updates are defined in the <code>dependabot.yml</code> file. If you have already customized the <code>dependabot.yml</code> for version updates, then many of the configuration options that you have defined could automatically apply to security updates, too. However, there's a couple of important points to note:</p>
+<ul>
+<li>Dependabot security updates are <strong>always triggered by a security advisory</strong>, rather than running according to the <code>schedule</code> you have set in the <code>dependabot.yml</code> for version updates.</li>
+<li>Dependabot raises pull requests for security updates against the <strong>default branch only</strong>. If your configuration sets a value for <code>target-branch</code>, then the customization for that package ecosystem will only apply to version updates by default.</li>
+</ul>
+<p>If you haven't yet configured a <code>dependabot.yml</code> file for your repository and you want to customize pull requests for security updates, you must first:</p>
+<ul>
+<li>Check in a <code>dependabot.yml</code> file into the <code>.github</code> directory of your repository. For more information, see <a href="/en/code-security/dependabot/dependabot-version-updates/configuring-dependabot-version-updates#enabling-dependabot-version-updates">Configuring Dependabot version updates</a>.</li>
+<li>Set all the required keys. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference#required-keys">Required keys</a>.</li>
+<li>If you want the customization for a package ecosystem to <strong>only apply to security updates</strong> (and exclude version updates), set the <code>open-pull-requests-limit</code> key to <code>0</code>.</li>
+</ul>
+<p>You can then consider what your needs and priorities are for security updates, and apply a combination of the customization options outlined below.</p>
+<h2><a href="#prioritizing-meaningful-updates">Prioritizing meaningful updates</a></h2>
+<p>To create a more <strong>targeted review process</strong> that prioritizes meaningful updates, use <code>groups</code> to combine security updates for multiple dependencies into a single pull request.</p>
+<p>For detailed guidance, see <a href="/en/code-security/dependabot/dependabot-version-updates/optimizing-pr-creation-version-updates#prioritizing-meaningful-updates">Prioritizing meaningful updates</a>.</p>
+<h2><a href="#automatically-adding-reviewers-and-assignees">Automatically adding reviewers and assignees</a></h2>
+<p>To ensure your project's security updates get <strong>addressed promptly</strong> by the appropriate team, use <code>reviewers</code> and <code>assignees</code> to automatically add individuals or teams as <strong>reviewers or assignees</strong> to pull requests.</p>
+<p>For detailed guidance, see <a href="/en/code-security/dependabot/dependabot-version-updates/customizing-dependabot-prs#automatically-adding-reviewers-and-assignees">Automatically adding reviewers and assignees</a>.</p>
+<h2><a href="#labeling-pull-requests-with-custom-labels">Labeling pull requests with custom labels</a></h2>
+<p>To <strong>prioritize</strong> specific pull requests, or integrate them into CI/CD pipelines, use <code>labels</code> to apply your own <strong>custom labels</strong> to each pull request.</p>
+<p>For detailed guidance, see <a href="/en/code-security/dependabot/dependabot-version-updates/customizing-dependabot-prs#labeling-pull-requests-with-custom-labels">Labeling pull requests with custom labels</a>.</p>
+<h2><a href="#adding-a-prefix-to-commit-messages">Adding a prefix to commit messages</a></h2>
+<p>To <strong>integrate</strong> with automations that process commit messages or pull requests titles, use <code>commit-message</code> to specify the prefix that you want for commit messages and pull request titles.</p>
+<p>For detailed guidance, see <a href="/en/code-security/dependabot/dependabot-version-updates/customizing-dependabot-prs#adding-a-prefix-to-commit-messages">Adding a prefix to commit messages</a>.</p>
+<h2><a href="#associating-pull-requests-with-a-milestone">Associating pull requests with a milestone</a></h2>
+<p>To <strong>track progress</strong> towards a project goal or release, use <code>milestone</code> to associate Dependabot's pull requests with a milestone.</p>
+<p>For detailed guidance, see <a href="/en/code-security/dependabot/dependabot-version-updates/customizing-dependabot-prs#associating-pull-requests-with-a-milestone">Associating pull requests with a milestone</a>.</p>
+<h2><a href="#changing-the-separator-in-the-pull-request-branch-name">Changing the separator in the pull request branch name</a></h2>
+<p>To ensure your <strong>branch names align</strong> with your team's existing conventions, use <code>pull-request-branch-name.separator</code> to specify the separator you want Dependabot to use for branch names.</p>
+<p>For detailed guidance, see <a href="/en/code-security/dependabot/dependabot-version-updates/customizing-dependabot-prs#changing-the-separator-in-the-pull-request-branch-name">Changing the separator in the pull request branch name</a>.</p>
+<h2><a href="#example-1-configuration-for-security-updates-only">Example 1: configuration for security updates only</a></h2>
+<p>In this example, the <code>dependabot.yml</code> file:</p>
+<ul>
+<li>Uses a private registry for updates to npm dependencies.</li>
+<li>Disables version updates for dependencies, so that any customizations apply to security updates only.</li>
+<li>Is customized so that Dependabot applies custom labels to the pull requests and automatically adds reviewers and assignees.</li>
+<li>Groups security updates for golang dependencies into a single pull request.</li>
+</ul>
+<div>
+<header><span>YAML</span><pre># Example configuration file that:
+#  - Uses a private registry for npm updates
+#  - Ignores lodash dependency
+#  - Disables version-updates
+#  - Applies custom labels
+#  - Adds reviewers and assignees
+#  - Group security updates for golang dependencies into a single pull request
+
+version: 2
+registries:
+  # Define a private npm registry with the name `example`
+  example:
+    type: npm-registry
+    url: https://example.com
+    token: ${{secrets.NPM_TOKEN}}
+updates:
+  - package-ecosystem: "npm"
+    directory: "/src/npm-project"
+    schedule:
+      interval: "daily"
+    # For Lodash, ignore all updates
+    ignore:
+      - dependency-name: "lodash"
+    # Disable version updates for npm dependencies
+    open-pull-requests-limit: 0
+    registries:
+      # Ask Dependabot to use the private registry for npm
+      - example
+    # Raise all npm pull requests for security updates with custom labels
+    labels:
+      - "npm dependencies"
+      - "triage-board"
+    # Raise all npm pull requests for security updates with reviewers
+    reviewers:
+      - "my-org/team-name"
+      - "octocat"
+    # Raise all npm pull requests for security updates with assignees
+    assignees:
+      - "user-name"
+  - package-ecosystem: "gomod"
+    groups:
+      # Group security updates for golang dependencies
+      # into a single pull request
+      golang:
+        applies-to: security-updates
+        patterns:
+          - "golang.org*"
+</pre></header><pre><code><span># Example configuration file that:</span>
+<span>#  - Uses a private registry for npm updates</span>
+<span>#  - Ignores lodash dependency</span>
+<span>#  - Disables version-updates</span>
+<span>#  - Applies custom labels</span>
+<span>#  - Adds reviewers and assignees</span>
+<span>#  - Group security updates for golang dependencies into a single pull request</span>
+
+<span>version:</span> <span>2</span>
+<span>registries:</span>
+  <span># Define a private npm registry with the name `example`</span>
+  <span>example:</span>
+    <span>type:</span> <span>npm-registry</span>
+    <span>url:</span> <span>https://example.com</span>
+    <span>token:</span> <span>${{secrets.NPM_TOKEN}}</span>
+<span>updates:</span>
+  <span>-</span> <span>package-ecosystem:</span> <span>"npm"</span>
+    <span>directory:</span> <span>"/src/npm-project"</span>
+    <span>schedule:</span>
+      <span>interval:</span> <span>"daily"</span>
+    <span># For Lodash, ignore all updates</span>
+    <span>ignore:</span>
+      <span>-</span> <span>dependency-name:</span> <span>"lodash"</span>
+    <span># Disable version updates for npm dependencies</span>
+    <span>open-pull-requests-limit:</span> <span>0</span>
+    <span>registries:</span>
+      <span># Ask Dependabot to use the private registry for npm</span>
+      <span>-</span> <span>example</span>
+    <span># Raise all npm pull requests for security updates with custom labels</span>
+    <span>labels:</span>
+      <span>-</span> <span>"npm dependencies"</span>
+      <span>-</span> <span>"triage-board"</span>
+    <span># Raise all npm pull requests for security updates with reviewers</span>
+    <span>reviewers:</span>
+      <span>-</span> <span>"my-org/team-name"</span>
+      <span>-</span> <span>"octocat"</span>
+    <span># Raise all npm pull requests for security updates with assignees</span>
+    <span>assignees:</span>
+      <span>-</span> <span>"user-name"</span>
+  <span>-</span> <span>package-ecosystem:</span> <span>"gomod"</span>
+    <span>groups:</span>
+      <span># Group security updates for golang dependencies</span>
+      <span># into a single pull request</span>
+      <span>golang:</span>
+        <span>applies-to:</span> <span>security-updates</span>
+        <span>patterns:</span>
+          <span>-</span> <span>"golang.org*"</span>
+</code></pre>
+</div>
+<h2><a href="#example-2-configuration-for-version-updates-and-security-updates">Example 2: configuration for version updates and security updates</a></h2>
+<p>In this example, the <code>dependabot.yml</code> file:</p>
+<ul>
+<li>Is customized so that Dependabot adds reviewers and custom labels to both version updates and security updates.</li>
+<li>Uses the <code>groups</code> customization option to create two groups ("<code>angular</code>" and "<code>production-dependencies</code>") in order to group multiple updates into single pull requests.</li>
+<li>Specifies that the <code>groups</code> customization for <code>angular</code> applies to security updates only.</li>
+<li>Specifies that the <code>groups</code> customization for <code>production-dependencies</code> applies to version updates only.</li>
+</ul>
+<div>
+<header><span>YAML</span><pre>version: 2
+updates:
+  # Keep npm dependencies up to date
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+# Raise all npm pull requests for security and version updates with custom labels
+    labels:
+      - "npm dependencies"
+      - "triage-board"
+    # Raise all npm pull requests for security and version updates with reviewers
+    reviewers:
+      - "my-org/team-name"
+      - "octocat"
+    groups:
+      angular:
+        # Group security updates for Angular dependencies into a single pull request
+        applies-to: security-updates
+        patterns:
+          - "@angular*"
+      production-dependencies:
+        # Group version updates for dependencies of type "production" into a single pull request
+        applies-to: version-updates
+        dependency-type: "production"
+</pre></header><pre><code><span>version:</span> <span>2</span>
+<span>updates:</span>
+  <span># Keep npm dependencies up to date</span>
+  <span>-</span> <span>package-ecosystem:</span> <span>"npm"</span>
+    <span>directory:</span> <span>"/"</span>
+    <span>schedule:</span>
+      <span>interval:</span> <span>"weekly"</span>
+<span># Raise all npm pull requests for security and version updates with custom labels</span>
+    <span>labels:</span>
+      <span>-</span> <span>"npm dependencies"</span>
+      <span>-</span> <span>"triage-board"</span>
+    <span># Raise all npm pull requests for security and version updates with reviewers</span>
+    <span>reviewers:</span>
+      <span>-</span> <span>"my-org/team-name"</span>
+      <span>-</span> <span>"octocat"</span>
+    <span>groups:</span>
+      <span>angular:</span>
+        <span># Group security updates for Angular dependencies into a single pull request</span>
+        <span>applies-to:</span> <span>security-updates</span>
+        <span>patterns:</span>
+          <span>-</span> <span>"@angular*"</span>
+      <span>production-dependencies:</span>
+        <span># Group version updates for dependencies of type "production" into a single pull request</span>
+        <span>applies-to:</span> <span>version-updates</span>
+        <span>dependency-type:</span> <span>"production"</span>
+</code></pre>
+</div>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference">Dependabot options reference</a></li>
+<li><a href="/en/code-security/dependabot/working-with-dependabot/configuring-access-to-private-registries-for-dependabot">Configuring access to private registries for Dependabot</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

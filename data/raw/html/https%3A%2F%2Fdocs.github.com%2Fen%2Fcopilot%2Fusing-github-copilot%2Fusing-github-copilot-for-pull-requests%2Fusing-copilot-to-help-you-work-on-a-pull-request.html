@@ -1,0 +1,259 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Use GitHub Copilot" href="/en/copilot/using-github-copilot">Use GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Copilot for pull requests" href="/en/copilot/using-github-copilot/using-github-copilot-for-pull-requests">Copilot for pull requests</a><span>/</span>
+</li>
+<li><a title="Work on a PR" href="/en/copilot/using-github-copilot/using-github-copilot-for-pull-requests/using-copilot-to-help-you-work-on-a-pull-request">Work on a PR</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Using Copilot to help you work on a pull request</h1></div></div>
+<div>
+<div><p>You can iterate, validate, and integrate suggested changes to code by using Copilot Workspace.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>This feature is not available in GitHub Copilot Free.</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-using-copilot-to-help-you-work-on-your-pull-requests"><div><span>About using Copilot to help you work on your pull requests</span></div></a></li>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#editing-files-in-a-pull-request"><div><span>Editing files in a pull request</span></div></a></li>
+<li><a href="#using-copilot-to-work-on-pull-request-comments"><div><span>Using Copilot to work on pull request comments</span></div></a></li>
+<li><a href="#chatting-with-copilot-about-a-pull-request"><div><span>Chatting with Copilot about a pull request</span></div></a></li>
+<li><a href="#verifying-your-changes"><div><span>Verifying your changes</span></div></a></li>
+<li><a href="#changing-the-workspace-options"><div><span>Changing the Workspace options</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<p> Copilot Workspace is in limited public preview. The waitlist for admission to this preview is currently closed.</p>
+</div>
+<h2><a href="#about-using-copilot-to-help-you-work-on-your-pull-requests">About using Copilot to help you work on your pull requests</a></h2>
+<p>After you create a pull request, you can continue working on the PR on the GitHub website. This article is about Copilot Workspace, which provides a Copilot-enabled environment for:</p>
+<ul>
+<li>
+<strong>Refining</strong> your pull requests</li>
+<li>
+<strong>Validating</strong> changes</li>
+<li>
+<strong>Integrating</strong> suggestions from reviewers</li>
+</ul>
+<p>Copilot Workspace enables you to work on your pull requests in one place - on GitHub - from pull request creation to merge.</p>
+<p>Copilot can help with pull requests in other ways too. These are explained in separate articles. Copilot can:</p>
+<ul>
+<li>Write a pull request summary for you - see <a href="/en/copilot/using-github-copilot/using-github-copilot-for-pull-requests/creating-a-pull-request-summary-with-github-copilot">Creating a pull request summary with GitHub Copilot</a>.</li>
+<li>Review a pull request for you - see <a href="/en/copilot/using-github-copilot/code-review/using-copilot-code-review">Using GitHub Copilot code review</a>.</li>
+<li>Suggest fixes for coding problems identified by CodeQL code scanning - see <a href="/en/code-security/code-scanning/managing-code-scanning-alerts/responsible-use-autofix-code-scanning">Responsible use of Copilot Autofix for code scanning</a>.</li>
+</ul>
+<h3><a href="#benefits-of-copilot-workspace">Benefits of Copilot Workspace</a></h3>
+<p>Copilot Workspace:</p>
+<ul>
+<li>Allows you to work on a pull request without having to switch back and forward between the GitHub website and your IDE.</li>
+<li>Gives you easy access to view/test/modify/apply coding suggestions, from Copilot code reviews and Copilot Autofix, as well as reviews by human reviewers.</li>
+<li>Gives you Copilot code completion suggestions on GitHub. Previously these were only available in an IDE.</li>
+<li>Shows you a list of files changed by the pull request, within the browser-based editor, but also allows you to find and edit any file from across the repo.</li>
+<li>Enables you to build, test, and run your code directly from the Workspace environment on GitHub.</li>
+</ul>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<p>Using Copilot Workspace requires an existing pull request on the GitHub website and either of the following:</p>
+<ul>
+<li>Access to this public preview from the waitlist (now closed).</li>
+<li>Access to GitHub Advanced Security (GHAS) features on a private repository owned by an organization on a GitHub Team or GitHub Enterprise plan. See <a href="/en/get-started/learning-about-github/about-github-advanced-security">About GitHub Advanced Security</a>.</li>
+</ul>
+<p>Without access to Copilot Workspace you can still edit the files in pull requests by going to the <strong>Files changed</strong> tab, clicking the ellipsis (<strong>...</strong>) next to the file you want to edit, and then clicking <strong>Edit file</strong>.</p>
+<h2><a href="#editing-files-in-a-pull-request">Editing files in a pull request</a></h2>
+<p>To work on a pull request in Copilot Workspace:</p>
+<ol>
+<li>
+<p>Click the </p>
+<p>Copilot Workspace opens, displaying an overview of the pull request.</p>
+<p>At the left of the Copilot Workspace window is a list of the files changed by the pull request.</p>
+<div><picture><source><img src="/assets/cb-97851/images/help/copilot/workspace-files-in-pr.png" alt="Screenshot of the list of files in a PR, at the left of Copilot Workspace."></source></picture></div>
+</li>
+<li>
+<p>To work on a file that is not currently changed by this pull request, click <strong>Files in this pull request</strong> and, from the dropdown, select <strong>All files in this repository</strong>.</p>
+</li>
+<li>
+<p>Click a file in the list to open the file in the Workspace editor.</p>
+<p>The file is displayed in a diff view. You can change the view if required. See <a href="#changing-the-workspace-options">Changing the Workspace options</a> later in this article.</p>
+<p>You can open and change multiple files before committing your changes.</p>
+</li>
+<li>
+<p>After you have finished making changes, click <strong>Review and commit</strong>.</p>
+<p>The <strong>Commit changes</strong> panel is displayed. Copilot autogenerates a commit message for you, based on the changes you have made. You can edit the message and add an extended description if you want.</p>
+<div><picture><source><img src="/assets/cb-72020/images/help/copilot/workspace-commit-changes.png" alt='Screenshot of the "Commit changes" panel showing an autogenerated commit message and three changed files.'></source></picture></div>
+<p>The panel lists the files you have changed. You can expand each file to see the changes you have made.</p>
+</li>
+<li>
+<p>Optionally, if you edited multiple files and you decide you don't want to commit all of the changes in a single commit, clear the check box beside the files whose changes you don't want to commit. When you click <strong>Commit changes</strong>, the changes you applied to those files will remain applied but uncommitted, and you can add them to the pull request in a separate commit.</p>
+<div>
+<p> If you clear the check box beside some files you may need to rewrite the commit message to avoid mentioning the changes to those files.</p>
+</div>
+</li>
+<li>
+<p>Click <strong>Commit changes</strong>.</p>
+<p>Alternatively, click <strong>Reset all changes</strong> to return the files to their current state in the pull request, losing the changes you made in the Workspace editor panel. Resetting your changes cannot be undone.</p>
+</li>
+</ol>
+<h2><a href="#using-copilot-to-work-on-pull-request-comments">Using Copilot to work on pull request comments</a></h2>
+<p>You can use Copilot Workspace to work through all comments on your pull request, one after the other, and then commit any changes you choose to make in a single commit.</p>
+<ol>
+<li>
+<p>On a comment that includes a code change suggestion, click <strong>Open in Workspace</strong>.</p>
+<div><picture><source><img src="/assets/cb-119264/images/help/copilot/workspace-copilot-review-suggestion.png" alt="Screenshot of a coding suggestion by Copilot code review."></source></picture></div>
+<p>Copilot Workspace opens, displaying the suggested change in the Suggestions panel on the right of the Workspace window.</p>
+</li>
+<li>
+<p>Review the suggested change, then click one of the two buttons at the bottom of the Suggestions panel:</p>
+<ul>
+<li>
+<strong>Apply</strong> - If you agree with the suggested change.</li>
+<li>
+<strong>Dismiss</strong> - If you do not want to make the suggested change.</li>
+</ul>
+</li>
+<li>
+<p>If there are multiple comments in the pull request, you can step through to the next comment by clicking the <strong>&gt;</strong> arrow at the bottom of the Suggestions panel.</p>
+<div><picture><source><img src="/assets/cb-23421/images/help/copilot/workspace-next-comment.png" alt='Screenshot of the Suggestions panel, showing the "&gt;" arrow and "Dismiss" and "Apply" buttons.'></source></picture></div>
+</li>
+<li>
+<p>Optionally, to see a list of all of the comments in the pull request, click the back arrow at the top left of the Suggestions panel.</p>
+<div><picture><source><img src="/assets/cb-76575/images/help/copilot/workspace-all-comments.png" alt="Screenshot of the Suggestions panel, showing the back arrow at the top left."></source></picture></div>
+<p>If you have accepted or dismissed any suggestions, these are shown within "applied" and "dismissed" dropdowns, which make it easy to see which suggestions you have not yet dealt with.</p>
+<div><picture><source><img src="/assets/cb-43119/images/help/copilot/workspace-applied-dismissed.png" alt='Screenshot a list of comments in the Suggestions panel. Two are awaiting action. Beneath this are dropdown links headed "1 applied" and "1 dismissed."'></source></picture></div>
+</li>
+<li>
+<p>After you have finished reviewing the suggested changes, click <strong>Review and commit</strong>.</p>
+</li>
+<li>
+<p>Optionally, if you decide you don't want to commit all of the applied changes in a single commit, clear the check box beside the files whose changes you don't want to commit. When you click <strong>Commit changes</strong>, the changes you applied to those files will remain applied but uncommitted, and you can add them to the pull request in a separate commit.</p>
+</li>
+<li>
+<p>Click <strong>Commit changes</strong>.</p>
+<p>Alternatively, click <strong>Reset all changes</strong> to return the suggestions to their initial state, losing the apply or dismiss choices you made, and losing any changes you made by editing files directly in the Workspace editor panel. Resetting your changes cannot be undone.</p>
+</li>
+</ol>
+<h2><a href="#chatting-with-copilot-about-a-pull-request">Chatting with Copilot about a pull request</a></h2>
+<ol>
+<li>
+<p>At the top of the Workspace window, click the </p>
+</li>
+<li>
+<p>At the bottom of the Copilot panel, type a question in the "Ask Copilot" box then press <kbd>Enter</kbd>.</p>
+<p>You can ask questions about:</p>
+<ul>
+<li>
+<strong>The currently displayed file</strong> - for example, "how could I improve this file?"</li>
+<li>
+<strong>The whole pull request</strong> - for example, "what frameworks are referenced in this pull request?"</li>
+<li>
+<strong>General programming topics</strong> - for example, "what is the latest version of ruby?"</li>
+</ul>
+<p>For more information, see <a href="/en/copilot/using-github-copilot/asking-github-copilot-questions-in-githubcom">Asking GitHub Copilot questions in GitHub</a>.</p>
+</li>
+</ol>
+<div>
+<p> Currently not all Copilot Chat features are available in the public preview of Copilot Workspace.</p>
+</div>
+<h2><a href="#verifying-your-changes">Verifying your changes</a></h2>
+<p>Workspace includes a built-in terminal and a quick way to build, run, and test your code.</p>
+<h3><a href="#opening-the-terminal">Opening the terminal</a></h3>
+<p>To open the terminal, click </p>
+<div>
+<p> The terminal requires a codespace to be running. If you don't see the </p>
+</div>
+<h3><a href="#running-terminal-commands">Running terminal commands</a></h3>
+<p>You can type commands directly into the terminal, or you can use quick commands to run commonly used commands with a couple of clicks.</p>
+<h4><a href="#configuring-personal-quick-commands">Configuring personal quick commands</a></h4>
+<p>You can configure <strong>Build</strong>, <strong>Run</strong>, and <strong>Test</strong> commands that you can use when you work on a specific project in Copilot Workspace. If commands have already been configured for the repository, you can replace them with alternative commands for your own personal use.</p>
+<ol>
+<li>
+<p>At the top of the Workspace window, click </p>
+<p>If <strong>Build</strong>, <strong>Run</strong>, and <strong>Test</strong> quick commands have already been defined, the </p>
+<div><picture><source><img src="/assets/cb-30499/images/help/copilot/workspace-configure-commands.png" alt='Screenshot of the "Commands" dropdown menu with the "Configure" option highlighted with a dark orange outline.'></source></picture></div>
+</li>
+<li>
+<p>In the "Configure commands" dialog, enter the commands you want to use for <strong>Build</strong>, <strong>Run</strong>, and <strong>Test</strong> options.</p>
+</li>
+<li>
+<p>Click <strong>Save</strong>.</p>
+</li>
+</ol>
+<h4><a href="#configuring-quick-commands-for-your-repository">Configuring quick commands for your repository</a></h4>
+<p>You can set default <strong>Build</strong>, <strong>Run</strong>, and <strong>Test</strong> commands for everyone who uses Copilot Workspace to work on pull requests for your repository.</p>
+<ol>
+<li>
+<p>Create or edit a file in the root of your repository called <code>.devcontainer/devcontainer.json</code>.</p>
+<div>
+<p> The <code>.devcontainer/devcontainer.json</code> file is a configuration file for codespaces created for a repository. For more information, see <a href="/en/enterprise-cloud@latest/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers#devcontainerjson">Introduction to dev containers</a>.</p>
+</div>
+</li>
+<li>
+<p>Add a <code>commands</code> section as follows, replacing the example commands shown here with the commands that people working on your repository should use.</p>
+<pre><code><span>{</span>
+  <span>"commands"</span><span>:</span> <span>{</span>
+    <span>"Build"</span><span>:</span> <span>"make"</span><span>,</span>
+    <span>"Run"</span><span>:</span> <span>"./bin/start"</span><span>,</span>
+    <span>"Test"</span><span>:</span> <span>"make test"</span>
+  <span>}</span>
+<span>}</span>
+</code></pre>
+</li>
+<li>
+<p>Click <strong>Save</strong>.</p>
+</li>
+</ol>
+<h4><a href="#using-workspace-quick-commands">Using Workspace quick commands</a></h4>
+<ol>
+<li>
+<p>To run the first of the defined quick commands (typically <strong>Build</strong>), click the button at the top of the Workspace window.</p>
+</li>
+<li>
+<p>To run a different quick command, click the dropdown arrow beside the button and then click the command you want to run from the dropdown menu.</p>
+<div><picture><source><img src="/assets/cb-30670/images/help/copilot/workspace-run-command.png" alt='Screenshot of the "Commands" dropdown menu with the "Run" option highlighted with a dark orange outline.'></source></picture></div>
+</li>
+<li>
+<p>After clicking <strong>Run</strong>, while the process is running, you can click the dropdown arrow again and choose from options to stop or restart the process, or view the output from the run command.</p>
+<div><picture><source><img src="/assets/cb-26856/images/help/copilot/workspace-stop-command.png" alt='Screenshot of the dropdown menu for a running application with the "Stop" option highlighted with a dark orange outline.'></source></picture></div>
+</li>
+</ol>
+<h4><a href="#previewing-a-web-application">Previewing a web application</a></h4>
+<p>If your run command starts a web server, the </p>
+<p>Click this button to preview the server output in a new tab of your browser.</p>
+<h2><a href="#changing-the-workspace-options">Changing the Workspace options</a></h2>
+<p>You can change how files are displayed in Copilot Workspace.</p>
+<h3><a href="#changing-the-diff-view">Changing the diff view</a></h3>
+<ol>
+<li>
+<p>Click the compare picker icon (</p>
+</li>
+<li>
+<p>Choose a view option:</p>
+<ul>
+<li>
+<strong>Unified</strong> - Shows changes in a single view, with added lines highlighted in green and removed lines highlighted in red.</li>
+<li>
+<strong>Split</strong> - Shows changes in a split view, with the original file on the left and the new file on the right.</li>
+<li>
+<strong>Hidden</strong> - Shows the current state of the file in this pull request, without showing what changes the PR makes.</li>
+</ul>
+</li>
+</ol>
+<h3><a href="#wrapping-long-lines">Wrapping long lines</a></h3>
+<ol>
+<li>Click the ellipsis (<strong>...</strong>), at the top right of the Workspace editor panel.</li>
+<li>Click <strong>Wrap lines</strong> to toggle line wrapping on or off.</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

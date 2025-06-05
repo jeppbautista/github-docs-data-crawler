@@ -1,0 +1,90 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Codespaces" href="/en/codespaces">Codespaces</a><span>/</span>
+</li>
+<li>
+<a title="Setting up your project" href="/en/codespaces/setting-up-your-project-for-codespaces">Setting up your project</a><span>/</span>
+</li>
+<li>
+<a title="Setting up your repository" href="/en/codespaces/setting-up-your-project-for-codespaces/setting-up-your-repository">Setting up your repository</a><span>/</span>
+</li>
+<li><a title="Set up a template repo" href="/en/codespaces/setting-up-your-project-for-codespaces/setting-up-your-repository/setting-up-a-template-repository-for-github-codespaces">Set up a template repo</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Setting up a template repository for GitHub Codespaces</h1></div></div>
+<div><div><p>You can help people get started with a project by setting up a template repository for use with GitHub Codespaces.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#introduction"><div><span>Introduction</span></div></a></li>
+<li><a href="#describe-your-template"><div><span>Describe your template</span></div></a></li>
+<li><a href="#add-starter-files"><div><span>Add starter files</span></div></a></li>
+<li><a href="#configure-the-dev-container"><div><span>Configure the dev container</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#introduction">Introduction</a></h2>
+<p>By setting up a template repository, you can help people get started with your framework, library, or other project in GitHub Codespaces. Users will be able to start working with your template files immediately in a cloud-based development environment, without having to worry about cloning your repository or installing tools or other dependencies. With some configuration, you will be able to set users up in a codespace with important files already open for editing, and with an application already running in a preview browser tab within the VS Code web editor.</p>
+<p>Anyone with read access to your template repository can create a codespace from the repository's page on GitHub. You can turn any existing repository into a template, and you do not have to change any settings to allow users to create a codespace from your template repository. For more information on turning a repository into a template, see <a href="/en/repositories/creating-and-managing-repositories/creating-a-template-repository">Creating a template repository</a>.</p>
+<p>To help users find your template and get started quickly, you can share a link to the codespace creation page for the template. For example, you could provide this link in a tutorial for getting started with your framework. You can use the "share a deep link" option and select <strong>Quick start</strong> to build a link that takes users to a page where they can quickly create a new codespace or resume a recent one. For more information, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/setting-up-your-repository/facilitating-quick-creation-and-resumption-of-codespaces#creating-a-link-to-the-codespace-creation-page-for-your-repository">Facilitating quick creation and resumption of codespaces</a>.</p>
+<p>When someone creates a codespace from your template, the contents of your template repository will be cloned into their codespace. When the user is ready, they will be able to publish their work to a new repository on GitHub belonging to their personal account. For more information, see <a href="/en/codespaces/developing-in-a-codespace/creating-a-codespace-from-a-template">Creating a codespace from a template</a>.</p>
+<p>Organizations can pay for members of the organization and outside collaborators to use GitHub Codespaces at the organization's expense. This includes codespaces created from template repositories owned by the organization. However, if a user publishes a codespace created from a template to their personal account, ownership and billing of the codespace transfers to the user who created the codespace. For more information, see <a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-codespaces/about-billing-for-github-codespaces#how-billing-is-handled-for-github-codespaces-templates">About billing for GitHub Codespaces</a>.</p>
+<h2><a href="#describe-your-template">Describe your template</a></h2>
+<p>If you don't have one, create a README for your template repository to describe the purpose of your template and how to get started with it. For more information, see <a href="/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes">About READMEs</a>.</p>
+<p>You can also provide a short description of your project by navigating to the repository's page and clicking <strong>About</strong> section on the right of the page.</p>
+<p><picture><source><img src="/assets/cb-40424/images/help/codespaces/repository-settings-icon.png" alt='Screenshot of the "About" section on a repository page. The settings button (a gear symbol) is highlighted with a dark orange outline.'></source></picture></p>
+<h2><a href="#add-starter-files">Add starter files</a></h2>
+<p>Template repositories typically contain starter files with boilerplate code so users can quickly get started with a library, framework, or other technology.</p>
+<p>For guidance on the kinds of files to include, you can look at the starter files included in the official GitHub templates for GitHub Codespaces, as follows.</p>
+<ol>
+<li>
+<p>In the top-left corner of GitHub, select <a href="https://github.com/codespaces">github.com/codespaces</a>.</p>
+</li>
+<li>
+<p>To view the full list of templates, in the "Explore quick start templates" section, click <strong>See all</strong>.</p>
+<div><picture><source><img src="/assets/cb-56660/images/help/codespaces/codespace-templates-see-all.png" alt='Screenshot of the "Explore quick start templates" section. "See all" is highlighted with a dark orange outline.'></source></picture></div>
+</li>
+<li>
+<p>To view the template repository that contains the files for the template, click the name of the template.</p>
+<div><picture><source><img src="/assets/cb-49411/images/help/codespaces/react-template-name.png" alt='Screenshot of the "Explore quick start templates" section of the codespaces page. The names of the templates are highlighted with orange outlines.'></source></picture></div>
+</li>
+</ol>
+<h2><a href="#configure-the-dev-container">Configure the dev container</a></h2>
+<p>You can add dev container configuration files to your template repository to customize the development environment for people using your template with GitHub Codespaces. You can choose from a list of predefined configuration settings in Visual Studio Code, or you can create a custom configuration by writing your own <code>devcontainer.json</code> file. If you don't add configuration files, the default container image will be used. For more information, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers">Introduction to dev containers</a> and <a href="/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration">Adding a dev container configuration to your repository</a>.</p>
+<div>
+<p>
+When users create codespaces from the <strong>Use this template</strong> button in a template repository, they will not be given a choice between configurations. The codespace will be built based on the default configuration defined in <code>.devcontainer/devcontainer.json</code>, or in <code>.devcontainer.json</code> at the root of your repository.</p>
+</div>
+<p>You should configure your dev container with the tools and customization to give users the best experience with your template. For example, in your <code>devcontainer.json</code> file:</p>
+<ul>
+<li>You can use the <code>openFiles</code> property to define a list of files to be opened automatically in the VS Code web client when a codespace is created from your template.</li>
+<li>If users need to provide personal secrets such as API keys to run the application in your template, you can prompt them to provide these secrets. For more information, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/configuring-dev-containers/specifying-recommended-secrets-for-a-repository">Specifying recommended secrets for a repository</a>.</li>
+<li>If your template contains files for a web application, you can make the application run automatically in the user's codespace. You can do this by using the <code>postAttachCommand</code> property to run a script that starts the application on a local server as soon as the VS Code web client connects to the codespace, and by setting the <code>onAutoForward</code> property of a port to <code>openPreview</code> to display the application running on that port in a simple browser embedded in the VS Code web client.</li>
+</ul>
+<p>The following configuration settings for a React template will open the <code>app.js</code> file in the user's editor, run <code>npm start</code> (defined in a <code>package.json</code> file) to start a local server, and forward port <code>3000</code> to a preview browser tab in the codespace.</p>
+<pre><code><span>{</span>
+    <span>"postAttachCommand"</span><span>:</span> <span>{</span>
+      <span>"server"</span><span>:</span> <span>"npm start"</span>
+    <span>}</span><span>,</span>
+
+    <span>"portsAttributes"</span><span>:</span> <span>{</span>
+      <span>"3000"</span><span>:</span> <span>{</span>
+        <span>"label"</span><span>:</span> <span>"Application"</span><span>,</span>
+        <span>"onAutoForward"</span><span>:</span> <span>"openPreview"</span>
+      <span>}</span>
+    <span>}</span><span>,</span>
+
+    <span>"customizations"</span><span>:</span> <span>{</span>
+      <span>"codespaces"</span><span>:</span> <span>{</span>
+        <span>"openFiles"</span><span>:</span> <span>[</span><span>"src/App.js"</span><span>]</span>
+      <span>}</span>
+    <span>}</span>
+<span>}</span>
+</code></pre>
+<p>For more information, see <a href="/en/codespaces/setting-up-your-project-for-codespaces/configuring-dev-containers/automatically-opening-files-in-the-codespaces-for-a-repository">Automatically opening files in the codespaces for a repository</a> and the <a href="https://containers.dev/implementors/json_reference/#general-properties">dev containers specification</a> on the Development Containers website.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

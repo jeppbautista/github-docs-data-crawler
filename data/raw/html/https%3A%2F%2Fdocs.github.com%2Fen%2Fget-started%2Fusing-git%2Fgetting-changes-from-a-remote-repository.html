@@ -1,0 +1,78 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Get started" href="/en/get-started">Get started</a><span>/</span>
+</li>
+<li>
+<a title="Using Git" href="/en/get-started/using-git">Using Git</a><span>/</span>
+</li>
+<li><a title="Get changes from a remote" href="/en/get-started/using-git/getting-changes-from-a-remote-repository">Get changes from a remote</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Getting changes from a remote repository</h1></div></div>
+<div><div><p>You can use common Git commands to access remote repositories.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#options-for-getting-changes"><div><span>Options for getting changes</span></div></a></li>
+<li><a href="#cloning-a-repository"><div><span>Cloning a repository</span></div></a></li>
+<li><a href="#fetching-changes-from-a-remote-repository"><div><span>Fetching changes from a remote repository</span></div></a></li>
+<li><a href="#merging-changes-into-your-local-branch"><div><span>Merging changes into your local branch</span></div></a></li>
+<li><a href="#pulling-changes-from-a-remote-repository"><div><span>Pulling changes from a remote repository</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#options-for-getting-changes">Options for getting changes</a></h2>
+<p>These commands are very useful when interacting with <a href="/en/get-started/git-basics/about-remote-repositories">a remote repository</a>. <code>clone</code> and <code>fetch</code> download remote code from a repository's remote URL to your local computer, <code>merge</code> is used to merge different people's work together with yours, and <code>pull</code> is a combination of <code>fetch</code> and <code>merge</code>.</p>
+<h2><a href="#cloning-a-repository">Cloning a repository</a></h2>
+<p>To grab a complete copy of another user's repository, use <code>git clone</code> like this:</p>
+<pre><code><span>$ </span><span>git <span>clone</span> https://github.com/USERNAME/REPOSITORY.git</span>
+<span># </span><span>Clones a repository to your computer</span>
+</code></pre>
+<p>You can choose from <a href="/en/get-started/git-basics/about-remote-repositories">several different URLs</a> when cloning a repository. While logged in to GitHub, these URLs are available on the main page of the repository when you click </p>
+<p><picture><source><img src="/assets/cb-81898/images/help/repository/remotes-url-global-nav-update.png" alt='Screenshot of the main page of a repository. A green "Code" button is outlined in orange and expanded to show the HTTPS URL for the repository.' width="640" height="443"></source></picture></p>
+<p>When you run <code>git clone</code>, the following actions occur:</p>
+<ul>
+<li>A new folder called <code>repo</code> is made</li>
+<li>It is initialized as a Git repository</li>
+<li>A remote named <code>origin</code> is created, pointing to the URL you cloned from</li>
+<li>All of the repository's files and commits are downloaded there</li>
+<li>The default branch is checked out</li>
+</ul>
+<p>For every branch <code>foo</code> in the remote repository, a corresponding remote-tracking branch
+<code>refs/remotes/origin/foo</code> is created in your local repository. You can usually abbreviate
+such remote-tracking branch names to <code>origin/foo</code>.</p>
+<h2><a href="#fetching-changes-from-a-remote-repository">Fetching changes from a remote repository</a></h2>
+<p>Use <code>git fetch</code> to retrieve new work done by other people. Fetching from a repository grabs all the new remote-tracking branches and tags <em>without</em> merging those changes into your own branches.</p>
+<p>If you already have a local repository with a remote URL set up for the desired project, you can grab all the new information by using <code>git fetch *remotename*</code> in the terminal:</p>
+<pre><code><span>$ </span><span>git fetch REMOTE-NAME</span>
+<span># </span><span>Fetches updates made to a remote repository</span>
+</code></pre>
+<p>Otherwise, you can always add a new remote and then fetch. For more information, see <a href="/en/get-started/git-basics/managing-remote-repositories">Managing remote repositories</a>.</p>
+<h2><a href="#merging-changes-into-your-local-branch">Merging changes into your local branch</a></h2>
+<p>Merging combines your local changes with changes made by others.</p>
+<p>Typically, you'd merge a remote-tracking branch (i.e., a branch fetched from a remote repository) with your local branch:</p>
+<pre><code><span>$ </span><span>git merge REMOTE-NAME/BRANCH-NAME</span>
+<span># </span><span>Merges updates made online with your <span>local</span> work</span>
+</code></pre>
+<h2><a href="#pulling-changes-from-a-remote-repository">Pulling changes from a remote repository</a></h2>
+<p><code>git pull</code> is a convenient shortcut for completing both <code>git fetch</code> and <code>git merge</code>in the same command:</p>
+<pre><code><span>$ </span><span>git pull REMOTE-NAME BRANCH-NAME</span>
+<span># </span><span>Grabs online updates and merges them with your <span>local</span> work</span>
+</code></pre>
+<p>Because <code>pull</code> performs a merge on the retrieved changes, you should ensure that
+your local work is committed before running the <code>pull</code> command. If you run into
+<a href="/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts/resolving-a-merge-conflict-using-the-command-line">a merge conflict</a>
+you cannot resolve, or if you decide to quit the merge, you can use <code>git merge --abort</code>
+to take the branch back to where it was in before you pulled.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes">"Working with Remotes" from the <em>Pro Git</em> book</a></li>
+<li><a href="/en/get-started/using-github/troubleshooting-connectivity-problems">Troubleshooting connectivity problems</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

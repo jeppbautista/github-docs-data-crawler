@@ -1,0 +1,350 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Apps" href="/en/apps">Apps</a><span>/</span>
+</li>
+<li>
+<a title="Creating GitHub Apps" href="/en/apps/creating-github-apps">Creating GitHub Apps</a><span>/</span>
+</li>
+<li>
+<a title="Authenticate with a GitHub App" href="/en/apps/creating-github-apps/authenticating-with-a-github-app">Authenticate with a GitHub App</a><span>/</span>
+</li>
+<li><a title="Generate a JWT" href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-json-web-token-jwt-for-a-github-app">Generate a JWT</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Generating a JSON Web Token (JWT) for a GitHub App</h1></div></div>
+<div><div><p>Learn how to create a JSON Web Token (JWT) to authenticate to certain REST API endpoints with your GitHub App.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-json-web-tokens-jwts"><div><span>About JSON Web Tokens (JWTs)</span></div></a></li>
+<li><a href="#generating-a-json-web-token-jwt"><div><span>Generating a JSON Web Token (JWT)</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-json-web-tokens-jwts">About JSON Web Tokens (JWTs)</a></h2>
+<p>In order to authenticate as an app or generate an installation access token, you must generate a JSON Web Token (JWT). If a REST API endpoint requires a JWT, the documentation for that endpoint will indicate that you must use a JWT to access the endpoint.</p>
+<p>Your JWT must be signed using the <code>RS256</code> algorithm and must contain the following claims.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Claim</th>
+<th>Meaning</th>
+<th>Details</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>iat</code></td>
+<td>Issued At</td>
+<td>The time that the JWT was created. To protect against clock drift, we recommend that you set this 60 seconds in the past and ensure that your server's date and time is set accurately (for example, by using the Network Time Protocol).</td>
+</tr>
+<tr>
+<td><code>exp</code></td>
+<td>Expires At</td>
+<td>The expiration time of the JWT, after which it can't be used to request an installation token. The time must be no more than 10 minutes into the future.</td>
+</tr>
+<tr>
+<td><code>iss</code></td>
+<td>Issuer</td>
+<td>The client ID or application ID of your GitHub App. This value is used to find the right public key to verify the signature of the JWT. You can find your app's IDs on the settings page for your GitHub App. Use of the client ID is recommended. For more information about navigating to the settings page for your GitHub App, see <a href="/en/apps/maintaining-github-apps/modifying-a-github-app-registration#navigating-to-your-github-app-settings">Modifying a GitHub App registration</a>.</td>
+</tr>
+<tr>
+<td><code>alg</code></td>
+<td>Message authentication code algorithm</td>
+<td>This should be <code>RS256</code> since your JWT must be signed using the <code>RS256</code> algorithm.</td>
+</tr>
+</tbody>
+</table>
+<p>To use a JWT, pass it in the <code>Authorization</code> header of an API request. For example:</p>
+<pre><code>curl --request GET \
+--url "https://api.github.com/app" \
+--header "Accept: application/vnd.github+json" \
+--header "Authorization: Bearer YOUR_JWT" \
+--header "X-GitHub-Api-Version: 2022-11-28"
+</code></pre>
+<p>In most cases, you can use <code>Authorization: Bearer</code> or <code>Authorization: token</code> to pass a token. However, if you are passing a JSON web token (JWT), you must use <code>Authorization: Bearer</code>.</p>
+<h2><a href="#generating-a-json-web-token-jwt">Generating a JSON Web Token (JWT)</a></h2>
+<p>Most programming languages have a package that can generate a JWT. In all cases, you must have a private key and the ID of your GitHub App. For more information about generating a private key, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/managing-private-keys-for-github-apps">Managing private keys for GitHub Apps</a>. You can find your app's ID with the <code>GET /app</code> REST API endpoint. For more information, see <a href="/en/rest/apps/apps">Apps</a> in the REST API documentation.</p>
+<div>
+<p>
+Instead of creating a JWT, you can use GitHub's Octokit SDKs to authenticate as an app. The SDK will take care of generating a JWT for you and will regenerate the JWT once the token expires. For more information, see <a href="/en/rest/guides/scripting-with-the-rest-api-and-javascript#authenticating-with-a-github-app">Scripting with the REST API and JavaScript</a>.</p>
+</div>
+<h3><a href="#example-using-ruby-to-generate-a-jwt">Example: Using Ruby to generate a JWT</a></h3>
+<div>
+<p>
+You must run <code>gem install jwt</code> to install the <code>jwt</code> package in order to use this script.</p>
+</div>
+<p>In the following example, replace <code>YOUR_PATH_TO_PEM</code> with the file path where your private key is stored. Replace <code>YOUR_CLIENT_ID</code> with the ID of your app. Make sure to enclose the values for <code>YOUR_PATH_TO_PEM</code> and <code>YOUR_CLIENT_ID</code> in double quotes.</p>
+<pre><code><span>require</span> <span>'openssl'</span>
+<span>require</span> <span>'jwt'</span>  <span># https://rubygems.org/gems/jwt</span>
+
+<span># Private key contents</span>
+private_pem = <span>File</span>.read(<span>"YOUR_PATH_TO_PEM"</span>)
+private_key = <span>OpenSSL::PKey::RSA</span>.new(private_pem)
+
+<span># Generate the JWT</span>
+payload = {
+  <span># issued at time, 60 seconds in the past to allow for clock drift</span>
+  <span>iat:</span> <span>Time</span>.now.to_i - <span>60</span>,
+  <span># JWT expiration time (10 minute maximum)</span>
+  <span>exp:</span> <span>Time</span>.now.to_i + (<span>10</span> * <span>60</span>),
+  
+<span># GitHub App's client ID</span>
+  <span>iss:</span> <span>"YOUR_CLIENT_ID"</span>
+}
+
+jwt = <span>JWT</span>.encode(payload, private_key, <span>"RS256"</span>)
+puts jwt
+</code></pre>
+<h3><a href="#example-using-python-to-generate-a-jwt">Example: Using Python to generate a JWT</a></h3>
+<div>
+<p>
+You must run <code>pip install PyJWT cryptography</code> to install the <code>PyJWT</code> and the <code>cryptography</code> packages in order to use this script.</p>
+</div>
+<div>
+<header><span>Python</span><pre>#!/usr/bin/env python3
+import sys
+import time
+
+import jwt
+
+# Get PEM file path
+if len(sys.argv) &gt; 1:
+    pem = sys.argv[1]
+else:
+    pem = input("Enter path of private PEM file: ")
+
+# Get the Client ID
+if len(sys.argv) &gt; 2:
+    client_id = sys.argv[2]
+else:
+    client_id = input("Enter your Client ID: ")
+
+# Open PEM
+with open(pem, 'rb') as pem_file:
+    signing_key = pem_file.read()
+
+payload = {
+    # Issued at time
+    'iat': int(time.time()),
+    # JWT expiration time (10 minutes maximum)
+    'exp': int(time.time()) + 600,
+    
+    # GitHub App's client ID
+    'iss': client_id
+}
+
+# Create JWT
+encoded_jwt = jwt.encode(payload, signing_key, algorithm='RS256')
+
+print(f"JWT: {encoded_jwt}")
+</pre></header><pre><code><span>#!/usr/bin/env python3</span>
+<span>import</span> sys
+<span>import</span> time
+
+<span>import</span> jwt
+
+<span># Get PEM file path</span>
+<span>if</span> <span>len</span>(sys.argv) &gt; <span>1</span>:
+    pem = sys.argv[<span>1</span>]
+<span>else</span>:
+    pem = <span>input</span>(<span>"Enter path of private PEM file: "</span>)
+
+<span># Get the Client ID</span>
+<span>if</span> <span>len</span>(sys.argv) &gt; <span>2</span>:
+    client_id = sys.argv[<span>2</span>]
+<span>else</span>:
+    client_id = <span>input</span>(<span>"Enter your Client ID: "</span>)
+
+<span># Open PEM</span>
+<span>with</span> <span>open</span>(pem, <span>'rb'</span>) <span>as</span> pem_file:
+    signing_key = pem_file.read()
+
+payload = {
+    <span># Issued at time</span>
+    <span>'iat'</span>: <span>int</span>(time.time()),
+    <span># JWT expiration time (10 minutes maximum)</span>
+    <span>'exp'</span>: <span>int</span>(time.time()) + <span>600</span>,
+    
+    <span># GitHub App's client ID</span>
+    <span>'iss'</span>: client_id
+}
+
+<span># Create JWT</span>
+encoded_jwt = jwt.encode(payload, signing_key, algorithm=<span>'RS256'</span>)
+
+<span>print</span>(<span>f"JWT: <span>{encoded_jwt}</span>"</span>)
+</code></pre>
+</div>
+<p>This script will prompt you for the file path where your private key is stored and for the ID of your app. Alternatively, you can pass those values as inline arguments when you execute the script.</p>
+<h3><a href="#example-using-bash-to-generate-a-jwt">Example: Using Bash to generate a JWT</a></h3>
+<div>
+<p>
+You must pass your Client ID and the file path where your private key is stored as arguments when running this script.</p>
+</div>
+<div>
+<header><span>Bash</span><pre>#!/usr/bin/env bash
+
+set -o pipefail
+
+client_id=$1 # Client ID as first argument
+
+pem=$( cat $2 ) # file path of the private key as second argument
+
+now=$(date +%s)
+iat=$((${now} - 60)) # Issues 60 seconds in the past
+exp=$((${now} + 600)) # Expires 10 minutes in the future
+
+b64enc() { openssl base64 | tr -d '=' | tr '/+' '_-' | tr -d '\n'; }
+
+header_json='{
+    "typ":"JWT",
+    "alg":"RS256"
+}'
+# Header encode
+header=$( echo -n "${header_json}" | b64enc )
+
+payload_json="{
+    \"iat\":${iat},
+    \"exp\":${exp},
+    \"iss\":\"${client_id}\"
+}"
+# Payload encode
+payload=$( echo -n "${payload_json}" | b64enc )
+
+# Signature
+header_payload="${header}"."${payload}"
+signature=$(
+    openssl dgst -sha256 -sign &lt;(echo -n "${pem}") \
+    &lt;(echo -n "${header_payload}") | b64enc
+)
+
+# Create JWT
+JWT="${header_payload}"."${signature}"
+printf '%s\n' "JWT: $JWT"
+</pre></header><pre><code><span>#!/usr/bin/env bash</span>
+
+<span>set</span> -o pipefail
+
+client_id=<span>$1</span> <span># Client ID as first argument</span>
+
+pem=$( <span>cat</span> <span>$2</span> ) <span># file path of the private key as second argument</span>
+
+now=$(<span>date</span> +%s)
+iat=$((<span>${now}</span> - <span>60</span>)) <span># Issues 60 seconds in the past</span>
+exp=$((<span>${now}</span> + <span>600</span>)) <span># Expires 10 minutes in the future</span>
+
+<span><span>b64enc</span></span>() { openssl <span>base64</span> | <span>tr</span> -d <span>'='</span> | <span>tr</span> <span>'/+'</span> <span>'_-'</span> | <span>tr</span> -d <span>'\n'</span>; }
+
+header_json=<span>'{
+    "typ":"JWT",
+    "alg":"RS256"
+}'</span>
+<span># Header encode</span>
+header=$( <span>echo</span> -n <span>"<span>${header_json}</span>"</span> | b64enc )
+
+payload_json=<span>"{
+    \"iat\":<span>${iat}</span>,
+    \"exp\":<span>${exp}</span>,
+    \"iss\":\"<span>${client_id}</span>\"
+}"</span>
+<span># Payload encode</span>
+payload=$( <span>echo</span> -n <span>"<span>${payload_json}</span>"</span> | b64enc )
+
+<span># Signature</span>
+header_payload=<span>"<span>${header}</span>"</span>.<span>"<span>${payload}</span>"</span>
+signature=$(
+    openssl dgst -sha256 -sign &lt;(<span>echo</span> -n <span>"<span>${pem}</span>"</span>) \
+    &lt;(<span>echo</span> -n <span>"<span>${header_payload}</span>"</span>) | b64enc
+)
+
+<span># Create JWT</span>
+JWT=<span>"<span>${header_payload}</span>"</span>.<span>"<span>${signature}</span>"</span>
+<span>printf</span> <span>'%s\n'</span> <span>"JWT: <span>$JWT</span>"</span>
+</code></pre>
+</div>
+<h3><a href="#example-using-powershell-to-generate-a-jwt">Example: Using PowerShell to generate a JWT</a></h3>
+<p>In the following example, replace <code>YOUR_PATH_TO_PEM</code> with the file path where your private key is stored. Replace <code>YOUR_CLIENT_ID</code> with the ID of your app. Make sure to enclose the values for <code>YOUR_PATH_TO_PEM</code> in double quotes.</p>
+<div>
+<header><span>PowerShell</span><pre>#!/usr/bin/env pwsh
+
+$client_id = YOUR_CLIENT_ID
+
+$private_key_path = "YOUR_PATH_TO_PEM"
+
+$header = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes((ConvertTo-Json -InputObject @{
+  alg = "RS256"
+  typ = "JWT"
+}))).TrimEnd('=').Replace('+', '-').Replace('/', '_');
+
+$payload = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes((ConvertTo-Json -InputObject @{
+  iat = [System.DateTimeOffset]::UtcNow.AddSeconds(-10).ToUnixTimeSeconds()
+  exp = [System.DateTimeOffset]::UtcNow.AddMinutes(10).ToUnixTimeSeconds()
+   iss = $client_id 
+}))).TrimEnd('=').Replace('+', '-').Replace('/', '_');
+
+$rsa = [System.Security.Cryptography.RSA]::Create()
+$rsa.ImportFromPem((Get-Content $private_key_path -Raw))
+
+$signature = [Convert]::ToBase64String($rsa.SignData([System.Text.Encoding]::UTF8.GetBytes("$header.$payload"), [System.Security.Cryptography.HashAlgorithmName]::SHA256, [System.Security.Cryptography.RSASignaturePadding]::Pkcs1)).TrimEnd('=').Replace('+', '-').Replace('/', '_')
+$jwt = "$header.$payload.$signature"
+Write-Host $jwt
+</pre></header><pre><code><span>#!/usr/bin/env pwsh</span>
+
+<span>$client_id</span> = YOUR_CLIENT_ID
+
+<span>$private_key_path</span> = <span>"YOUR_PATH_TO_PEM"</span>
+
+<span>$header</span> = [<span>Convert</span>]::ToBase64String([<span>System.Text.Encoding</span>]::UTF8.GetBytes((<span>ConvertTo-Json</span> <span>-InputObject</span> <span>@</span>{
+  alg = <span>"RS256"</span>
+  typ = <span>"JWT"</span>
+}))).TrimEnd(<span>'='</span>).Replace(<span>'+'</span>, <span>'-'</span>).Replace(<span>'/'</span>, <span>'_'</span>);
+
+<span>$payload</span> = [<span>Convert</span>]::ToBase64String([<span>System.Text.Encoding</span>]::UTF8.GetBytes((<span>ConvertTo-Json</span> <span>-InputObject</span> <span>@</span>{
+  iat = [<span>System.DateTimeOffset</span>]::UtcNow.AddSeconds(<span>-10</span>).ToUnixTimeSeconds()
+  exp = [<span>System.DateTimeOffset</span>]::UtcNow.AddMinutes(<span>10</span>).ToUnixTimeSeconds()
+   iss = <span>$client_id</span> 
+}))).TrimEnd(<span>'='</span>).Replace(<span>'+'</span>, <span>'-'</span>).Replace(<span>'/'</span>, <span>'_'</span>);
+
+<span>$rsa</span> = [<span>System.Security.Cryptography.RSA</span>]::Create()
+<span>$rsa</span>.ImportFromPem((<span>Get-Content</span> <span>$private_key_path</span> <span>-Raw</span>))
+
+<span>$signature</span> = [<span>Convert</span>]::ToBase64String(<span>$rsa</span>.SignData([<span>System.Text.Encoding</span>]::UTF8.GetBytes(<span>"<span>$header</span>.<span>$payload</span>"</span>), [<span>System.Security.Cryptography.HashAlgorithmName</span>]::SHA256, [<span>System.Security.Cryptography.RSASignaturePadding</span>]::Pkcs1)).TrimEnd(<span>'='</span>).Replace(<span>'+'</span>, <span>'-'</span>).Replace(<span>'/'</span>, <span>'_'</span>)
+<span>$jwt</span> = <span>"<span>$header</span>.<span>$payload</span>.<span>$signature</span>"</span>
+<span>Write-Host</span> <span>$jwt</span>
+</code></pre>
+</div>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

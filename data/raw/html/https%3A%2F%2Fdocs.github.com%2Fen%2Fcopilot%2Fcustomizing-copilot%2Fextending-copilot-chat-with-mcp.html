@@ -1,0 +1,381 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Customize Copilot" href="/en/copilot/customizing-copilot">Customize Copilot</a><span>/</span>
+</li>
+<li><a title="Extend Copilot Chat with MCP" href="/en/copilot/customizing-copilot/extending-copilot-chat-with-mcp">Extend Copilot Chat with MCP</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Extending Copilot Chat with the Model Context Protocol (MCP)</h1></div></div>
+<div>
+<div><p>Learn how to use the Model Context Protocol (MCP) to extend Copilot Chat.</p></div>
+<div>
+<h2>Tool navigation</h2>
+<nav><ul>
+<li><a href="?tool=eclipse"><span>Eclipse</span></a></li>
+<li><a href="?tool=jetbrains"><span>JetBrains IDEs</span></a></li>
+<li><a href="?tool=vscode"><span>Visual Studio Code</span></a></li>
+<li><a href="?tool=xcode"><span>Xcode</span></a></li>
+</ul></nav>
+</div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#overview"><div><span>Overview</span></div></a></li>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#configuring-mcp-servers-in-visual-studio-code"><div><span>Configuring MCP servers in Visual Studio Code</span></div></a></li>
+<li><a href="#using-mcp-servers-in-copilot-chat"><div><span>Using MCP servers in Copilot Chat</span></div></a></li>
+<li><a href="#using-existing-mcp-configurations"><div><span>Using existing MCP configurations</span></div></a></li>
+<li><a href="#overview-1"><div><span>Overview</span></div></a></li>
+<li><a href="#prerequisites-1"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#configuring-mcp-servers-in-jetbrains-ides"><div><span>Configuring MCP servers in JetBrains IDEs</span></div></a></li>
+<li><a href="#overview-2"><div><span>Overview</span></div></a></li>
+<li><a href="#prerequisites-2"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#configuring-mcp-servers-in-xcode"><div><span>Configuring MCP servers in Xcode</span></div></a></li>
+<li><a href="#overview-3"><div><span>Overview</span></div></a></li>
+<li><a href="#prerequisites-3"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#configuring-mcp-servers-in-eclipse"><div><span>Configuring MCP servers in Eclipse</span></div></a></li>
+<li><a href="#creating-a-new-mcp-server"><div><span>Creating a new MCP server</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<ul>
+<li>MCP support is currently in public preview and subject to change.</li>
+<li>MCP support is available in Copilot Chat for Visual Studio Code, JetBrains, Eclipse, and Xcode.</li>
+<li>The <a href="/en/site-policy/github-terms/github-pre-release-license-terms">GitHub Pre-release License Terms</a> apply to your use of this product.</li>
+</ul>
+</div>
+<div>
+<h2><a href="#overview">Overview</a></h2>
+<p>The Model Context Protocol (MCP) is an open standard that defines how applications share context with large language models (LLMs). MCP provides a standardized way to connect AI models to different data sources and tools, enabling them to work together more effectively.</p>
+<p>You can use MCP to extend the capabilities of Copilot Chat by integrating it with a wide range of existing tools and services. For example, the GitHub MCP server allows you to use Copilot Chat in Visual Studio Code to perform tasks on GitHub. You can also use MCP to create new tools and services that work with Copilot Chat, allowing you to customize and enhance your experience.</p>
+<p>For more information on MCP, see <a href="https://modelcontextprotocol.io/introduction">the official MCP documentation</a>.</p>
+<p>For information on some of the other currently available MCP servers, see <a href="https://github.com/modelcontextprotocol/servers/tree/main">the MCP servers repository</a>.</p>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<ul>
+<li>
+<strong>Access to Copilot</strong>. For information about how to get access to Copilot, see <a href="/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot">What is GitHub Copilot?</a>.</li>
+<li>
+<strong>Visual Studio Code version 1.99 or later</strong>. For information on installing Visual Studio Code, see the <a href="https://code.visualstudio.com/Download">Visual Studio Code download page</a>.</li>
+</ul>
+<h2><a href="#configuring-mcp-servers-in-visual-studio-code">Configuring MCP servers in Visual Studio Code</a></h2>
+<p>To configure MCP servers in Visual Studio Code, you need to set up a configuration script that specifies the details of the MCP servers you want to use. You can configure MCP servers for either:</p>
+<ul>
+<li>
+<p><strong>A specific repository</strong>. This will share MCP servers with anyone who opens the project in Visual Studio Code. To do this, create a <code>.vscode/mcp.json</code> file in the root of your repository.</p>
+</li>
+<li>
+<p><strong>Your personal instance of Visual Studio Code</strong>. You will be the only person who has access to configured MCP servers. To do this, add the configuration to your <code>settings.json</code> file in Visual Studio Code.</p>
+<div>
+<p> We recommend you use only one location per server. Adding the same server to both locations may cause conflicts and unexpected behavior.</p>
+</div>
+</li>
+</ul>
+<p>The steps below show how to configure the Fetch MCP server in your <code>.vscode/mcp.json</code> file. The Fetch MCP server is a simple MCP server that provides web content fetching capabilities. For more information on the Fetch MCP server, see <a href="https://github.com/modelcontextprotocol/servers/tree/main/src/fetch">the Fetch directory</a> in the MCP Server repository.</p>
+<p>You can use the same steps to configure MCP servers in your personal Visual Studio Code settings. Details on how to configure other MCP servers are available in the <a href="https://github.com/modelcontextprotocol/servers/tree/main">MCP servers repository</a>.</p>
+<ol>
+<li>
+<p>Add the following configuration to your <code>.vscode/mcp.json</code> file:</p>
+<div>
+<header><span>JSON</span><pre>{
+"inputs": [
+  // The "inputs" section defines the inputs required for the MCP server configuration.
+  {
+    "type": "promptString"
+  }
+],
+"servers": {
+  // The "servers" section defines the MCP servers you want to use.
+  "fetch": {
+    "command": "uvx",
+    "args": ["mcp-server-fetch"]
+  }
+ }
+}
+</pre></header><pre><code><span>{</span>
+<span>"inputs"</span><span>:</span> <span>[</span>
+  <span>// The "inputs" section defines the inputs required for the MCP server configuration.</span>
+  <span>{</span>
+    <span>"type"</span><span>:</span> <span>"promptString"</span>
+  <span>}</span>
+<span>]</span><span>,</span>
+<span>"servers"</span><span>:</span> <span>{</span>
+  <span>// The "servers" section defines the MCP servers you want to use.</span>
+  <span>"fetch"</span><span>:</span> <span>{</span>
+    <span>"command"</span><span>:</span> <span>"uvx"</span><span>,</span>
+    <span>"args"</span><span>:</span> <span>[</span><span>"mcp-server-fetch"</span><span>]</span>
+  <span>}</span>
+ <span>}</span>
+<span>}</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Save the <code>.vscode/mcp.json</code> file.</p>
+</li>
+<li>
+<p>A "Start" button will appear in your <code>.vscode/mcp.json</code> file, at the top of the list of servers. Click the "Start" button to start the MCP servers. This will trigger the input dialog and discover the server tools, which are then stored for later sessions.</p>
+<div><picture><source><img src="/assets/cb-51859/images/help/copilot/mcp-start-server-button.png" alt='Screenshot of MCP server configuration in Visual Studio Code. The "Start" button is outlined in dark orange. '></source></picture></div>
+</li>
+<li>
+<p>Open Copilot Chat by clicking the </p>
+</li>
+<li>
+<p>In the Copilot Chat box, select <strong>Agent</strong> from the popup menu.</p>
+<div><picture><source><img src="/assets/cb-38150/images/help/copilot/copilot-chat-agent-option.png" alt='Screenshot of the Copilot Chat box in Visual Studio Code. The "Agent" option is outlined in dark orange.'></source></picture></div>
+</li>
+<li>
+<p>To view your list of available MCP servers, click the tools icon in the top left corner of the chat box. This will open the MCP server list, where you can see all the MCP servers and associated tools that are currently available in your Visual Studio Code instance.</p>
+</li>
+</ol>
+<p>For more information on configuring MCP servers in Visual Studio Code, see <a href="https://aka.ms/vscode-add-mcp">Use MCP servers in Visual Studio Code (Preview)</a> in the Visual Studio Code documentation.</p>
+<div>
+<p> Beginning April 4, 2025, the GitHub MCP server, and installation instructions, will be publicly available in the <a href="https://github.com/github/github-mcp-server">github-mcp-server</a> repository.</p>
+</div>
+<h2><a href="#using-mcp-servers-in-copilot-chat">Using MCP servers in Copilot Chat</a></h2>
+<p>Once you have configured your MCP servers, you can use them in Copilot Chat to access a wide range of tools and services. In the example below, we will use the Fetch MCP server to fetch details about a web page.</p>
+<ol>
+<li>
+<p>Open Copilot Chat by clicking the </p>
+</li>
+<li>
+<p>In the Copilot Chat box, select <strong>Agent</strong> from the popup menu.</p>
+</li>
+<li>
+<p>In the file with the MCP configuration, check that the MCP server is running. If it is not running, click the "Start" button to start the MCP server.</p>
+<div><picture><source><img src="/assets/cb-68101/images/help/copilot/vsc-mcp-server-running.png" alt='Screenshot of the MCP server configuration in Visual Studio Code. The "Running" status is outlined in dark orange.'></source></picture></div>
+</li>
+<li>
+<p>Ask Copilot Chat to fetch the details of a URL. For example:</p>
+<p><code>Fetch https://github.com/github/docs.</code></p>
+</li>
+<li>
+<p>If Copilot asks you to confirm that you want to proceed, click <strong>Continue</strong>.</p>
+</li>
+<li>
+<p>Copilot will fetch the details of the URL and display them in the chat box.</p>
+</li>
+</ol>
+<p>For more information on using MCP servers in Visual Studio Code, see <a href="https://aka.ms/vscode-add-mcp">Use MCP servers in Visual Studio Code (Preview)</a> in the Visual Studio Code documentation.</p>
+<h2><a href="#using-existing-mcp-configurations">Using existing MCP configurations</a></h2>
+<p>If you already have an MCP configuration in Claude Desktop, you can use that configuration in Visual Studio Code to access the same MCP servers. To do this, add the following configuration to your <code>settings.json</code> file in Visual Studio Code:</p>
+<div>
+<header><span>JSON</span><pre>"chat.mcp.discovery.enabled": true
+</pre></header><pre><code><span>"chat.mcp.discovery.enabled"</span><span>:</span> <span><span>true</span></span>
+</code></pre>
+</div>
+<p>Visual Studio Code will automatically find your existing configuration and use it in your Visual Studio Code instance.</p>
+</div>
+<div>
+<h2><a href="#overview-1">Overview</a></h2>
+<p>The Model Context Protocol (MCP) is an open standard that defines how applications share context with large language models (LLMs). MCP provides a standardized way to connect AI models to different data sources and tools, enabling them to work together more effectively.</p>
+<p>You can use MCP to extend the capabilities of Copilot Chat by integrating it with a wide range of existing tools and services. You can also use MCP to create new tools and services that work with Copilot Chat, allowing you to customize and enhance your experience.</p>
+<p>For more information on MCP, see <a href="https://modelcontextprotocol.io/introduction">the official MCP documentation</a>.</p>
+<p>For information on other currently available MCP servers, see <a href="https://github.com/modelcontextprotocol/servers/tree/main">the MCP servers repository</a>.</p>
+<h2><a href="#prerequisites-1">Prerequisites</a></h2>
+<ul>
+<li>
+<p><strong>Access to Copilot</strong>. For information about how to get access to Copilot, see <a href="/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot">What is GitHub Copilot?</a>.</p>
+</li>
+<li>
+<p><strong>A compatible JetBrains IDE</strong>. GitHub Copilot is compatible with the following IDEs:</p>
+<ul>
+<li>IntelliJ IDEA (Ultimate, Community, Educational)</li>
+<li>Android Studio</li>
+<li>AppCode</li>
+<li>CLion</li>
+<li>Code With Me Guest</li>
+<li>DataGrip</li>
+<li>DataSpell</li>
+<li>GoLand</li>
+<li>JetBrains Client</li>
+<li>MPS</li>
+<li>PhpStorm</li>
+<li>PyCharm (Professional, Community, Educational)</li>
+<li>Rider</li>
+<li>RubyMine</li>
+<li>RustRover</li>
+<li>WebStorm</li>
+<li>Writerside</li>
+</ul>
+<p>See the <a href="https://www.jetbrains.com/products/">JetBrains IDEs</a> tool finder to download.</p>
+</li>
+<li>
+<p><strong>GitHub Copilot plugin</strong>. See the <a href="https://plugins.jetbrains.com/plugin/17718-github-copilot">GitHub Copilot plugin</a> in the JetBrains Marketplace. For installation instructions, see <a href="/en/copilot/configuring-github-copilot/installing-the-github-copilot-extension-in-your-environment">Installing the GitHub Copilot extension in your environment</a>.</p>
+</li>
+<li>
+<p><strong>Log in to GitHub in your JetBrains IDE</strong>. For authentication instructions, see <a href="/en/copilot/configuring-github-copilot/installing-the-github-copilot-extension-in-your-environment?tool=jetbrains#installing-the-github-copilot-plugin-in-your-jetbrains-ide">Installing the GitHub Copilot extension in your environment</a>.</p>
+</li>
+</ul>
+<h2><a href="#configuring-mcp-servers-in-jetbrains-ides">Configuring MCP servers in JetBrains IDEs</a></h2>
+<ol>
+<li>
+<p>In the lower right corner, click </p>
+</li>
+<li>
+<p>From the menu, select "Edit settings".</p>
+</li>
+<li>
+<p>Under the MCP section, click "Edit in <code>mcp.json</code>".</p>
+</li>
+<li>
+<p>Define your MCP servers. You can use the following configuration as an example:</p>
+<div>
+<header><span>JSON</span><pre>{
+  "servers": {
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ]
+    }
+  }
+}
+</pre></header><pre><code><span>{</span>
+  <span>"servers"</span><span>:</span> <span>{</span>
+    <span>"memory"</span><span>:</span> <span>{</span>
+      <span>"command"</span><span>:</span> <span>"npx"</span><span>,</span>
+      <span>"args"</span><span>:</span> <span>[</span>
+        <span>"-y"</span><span>,</span>
+        <span>"@modelcontextprotocol/server-memory"</span>
+      <span>]</span>
+    <span>}</span>
+  <span>}</span>
+<span>}</span>
+</code></pre>
+</div>
+</li>
+</ol>
+<p>Alternatively, to access the MCP settings, once you're in "Agent Mode", click the tools icon, then click <strong>Add more tools</strong>.</p>
+</div>
+<div>
+<h2><a href="#overview-2">Overview</a></h2>
+<p>The Model Context Protocol (MCP) is an open standard that defines how applications share context with large language models (LLMs). MCP provides a standardized way to connect AI models to different data sources and tools, enabling them to work together more effectively.</p>
+<p>You can use MCP to extend the capabilities of Copilot Chat by integrating it with a wide range of existing tools and services. You can also use MCP to create new tools and services that work with Copilot Chat, allowing you to customize and enhance your experience.</p>
+<p>For more information on MCP, see <a href="https://modelcontextprotocol.io/introduction">the official MCP documentation</a>.</p>
+<p>For information on other currently available MCP servers, see <a href="https://github.com/modelcontextprotocol/servers/tree/main">the MCP servers repository</a>.</p>
+<h2><a href="#prerequisites-2">Prerequisites</a></h2>
+<ul>
+<li>
+<strong>Access to Copilot</strong>. For information about how to get access to Copilot, see <a href="/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot">What is GitHub Copilot?</a>.</li>
+<li>
+<strong>GitHub Copilot for Xcode extension</strong>. See <a href="/en/copilot/configuring-github-copilot/installing-the-github-copilot-extension-in-your-environment">Installing the GitHub Copilot extension in your environment</a>.</li>
+</ul>
+<h2><a href="#configuring-mcp-servers-in-xcode">Configuring MCP servers in Xcode</a></h2>
+<ol>
+<li>
+<p>Open the GitHub Copilot for Xcode extension.</p>
+</li>
+<li>
+<p>In agent mode, click the tools icon.</p>
+</li>
+<li>
+<p>Select "Edit config".</p>
+</li>
+<li>
+<p>Define your MCP servers, editing <code>mcp.json</code>. You can use the following configuration as an example:</p>
+<div>
+<header><span>JSON</span><pre>{
+  "servers": {
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ]
+    }
+  }
+}
+</pre></header><pre><code><span>{</span>
+  <span>"servers"</span><span>:</span> <span>{</span>
+    <span>"memory"</span><span>:</span> <span>{</span>
+      <span>"command"</span><span>:</span> <span>"npx"</span><span>,</span>
+      <span>"args"</span><span>:</span> <span>[</span>
+        <span>"-y"</span><span>,</span>
+        <span>"@modelcontextprotocol/server-memory"</span>
+      <span>]</span>
+    <span>}</span>
+  <span>}</span>
+<span>}</span>
+</code></pre>
+</div>
+</li>
+</ol>
+</div>
+<div>
+<h2><a href="#overview-3">Overview</a></h2>
+<p>The Model Context Protocol (MCP) is an open standard that defines how applications share context with large language models (LLMs). MCP provides a standardized way to connect AI models to different data sources and tools, enabling them to work together more effectively.</p>
+<p>You can use MCP to extend the capabilities of Copilot Chat by integrating it with a wide range of existing tools and services. You can also use MCP to create new tools and services that work with Copilot Chat, allowing you to customize and enhance your experience.</p>
+<p>For more information on MCP, see <a href="https://modelcontextprotocol.io/introduction">the official MCP documentation</a>.</p>
+<p>For information on other currently available MCP servers, see <a href="https://github.com/modelcontextprotocol/servers/tree/main">the MCP servers repository</a>.</p>
+<h2><a href="#prerequisites-3">Prerequisites</a></h2>
+<ul>
+<li>
+<strong>Access to Copilot</strong>. To use GitHub Copilot in Eclipse, you must have an active GitHub Copilot subscription. For information about how to get access to Copilot, see <a href="/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot">What is GitHub Copilot?</a>.</li>
+<li>
+<strong>Compatible version of Eclipse</strong>. To use the GitHub Copilot extension, you must have Eclipse version 2024-09 or above. See the <a href="https://www.eclipse.org/downloads/packages/">Eclipse download page</a>.</li>
+<li>
+<strong>Latest version of the GitHub Copilot extension</strong>. Download this from the <a href="https://aka.ms/copiloteclipse">Eclipse Marketplace</a>. For more information, see <a href="/en/copilot/managing-copilot/configure-personal-settings/installing-the-github-copilot-extension-in-your-environment?tool=eclipse">Installing the GitHub Copilot extension in your environment</a>.</li>
+<li>
+<strong>Sign in to GitHub from Eclipse</strong>.</li>
+</ul>
+<h2><a href="#configuring-mcp-servers-in-eclipse">Configuring MCP servers in Eclipse</a></h2>
+<ol>
+<li>
+<p>To open the Copilot Chat panel, click the Copilot icon (</p>
+</li>
+<li>
+<p>From the menu, select "Edit preferences".</p>
+</li>
+<li>
+<p>In the left pane, expand Copilot Chat and click <strong>MCP</strong>.</p>
+</li>
+<li>
+<p>Define your MCP servers. You can use the following configuration as an example:</p>
+<div>
+<header><span>JSON</span><pre>{
+  "servers": {
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ]
+    }
+  }
+}
+</pre></header><pre><code><span>{</span>
+  <span>"servers"</span><span>:</span> <span>{</span>
+    <span>"memory"</span><span>:</span> <span>{</span>
+      <span>"command"</span><span>:</span> <span>"npx"</span><span>,</span>
+      <span>"args"</span><span>:</span> <span>[</span>
+        <span>"-y"</span><span>,</span>
+        <span>"@modelcontextprotocol/server-memory"</span>
+      <span>]</span>
+    <span>}</span>
+  <span>}</span>
+<span>}</span>
+</code></pre>
+</div>
+</li>
+</ol>
+</div>
+<h2><a href="#creating-a-new-mcp-server">Creating a new MCP server</a></h2>
+<p>You can create a new MCP server to fulfill your specific needs, and then integrate it with Copilot Chat. For example, you can create an MCP server that connects to a database or a web service, and then use that server in Copilot Chat to perform tasks on that database or web service.</p>
+<p>For more information on creating and configuring your own MCP servers, see <a href="https://modelcontextprotocol.io/quickstart/server">the official MCP documentation</a>.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/copilot/customizing-copilot/extending-copilot-coding-agent-with-mcp">Extending Copilot coding agent with the Model Context Protocol (MCP)</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

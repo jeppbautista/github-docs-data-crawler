@@ -1,0 +1,92 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Apps" href="/en/apps">Apps</a><span>/</span>
+</li>
+<li>
+<a title="Creating GitHub Apps" href="/en/apps/creating-github-apps">Creating GitHub Apps</a><span>/</span>
+</li>
+<li>
+<a title="Authenticate with a GitHub App" href="/en/apps/creating-github-apps/authenticating-with-a-github-app">Authenticate with a GitHub App</a><span>/</span>
+</li>
+<li><a title="Authenticate in Actions workflow" href="/en/apps/creating-github-apps/authenticating-with-a-github-app/making-authenticated-api-requests-with-a-github-app-in-a-github-actions-workflow">Authenticate in Actions workflow</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Making authenticated API requests with a GitHub App in a GitHub Actions workflow</h1></div></div>
+<div><div><p>You can use an installation access token from a GitHub App to make authenticated API requests in a GitHub Actions workflow. You can also pass the token to a custom action to enable the action to make authenticated API requests.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-github-actions-authentication"><div><span>About GitHub Actions authentication</span></div></a></li>
+<li><a href="#authenticating-with-a-github-app"><div><span>Authenticating with a GitHub App</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-github-actions-authentication">About GitHub Actions authentication</a></h2>
+<p>If you need to make authenticated API requests in a GitHub Actions workflow or need to execute a custom action that requires a token, you should use the built-in <code>GITHUB_TOKEN</code> if possible. However, the <code>GITHUB_TOKEN</code> can only access resources within the workflow's repository. If you need to access additional resources, such as resources in an organization or in another repository, you can use a GitHub App. For more information about why you might use a GitHub App over a personal access token, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/about-creating-github-apps#choosing-between-a-github-app-or-a-personal-access-token">About creating GitHub Apps</a>.</p>
+<h2><a href="#authenticating-with-a-github-app">Authenticating with a GitHub App</a></h2>
+<p>In order to use a GitHub App to make authenticated API requests, you must register a GitHub App, store your app's credentials, and install your app. Once this is done, you can use your app to create an installation access token, which can be used to make authenticated API requests in a GitHub Actions workflow. You can also pass the installation access token to a custom action that requires a token.</p>
+<ol>
+<li>
+<p>Register a GitHub App. Give your GitHub App registration the necessary permissions to access the desired resources. For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/creating-a-github-app">Registering a GitHub App</a> and <a href="/en/apps/creating-github-apps/setting-up-a-github-app/choosing-permissions-for-a-github-app">Choosing permissions for a GitHub App</a>.</p>
+</li>
+<li>
+<p>Store the app ID of your GitHub App as a GitHub Actions configuration variable. You can find the app ID on the settings page for your app. The app ID is different from the client ID. For more information about navigating to the settings page for your GitHub App, see <a href="/en/apps/maintaining-github-apps/modifying-a-github-app-registration#navigating-to-your-github-app-settings">Modifying a GitHub App registration</a>. For more information about storing configuration variables, see <a href="/en/actions/learn-github-actions/variables#defining-configuration-variables-for-multiple-workflows">Store information in variables</a>.</p>
+</li>
+<li>
+<p>Generate a private key for your app. Store the contents of the resulting file as a secret. (Store the entire contents of the file, including <code>-----BEGIN RSA PRIVATE KEY-----</code> and <code>-----END RSA PRIVATE KEY-----</code>.) For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/managing-private-keys-for-github-apps">Managing private keys for GitHub Apps</a>. For more information about storing secrets, see <a href="/en/actions/security-guides/encrypted-secrets">Using secrets in GitHub Actions</a>.</p>
+</li>
+<li>
+<p>Install the GitHub App on your user account or organization and grant it access to any repositories that you want your workflow to access. For more information, see <a href="/en/apps/maintaining-github-apps/installing-github-apps#installing-your-private-github-app-on-your-repository">Installing your own GitHub App</a>.</p>
+</li>
+<li>
+<p>In your GitHub Actions workflow, create an installation access token, which you can use to make API requests.</p>
+<p>To do this, you can use a GitHub-owned action as demonstrated in the following example. If you prefer to not use this action, you can fork and modify the <a href="https://github.com/actions/create-github-app-token"><code>actions/create-github-app-token</code> action</a>, or you can write a script to make your workflow create an installation token manually. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app-installation">Authenticating as a GitHub App installation</a>.</p>
+<p>The following example workflow uses the <code>actions/create-github-app-token</code> action to generate an installation access token. Then, the workflow uses the token to make an API request via the GitHub CLI.</p>
+<p>In the following workflow, replace <code>APP_ID</code> with the name of the configuration variable where you stored your app ID. Replace <code>APP_PRIVATE_KEY</code> with the name of the secret where you stored your app private key.</p>
+</li>
+</ol>
+<div>
+<header><span>YAML</span><pre>on:
+  workflow_dispatch:
+jobs:
+  demo_app_authentication:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Use the token
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+        run: |
+          gh api octocat
+</pre></header><pre><code><span>on:</span>
+  <span>workflow_dispatch:</span>
+<span>jobs:</span>
+  <span>demo_app_authentication:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>Generate</span> <span>a</span> <span>token</span>
+        <span>id:</span> <span>generate-token</span>
+        <span>uses:</span> <span>actions/create-github-app-token@v2</span>
+        <span>with:</span>
+          <span>app-id:</span> <span>${{</span> <span>vars.APP_ID</span> <span>}}</span>
+          <span>private-key:</span> <span>${{</span> <span>secrets.APP_PRIVATE_KEY</span> <span>}}</span>
+
+      <span>-</span> <span>name:</span> <span>Use</span> <span>the</span> <span>token</span>
+        <span>env:</span>
+          <span>GH_TOKEN:</span> <span>${{</span> <span>steps.generate-token.outputs.token</span> <span>}}</span>
+        <span>run:</span> <span>|
+          gh api octocat
+</span></code></pre>
+</div>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

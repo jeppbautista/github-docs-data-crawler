@@ -1,0 +1,135 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Roll out Copilot at scale" href="/en/copilot/rolling-out-github-copilot-at-scale">Roll out Copilot at scale</a><span>/</span>
+</li>
+<li>
+<a title="Enabling developers" href="/en/copilot/rolling-out-github-copilot-at-scale/enabling-developers">Enabling developers</a><span>/</span>
+</li>
+<li><a title="Use Copilot coding agent" href="/en/copilot/rolling-out-github-copilot-at-scale/enabling-developers/using-copilot-coding-agent-in-org">Use Copilot coding agent</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Using Copilot coding agent effectively in your organization</h1></div></div>
+<div>
+<div><p>Learn about adopting Copilot coding agent in your organization.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Copilot coding agent is available with the GitHub Copilot Pro+ and GitHub Copilot Enterprise plans in repositories where it is enabled.</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#why-copilot-coding-agent"><div><span>Why Copilot coding agent?</span></div></a></li>
+<li><a href="#how-copilot-coding-agent-can-contribute-to-your-organization"><div><span>How Copilot coding agent can contribute to your organization</span></div></a></li>
+<li><a href="#using-mcp-to-enhance-copilot-coding-agent"><div><span>Using MCP to enhance Copilot coding agent</span></div></a></li>
+<li><a href="#using-copilot-coding-agent-securely"><div><span>Using Copilot coding agent securely</span></div></a></li>
+<li><a href="#piloting-copilot-coding-agent"><div><span>Piloting Copilot coding agent</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<div>
+<p> Copilot coding agent is in public preview and subject to change.</p>
+</div>
+<h2><a href="#why-copilot-coding-agent">Why Copilot coding agent?</a></h2>
+<p>Copilot coding agent is an autonomous, AI-powered agent that completes software development tasks on GitHub. Adopting Copilot coding agent in your organization frees your engineering teams to spend more time thinking strategically and less time making routine fixes and maintenance updates in a codebase.
+Copilot coding agent:</p>
+<ul>
+<li>
+<strong>Joins your team</strong>: Developers can delegate work to Copilot unlike IDE-based coding agents that require synchronous pairing sessions.</li>
+<li>
+<strong>Reduces context switching</strong>: Developers working in JetBrains IDEs, VS Code, Visual Studio, or GitHub.com can ask Copilot coding agent to create a pull request to complete small tasks without stopping what they are currently doing.</li>
+<li>
+<strong>Works on GitHub</strong>: Copilot operates within your existing workflows on GitHub alongside your developers.</li>
+<li>
+<strong>Uses pull request review workflows</strong>: Copilot opens draft pull requests for team members to review and iterates based on feedback, as a developer would.</li>
+<li>
+<strong>Executes tasks in parallel</strong>: Copilot can work on multiple issues simultaneously, handling tasks in the background while your team focuses on other priorities.</li>
+<li>
+<strong>Provides decision transparency</strong>: Developers can review Copilot’s logs on GitHub to understand its reasoning and see the tools it used to complete tasks.</li>
+<li>
+<strong>Ensures enterprise-grade security</strong>: Copilot coding agent's security-first design keeps a human in the loop and enables governance via enterprise policies and settings.</li>
+</ul>
+<h2><a href="#how-copilot-coding-agent-can-contribute-to-your-organization">How Copilot coding agent can contribute to your organization</a></h2>
+<p>Copilot can help your organization address well-defined and scoped issues, such as increasing test coverage, fixing bugs or flaky tests, or updating config files or documentation. For more on the kinds of issues Copilot works best on, see <a href="/en/copilot/using-github-copilot/coding-agent/best-practices-for-using-copilot-to-work-on-tasks">Best practices for using Copilot to work on tasks</a>.</p>
+<p>Developers stay in the flow when they ask Copilot to create pull requests directly from Copilot Chat instead of opening issues that may sit in a backlog.</p>
+<p>When used effectively, Copilot coding agent offers productivity benefits over traditional AI assistants in IDEs:</p>
+<ul>
+<li>
+<p>With <strong>AI assistants in IDEs</strong>, coding happens <strong>locally</strong>. Individual developers pair in <strong>synchronous</strong> sessions with the AI assistant. Decisions made during the session are <strong>untracked</strong> and lost to time unless committed. Although the assistant helps write code, the developer still has a lot of <strong>manual steps</strong> to do: create the branch, write commit messages, push the changes, open the PR, write the PR description, get a review, iterate in the IDE, and repeat. These steps take time and effort that may be hard to justify for simple or routine issues.</p>
+</li>
+<li>
+<p>With <strong>Copilot coding agent</strong>, all coding and iterating happens <strong>on GitHub</strong> as part of the pull request workflow. Copilot <strong>automates</strong> branch creation, commit message writing and pushing, PR opening, and PR description writing. Developers let the agent <strong>work in the background</strong> and then steer Copilot to a final solution using PR reviews. Working on GitHub adds <strong>transparency</strong>, where every step happens in a commit and is viewable in logs. Working on GitHub also opens up <strong>collaboration</strong> opportunities for the entire team.</p>
+</li>
+</ul>
+<p>Over time, your engineering teams can benefit from the increased automation, transparency, and collaboration Copilot coding agent provides. For ideas on how to run a successful pilot, see <a href="#piloting-copilot-coding-agent">Piloting Copilot coding agent</a>.</p>
+<p>For an example scenario that walks through how to use Copilot coding agent alongside other AI features on GitHub, see <a href="/en/copilot/rolling-out-github-copilot-at-scale/enabling-developers/integrating-agentic-ai">Integrating agentic AI into your enterprise's software development lifecycle</a>.</p>
+<h2><a href="#using-mcp-to-enhance-copilot-coding-agent">Using MCP to enhance Copilot coding agent</a></h2>
+<p>The Model Context Protocol (MCP) is an open standard that defines how applications share context with large language models (LLMs). MCP provides a standardized way to provide Copilot coding agent with access to different data sources and tools.</p>
+<p>Copilot coding agent has access to the full GitHub context of the repository it's working in, including issues and pull requests, using the built-in GitHub MCP server. By default, it's restricted from accessing external data by authentication barriers and a firewall. You can extend the information available to Copilot coding agent by giving it access to local MCP servers for the tools your organization uses. For example, you might want to provide access to local MCP servers for some of the following contexts:</p>
+<ul>
+<li>
+<strong>Web browser</strong>: Set up the Playwright MCP server to allow Copilot to pull context directly from an external link in an issue.</li>
+<li>
+<strong>Project planning tools</strong>: Allow Copilot direct access to private planning documents that are stored outside GitHub in tools like Notion or Figma.</li>
+<li>
+<strong>Augment training data</strong>: Each LLM contains training data up to a specific cut-off date. If you're working with fast moving tools, Copilot may not have access to information on new features. You can fill this knowledge gap by making the tool's MCP server available. For example, adding the Terraform MCP server will give Copilot access to the most recently supported Terraform providers.</li>
+</ul>
+<p>For more information, see <a href="/en/copilot/customizing-copilot/extending-copilot-coding-agent-with-mcp">Extending Copilot coding agent with the Model Context Protocol (MCP)</a>.</p>
+<h2><a href="#using-copilot-coding-agent-securely">Using Copilot coding agent securely</a></h2>
+<p>Security is a fundamental consideration when you enable Copilot coding agent, as with any other AI agent. Copilot has a strong base of built-in security protections that you can supplement by following best practice guidance.</p>
+<h3><a href="#built-in-protections">Built-in protections</a></h3>
+<ul>
+<li>
+<strong>Subject to existing governance</strong>: Organization settings and enterprise policies control availability. Any security policies and practices set up for the organization also apply to Copilot coding agent.</li>
+<li>
+<strong>Restricted development environment</strong>: Copilot works in a sandbox development environment with internet access controlled by a firewall. It has read-only access to the repository it's assigned to work in.</li>
+<li>
+<strong>Limited access to branches</strong>: Copilot can only create and push to branches beginning with <code>copilot/</code>. It is subject to any branch protections and required checks for the working repository.</li>
+<li>
+<strong>Responds only to users with write permissions</strong>: Copilot will not respond to feedback from users with lower levels of access.</li>
+<li>
+<strong>Treated as an outside collaborator</strong>: Draft pull requests proposed by Copilot require approval by a user with write permissions before Actions workflows can run. Copilot cannot mark its pull requests as "Ready for review" and cannot approve or merge a pull request.</li>
+<li>
+<strong>Tracked for compliance</strong>: Copilot's commits are co-authored by the developer who assigned the issue or requested the change to the pull request, allowing attribution of proposed changes. The developer who asked Copilot to create a pull request cannot approve that pull request. In repositories where an approving review is required, this ensures that at least one independent developer reviews Copilot's work.</li>
+</ul>
+<p>For more information, see:</p>
+<ul>
+<li><a href="/en/copilot/responsible-use-of-github-copilot-features/responsible-use-of-copilot-coding-agent-on-githubcom">Responsible use of Copilot coding agent on GitHub.com</a></li>
+<li><a href="https://copilot.github.trust.page/">GitHub Copilot Trust Center</a></li>
+</ul>
+<h3><a href="#security-best-practices">Security best practices</a></h3>
+<p>All AI models are trained to meet a request, even if they don't have all the information needed to provide a good answer, and this can lead them to make mistakes. By following best practices, you can reduce the risks of using Copilot in your organization.</p>
+<ol>
+<li>Give Copilot the information it needs to work successfully in a repository using a <code>copilot-instructions.md</code> file. See <a href="/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot">Adding repository custom instructions for GitHub Copilot</a>.</li>
+<li>Set up the Copilot development environment for a repository with access to the tools and package repositories approved by the organization using a <code>copilot-setup-steps.yml</code> file and local MCP servers. See <a href="/en/copilot/customizing-copilot/customizing-the-development-environment-for-copilot-coding-agent">Customizing the development environment for Copilot coding agent</a> and <a href="/en/copilot/customizing-copilot/extending-copilot-coding-agent-with-mcp">Extending Copilot coding agent with the Model Context Protocol (MCP)</a>.</li>
+<li>Follow best practices for storing secrets securely. See <a href="/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions">Using secrets in GitHub Actions</a>.</li>
+<li>Enable code security features to further lower the risk of leaking secrets and introducing vulnerabilities into the code. See <a href="/en/code-security/securing-your-organization/enabling-security-features-in-your-organization/applying-the-github-recommended-security-configuration-in-your-organization">Applying the GitHub-recommended security configuration in your organization</a>.</li>
+<li>Configure your branch rulesets to ensure that all pull requests raised by Copilot are approved by a second user with write permissions (a sub-option of "Require a pull request before merging"). See <a href="/en/organizations/managing-organization-settings/creating-rulesets-for-repositories-in-your-organization">Creating rulesets for repositories in your organization</a> and <a href="/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets#require-a-pull-request-before-merging">Available rules for rulesets</a>.</li>
+</ol>
+<h2><a href="#piloting-copilot-coding-agent">Piloting Copilot coding agent</a></h2>
+<p><a href="https://github.com/github-copilot/purchase?ref_cta=Copilot+Enterprise+trial&amp;ref_cta=Copilot+Business+trial&amp;ref_loc=using-cca-effectively"><span>Sign up for Copilot</span> </a></p>
+<div>
+<p> During the public preview, you need GitHub Copilot Pro+ or GitHub Copilot Enterprise to use Copilot coding agent.</p>
+</div>
+<p>As with any other change to working practices, it's important to run a trial to learn how to deploy Copilot coding agent effectively in your organization or enterprise.</p>
+<ol>
+<li>Gather a cross-functional team for the trial to bring different roles, backgrounds, and perspectives to the project. This will make it easier to ensure that you explore a broad range of ways to define issues, assign work to Copilot, and give clear review feedback.</li>
+<li>Choose an isolated or low-risk repository, for example, one that contains documentation or internal tools. You could create a fresh repository to use as a playground, but Copilot needs context to be successful, so you would need to add a lot of context, including team processes, development environment, and common dependencies.</li>
+<li>Enable Copilot coding agent in the repository and optionally enable third-party MCP servers for enhanced context sharing. See <a href="/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/adding-copilot-coding-agent-to-organization">Adding Copilot coding agent to your organization</a>.</li>
+<li>Create repository instructions and pre-install any tools required in the development environment Copilot uses. See <a href="/en/copilot/customizing-copilot/customizing-the-development-environment-for-copilot-coding-agent">Customizing the development environment for Copilot coding agent</a>.</li>
+<li>Identify a few compelling use cases for your organization, for example: test coverage or improving accessibility. See <a href="/en/copilot/using-github-copilot/coding-agent/best-practices-for-using-copilot-to-work-on-tasks#choosing-the-right-type-of-tasks-to-give-to-copilot">Choose the right type of tasks to give to Copilot</a> in the best practice guide.</li>
+<li>Use best practice to create or refine issues for Copilot in your pilot repository.</li>
+<li>Assign issues to Copilot and prepare team members to review its work.</li>
+<li>Spend time looking at the codebase or documentation in VS Code or GitHub.com, asking Copilot to create a pull request to fix any bugs or small improvements that you identify.</li>
+</ol>
+<p>Over the course of the trial, the team should iterate on the repository instructions, installed tools, access to MCP servers, and issue definition to identify how your organization can get the most from Copilot coding agent. This process will help you identify your organization's best practices for working with Copilot and plan an effective rollout strategy.</p>
+<p>In addition to giving you insight into how to set up Copilot coding agent for success, you'll learn how Copilot uses premium requests and actions minutes. This will be valuable when you come to set and manage your budget for a broader trial or full rollout. See <a href="/en/copilot/rolling-out-github-copilot-at-scale/assigning-licenses/managing-your-companys-spending-on-github-copilot">Managing your company's spending on GitHub Copilot</a>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

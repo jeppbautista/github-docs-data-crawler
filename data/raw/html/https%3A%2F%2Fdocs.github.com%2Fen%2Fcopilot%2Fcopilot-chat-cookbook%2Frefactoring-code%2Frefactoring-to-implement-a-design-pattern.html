@@ -1,0 +1,122 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Copilot Chat Cookbook" href="/en/copilot/copilot-chat-cookbook">Copilot Chat Cookbook</a><span>/</span>
+</li>
+<li>
+<a title="Refactoring code" href="/en/copilot/copilot-chat-cookbook/refactoring-code">Refactoring code</a><span>/</span>
+</li>
+<li><a title="Design patterns" href="/en/copilot/copilot-chat-cookbook/refactoring-code/refactoring-to-implement-a-design-pattern">Design patterns</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Refactoring to implement a design pattern</h1></div></div>
+<div><div><p>Copilot Chat can suggest design patterns that you can use to improve your code.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#example-scenario"><div><span>Example scenario</span></div></a></li>
+<li><a href="#example-prompt-1"><div><span>Example prompt 1</span></div></a></li>
+<li><a href="#example-response-1"><div><span>Example response 1</span></div></a></li>
+<li><a href="#example-prompt-2"><div><span>Example prompt 2</span></div></a></li>
+<li><a href="#example-response-2"><div><span>Example response 2</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>Code that doesn’t follow established design patterns (like Singleton, Factory, or Observer) can lead to issues like tight coupling, lack of flexibility, or duplicated code.</p>
+<p>Copilot Chat can help you use appropriate design patterns to make your code more flexible and maintainable. For example, it can recommend converting repetitive instantiations into a Factory pattern, or using the Observer pattern to decouple tightly connected classes.</p>
+<div>
+<p> The responses described in this article are examples. Copilot Chat responses are non-deterministic, so you may get different responses from the ones shown here.</p>
+</div>
+<h2><a href="#example-scenario">Example scenario</a></h2>
+<p>This JavaScript code creates three <code>Person</code> objects, each with <code>name</code> and <code>age</code> properties. It then uses the name of a person to retrieve and print their age.</p>
+<pre><code><span>class</span> <span>Person</span> {
+  <span>constructor</span>(<span>name, age</span>) {
+    <span>this</span>.<span>name</span> = name;
+    <span>this</span>.<span>age</span> = age;
+  }
+}
+
+<span>var</span> people = {};
+
+<span>function</span> <span>addPerson</span>(<span>name, age</span>) {
+  people[name] = <span>new</span> <span>Person</span>(name, age);
+}
+
+<span>function</span> <span>getAge</span>(<span>name</span>) {
+  <span>if</span> (people[name]) {
+    <span>console</span>.<span>log</span>(name + <span>" is "</span> + people[name].<span>age</span> + <span>" years old."</span>);
+  } <span>else</span> {
+    <span>console</span>.<span>log</span>(<span>"Person not found."</span>);
+  }
+}
+
+<span>addPerson</span>(<span>"Ana"</span>, <span>30</span>);
+<span>addPerson</span>(<span>"Mario"</span>, <span>25</span>);
+<span>addPerson</span>(<span>"Louise"</span>, <span>40</span>);
+
+<span>getAge</span>(<span>"Mario"</span>);
+</code></pre>
+<h2><a href="#example-prompt-1">Example prompt 1</a></h2>
+<p><code>What design patterns could improve this code? Don't show me code examples.</code></p>
+<h2><a href="#example-response-1">Example response 1</a></h2>
+<p>Copilot suggests the following patterns:</p>
+<ul>
+<li>
+<strong>Singleton pattern:</strong> to ensure that there is only one instance of the <code>people</code> object.</li>
+<li>
+<strong>Factory pattern:</strong> to create a factory for creating <code>Person</code> objects.</li>
+<li>
+<strong>Module pattern:</strong> to encapsulate the <code>people</code> object and related functions within a module to avoid polluting the global namespace.</li>
+</ul>
+<h2><a href="#example-prompt-2">Example prompt 2</a></h2>
+<p>You can now ask Copilot to implement the pattern that you feel is most appropriate.</p>
+<p><code>Refactor this code using the module pattern</code></p>
+<h2><a href="#example-response-2">Example response 2</a></h2>
+<pre><code><span>const</span> <span>PersonModule</span> = (<span>function</span>(<span>class</span> <span>Person</span> {
+    <span>constructor</span>(<span>name, age</span>) {
+      <span>this</span>.<span>name</span> = name;
+      <span>this</span>.<span>age</span> = age;
+    }
+  }
+
+  <span>const</span> people = {};
+
+  <span>function</span> <span>addPerson</span>(<span>name, age</span>) {
+    people[name] = <span>new</span> <span>Person</span>(name, age);
+  }
+
+  <span>function</span> <span>getAge</span>(<span>name</span>) {
+    <span>if</span> (people[name]) {
+      <span>console</span>.<span>log</span>(name + <span>" is "</span> + people[name].<span>age</span> + <span>" years old."</span>);
+    } <span>else</span> {
+      <span>console</span>.<span>log</span>(<span>"Person not found."</span>);
+    }
+  }
+
+  <span>return</span> {
+    addPerson,
+    getAge
+  };
+})();
+
+<span>PersonModule</span>.<span>addPerson</span>(<span>"Ana"</span>, <span>30</span>);
+<span>PersonModule</span>.<span>addPerson</span>(<span>"Mario"</span>, <span>25</span>);
+<span>PersonModule</span>.<span>addPerson</span>(<span>"Louise"</span>, <span>40</span>);
+
+<span>PersonModule</span>.<span>getAge</span>(<span>"Mario"</span>);
+</code></pre>
+<p>The module pattern improves code organization, enhances data privacy, and reduces the risk of naming conflicts, making the code more maintainable and scalable.</p>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/copilot/using-github-copilot/prompt-engineering-for-github-copilot">Prompt engineering for Copilot Chat</a></li>
+<li><a href="/en/copilot/using-github-copilot/best-practices-for-using-github-copilot">Best practices for using GitHub Copilot</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

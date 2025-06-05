@@ -1,0 +1,1512 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Write workflows" href="/en/actions/writing-workflows">Write workflows</a><span>/</span>
+</li>
+<li>
+<a title="Choose what workflows do" href="/en/actions/writing-workflows/choosing-what-your-workflow-does">Choose what workflows do</a><span>/</span>
+</li>
+<li><a title="Workflow commands" href="/en/actions/writing-workflows/choosing-what-your-workflow-does/workflow-commands-for-github-actions">Workflow commands</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Workflow commands for GitHub Actions</h1></div></div>
+<div>
+<div><p>You can use workflow commands when running shell commands in a workflow or in an action's code.</p></div>
+<div>
+<h2>Tool navigation</h2>
+<nav><ul>
+<li><a href="?tool=bash"><span>Bash</span></a></li>
+<li><a href="?tool=powershell"><span>PowerShell</span></a></li>
+</ul></nav>
+</div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-workflow-commands"><div><span>About workflow commands</span></div></a></li>
+<li><a href="#using-workflow-commands-to-access-toolkit-functions"><div><span>Using workflow commands to access toolkit functions</span></div></a></li>
+<li><a href="#setting-a-debug-message"><div><span>Setting a debug message</span></div></a></li>
+<li><a href="#setting-a-notice-message"><div><span>Setting a notice message</span></div></a></li>
+<li><a href="#setting-a-warning-message"><div><span>Setting a warning message</span></div></a></li>
+<li><a href="#setting-an-error-message"><div><span>Setting an error message</span></div></a></li>
+<li><a href="#grouping-log-lines"><div><span>Grouping log lines</span></div></a></li>
+<li><a href="#masking-a-value-in-a-log"><div><span>Masking a value in a log</span></div></a></li>
+<li><a href="#stopping-and-starting-workflow-commands"><div><span>Stopping and starting workflow commands</span></div></a></li>
+<li><a href="#sending-values-to-the-pre-and-post-actions"><div><span>Sending values to the pre and post actions</span></div></a></li>
+<li><a href="#environment-files"><div><span>Environment files</span></div></a></li>
+<li><a href="#setting-an-environment-variable"><div><span>Setting an environment variable</span></div></a></li>
+<li><a href="#setting-an-output-parameter"><div><span>Setting an output parameter</span></div></a></li>
+<li><a href="#adding-a-job-summary"><div><span>Adding a job summary</span></div></a></li>
+<li><a href="#adding-a-system-path"><div><span>Adding a system path</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-workflow-commands">About workflow commands</a></h2>
+<p>Actions can communicate with the runner machine to set environment variables, output values used by other actions, add debug messages to the output logs, and other tasks.</p>
+<p>Most workflow commands use the <code>echo</code> command in a specific format, while others are invoked by writing to a file. For more information, see <a href="#environment-files">Environment files</a>.</p>
+<h3><a href="#example-of-a-workflow-command">Example of a workflow command</a></h3>
+<div>
+<div>
+<header><span>Bash</span><pre>echo "::workflow-command parameter1={data},parameter2={data}::{command value}"
+</pre></header><pre><code><span>echo</span> <span>"::workflow-command parameter1={data},parameter2={data}::{command value}"</span>
+</code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>PowerShell</span><pre>Write-Output "::workflow-command parameter1={data},parameter2={data}::{command value}"
+</pre></header><pre><code><span>Write-Output</span> <span>"::workflow-command parameter1={data},parameter2={data}::{command value}"</span>
+</code></pre>
+</div>
+</div>
+<div>
+<p>
+Workflow command and parameter names are case insensitive.</p>
+</div>
+<div>
+<p>
+If you are using Command Prompt, omit double quote characters (<code>"</code>) when using workflow commands.</p>
+</div>
+<h2><a href="#using-workflow-commands-to-access-toolkit-functions">Using workflow commands to access toolkit functions</a></h2>
+<p>The <a href="https://github.com/actions/toolkit">actions/toolkit</a> includes a number of functions that can be executed as workflow commands. Use the <code>::</code> syntax to run the workflow commands within your YAML file; these commands are then sent to the runner over <code>stdout</code>.</p>
+<p>For example, instead of using code to create an error annotation, as below:</p>
+<div>
+<header><span>JavaScript</span><pre>core.error('Missing semicolon', {file: 'app.js', startLine: 1})
+</pre></header><pre><code>core.<span>error</span>(<span>'Missing semicolon'</span>, {<span>file</span>: <span>'app.js'</span>, <span>startLine</span>: <span>1</span>})
+</code></pre>
+</div>
+<h3><a href="#example-creating-an-annotation-for-an-error">Example: Creating an annotation for an error</a></h3>
+<p>You can use the <code>error</code> command in your workflow to create the same error annotation:</p>
+<div>
+<div>
+<header><span>YAML</span><pre>      - name: Create annotation for build error
+        run: echo "::error file=app.js,line=1::Missing semicolon"
+</pre></header><pre><code>      <span>-</span> <span>name:</span> <span>Create</span> <span>annotation</span> <span>for</span> <span>build</span> <span>error</span>
+        <span>run:</span> <span>echo</span> <span>"::error file=app.js,line=1::Missing semicolon"</span>
+</code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>YAML</span><pre>      - name: Create annotation for build error
+        run: Write-Output "::error file=app.js,line=1::Missing semicolon"
+</pre></header><pre><code>      <span>-</span> <span>name:</span> <span>Create</span> <span>annotation</span> <span>for</span> <span>build</span> <span>error</span>
+        <span>run:</span> <span>Write-Output</span> <span>"::error file=app.js,line=1::Missing semicolon"</span>
+</code></pre>
+</div>
+</div>
+<p>The following table shows which toolkit functions are available within a workflow:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Toolkit function</th>
+<th>Equivalent workflow command</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>core.addPath</code></td>
+<td>Accessible using environment file <code>GITHUB_PATH</code>
+</td>
+</tr>
+<tr>
+<td><code>core.debug</code></td>
+<td><code>debug</code></td>
+</tr>
+<tr>
+<td><code>core.notice</code></td>
+<td><code>notice</code></td>
+</tr>
+<tr>
+<td><code>core.error</code></td>
+<td><code>error</code></td>
+</tr>
+<tr>
+<td><code>core.endGroup</code></td>
+<td><code>endgroup</code></td>
+</tr>
+<tr>
+<td><code>core.export<wbr>Variable</wbr></code></td>
+<td>Accessible using environment file <code>GITHUB_ENV</code>
+</td>
+</tr>
+<tr>
+<td><code>core.getInput</code></td>
+<td>Accessible using environment variable <code>INPUT_{NAME}</code>
+</td>
+</tr>
+<tr>
+<td><code>core.getState</code></td>
+<td>Accessible using environment variable <code>STATE_{NAME}</code>
+</td>
+</tr>
+<tr>
+<td><code>core.isDebug</code></td>
+<td>Accessible using environment variable <code>RUNNER_DEBUG</code>
+</td>
+</tr>
+<tr>
+<td><code>core.summary</code></td>
+<td>Accessible using environment file <code>GITHUB_STEP_SUMMARY</code>
+</td>
+</tr>
+<tr>
+<td><code>core.saveState</code></td>
+<td>Accessible using environment file <code>GITHUB_STATE</code>
+</td>
+</tr>
+<tr>
+<td><code>core.set<wbr>Command<wbr>Echo</wbr></wbr></code></td>
+<td><code>echo</code></td>
+</tr>
+<tr>
+<td><code>core.setFailed</code></td>
+<td>Used as a shortcut for <code>::error</code> and <code>exit 1</code>
+</td>
+</tr>
+<tr>
+<td><code>core.setOutput</code></td>
+<td>Accessible using environment file <code>GITHUB_OUTPUT</code>
+</td>
+</tr>
+<tr>
+<td><code>core.setSecret</code></td>
+<td><code>add-mask</code></td>
+</tr>
+<tr>
+<td><code>core.startGroup</code></td>
+<td><code>group</code></td>
+</tr>
+<tr>
+<td><code>core.warning</code></td>
+<td><code>warning</code></td>
+</tr>
+</tbody>
+</table>
+<h2><a href="#setting-a-debug-message">Setting a debug message</a></h2>
+<p>Prints a debug message to the log. You must create a secret named <code>ACTIONS_STEP_DEBUG</code> with the value <code>true</code> to see the debug messages set by this command in the log. For more information, see <a href="/en/actions/monitoring-and-troubleshooting-workflows/enabling-debug-logging">Enabling debug logging</a>.</p>
+<div>
+<header><span>Text</span><pre>::debug::{message}
+</pre></header><pre><code>::debug::{message}
+</code></pre>
+</div>
+<h3><a href="#example-setting-a-debug-message">Example: Setting a debug message</a></h3>
+<div>
+<div>
+<header><span>Bash</span><pre>echo "::debug::Set the Octocat variable"
+</pre></header><pre><code><span>echo</span> <span>"::debug::Set the Octocat variable"</span>
+</code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>PowerShell</span><pre>Write-Output "::debug::Set the Octocat variable"
+</pre></header><pre><code><span>Write-Output</span> <span>"::debug::Set the Octocat variable"</span>
+</code></pre>
+</div>
+</div>
+<h2><a href="#setting-a-notice-message">Setting a notice message</a></h2>
+<p>Creates a notice message and prints the message to the log. This message will create an annotation, which can associate the message with a particular file in your repository. Optionally, your message can specify a position within the file.</p>
+<div>
+<header><span>Text</span><pre>::notice file={name},line={line},endLine={endLine},title={title}::{message}
+</pre></header><pre><code>::notice file={name},line={line},endLine={endLine},title={title}::{message}
+</code></pre>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Required</th>
+<th>Default</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>Custom title</td>
+<td>No</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>file</code></td>
+<td>Filename</td>
+<td>No</td>
+<td><code>.github</code></td>
+</tr>
+<tr>
+<td><code>col</code></td>
+<td>Column number, starting at 1</td>
+<td>No</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>endColumn</code></td>
+<td>End column number</td>
+<td>No</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>line</code></td>
+<td>Line number, starting at 1</td>
+<td>No</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>endLine</code></td>
+<td>End line number</td>
+<td>No</td>
+<td><code>1</code></td>
+</tr>
+</tbody>
+</table>
+<h3><a href="#example-setting-a-notice-message">Example: Setting a notice message</a></h3>
+<div>
+<div>
+<header><span>Bash</span><pre>echo "::notice file=app.js,line=1,col=5,endColumn=7::Missing semicolon"
+</pre></header><pre><code><span>echo</span> <span>"::notice file=app.js,line=1,col=5,endColumn=7::Missing semicolon"</span>
+</code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>PowerShell</span><pre>Write-Output "::notice file=app.js,line=1,col=5,endColumn=7,title=YOUR-TITLE::Missing semicolon"
+</pre></header><pre><code><span>Write-Output</span> <span>"::notice file=app.js,line=1,col=5,endColumn=7,title=YOUR-TITLE::Missing semicolon"</span>
+</code></pre>
+</div>
+</div>
+<h2><a href="#setting-a-warning-message">Setting a warning message</a></h2>
+<p>Creates a warning message and prints the message to the log. This message will create an annotation, which can associate the message with a particular file in your repository. Optionally, your message can specify a position within the file.</p>
+<div>
+<header><span>Text</span><pre>::warning file={name},line={line},endLine={endLine},title={title}::{message}
+</pre></header><pre><code>::warning file={name},line={line},endLine={endLine},title={title}::{message}
+</code></pre>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Required</th>
+<th>Default</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>Custom title</td>
+<td>No</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>file</code></td>
+<td>Filename</td>
+<td>No</td>
+<td><code>.github</code></td>
+</tr>
+<tr>
+<td><code>col</code></td>
+<td>Column number, starting at 1</td>
+<td>No</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>endColumn</code></td>
+<td>End column number</td>
+<td>No</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>line</code></td>
+<td>Line number, starting at 1</td>
+<td>No</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>endLine</code></td>
+<td>End line number</td>
+<td>No</td>
+<td><code>1</code></td>
+</tr>
+</tbody>
+</table>
+<h3><a href="#example-setting-a-warning-message">Example: Setting a warning message</a></h3>
+<div>
+<div>
+<header><span>Bash</span><pre>echo "::warning file=app.js,line=1,col=5,endColumn=7,title=YOUR-TITLE::Missing semicolon"
+</pre></header><pre><code><span>echo</span> <span>"::warning file=app.js,line=1,col=5,endColumn=7,title=YOUR-TITLE::Missing semicolon"</span>
+</code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>PowerShell</span><pre>Write-Output "::warning file=app.js,line=1,col=5,endColumn=7,title=YOUR-TITLE::Missing semicolon"
+</pre></header><pre><code><span>Write-Output</span> <span>"::warning file=app.js,line=1,col=5,endColumn=7,title=YOUR-TITLE::Missing semicolon"</span>
+</code></pre>
+</div>
+</div>
+<h2><a href="#setting-an-error-message">Setting an error message</a></h2>
+<p>Creates an error message and prints the message to the log. This message will create an annotation, which can associate the message with a particular file in your repository. Optionally, your message can specify a position within the file.</p>
+<div>
+<header><span>Text</span><pre>::error file={name},line={line},endLine={endLine},title={title}::{message}
+</pre></header><pre><code>::error file={name},line={line},endLine={endLine},title={title}::{message}
+</code></pre>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Required</th>
+<th>Default</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>Custom title</td>
+<td>No</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>file</code></td>
+<td>Filename</td>
+<td>No</td>
+<td><code>.github</code></td>
+</tr>
+<tr>
+<td><code>col</code></td>
+<td>Column number, starting at 1</td>
+<td>No</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>endColumn</code></td>
+<td>End column number</td>
+<td>No</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>line</code></td>
+<td>Line number, starting at 1</td>
+<td>No</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>endLine</code></td>
+<td>End line number</td>
+<td>No</td>
+<td><code>1</code></td>
+</tr>
+</tbody>
+</table>
+<h3><a href="#example-setting-an-error-message">Example: Setting an error message</a></h3>
+<div>
+<div>
+<header><span>Bash</span><pre>echo "::error file=app.js,line=1,col=5,endColumn=7,title=YOUR-TITLE::Missing semicolon"
+</pre></header><pre><code><span>echo</span> <span>"::error file=app.js,line=1,col=5,endColumn=7,title=YOUR-TITLE::Missing semicolon"</span>
+</code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>PowerShell</span><pre>Write-Output "::error file=app.js,line=1,col=5,endColumn=7,title=YOUR-TITLE::Missing semicolon"
+</pre></header><pre><code><span>Write-Output</span> <span>"::error file=app.js,line=1,col=5,endColumn=7,title=YOUR-TITLE::Missing semicolon"</span>
+</code></pre>
+</div>
+</div>
+<h2><a href="#grouping-log-lines">Grouping log lines</a></h2>
+<p>Creates an expandable group in the log. To create a group, use the <code>group</code> command and specify a <code>title</code>. Anything you print to the log between the <code>group</code> and <code>endgroup</code> commands is nested inside an expandable entry in the log.</p>
+<div>
+<header><span>Text</span><pre>::group::{title}
+::endgroup::
+</pre></header><pre><code>::group::{title}
+::endgroup::
+</code></pre>
+</div>
+<h3><a href="#example-grouping-log-lines">Example: Grouping log lines</a></h3>
+<div>
+<div>
+<header><span>YAML</span><pre>jobs:
+  bash-example:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Group of log lines
+        run: |
+            echo "::group::My title"
+            echo "Inside group"
+            echo "::endgroup::"
+</pre></header><pre><code><span>jobs:</span>
+  <span>bash-example:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>Group</span> <span>of</span> <span>log</span> <span>lines</span>
+        <span>run:</span> <span>|
+            echo "::group::My title"
+            echo "Inside group"
+            echo "::endgroup::"
+</span></code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>YAML</span><pre>jobs:
+  powershell-example:
+    runs-on: windows-latest
+    steps:
+      - name: Group of log lines
+        run: |
+            Write-Output "::group::My title"
+            Write-Output "Inside group"
+            Write-Output "::endgroup::"
+</pre></header><pre><code><span>jobs:</span>
+  <span>powershell-example:</span>
+    <span>runs-on:</span> <span>windows-latest</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>Group</span> <span>of</span> <span>log</span> <span>lines</span>
+        <span>run:</span> <span>|
+            Write-Output "::group::My title"
+            Write-Output "Inside group"
+            Write-Output "::endgroup::"
+</span></code></pre>
+</div>
+</div>
+<p><picture><source><img src="/assets/cb-4487/images/help/actions/actions-log-group.png" alt='Screenshot of the log for the workflow step. The second line, "My title", is an expanded group. The next line, "Inside group", is indented below.' width="350" height="130"></source></picture></p>
+<h2><a href="#masking-a-value-in-a-log">Masking a value in a log</a></h2>
+<div>
+<header><span>Text</span><pre>::add-mask::{value}
+</pre></header><pre><code>::add-mask::{value}
+</code></pre>
+</div>
+<p>Masking a value prevents a string or variable from being printed in the log. Each masked word separated by whitespace is replaced with the <code>*</code> character. You can use an environment variable or string for the mask's <code>value</code>. When you mask a value, it is treated as a secret and will be redacted on the runner. For example, after you mask a value, you won't be able to set that value as an output.</p>
+<h3><a href="#example-masking-a-string">Example: Masking a string</a></h3>
+<p>When you print <code>"Mona The Octocat"</code> in the log, you'll see <code>"***"</code>.</p>
+<div>
+<div>
+<header><span>Bash</span><pre>echo "::add-mask::Mona The Octocat"
+</pre></header><pre><code><span>echo</span> <span>"::add-mask::Mona The Octocat"</span>
+</code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>PowerShell</span><pre>Write-Output "::add-mask::Mona The Octocat"
+</pre></header><pre><code><span>Write-Output</span> <span>"::add-mask::Mona The Octocat"</span>
+</code></pre>
+</div>
+</div>
+<div>
+<p>
+Make sure you register the secret with 'add-mask' before outputting it in the build logs or using it in any other workflow commands.</p>
+</div>
+<h3><a href="#example-masking-an-environment-variable">Example: Masking an environment variable</a></h3>
+<p>When you print the variable <code>MY_NAME</code> or the value <code>"Mona The Octocat"</code> in the log, you'll see <code>"***"</code> instead of <code>"Mona The Octocat"</code>.</p>
+<div>
+<div>
+<header><span>YAML</span><pre>jobs:
+  bash-example:
+    runs-on: ubuntu-latest
+    env:
+      MY_NAME: "Mona The Octocat"
+    steps:
+      - name: bash-version
+        run: echo "::add-mask::$MY_NAME"
+</pre></header><pre><code><span>jobs:</span>
+  <span>bash-example:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>env:</span>
+      <span>MY_NAME:</span> <span>"Mona The Octocat"</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>bash-version</span>
+        <span>run:</span> <span>echo</span> <span>"::add-mask::$MY_NAME"</span>
+</code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>YAML</span><pre>jobs:
+  powershell-example:
+    runs-on: windows-latest
+    env:
+      MY_NAME: "Mona The Octocat"
+    steps:
+      - name: powershell-version
+        run: Write-Output "::add-mask::$env:MY_NAME"
+</pre></header><pre><code><span>jobs:</span>
+  <span>powershell-example:</span>
+    <span>runs-on:</span> <span>windows-latest</span>
+    <span>env:</span>
+      <span>MY_NAME:</span> <span>"Mona The Octocat"</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>powershell-version</span>
+        <span>run:</span> <span>Write-Output</span> <span>"::add-mask::$env:MY_NAME"</span>
+</code></pre>
+</div>
+</div>
+<h3><a href="#example-masking-a-generated-output-within-a-single-job">Example: Masking a generated output within a single job</a></h3>
+<p>If you do not need to pass your secret from one job to another job, you can:</p>
+<ol>
+<li>Generate the secret (without outputting it).</li>
+<li>Mask it with <code>add-mask</code>.</li>
+<li>Use <code>GITHUB_OUTPUT</code> to make the secret available to other steps within the job.</li>
+</ol>
+<div>
+<div>
+<header><span>YAML</span><pre>on: push
+jobs:
+  generate-a-secret-output:
+    runs-on: ubuntu-latest
+    steps:
+      - id: sets-a-secret
+        name: Generate, mask, and output a secret
+        run: |
+          the_secret=$((RANDOM))
+          echo "::add-mask::$the_secret"
+          echo "secret-number=$the_secret" &gt;&gt; "$GITHUB_OUTPUT"
+      - name: Use that secret output (protected by a mask)
+        run: |
+          echo "the secret number is ${{ steps.sets-a-secret.outputs.secret-number }}"
+</pre></header><pre><code><span>on:</span> <span>push</span>
+<span>jobs:</span>
+  <span>generate-a-secret-output:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>steps:</span>
+      <span>-</span> <span>id:</span> <span>sets-a-secret</span>
+        <span>name:</span> <span>Generate,</span> <span>mask,</span> <span>and</span> <span>output</span> <span>a</span> <span>secret</span>
+        <span>run:</span> <span>|
+          the_secret=$((RANDOM))
+          echo "::add-mask::$the_secret"
+          echo "secret-number=$the_secret" &gt;&gt; "$GITHUB_OUTPUT"
+</span>      <span>-</span> <span>name:</span> <span>Use</span> <span>that</span> <span>secret</span> <span>output</span> <span>(protected</span> <span>by</span> <span>a</span> <span>mask)</span>
+        <span>run:</span> <span>|
+          echo "the secret number is ${{ steps.sets-a-secret.outputs.secret-number }}"
+</span></code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>YAML</span><pre>on: push
+jobs:
+  generate-a-secret-output:
+    runs-on: ubuntu-latest
+    steps:
+      - id: sets-a-secret
+        name: Generate, mask, and output a secret
+        shell: pwsh
+        run: |
+          Set-Variable -Name TheSecret -Value (Get-Random)
+          Write-Output "::add-mask::$TheSecret"
+          "secret-number=$TheSecret" &gt;&gt; $env:GITHUB_OUTPUT
+      - name: Use that secret output (protected by a mask)
+        shell: pwsh
+        run: |
+          Write-Output "the secret number is ${{ steps.sets-a-secret.outputs.secret-number }}"
+</pre></header><pre><code><span>on:</span> <span>push</span>
+<span>jobs:</span>
+  <span>generate-a-secret-output:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>steps:</span>
+      <span>-</span> <span>id:</span> <span>sets-a-secret</span>
+        <span>name:</span> <span>Generate,</span> <span>mask,</span> <span>and</span> <span>output</span> <span>a</span> <span>secret</span>
+        <span>shell:</span> <span>pwsh</span>
+        <span>run:</span> <span>|
+          Set-Variable -Name TheSecret -Value (Get-Random)
+          Write-Output "::add-mask::$TheSecret"
+          "secret-number=$TheSecret" &gt;&gt; $env:GITHUB_OUTPUT
+</span>      <span>-</span> <span>name:</span> <span>Use</span> <span>that</span> <span>secret</span> <span>output</span> <span>(protected</span> <span>by</span> <span>a</span> <span>mask)</span>
+        <span>shell:</span> <span>pwsh</span>
+        <span>run:</span> <span>|
+          Write-Output "the secret number is ${{ steps.sets-a-secret.outputs.secret-number }}"
+</span></code></pre>
+</div>
+</div>
+<h3><a href="#example-masking-and-passing-a-secret-between-jobs-or-workflows">Example: Masking and passing a secret between jobs or workflows</a></h3>
+<p>If you want to pass a masked secret between jobs or workflows, you should store the secret in a store and then retrieve it in the subsequent job or workflow.</p>
+<h4><a href="#setup">Setup</a></h4>
+<ol>
+<li>Set up a secret store to store the secret that you will generate during your workflow. For example, Vault.</li>
+<li>Generate a key for reading and writing to that secret store. Store the key as a repository secret. In the following example workflow, the secret name is <code>SECRET_STORE_CREDENTIALS</code>. For more information, see <a href="/en/actions/security-guides/using-secrets-in-github-actions">Using secrets in GitHub Actions</a>.</li>
+</ol>
+<h4><a href="#workflow">Workflow</a></h4>
+<div>
+<p>
+This workflow uses an imaginary secret store, <code>secret-store</code>, which has imaginary commands <code>store-secret</code> and <code>retrieve-secret</code>. <code>some/secret-store@ 27b31702a0e7fc50959f5ad993c78deac1bdfc29</code> is an imaginary action that installs the <code>secret-store</code> application and configures it to connect to an <code>instance</code> with <code>credentials</code>.</p>
+</div>
+<div>
+<div>
+<header><span>YAML</span><pre>on: push
+
+jobs:
+  secret-generator:
+    runs-on: ubuntu-latest
+    outputs:
+      handle: ${{ steps.generate-secret.outputs.handle }}
+    steps:
+    - uses: some/secret-store@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+      with:
+        credentials: ${{ secrets.SECRET_STORE_CREDENTIALS }}
+        instance: ${{ secrets.SECRET_STORE_INSTANCE }}
+    - name: generate secret
+      id: generate-secret
+      shell: bash
+      run: |
+        GENERATED_SECRET=$((RANDOM))
+        echo "::add-mask::$GENERATED_SECRET"
+        SECRET_HANDLE=$(secret-store store-secret "$GENERATED_SECRET")
+        echo "handle=$SECRET_HANDLE" &gt;&gt; "$GITHUB_OUTPUT"
+  secret-consumer:
+    runs-on: macos-latest
+    needs: secret-generator
+    steps:
+    - uses: some/secret-store@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+      with:
+        credentials: ${{ secrets.SECRET_STORE_CREDENTIALS }}
+        instance: ${{ secrets.SECRET_STORE_INSTANCE }}
+    - name: use secret
+      shell: bash
+      run: |
+        SECRET_HANDLE="${{ needs.secret-generator.outputs.handle }}"
+        RETRIEVED_SECRET=$(secret-store retrieve-secret "$SECRET_HANDLE")
+        echo "::add-mask::$RETRIEVED_SECRET"
+        echo "We retrieved our masked secret: $RETRIEVED_SECRET"
+</pre></header><pre><code><span>on:</span> <span>push</span>
+
+<span>jobs:</span>
+  <span>secret-generator:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>outputs:</span>
+      <span>handle:</span> <span>${{</span> <span>steps.generate-secret.outputs.handle</span> <span>}}</span>
+    <span>steps:</span>
+    <span>-</span> <span>uses:</span> <span>some/secret-store@27b31702a0e7fc50959f5ad993c78deac1bdfc29</span>
+      <span>with:</span>
+        <span>credentials:</span> <span>${{</span> <span>secrets.SECRET_STORE_CREDENTIALS</span> <span>}}</span>
+        <span>instance:</span> <span>${{</span> <span>secrets.SECRET_STORE_INSTANCE</span> <span>}}</span>
+    <span>-</span> <span>name:</span> <span>generate</span> <span>secret</span>
+      <span>id:</span> <span>generate-secret</span>
+      <span>shell:</span> <span>bash</span>
+      <span>run:</span> <span>|
+        GENERATED_SECRET=$((RANDOM))
+        echo "::add-mask::$GENERATED_SECRET"
+        SECRET_HANDLE=$(secret-store store-secret "$GENERATED_SECRET")
+        echo "handle=$SECRET_HANDLE" &gt;&gt; "$GITHUB_OUTPUT"
+</span>  <span>secret-consumer:</span>
+    <span>runs-on:</span> <span>macos-latest</span>
+    <span>needs:</span> <span>secret-generator</span>
+    <span>steps:</span>
+    <span>-</span> <span>uses:</span> <span>some/secret-store@27b31702a0e7fc50959f5ad993c78deac1bdfc29</span>
+      <span>with:</span>
+        <span>credentials:</span> <span>${{</span> <span>secrets.SECRET_STORE_CREDENTIALS</span> <span>}}</span>
+        <span>instance:</span> <span>${{</span> <span>secrets.SECRET_STORE_INSTANCE</span> <span>}}</span>
+    <span>-</span> <span>name:</span> <span>use</span> <span>secret</span>
+      <span>shell:</span> <span>bash</span>
+      <span>run:</span> <span>|
+        SECRET_HANDLE="${{ needs.secret-generator.outputs.handle }}"
+        RETRIEVED_SECRET=$(secret-store retrieve-secret "$SECRET_HANDLE")
+        echo "::add-mask::$RETRIEVED_SECRET"
+        echo "We retrieved our masked secret: $RETRIEVED_SECRET"
+</span></code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>YAML</span><pre>on: push
+
+jobs:
+  secret-generator:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: some/secret-store@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+      with:
+        credentials: ${{ secrets.SECRET_STORE_CREDENTIALS }}
+        instance: ${{ secrets.SECRET_STORE_INSTANCE }}
+    - name: generate secret
+      shell: pwsh
+      run: |
+        Set-Variable -Name Generated_Secret -Value (Get-Random)
+        Write-Output "::add-mask::$Generated_Secret"
+        Set-Variable -Name Secret_Handle -Value (Store-Secret "$Generated_Secret")
+        "handle=$Secret_Handle" &gt;&gt; $env:GITHUB_OUTPUT
+  secret-consumer:
+    runs-on: macos-latest
+    needs: secret-generator
+    steps:
+    - uses: some/secret-store@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+      with:
+        credentials: ${{ secrets.SECRET_STORE_CREDENTIALS }}
+        instance: ${{ secrets.SECRET_STORE_INSTANCE }}
+    - name: use secret
+      shell: pwsh
+      run: |
+        Set-Variable -Name Secret_Handle -Value "${{ needs.secret-generator.outputs.handle }}"
+        Set-Variable -Name Retrieved_Secret -Value (Retrieve-Secret "$Secret_Handle")
+        echo "::add-mask::$Retrieved_Secret"
+        echo "We retrieved our masked secret: $Retrieved_Secret"
+</pre></header><pre><code><span>on:</span> <span>push</span>
+
+<span>jobs:</span>
+  <span>secret-generator:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>steps:</span>
+    <span>-</span> <span>uses:</span> <span>some/secret-store@27b31702a0e7fc50959f5ad993c78deac1bdfc29</span>
+      <span>with:</span>
+        <span>credentials:</span> <span>${{</span> <span>secrets.SECRET_STORE_CREDENTIALS</span> <span>}}</span>
+        <span>instance:</span> <span>${{</span> <span>secrets.SECRET_STORE_INSTANCE</span> <span>}}</span>
+    <span>-</span> <span>name:</span> <span>generate</span> <span>secret</span>
+      <span>shell:</span> <span>pwsh</span>
+      <span>run:</span> <span>|
+        Set-Variable -Name Generated_Secret -Value (Get-Random)
+        Write-Output "::add-mask::$Generated_Secret"
+        Set-Variable -Name Secret_Handle -Value (Store-Secret "$Generated_Secret")
+        "handle=$Secret_Handle" &gt;&gt; $env:GITHUB_OUTPUT
+</span>  <span>secret-consumer:</span>
+    <span>runs-on:</span> <span>macos-latest</span>
+    <span>needs:</span> <span>secret-generator</span>
+    <span>steps:</span>
+    <span>-</span> <span>uses:</span> <span>some/secret-store@27b31702a0e7fc50959f5ad993c78deac1bdfc29</span>
+      <span>with:</span>
+        <span>credentials:</span> <span>${{</span> <span>secrets.SECRET_STORE_CREDENTIALS</span> <span>}}</span>
+        <span>instance:</span> <span>${{</span> <span>secrets.SECRET_STORE_INSTANCE</span> <span>}}</span>
+    <span>-</span> <span>name:</span> <span>use</span> <span>secret</span>
+      <span>shell:</span> <span>pwsh</span>
+      <span>run:</span> <span>|
+        Set-Variable -Name Secret_Handle -Value "${{ needs.secret-generator.outputs.handle }}"
+        Set-Variable -Name Retrieved_Secret -Value (Retrieve-Secret "$Secret_Handle")
+        echo "::add-mask::$Retrieved_Secret"
+        echo "We retrieved our masked secret: $Retrieved_Secret"
+</span></code></pre>
+</div>
+</div>
+<h2><a href="#stopping-and-starting-workflow-commands">Stopping and starting workflow commands</a></h2>
+<p>Stops processing any workflow commands. This special command allows you to log anything without accidentally running a workflow command. For example, you could stop logging to output an entire script that has comments.</p>
+<div>
+<header><span>Text</span><pre>::stop-commands::{endtoken}
+</pre></header><pre><code>::stop-commands::{endtoken}
+</code></pre>
+</div>
+<p>To stop the processing of workflow commands, pass a unique token to <code>stop-commands</code>. To resume processing workflow commands, pass the same token that you used to stop workflow commands.</p>
+<div>
+<p>
+Make sure the token you're using is randomly generated and unique for each run.</p>
+</div>
+<div>
+<header><span>Text</span><pre>::{endtoken}::
+</pre></header><pre><code>::{endtoken}::
+</code></pre>
+</div>
+<h3><a href="#example-stopping-and-starting-workflow-commands">Example: Stopping and starting workflow commands</a></h3>
+<div>
+<div>
+<header><span>YAML</span><pre>jobs:
+  workflow-command-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Disable workflow commands
+        run: |
+          echo '::warning:: This is a warning message, to demonstrate that commands are being processed.'
+          stopMarker=$(uuidgen)
+          echo "::stop-commands::$stopMarker"
+          echo '::warning:: This will NOT be rendered as a warning, because stop-commands has been invoked.'
+          echo "::$stopMarker::"
+          echo '::warning:: This is a warning again, because stop-commands has been turned off.'
+</pre></header><pre><code><span>jobs:</span>
+  <span>workflow-command-job:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>Disable</span> <span>workflow</span> <span>commands</span>
+        <span>run:</span> <span>|
+          echo '::warning:: This is a warning message, to demonstrate that commands are being processed.'
+          stopMarker=$(uuidgen)
+          echo "::stop-commands::$stopMarker"
+          echo '::warning:: This will NOT be rendered as a warning, because stop-commands has been invoked.'
+          echo "::$stopMarker::"
+          echo '::warning:: This is a warning again, because stop-commands has been turned off.'
+</span></code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>YAML</span><pre>jobs:
+  workflow-command-job:
+    runs-on: windows-latest
+    steps:
+      - name: Disable workflow commands
+        run: |
+          Write-Output '::warning:: This is a warning message, to demonstrate that commands are being processed.'
+          $stopMarker = New-Guid
+          Write-Output "::stop-commands::$stopMarker"
+          Write-Output '::warning:: This will NOT be rendered as a warning, because stop-commands has been invoked.'
+          Write-Output "::$stopMarker::"
+          Write-Output '::warning:: This is a warning again, because stop-commands has been turned off.'
+</pre></header><pre><code><span>jobs:</span>
+  <span>workflow-command-job:</span>
+    <span>runs-on:</span> <span>windows-latest</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>Disable</span> <span>workflow</span> <span>commands</span>
+        <span>run:</span> <span>|
+          Write-Output '::warning:: This is a warning message, to demonstrate that commands are being processed.'
+          $stopMarker = New-Guid
+          Write-Output "::stop-commands::$stopMarker"
+          Write-Output '::warning:: This will NOT be rendered as a warning, because stop-commands has been invoked.'
+          Write-Output "::$stopMarker::"
+          Write-Output '::warning:: This is a warning again, because stop-commands has been turned off.'
+</span></code></pre>
+</div>
+</div>
+<h2><a href="#sending-values-to-the-pre-and-post-actions">Sending values to the pre and post actions</a></h2>
+<p>You can create environment variables for sharing with your workflow's <code>pre:</code> or <code>post:</code> actions by writing to the file located at <code>GITHUB_STATE</code>. For example, you can create a file with the <code>pre:</code> action, pass the file location to the <code>main:</code> action, and then use the <code>post:</code> action to delete the file. Alternatively, you could create a file with the <code>main:</code> action, pass the file location to the <code>post:</code> action, and also use the <code>post:</code> action to delete the file.</p>
+<p>If you have multiple <code>pre:</code> or <code>post:</code> actions, you can only access the saved value in the action where it was written to <code>GITHUB_STATE</code>. For more information on the <code>post:</code> action, see <a href="/en/actions/creating-actions/metadata-syntax-for-github-actions#runspost">Metadata syntax for GitHub Actions</a>.</p>
+<p>The <code>GITHUB_STATE</code> file is only available within an action. The saved value is stored as an environment value with the <code>STATE_</code> prefix.</p>
+<p>This example uses JavaScript to write to the <code>GITHUB_STATE</code> file. The resulting environment variable is named <code>STATE_processID</code> with the value of <code>12345</code>:</p>
+<div>
+<header><span>JavaScript</span><pre>import * as fs from 'fs'
+import * as os from 'os'
+
+fs.appendFileSync(process.env.GITHUB_STATE, `processID=12345${os.EOL}`, {
+  encoding: 'utf8'
+})
+</pre></header><pre><code><span>import</span> * <span>as</span> fs <span>from</span> <span>'fs'</span>
+<span>import</span> * <span>as</span> os <span>from</span> <span>'os'</span>
+
+fs.<span>appendFileSync</span>(process.<span>env</span>.<span>GITHUB_STATE</span>, <span>`processID=12345<span>${os.EOL}</span>`</span>, {
+  <span>encoding</span>: <span>'utf8'</span>
+})
+</code></pre>
+</div>
+<p>The <code>STATE_processID</code> variable is then exclusively available to the cleanup script running under the <code>main</code> action. This example runs in <code>main</code> and uses JavaScript to display the value assigned to the <code>STATE_processID</code> environment variable:</p>
+<div>
+<header><span>JavaScript</span><pre>console.log("The running PID from the main action is: " + process.env.STATE_processID);
+</pre></header><pre><code><span>console</span>.<span>log</span>(<span>"The running PID from the main action is: "</span> + process.<span>env</span>.<span>STATE_processID</span>);
+</code></pre>
+</div>
+<h2><a href="#environment-files">Environment files</a></h2>
+<p>During the execution of a workflow, the runner generates temporary files that can be used to perform certain actions. The path to these files can be accessed and edited using GitHub's default environment variables. See <a href="/en/actions/learn-github-actions/variables#default-environment-variables">Store information in variables</a>. You will need to use UTF-8 encoding when writing to these files to ensure proper processing of the commands. Multiple commands can be written to the same file, separated by newlines.
+To use environment variables in a GitHub Action, you create or modify <code>.env</code> files using specific GitHub Actions commands.</p>
+<p>Here's how:</p>
+<div>
+<header><span>YAML</span><pre>name: Example Workflow for Environment Files
+
+on: push
+
+jobs:
+  set_and_use_env_vars:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set environment variable
+        run: echo "MY_ENV_VAR=myValue" &gt;&gt; $GITHUB_ENV
+
+      - name: Use environment variable
+        run: |
+          echo "The value of MY_ENV_VAR is $MY_ENV_VAR"
+
+</pre></header><pre><code><span>name:</span> <span>Example</span> <span>Workflow</span> <span>for</span> <span>Environment</span> <span>Files</span>
+
+<span>on:</span> <span>push</span>
+
+<span>jobs:</span>
+  <span>set_and_use_env_vars:</span>
+    <span>runs-on:</span> <span>ubuntu-latest</span>
+    <span>steps:</span>
+      <span>-</span> <span>name:</span> <span>Set</span> <span>environment</span> <span>variable</span>
+        <span>run:</span> <span>echo</span> <span>"MY_ENV_VAR=myValue"</span> <span>&gt;&gt;</span> <span>$GITHUB_ENV</span>
+
+      <span>-</span> <span>name:</span> <span>Use</span> <span>environment</span> <span>variable</span>
+        <span>run:</span> <span>|
+          echo "The value of MY_ENV_VAR is $MY_ENV_VAR"
+</span>
+</code></pre>
+</div>
+<p>Another example would be to use it to store metadata like build timestamps, commit SHAs, or artifact names:</p>
+<div>
+<header><span>YAML</span><pre>steps:
+  - name: Store build timestamp
+    run: echo "BUILD_TIME=$(date +'%T')" &gt;&gt; $GITHUB_ENV
+
+  - name: Deploy using stored timestamp
+    run: echo "Deploying at $BUILD_TIME"
+</pre></header><pre><code><span>steps:</span>
+  <span>-</span> <span>name:</span> <span>Store</span> <span>build</span> <span>timestamp</span>
+    <span>run:</span> <span>echo</span> <span>"BUILD_TIME=$(date +'%T')"</span> <span>&gt;&gt;</span> <span>$GITHUB_ENV</span>
+
+  <span>-</span> <span>name:</span> <span>Deploy</span> <span>using</span> <span>stored</span> <span>timestamp</span>
+    <span>run:</span> <span>echo</span> <span>"Deploying at $BUILD_TIME"</span>
+</code></pre>
+</div>
+<div>
+<div>
+<p>
+PowerShell versions 5.1 and below (<code>shell: powershell</code>) do not use UTF-8 by default, so you must specify the UTF-8 encoding. For example:</p>
+<div>
+<header><span>YAML</span><pre>jobs:
+  legacy-powershell-example:
+    runs-on: windows-latest
+    steps:
+      - shell: powershell
+        run: |
+          "mypath" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+</pre></header><pre><code><span>jobs:</span>
+  <span>legacy-powershell-example:</span>
+    <span>runs-on:</span> <span>windows-latest</span>
+    <span>steps:</span>
+      <span>-</span> <span>shell:</span> <span>powershell</span>
+        <span>run:</span> <span>|
+          "mypath" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+</span></code></pre>
+</div>
+<p>PowerShell Core versions 6 and higher (<code>shell: pwsh</code>) use UTF-8 by default. For example:</p>
+<div>
+<header><span>YAML</span><pre>jobs:
+  powershell-core-example:
+    runs-on: windows-latest
+    steps:
+      - shell: pwsh
+        run: |
+          "mypath" &gt;&gt; $env:GITHUB_PATH
+</pre></header><pre><code><span>jobs:</span>
+  <span>powershell-core-example:</span>
+    <span>runs-on:</span> <span>windows-latest</span>
+    <span>steps:</span>
+      <span>-</span> <span>shell:</span> <span>pwsh</span>
+        <span>run:</span> <span>|
+          "mypath" &gt;&gt; $env:GITHUB_PATH
+</span></code></pre>
+</div>
+</div>
+</div>
+<h2><a href="#setting-an-environment-variable">Setting an environment variable</a></h2>
+<div>
+<p>
+To avoid issues, it's good practice to treat environment variables as case sensitive, irrespective of the behavior of the operating system and shell you are using.</p>
+</div>
+<div>
+<div>
+<header><span>Bash</span><pre>echo "{environment_variable_name}={value}" &gt;&gt; "$GITHUB_ENV"
+</pre></header><pre><code><span>echo</span> <span>"{environment_variable_name}={value}"</span> &gt;&gt; <span>"<span>$GITHUB_ENV</span>"</span>
+</code></pre>
+</div>
+</div>
+<div>
+<ul>
+<li>
+<p>Using PowerShell version 6 and higher:</p>
+<div>
+<header><span>PowerShell</span><pre>"{environment_variable_name}={value}" &gt;&gt; $env:GITHUB_ENV
+</pre></header><pre><code><span>"{environment_variable_name}={value}"</span> &gt;&gt; <span>$env:GITHUB_ENV</span>
+</code></pre>
+</div>
+</li>
+<li>
+<p>Using PowerShell version 5.1 and below:</p>
+<div>
+<header><span>PowerShell</span><pre>"{environment_variable_name}={value}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+</pre></header><pre><code><span>"{environment_variable_name}={value}"</span> | <span>Out-File</span> <span>-FilePath</span> <span>$env:GITHUB_ENV</span> <span>-Encoding</span> utf8 <span>-Append</span>
+</code></pre>
+</div>
+</li>
+</ul>
+</div>
+<p>You can make an environment variable available to any subsequent steps in a workflow job by defining or updating the environment variable and writing this to the <code>GITHUB_ENV</code> environment file. The step that creates or updates the environment variable does not have access to the new value, but all subsequent steps in a job will have access.</p>
+<p>You can't overwrite the value of the default environment variables named <code>GITHUB_*</code> and <code>RUNNER_*</code>. Currently you can overwrite the value of the <code>CI</code> variable. However, it's not guaranteed that this will always be possible. For more information about the default environment variables, see <a href="/en/actions/learn-github-actions/environment-variables#default-environment-variables">Store information in variables</a>.</p>
+<div>
+<p>
+Due to security restrictions, <code>GITHUB_ENV</code> cannot be used to set the <code>NODE_OPTIONS</code> environment variable.</p>
+</div>
+<h3><a href="#example-of-writing-an-environment-variable-to-github_env">Example of writing an environment variable to <code>GITHUB_ENV</code></a></h3>
+<div>
+<div>
+<header><span>YAML</span><pre>steps:
+  - name: Set the value
+    id: step_one
+    run: |
+      echo "action_state=yellow" &gt;&gt; "$GITHUB_ENV"
+  - name: Use the value
+    id: step_two
+    run: |
+      printf '%s\n' "$action_state" # This will output 'yellow'
+</pre></header><pre><code><span>steps:</span>
+  <span>-</span> <span>name:</span> <span>Set</span> <span>the</span> <span>value</span>
+    <span>id:</span> <span>step_one</span>
+    <span>run:</span> <span>|
+      echo "action_state=yellow" &gt;&gt; "$GITHUB_ENV"
+</span>  <span>-</span> <span>name:</span> <span>Use</span> <span>the</span> <span>value</span>
+    <span>id:</span> <span>step_two</span>
+    <span>run:</span> <span>|
+      printf '%s\n' "$action_state" # This will output 'yellow'
+</span></code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>YAML</span><pre>steps:
+  - name: Set the value
+    id: step_one
+    run: |
+      "action_state=yellow" &gt;&gt; $env:GITHUB_ENV
+  - name: Use the value
+    id: step_two
+    run: |
+      Write-Output "$env:action_state" # This will output 'yellow'
+</pre></header><pre><code><span>steps:</span>
+  <span>-</span> <span>name:</span> <span>Set</span> <span>the</span> <span>value</span>
+    <span>id:</span> <span>step_one</span>
+    <span>run:</span> <span>|
+      "action_state=yellow" &gt;&gt; $env:GITHUB_ENV
+</span>  <span>-</span> <span>name:</span> <span>Use</span> <span>the</span> <span>value</span>
+    <span>id:</span> <span>step_two</span>
+    <span>run:</span> <span>|
+      Write-Output "$env:action_state" # This will output 'yellow'
+</span></code></pre>
+</div>
+</div>
+<h3><a href="#multiline-strings">Multiline strings</a></h3>
+<p>For multiline strings, you may use a delimiter with the following syntax.</p>
+<div>
+<header><span>Text</span><pre>{name}&lt;&lt;{delimiter}
+{value}
+{delimiter}
+</pre></header><pre><code>{name}&lt;&lt;{delimiter}
+{value}
+{delimiter}
+</code></pre>
+</div>
+<div>
+<p>
+Make sure the delimiter you're using won't occur on a line of its own within the value. If the value is completely arbitrary then you shouldn't use this format. Write the value to a file instead.</p>
+</div>
+<h4><a href="#example-of-a-multiline-string">Example of a multiline string</a></h4>
+<p>This example uses <code>EOF</code> as the delimiter, and sets the <code>JSON_RESPONSE</code> environment variable to the value of the <code>curl</code> response.</p>
+<div>
+<div>
+<header><span>YAML</span><pre>steps:
+  - name: Set the value in bash
+    id: step_one
+    run: |
+      {
+        echo 'JSON_RESPONSE&lt;&lt;EOF'
+        curl https://example.com
+        echo EOF
+      } &gt;&gt; "$GITHUB_ENV"
+</pre></header><pre><code><span>steps:</span>
+  <span>-</span> <span>name:</span> <span>Set</span> <span>the</span> <span>value</span> <span>in</span> <span>bash</span>
+    <span>id:</span> <span>step_one</span>
+    <span>run:</span> <span>|
+      {
+        echo 'JSON_RESPONSE&lt;&lt;EOF'
+        curl https://example.com
+        echo EOF
+      } &gt;&gt; "$GITHUB_ENV"
+</span></code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>YAML</span><pre>steps:
+  - name: Set the value in pwsh
+    id: step_one
+    run: |
+      $EOF = (New-Guid).Guid
+      "JSON_RESPONSE&lt;&lt;$EOF" &gt;&gt; $env:GITHUB_ENV
+      (Invoke-WebRequest -Uri "https://example.com").Content &gt;&gt; $env:GITHUB_ENV
+      "$EOF" &gt;&gt; $env:GITHUB_ENV
+    shell: pwsh
+</pre></header><pre><code><span>steps:</span>
+  <span>-</span> <span>name:</span> <span>Set</span> <span>the</span> <span>value</span> <span>in</span> <span>pwsh</span>
+    <span>id:</span> <span>step_one</span>
+    <span>run:</span> <span>|
+      $EOF = (New-Guid).Guid
+      "JSON_RESPONSE&lt;&lt;$EOF" &gt;&gt; $env:GITHUB_ENV
+      (Invoke-WebRequest -Uri "https://example.com").Content &gt;&gt; $env:GITHUB_ENV
+      "$EOF" &gt;&gt; $env:GITHUB_ENV
+</span>    <span>shell:</span> <span>pwsh</span>
+</code></pre>
+</div>
+</div>
+<h2><a href="#setting-an-output-parameter">Setting an output parameter</a></h2>
+<p>Sets a step's output parameter. Note that the step will need an <code>id</code> to be defined to later retrieve the output value. You can set multi-line output values with the same technique used in the <a href="/en/actions/using-workflows/workflow-commands-for-github-actions#multiline-strings">Multiline strings</a> section to define multi-line environment variables.</p>
+<div>
+<div>
+<header><span>Bash</span><pre>echo "{name}={value}" &gt;&gt; "$GITHUB_OUTPUT"
+</pre></header><pre><code><span>echo</span> <span>"{name}={value}"</span> &gt;&gt; <span>"<span>$GITHUB_OUTPUT</span>"</span>
+</code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>PowerShell</span><pre>"{name}=value" &gt;&gt; $env:GITHUB_OUTPUT
+</pre></header><pre><code><span>"{name}=value"</span> &gt;&gt; <span>$env:GITHUB_OUTPUT</span>
+</code></pre>
+</div>
+</div>
+<h3><a href="#example-of-setting-an-output-parameter">Example of setting an output parameter</a></h3>
+<div>
+<p>This example demonstrates how to set the <code>SELECTED_COLOR</code> output parameter and later retrieve it:</p>
+<div>
+<header><span>YAML</span><pre>      - name: Set color
+        id: color-selector
+        run: echo "SELECTED_COLOR=green" &gt;&gt; "$GITHUB_OUTPUT"
+      - name: Get color
+        env:
+          SELECTED_COLOR: ${{ steps.color-selector.outputs.SELECTED_COLOR }}
+        run: echo "The selected color is $SELECTED_COLOR"
+</pre></header><pre><code>      <span>-</span> <span>name:</span> <span>Set</span> <span>color</span>
+        <span>id:</span> <span>color-selector</span>
+        <span>run:</span> <span>echo</span> <span>"SELECTED_COLOR=green"</span> <span>&gt;&gt;</span> <span>"$GITHUB_OUTPUT"</span>
+      <span>-</span> <span>name:</span> <span>Get</span> <span>color</span>
+        <span>env:</span>
+          <span>SELECTED_COLOR:</span> <span>${{</span> <span>steps.color-selector.outputs.SELECTED_COLOR</span> <span>}}</span>
+        <span>run:</span> <span>echo</span> <span>"The selected color is $SELECTED_COLOR"</span>
+</code></pre>
+</div>
+</div>
+<div>
+<p>This example demonstrates how to set the <code>SELECTED_COLOR</code> output parameter and later retrieve it:</p>
+<div>
+<header><span>YAML</span><pre>      - name: Set color
+        id: color-selector
+        run: |
+            "SELECTED_COLOR=green" &gt;&gt; $env:GITHUB_OUTPUT
+      - name: Get color
+        env:
+          SELECTED_COLOR: ${{ steps.color-selector.outputs.SELECTED_COLOR }}
+        run: Write-Output "The selected color is $env:SELECTED_COLOR"
+</pre></header><pre><code>      <span>-</span> <span>name:</span> <span>Set</span> <span>color</span>
+        <span>id:</span> <span>color-selector</span>
+        <span>run:</span> <span>|
+            "SELECTED_COLOR=green" &gt;&gt; $env:GITHUB_OUTPUT
+</span>      <span>-</span> <span>name:</span> <span>Get</span> <span>color</span>
+        <span>env:</span>
+          <span>SELECTED_COLOR:</span> <span>${{</span> <span>steps.color-selector.outputs.SELECTED_COLOR</span> <span>}}</span>
+        <span>run:</span> <span>Write-Output</span> <span>"The selected color is $env:SELECTED_COLOR"</span>
+</code></pre>
+</div>
+</div>
+<h2><a href="#adding-a-job-summary">Adding a job summary</a></h2>
+<div>
+<div>
+<header><span>Bash</span><pre>echo "{markdown content}" &gt;&gt; $GITHUB_STEP_SUMMARY
+</pre></header><pre><code><span>echo</span> <span>"{markdown content}"</span> &gt;&gt; <span>$GITHUB_STEP_SUMMARY</span>
+</code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>PowerShell</span><pre>"{markdown content}" &gt;&gt; $env:GITHUB_STEP_SUMMARY
+</pre></header><pre><code><span>"{markdown content}"</span> &gt;&gt; <span>$env:GITHUB_STEP_SUMMARY</span>
+</code></pre>
+</div>
+</div>
+<p>You can set some custom Markdown for each job so that it will be displayed on the summary page of a workflow run. You can use job summaries to display and group unique content, such as test result summaries, so that someone viewing the result of a workflow run doesn't need to go into the logs to see important information related to the run, such as failures.</p>
+<p>Job summaries support <a href="https://github.github.com/gfm/">GitHub flavored Markdown</a>, and you can add your Markdown content for a step to the <code>GITHUB_STEP_SUMMARY</code> environment file. <code>GITHUB_STEP_SUMMARY</code> is unique for each step in a job. For more information about the per-step file that <code>GITHUB_STEP_SUMMARY</code> references, see <a href="#environment-files">Environment files</a>.</p>
+<p>When a job finishes, the summaries for all steps in a job are grouped together into a single job summary and are shown on the workflow run summary page. If multiple jobs generate summaries, the job summaries are ordered by job completion time.</p>
+<h3><a href="#example-of-adding-a-job-summary">Example of adding a job summary</a></h3>
+<div>
+<div>
+<header><span>Bash</span><pre>echo "### Hello world! :rocket:" &gt;&gt; $GITHUB_STEP_SUMMARY
+</pre></header><pre><code><span>echo</span> <span>"### Hello world! :rocket:"</span> &gt;&gt; <span>$GITHUB_STEP_SUMMARY</span>
+</code></pre>
+</div>
+</div>
+<div>
+<div>
+<header><span>PowerShell</span><pre>"### Hello world! :rocket:" &gt;&gt; $env:GITHUB_STEP_SUMMARY
+</pre></header><pre><code><span>"### Hello world! :rocket:"</span> &gt;&gt; <span>$env:GITHUB_STEP_SUMMARY</span>
+</code></pre>
+</div>
+</div>
+<p><picture><source><img src="/assets/cb-24677/images/help/actions/actions-job-summary-simple-example.png" alt='Screenshot of the summary page of a workflow run. Under "example summary" is "Hello world!" and a rocket emoji.' width="720" height="106"></source></picture></p>
+<h3><a href="#multiline-markdown-content">Multiline Markdown content</a></h3>
+<p>For multiline Markdown content, you can use <code>&gt;&gt;</code> to continuously append content for the current step. With every append operation, a newline character is automatically added.</p>
+<h4><a href="#example-of-multiline-markdown-content">Example of multiline Markdown content</a></h4>
+<div>
+<pre><code><span>-</span> <span>name:</span> <span>Generate</span> <span>list</span> <span>using</span> <span>Markdown</span>
+  <span>run:</span> <span>|
+    echo "This is the lead in sentence for the list" &gt;&gt; $GITHUB_STEP_SUMMARY
+    echo "" &gt;&gt; $GITHUB_STEP_SUMMARY # this is a blank line
+    echo "- Lets add a bullet point" &gt;&gt; $GITHUB_STEP_SUMMARY
+    echo "- Lets add a second bullet point" &gt;&gt; $GITHUB_STEP_SUMMARY
+    echo "- How about a third one?" &gt;&gt; $GITHUB_STEP_SUMMARY
+</span></code></pre>
+</div>
+<div>
+<pre><code><span>-</span> <span>name:</span> <span>Generate</span> <span>list</span> <span>using</span> <span>Markdown</span>
+  <span>run:</span> <span>|
+    "This is the lead in sentence for the list" &gt;&gt; $env:GITHUB_STEP_SUMMARY
+    "" &gt;&gt; $env:GITHUB_STEP_SUMMARY # this is a blank line
+    "- Lets add a bullet point" &gt;&gt; $env:GITHUB_STEP_SUMMARY
+    "- Lets add a second bullet point" &gt;&gt; $env:GITHUB_STEP_SUMMARY
+    "- How about a third one?" &gt;&gt; $env:GITHUB_STEP_SUMMARY
+</span></code></pre>
+</div>
+<h3><a href="#overwriting-job-summaries">Overwriting job summaries</a></h3>
+<p>To clear all content for the current step, you can use <code>&gt;</code> to overwrite any previously added content in Bash, or remove <code>-Append</code> in PowerShell</p>
+<h4><a href="#example-of-overwriting-job-summaries">Example of overwriting job summaries</a></h4>
+<div>
+<pre><code><span>-</span> <span>name:</span> <span>Overwrite</span> <span>Markdown</span>
+  <span>run:</span> <span>|
+    echo "Adding some Markdown content" &gt;&gt; $GITHUB_STEP_SUMMARY
+    echo "There was an error, we need to clear the previous Markdown with some new content." &gt; $GITHUB_STEP_SUMMARY
+</span></code></pre>
+</div>
+<div>
+<pre><code><span>-</span> <span>name:</span> <span>Overwrite</span> <span>Markdown</span>
+  <span>run:</span> <span>|
+    "Adding some Markdown content" &gt;&gt; $env:GITHUB_STEP_SUMMARY
+    "There was an error, we need to clear the previous Markdown with some new content." &gt;&gt; $env:GITHUB_STEP_SUMMARY
+</span></code></pre>
+</div>
+<h3><a href="#removing-job-summaries">Removing job summaries</a></h3>
+<p>To completely remove a summary for the current step, the file that <code>GITHUB_STEP_SUMMARY</code> references can be deleted.</p>
+<h4><a href="#example-of-removing-job-summaries">Example of removing job summaries</a></h4>
+<div>
+<pre><code><span>-</span> <span>name:</span> <span>Delete</span> <span>all</span> <span>summary</span> <span>content</span>
+  <span>run:</span> <span>|
+    echo "Adding Markdown content that we want to remove before the step ends" &gt;&gt; $GITHUB_STEP_SUMMARY
+    rm $GITHUB_STEP_SUMMARY
+</span></code></pre>
+</div>
+<div>
+<pre><code><span>-</span> <span>name:</span> <span>Delete</span> <span>all</span> <span>summary</span> <span>content</span>
+  <span>run:</span> <span>|
+    "Adding Markdown content that we want to remove before the step ends" &gt;&gt; $env:GITHUB_STEP_SUMMARY
+    Remove-Item $env:GITHUB_STEP_SUMMARY
+</span></code></pre>
+</div>
+<p>After a step has completed, job summaries are uploaded and subsequent steps cannot modify previously uploaded Markdown content. Summaries automatically mask any secrets that might have been added accidentally. If a job summary contains sensitive information that must be deleted, you can delete the entire workflow run to remove all its job summaries. For more information see <a href="/en/actions/managing-workflow-runs/deleting-a-workflow-run">Deleting a workflow run</a>.</p>
+<h3><a href="#step-isolation-and-limits">Step isolation and limits</a></h3>
+<p>Job summaries are isolated between steps and each step is restricted to a maximum size of 1MiB. Isolation is enforced between steps so that potentially malformed Markdown from a single step cannot break Markdown rendering for subsequent steps. If more than 1MiB of content is added for a step, then the upload for the step will fail and an error annotation will be created. Upload failures for job summaries do not affect the overall status of a step or a job. A maximum of 20 job summaries from steps are displayed per job.</p>
+<h2><a href="#adding-a-system-path">Adding a system path</a></h2>
+<p>Prepends a directory to the system <code>PATH</code> variable and automatically makes it available to all subsequent actions in the current job; the currently running action cannot access the updated path variable. To see the currently defined paths for your job, you can use <code>echo "$PATH"</code> in a step or an action.</p>
+<h3><a href="#example-of-adding-a-system-path">Example of adding a system path</a></h3>
+<div>
+<p>This example demonstrates how to add the user <code>$HOME/.local/bin</code> directory to <code>PATH</code>:</p>
+<div>
+<header><span>Bash</span><pre>echo "$HOME/.local/bin" &gt;&gt; "$GITHUB_PATH"
+</pre></header><pre><code><span>echo</span> <span>"<span>$HOME</span>/.local/bin"</span> &gt;&gt; <span>"<span>$GITHUB_PATH</span>"</span>
+</code></pre>
+</div>
+</div>
+<div>
+<p>This example demonstrates how to add the user <code>$env:HOMEPATH/.local/bin</code> directory to <code>PATH</code>:</p>
+<div>
+<header><span>PowerShell</span><pre>"$env:HOMEPATH/.local/bin" | Out-File -FilePath "$env:GITHUB_PATH" -Append
+</pre></header><pre><code><span>"<span>$env:HOMEPATH</span>/.local/bin"</span> | <span>Out-File</span> <span>-FilePath</span> <span>"<span>$env:GITHUB_PATH</span>"</span> <span>-Append</span>
+</code></pre>
+</div>
+</div>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

@@ -1,0 +1,82 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Issues" href="/en/issues">GitHub Issues</a><span>/</span>
+</li>
+<li>
+<a title="Issues" href="/en/issues/tracking-your-work-with-issues">Issues</a><span>/</span>
+</li>
+<li>
+<a title="Administering issues" href="/en/issues/tracking-your-work-with-issues/administering-issues">Administering issues</a><span>/</span>
+</li>
+<li><a title="Transfer an issue" href="/en/issues/tracking-your-work-with-issues/administering-issues/transferring-an-issue-to-another-repository">Transfer an issue</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Transferring an issue to another repository</h1></div></div>
+<div>
+<div><p>To move an issue to a better fitting repository, you can transfer open issues to other repositories.</p></div>
+<div>
+<h2>Tool navigation</h2>
+<nav><ul>
+<li><a href="?tool=cli"><span>GitHub CLI</span></a></li>
+<li><a href="?tool=webui"><span>Web browser</span></a></li>
+</ul></nav>
+</div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#transferring-an-open-issue-to-another-repository"><div><span>Transferring an open issue to another repository</span></div></a></li>
+<li><a href="#further-reading"><div><span>Further reading</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>To transfer an open issue to another repository, you must have write access to the repository the issue is in and the repository you're transferring the issue to. For more information, see <a href="/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization">Repository roles for an organization</a>.</p>
+<div>
+<p>
+You can only transfer issues between repositories owned by the same user or organization account. A private repository issue cannot be transferred to a public repository.</p>
+</div>
+<p>When you transfer an issue, comments and assignees are retained. Labels and milestones are also retained if they're present in the target repository, with labels matching by name and milestones matching by both name and due date.</p>
+<p>People or teams who are mentioned in the issue will receive a notification letting them know that the issue has been transferred to a new repository. The original URL redirects to the new issue's URL. People who don't have read permissions in the new repository will see a banner letting them know that the issue has been transferred to a new repository that they can't access.</p>
+<h2><a href="#transferring-an-open-issue-to-another-repository">Transferring an open issue to another repository</a></h2>
+<div>
+<ol>
+<li>
+<p>On GitHub, navigate to the main page of the repository.</p>
+</li>
+<li>
+<p>Under your repository name, click </p>
+<div><picture><source><img src="/assets/cb-51267/images/help/repository/repo-tabs-issues-global-nav-update.png" alt='Screenshot of the main page of a repository. In the horizontal navigation bar, a tab, labeled "Issues," is outlined in dark orange.' width="1440" height="115"></source></picture></div>
+</li>
+<li>
+<p>In the list of issues, click the issue you'd like to transfer.</p>
+</li>
+<li>
+<p>In the right sidebar, click <strong>Transfer issue</strong>.</p>
+</li>
+<li>
+<p>Select the <strong>Choose a repository</strong> dropdown menu, and click the repository you want to transfer the issue to.</p>
+</li>
+<li>
+<p>Click <strong>Transfer issue</strong>.</p>
+</li>
+</ol>
+</div>
+<div>
+<div>
+<p>
+To learn more about GitHub CLI, see <a href="/en/github-cli/github-cli/about-github-cli">About GitHub CLI</a>.</p>
+</div>
+<p>To transfer an issue, use the <code>gh issue transfer</code> subcommand. Replace the <code>issue</code> parameter with the number or URL of the issue. Replace the <code>owner/repo</code> parameter with the name of the repository that you want to transfer the issue to, such as <code>octocat/octo-repo</code>.</p>
+<pre><code>gh issue transfer ISSUE OWNER/REPO
+</code></pre>
+</div>
+<h2><a href="#further-reading">Further reading</a></h2>
+<ul>
+<li><a href="/en/issues/tracking-your-work-with-issues/about-issues">About issues</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

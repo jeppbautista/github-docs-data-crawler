@@ -1,0 +1,59 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Organizations" href="/en/organizations">Organizations</a><span>/</span>
+</li>
+<li>
+<a title="Manage programmatic access" href="/en/organizations/managing-programmatic-access-to-your-organization">Manage programmatic access</a><span>/</span>
+</li>
+<li><a title="Manage token requests" href="/en/organizations/managing-programmatic-access-to-your-organization/managing-requests-for-personal-access-tokens-in-your-organization">Manage token requests</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Managing requests for personal access tokens in your organization</h1></div></div>
+<div><div><p>Organization owners can approve or deny fine-grained personal access tokens that request access to their organization.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-fine-grained-personal-access-token-requests"><div><span>About fine-grained personal access token requests</span></div></a></li>
+<li><a href="#managing-fine-grained-personal-access-token-requests"><div><span>Managing fine-grained personal access token requests</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-fine-grained-personal-access-token-requests">About fine-grained personal access token requests</a></h2>
+<p>When organization members create a fine-grained personal access token to access resources owned by the organization, if the organization requires approval for fine-grained personal access tokens, then an organization owner must approve the token before it can be used to access any resources that are not public. For more information, see <a href="/en/organizations/managing-programmatic-access-to-your-organization/setting-a-personal-access-token-policy-for-your-organization">Setting a personal access token policy for your organization</a>.</p>
+<p>GitHub will notify organization owners with a daily email about all fine-grained personal access tokens that are awaiting approval. When a token is denied or approved, the user who created the token will receive an email notification.</p>
+<div>
+<p>
+Only fine-grained personal access tokens, not personal access tokens (classic), are subject to approval. Unless the organization has restricted access by personal access tokens (classic), any personal access token (classic) can access organization resources without prior approval. For more information, see <a href="/en/organizations/managing-programmatic-access-to-your-organization/setting-a-personal-access-token-policy-for-your-organization">Setting a personal access token policy for your organization</a>.</p>
+</div>
+<p>Organization owners can also use the REST API to review and manage fine-grained personal access token requests. These endpoints can only be called by GitHub Apps, and cannot be called with personal access tokens or OAuth apps. For more information, see <a href="/en/rest/orgs/orgs#list-requests-to-access-organization-resources-with-fine-grained-personal-access-tokens">REST API endpoints for organizations</a>.</p>
+<h2><a href="#managing-fine-grained-personal-access-token-requests">Managing fine-grained personal access token requests</a></h2>
+<ol>
+<li>In the upper-right corner of GitHub, select your profile photo, then click </li>
+<li>Next to the organization, click <strong>Settings</strong>.</li>
+<li>In the left sidebar, under <strong>Pending requests</strong>. If any tokens are pending approval for your organization, they will be displayed.</li>
+<li>Click the name of the token that you want to approve or deny.</li>
+<li>Review the access and permissions that the token is requesting.</li>
+<li>To grant the token access to the organization, click <strong>Approve</strong>. To deny the token access to the organization, click <strong>Deny</strong>.</li>
+<li>If you denied the request, in the confirmation box, optionally enter the reason that you denied the token. This reason will be shared in the notification that is sent to the token owner. Then, click <strong>Deny</strong>.</li>
+</ol>
+<p>Alternatively, you can approve or deny multiple tokens at once:</p>
+<ol>
+<li>In the upper-right corner of GitHub, select your profile photo, then click </li>
+<li>Next to the organization, click <strong>Settings</strong>.</li>
+<li>In the left sidebar, under <strong>Pending requests</strong>. If any tokens are pending approval for your organization, they will be displayed.</li>
+<li>Optionally, use filters to only display certain tokens.
+<ul>
+<li>Use the <strong>Owner</strong> dropdown to filter the tokens by the member who created the token.</li>
+<li>Use the <strong>Repository</strong> dropdown to filter the tokens by repository access.</li>
+<li>Use the <strong>Permissions</strong> dropdown to filter the tokens by permission.</li>
+</ul>
+</li>
+<li>Select each token that you want to approve or reject.</li>
+<li>Select the <strong>request selected...</strong> dropdown menu and click <strong>Approve...</strong> or <strong>Deny...</strong>.</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

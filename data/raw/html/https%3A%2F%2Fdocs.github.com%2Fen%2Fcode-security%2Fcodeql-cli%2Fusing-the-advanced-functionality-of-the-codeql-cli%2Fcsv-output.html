@@ -1,0 +1,148 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Secure coding" href="/en/code-security">Secure coding</a><span>/</span>
+</li>
+<li>
+<a title="CodeQL CLI" href="/en/code-security/codeql-cli">CodeQL CLI</a><span>/</span>
+</li>
+<li>
+<a title="Advanced functionality" href="/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli">Advanced functionality</a><span>/</span>
+</li>
+<li><a title="CodeQL CLI CSV output" href="/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/csv-output">CodeQL CLI CSV output</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>CodeQL CLI CSV output</h1></div></div>
+<div>
+<div><p>You can output results from the CodeQL CLI in CSV format to share with other systems.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div>
+<p>CodeQL is available for the following repository types:</p>
+<ul>
+<li>Public repositories on GitHub.com, see <a href="https://github.com/github/codeql-cli-binaries/blob/main/LICENSE.md">GitHub CodeQL Terms and Conditions</a>
+</li>
+<li>Organization-owned repositories on GitHub Team with <a href="/en/get-started/learning-about-github/about-github-advanced-security">GitHub Code Security</a> enabled</li>
+</ul>
+</div></div>
+</div></div>
+</div>
+<div><div><div>
+<h2><a href="#about-csv-output">About CSV output</a></h2>
+<p>You can save analysis results from the CodeQL CLI in a number of different formats, including SARIF and CSV. We do generally recommend SARIF because it is a standard output for static analysis tools and easier to parse. You can also upload SARIF files to GitHub. However, CSV format may be useful if you need to further process the analysis results using your own tools. For more information on selecting a file format for your analysis results, see <a href="/en/code-security/codeql-cli/codeql-cli-manual/database-analyze">database analyze</a>.</p>
+<p>For more information about the SARIF format, see <a href="/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/sarif-output">CodeQL CLI SARIF output</a>.</p>
+<p>If you choose to generate results in CSV format, then each line in the output file corresponds to an alert. Each line is a comma-separated list with the following information.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th><strong>Property</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Example</strong></th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>Name of the query that identified the result.</td>
+<td><code>Inefficient regular expression</code></td>
+</tr>
+<tr>
+<td>Description</td>
+<td>Description of the query.</td>
+<td><code>A regular expression that requires exponential time to match certain inputs can be a performance bottleneck, and may be vulnerable to denial-of-service attacks.</code></td>
+</tr>
+<tr>
+<td>Severity</td>
+<td>Severity of the query.</td>
+<td><code>error</code></td>
+</tr>
+<tr>
+<td>Message</td>
+<td>Alert message.</td>
+<td><code>This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\\\'.</code></td>
+</tr>
+<tr>
+<td>Path</td>
+<td>Path of the file containing the alert.</td>
+<td><code>/<wbr>vendor/<wbr>codemirror/<wbr>markdown.js</wbr></wbr></wbr></code></td>
+</tr>
+<tr>
+<td>Start line</td>
+<td>Line of the file where the code that triggered the alert begins.</td>
+<td><code>617</code></td>
+</tr>
+<tr>
+<td>Start column</td>
+<td>Column of the start line that marks the start of the alert code. Not included when equal to 1.</td>
+<td><code>32</code></td>
+</tr>
+<tr>
+<td>End line</td>
+<td>Line of the file where the code that triggered the alert ends. Not included when the same value as the start line.</td>
+<td><code>64</code></td>
+</tr>
+<tr>
+<td>End column</td>
+<td>Where available, the column of the end line that marks the end of the alert code. Otherwise the end line is repeated.</td>
+<td><code>617</code></td>
+</tr>
+</tbody>
+</table>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

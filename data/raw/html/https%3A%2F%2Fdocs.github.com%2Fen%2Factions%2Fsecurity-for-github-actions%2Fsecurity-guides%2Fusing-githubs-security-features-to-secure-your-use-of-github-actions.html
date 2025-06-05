@@ -1,0 +1,95 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Actions" href="/en/actions">GitHub Actions</a><span>/</span>
+</li>
+<li>
+<a title="Security" href="/en/actions/security-for-github-actions">Security</a><span>/</span>
+</li>
+<li>
+<a title="Security guides" href="/en/actions/security-for-github-actions/security-guides">Security guides</a><span>/</span>
+</li>
+<li><a title="GitHub security features" href="/en/actions/security-for-github-actions/security-guides/using-githubs-security-features-to-secure-your-use-of-github-actions">GitHub security features</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Using GitHub's security features to secure your use of GitHub Actions</h1></div></div>
+<div><div><p>GitHub has several security features that can enhance the security of the actions you consume and publish.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-githubs-security-features"><div><span>About GitHub's security features</span></div></a></li>
+<li><a href="#understanding-dependencies-in-your-workflows"><div><span>Understanding dependencies in your workflows</span></div></a></li>
+<li><a href="#being-aware-of-security-vulnerabilities-in-actions-you-use"><div><span>Being aware of security vulnerabilities in actions you use</span></div></a></li>
+<li><a href="#keeping-the-actions-in-your-workflows-secure-and-up-to-date"><div><span>Keeping the actions in your workflows secure and up to date</span></div></a></li>
+<li><a href="#protecting-actions-youve-created"><div><span>Protecting actions you've created</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-githubs-security-features">About GitHub's security features</a></h2>
+<p>GitHub provides many features to make your code more secure. You can use GitHub's built-in features to understand the actions your workflows depend on, ensure you are notified about vulnerabilities in the actions you consume, or automate the process of keeping the actions in your workflows up to date. If you publish and maintain actions, you can use GitHub to communicate with your community about vulnerabilities and how to fix them. For more information about security features that GitHub offers, see <a href="/en/code-security/getting-started/github-security-features#about-githubs-security-features">GitHub security features</a>.</p>
+<p>This article will explain how you can use some of GitHub's security features to increase the security of your use of GitHub Actions.</p>
+<h2><a href="#understanding-dependencies-in-your-workflows">Understanding dependencies in your workflows</a></h2>
+<p>You can use the dependency graph to explore the actions that the workflows in your repository use. The dependency graph is a summary of the manifest and lock files stored in a repository. It also recognizes files in <code>./github/workflows/</code> as manifests, which means that any actions or workflows referenced using the syntax <code>jobs[*].steps[*].uses</code> or <code>jobs.&lt;job_id&gt;.uses</code> will be parsed as dependencies.</p>
+<p>The dependency graph shows the following information about actions used in workflows:</p>
+<ul>
+<li>The account or organization that owns the action.</li>
+<li>The workflow file that references the action.</li>
+<li>The version or SHA the action is pinned to.</li>
+</ul>
+<p>In the dependency graph, dependencies are automatically sorted by vulnerability severity. If any of the actions you use have security advisories, they will display at the top of the list. You can navigate to the advisory from the dependency graph and access instructions for resolving the vulnerability.</p>
+<p>The dependency graph is enabled for public repositories, and you can choose to enable it on private repositories. For more information about using the dependency graph, see <a href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/exploring-the-dependencies-of-a-repository">Exploring the dependencies of a repository</a>.</p>
+<h2><a href="#being-aware-of-security-vulnerabilities-in-actions-you-use">Being aware of security vulnerabilities in actions you use</a></h2>
+<p>For actions available on the marketplace, GitHub reviews related security advisories and then adds those advisories to the GitHub Advisory Database. You can search the database for actions that you use to find information about existing vulnerabilities and instructions for how to fix them. To streamline your search, use the GitHub Actions filter in the <a href="https://github.com/advisories?query=type%3Areviewed+ecosystem%3Aactions">GitHub Advisory Database</a>.</p>
+<p>You can set up your repositories so that you:</p>
+<ul>
+<li>Receive alerts when actions used in your workflows receive a vulnerability report. For more information, see <a href="#monitoring-the-actions-in-your-workflows">Monitoring the actions in your workflows</a>.</li>
+<li>Are warned about existing advisories when you add or update an action in a workflow. For more information, see <a href="#screening-actions-for-vulnerabilities-in-new-or-updated-workflows">Screening actions for vulnerabilities in new or updated workflows</a>.</li>
+</ul>
+<h3><a href="#monitoring-the-actions-in-your-workflows">Monitoring the actions in your workflows</a></h3>
+<p>You can use Dependabot to monitor the actions in your workflows and enable Dependabot alerts to notify you when an action you use has a reported vulnerability. Dependabot performs a scan of the default branch of the repositories where it is enabled to detect insecure dependencies. Dependabot generates Dependabot alerts when a new advisory is added to the GitHub Advisory Database or when an action you use is updated.</p>
+<div>
+<p>
+Dependabot only creates alerts for vulnerable actions that use semantic versioning and will not create alerts for actions pinned to SHA values.</p>
+</div>
+<p>You can enable Dependabot alerts for your personal account, for a repository, or for an organization. For more information, see <a href="/en/code-security/dependabot/dependabot-alerts/configuring-dependabot-alerts">Configuring Dependabot alerts</a>.</p>
+<p>You can view all open and closed Dependabot alerts and corresponding Dependabot security updates in your repository's Dependabot alerts tab. For more information, see <a href="/en/code-security/dependabot/dependabot-alerts/viewing-and-updating-dependabot-alerts">Viewing and updating Dependabot alerts</a>.</p>
+<h3><a href="#screening-actions-for-vulnerabilities-in-new-or-updated-workflows">Screening actions for vulnerabilities in new or updated workflows</a></h3>
+<p>When you open pull requests to update your workflows, it is good practice to use dependency review to understand the security impact of changes you've made to the actions you use. Dependency review helps you understand dependency changes and the security impact of these changes at every pull request. It provides an easily understandable visualization of dependency changes with a rich diff on the "Files Changed" tab of a pull request. Dependency review informs you of:</p>
+<ul>
+<li>Which dependencies were added, removed, or updated, along with the release dates</li>
+<li>How many projects use these components</li>
+<li>Vulnerability data for these dependencies</li>
+</ul>
+<p>If any of the changes you made to your workflows are flagged as vulnerable, you can avoid adding them to your project or update them to a secure version.</p>
+<p>For more information about dependency review, see <a href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-dependency-review">About dependency review</a>.</p>
+<p>The "dependency review action" refers to the specific action that can report on differences in a pull request within the GitHub Actions context. See <a href="https://github.com/actions/dependency-review-action"><code>dependency-review-action</code></a>. You can use the dependency review action in your repository to enforce dependency reviews on your pull requests. The action scans for vulnerable versions of dependencies introduced by package version changes in pull requests, and warns you about the associated security vulnerabilities. This gives you better visibility of what's changing in a pull request, and helps prevent vulnerabilities being added to your repository. For more information, see <a href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-dependency-review#about-the-dependency-review-action">About dependency review</a>.</p>
+<h2><a href="#keeping-the-actions-in-your-workflows-secure-and-up-to-date">Keeping the actions in your workflows secure and up to date</a></h2>
+<p>You can use Dependabot to ensure that references to actions and reusable workflows used in your repository are kept up to date. Actions are often updated with bug fixes and new features to make automated processes faster, safer, and more reliable. Dependabot takes the effort out of maintaining your dependencies as it does this automatically for you. For more information, see <a href="/en/code-security/dependabot/working-with-dependabot/keeping-your-actions-up-to-date-with-dependabot">Keeping your actions up to date with Dependabot</a> and <a href="/en/code-security/dependabot/dependabot-security-updates/about-dependabot-security-updates">About Dependabot security updates</a>.</p>
+<p>The following features can automatically update the actions in your workflows.</p>
+<ul>
+<li>
+<strong>Dependabot version updates</strong> open pull requests to update actions to the latest version when a new version is released.</li>
+<li>
+<strong>Dependabot security updates</strong> open pull requests to update actions with reported vulnerabilities to the minimum patched version.</li>
+</ul>
+<div>
+<ul>
+<li>Dependabot only supports updates to GitHub Actions using the GitHub repository syntax, such as <code>actions/checkout@v4</code>. Dependabot will ignore actions or reusable workflows referenced locally (for example, <code>./.github/actions/foo.yml</code>).</li>
+<li>Docker Hub and GitHub Packages Container registry URLs are currently not supported. For example, references to Docker container actions using <code>docker://</code> syntax aren't supported.</li>
+<li>Dependabot supports both public and private repositories for GitHub Actions. For private registry configuration options, see "<code>git</code>" in <a href="/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file#git">Dependabot options reference</a>.</li>
+</ul>
+</div>
+<p>For information on how to configure Dependabot version updates, see <a href="/en/code-security/dependabot/dependabot-version-updates/configuring-dependabot-version-updates">Configuring Dependabot version updates</a>.</p>
+<p>For information on how to configure Dependabot security updates, see <a href="/en/code-security/dependabot/dependabot-security-updates/configuring-dependabot-security-updates">Configuring Dependabot security updates</a>.</p>
+<h2><a href="#protecting-actions-youve-created">Protecting actions you've created</a></h2>
+<p>GitHub enables collaboration between people who publish and maintain actions and vulnerability reporters in order to promote secure coding. Repository security advisories allow maintainers of public repositories to privately discuss and fix a security vulnerability in a project. After collaborating on a fix, repository maintainers can publish the security advisory to publicly disclose the security vulnerability to the project's community. By publishing security advisories, repository maintainers make it easier for their community to update package dependencies and research the impact of the security vulnerabilities.</p>
+<p>If you are someone who maintains an action that is used in other projects, you can use the following GitHub features to enhance the security of the actions you've published.</p>
+<ul>
+<li>Use the dependants view in the Dependency graph to see which projects depend on your code. If you receive a vulnerability report, this will give you an idea of who you need to communicate with about the vulnerability and how to fix it. For more information, see <a href="/en/code-security/supply-chain-security/understanding-your-software-supply-chain/exploring-the-dependencies-of-a-repository#dependents-view">Exploring the dependencies of a repository</a>.</li>
+<li>Use repository security advisories to create a security advisory, privately collaborate to fix the vulnerability in a temporary private fork, and publish a security advisory to alert your community of the vulnerability once a patch is released. For more information, see <a href="/en/code-security/security-advisories/working-with-repository-security-advisories/configuring-private-vulnerability-reporting-for-a-repository">Configuring private vulnerability reporting for a repository</a> and <a href="/en/code-security/security-advisories/working-with-repository-security-advisories/creating-a-repository-security-advisory">Creating a repository security advisory</a>.</li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

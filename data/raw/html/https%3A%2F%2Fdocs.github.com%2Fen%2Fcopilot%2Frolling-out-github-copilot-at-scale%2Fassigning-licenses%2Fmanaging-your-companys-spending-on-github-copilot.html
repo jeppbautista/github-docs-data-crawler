@@ -1,0 +1,170 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Roll out Copilot at scale" href="/en/copilot/rolling-out-github-copilot-at-scale">Roll out Copilot at scale</a><span>/</span>
+</li>
+<li>
+<a title="Assigning licenses" href="/en/copilot/rolling-out-github-copilot-at-scale/assigning-licenses">Assigning licenses</a><span>/</span>
+</li>
+<li><a title="Manage spending" href="/en/copilot/rolling-out-github-copilot-at-scale/assigning-licenses/managing-your-companys-spending-on-github-copilot">Manage spending</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Managing your company's spending on GitHub Copilot</h1></div></div>
+<div>
+<div><p>Learn how to track spending, view usage, and optimize license distribution.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Enterprise owners and billing managers</p></div></div>
+<div><div><p>GitHub Copilot Business or GitHub Copilot Enterprise</p></div></div>
+</div></div>
+</div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#understand-who-can-grant-licenses"><div><span>Understand who can grant licenses</span></div></a></li>
+<li><a href="#managing-charges-for-premium-requests"><div><span>Managing charges for premium requests</span></div></a></li>
+<li><a href="#map-spending-to-groups-of-users"><div><span>Map spending to groups of users</span></div></a></li>
+<li><a href="#receive-alerts-for-overspending"><div><span>Receive alerts for overspending</span></div></a></li>
+<li><a href="#visualize-spending-trends"><div><span>Visualize spending trends</span></div></a></li>
+<li><a href="#optimize-license-usage"><div><span>Optimize license usage</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>When you're adopting GitHub Copilot in an enterprise, you will want to set budgets and track spending to ensure your rollout is sustainable. GitHub offers billing tools to help you visualize your spending patterns, receive alerts when you reach budget thresholds, and optimize your license usage.</p>
+<div>
+<p> Some of the tools recommended in this article are part of GitHub's new billing platform, which isn't available to all customers. If your enterprise has access, you will see a </p>
+</div>
+<h2><a href="#understand-who-can-grant-licenses">Understand who can grant licenses</a></h2>
+<p>To control spending, it's important to understand who can affect your bill by granting licenses to users. These are people with the <strong>organization owner</strong> role in organizations where you enable GitHub Copilot. Organization owners can receive requests for access from members through the GitHub UI.</p>
+<p>We recommend that you identify the people with this role and communicate with them about your company's strategy for distributing licenses. For example, you may have a budget or limited pilot program, or you may distribute licenses through an internal website.</p>
+<h2><a href="#managing-charges-for-premium-requests">Managing charges for premium requests</a></h2>
+<div>
+<p>
+Billing and budget setting for premium requests will start on <strong>June 4, 2025</strong> for all plans.</p>
+<p>Certain requests may experience rate limits.</p>
+<ul>
+<li>Rate limits restrict the number of requests that can be made within a specific time period.</li>
+<li>High demand may result in rate limiting.</li>
+</ul>
+</div>
+<p>Each Copilot plan includes a per-user allowance for premium requests:</p>
+<ul>
+<li>300 requests per user per month for Copilot Business</li>
+<li>1000 requests per user per month for Copilot Enterprise</li>
+</ul>
+<p>Copilot Chat, Copilot agent mode, Copilot coding agent, Copilot code review, and Copilot Extensions use premium requests, with usage varying by model.</p>
+<div>
+<p>
+Copilot coding agent uses GitHub Actions in addition to premium requests. For more information, see <a href="/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/managing-your-spending-limit-for-github-actions">Managing your spending limit for GitHub Actions</a>.</p>
+</div>
+<p>Premium requests over the allowance are rejected unless you have set a budget. Depending on the type of development tasks your developers use Copilot for, you may find developers need to make more premium requests than the allowance included in your plan.</p>
+<p>Premium requests over the allowance are charged at a rate of $0.04 USD per request, with an additional multiplier applied to certain models. You can also increase your monthly allowance by upgrading to Copilot Enterprise.</p>
+<p>For pricing details and a list of available models, see <a href="/en/copilot/about-github-copilot/subscription-plans-for-github-copilot#comparing-copilot-plans">Plans for GitHub Copilot</a>.</p>
+<h3><a href="#managing-budgets">Managing budgets</a></h3>
+<p>By default, a $0 budget for the GitHub Copilot Premium Request SKU is created for your enterprise. You can edit this budget from the "Budgets and alerts" page. See <a href="/en/billing/using-the-new-billing-platform/preventing-overspending#editing-or-deleting-a-budget">Preventing overspending</a>.</p>
+<p>The default budget that is created applies to your whole enterprise. To set a new budget for a specific part of your enterprise, such as a cost center, you can create a new budget:</p>
+<ol>
+<li>
+<p>In the upper-right corner of GitHub, select your profile photo, then click </p>
+</li>
+<li>
+<p>Next to the organization, click <strong>Settings</strong>.</p>
+</li>
+<li>
+<p>On the left side of the page, in the organization sidebar, click </p>
+</li>
+<li>
+<p>Click <strong>Budgets and alerts</strong>.</p>
+</li>
+<li>
+<p>Click <strong>New budget</strong>.</p>
+</li>
+<li>
+<p>Under "Budget Type" select <strong>SKU-level budget</strong>.</p>
+</li>
+<li>
+<p>Select the "Product" dropdown and click <strong>Copilot</strong>.</p>
+</li>
+<li>
+<p>Select the "SKU" dropdown and click <strong>Copilot Premium Request</strong></p>
+</li>
+<li>
+<p>Under "Budget scope", set the scope of spending for this budget.</p>
+</li>
+<li>
+<p>Under "Budget", set a budget amount. Optionally, choose to stop usage when the budget limit is reached.</p>
+</li>
+<li>
+<p>Click <strong>Create budget</strong>.</p>
+</li>
+</ol>
+<h3><a href="#tracking-premium-requests">Tracking premium requests</a></h3>
+<p>You can view a CSV report that shows the cumulative number of premium requests per user over a time period. You can use this report to:</p>
+<ul>
+<li>Understand if developers are frequently hitting the limit and would benefit from you enabling additional premium requests or upgrading your plan.</li>
+<li>Identify users who are making a large number of premium requests over the limit, and follow up to the users to understand their use cases and requirements.</li>
+<li>After enabling additional premium requests, track usage to determine if it would be more cost effective to upgrade to Copilot Enterprise.</li>
+</ul>
+<p>You can download the report for an enterprise account, or for an organization that is not part of an enterprise.</p>
+<ol>
+<li>Go to your enterprise or organization account settings and click </li>
+<li>In the left sidebar, click <strong>Usage</strong>.</li>
+<li>To download the usage report, select <strong>Get usage report</strong> in the upper-right corner of the page, and click <strong>Copilot premium requests usage report</strong>.</li>
+</ol>
+<h2><a href="#map-spending-to-groups-of-users">Map spending to groups of users</a></h2>
+<p>With GitHub's new billing platform, you can create cost centers to map spending to individual business units or groups of users. Cost centers allow you to track costs tied to different initiatives and charge the costs to specific areas of your business.</p>
+<p>For example, if you were running a pilot program for GitHub Copilot Enterprise for a group of employees, you might want to create a cost center to track their spending and set a budget independently of the rest of the company.</p>
+<h3><a href="#create-a-cost-center">Create a cost center</a></h3>
+<ol>
+<li>
+<p>Go to your enterprise or organization account settings and click </p>
+</li>
+<li>
+<p>In the left sidebar, click <strong>Cost centers</strong>, then click <strong>New cost center</strong>.</p>
+</li>
+<li>
+<p>Create the cost center. You don't need to add any repositories or organizations, because you will add users to the cost center directly in the next step.</p>
+<div>
+<p> As a priority, a cost center is charged for a Copilot license if the assigned <strong>user</strong> has been added to the cost center directly. As a fallback, a cost center is charged for the license if the <strong>organization where the user receives access</strong> has been added to the cost center.</p>
+</div>
+</li>
+<li>
+<p>After creating the cost center, use the REST API to add the users whose usage you want to track. See <a href="/en/enterprise-cloud@latest/rest/enterprise-admin/billing#add-users-to-a-cost-center">REST API endpoints for enterprise billing</a>.</p>
+</li>
+</ol>
+<h2><a href="#receive-alerts-for-overspending">Receive alerts for overspending</a></h2>
+<p>With GitHub's new billing platform, you can set a monthly budget on GitHub Copilot spending. Setting a budget for license-based products, such as Copilot, is for monitoring purposes only and will not prevent usage beyond the budgeted amount. However, you will receive notifications by email when spending exceeds certain percentages of the budget you've set. To prevent usage over the limit for the Copilot Premium Request SKU, update the default $0 SKU-level budget and select "Stop usage when budget limit is reached".</p>
+<ol>
+<li>Go to your enterprise or organization account settings and click </li>
+<li>In the left sidebar, click <strong>Budgets and alerts</strong>.</li>
+<li>Click <strong>New budget</strong>.</li>
+<li>Select <strong>Copilot</strong> for the product, or <strong>Copilot Premium Request</strong> for the SKU, then configure the settings as required. You can choose who receives alerts when budget thresholds are reached.</li>
+<li>Click <strong>Create budget</strong>.</li>
+</ol>
+<h2><a href="#visualize-spending-trends">Visualize spending trends</a></h2>
+<p>With GitHub's new billing platform, you can understand your spending trends by viewing a graph for Copilot usage over a certain timeframe. For more detailed insights, you can filter the results by cost center and group usage by the type of Copilot plan.</p>
+<ol>
+<li>Go to your enterprise or organization account settings and click </li>
+<li>In the left sidebar, click <strong>Usage</strong>.</li>
+<li>In the "Metered usage" section, in the search field, enter <code>product:copilot</code>. To filter by cost center, add a query like <code>cost_center:ce-pilot-group</code>.</li>
+<li>To understand spending differences between Copilot Business and Copilot Enterprise plans, select the <strong>Group: None</strong> dropdown menu and click <strong>Group: SKU</strong>.</li>
+</ol>
+<p><picture><source><img src="/assets/cb-90151/images/help/copilot/track-spending.png" alt='Screenshot of the "Usage" page. A line chart tracks Copilot spending over the current month, grouped by SKU.' width="720" height="497"></source></picture></p>
+<h2><a href="#optimize-license-usage">Optimize license usage</a></h2>
+<p>When you begin rolling out Copilot in a company, you may see low rates of adoption at first. An effective enablement process is essential to drive adoption of Copilot in your company. Tailor this process to your company's needs and goals, and design it to help your teams understand how to use Copilot effectively.</p>
+<p>To ensure your licenses are being used effectively, you can use the API to identify inactive users. We recommend sending these users a message with advice and resources for getting started. If a user remains inactive, you can revoke their license and assign it to another user.</p>
+<p>If you're not sure how best to distribute licenses, GitHub has found that many successful rollouts offer a fully self-service model where developers can claim a license without approval. This allows people to get started quickly and ensures you're giving licenses to people who plan to use them.</p>
+<p>For detailed guidance, see:</p>
+<ul>
+<li><a href="/en/copilot/rolling-out-github-copilot-at-scale/driving-copilot-adoption-in-your-company">Driving Copilot adoption in your company</a></li>
+<li><a href="/en/copilot/rolling-out-github-copilot-at-scale/setting-up-a-self-serve-process-for-github-copilot-licenses">Setting up a self-serve process for GitHub Copilot licenses</a></li>
+<li><a href="/en/copilot/rolling-out-github-copilot-at-scale/reminding-inactive-users">Reminding inactive users to use their GitHub Copilot license</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

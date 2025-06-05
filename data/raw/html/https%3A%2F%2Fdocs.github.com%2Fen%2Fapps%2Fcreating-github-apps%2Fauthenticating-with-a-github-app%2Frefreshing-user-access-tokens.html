@@ -1,0 +1,225 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Apps" href="/en/apps">Apps</a><span>/</span>
+</li>
+<li>
+<a title="Creating GitHub Apps" href="/en/apps/creating-github-apps">Creating GitHub Apps</a><span>/</span>
+</li>
+<li>
+<a title="Authenticate with a GitHub App" href="/en/apps/creating-github-apps/authenticating-with-a-github-app">Authenticate with a GitHub App</a><span>/</span>
+</li>
+<li><a title="Refresh user access tokens" href="/en/apps/creating-github-apps/authenticating-with-a-github-app/refreshing-user-access-tokens">Refresh user access tokens</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Refreshing user access tokens</h1></div></div>
+<div><div><p>To enforce regular token rotation and reduce the impact of a compromised token, you can configure your GitHub App to use user access tokens that expire.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-user-access-tokens-that-expire"><div><span>About user access tokens that expire</span></div></a></li>
+<li><a href="#configuring-your-app-to-use-user-access-tokens-that-expire"><div><span>Configuring your app to use user access tokens that expire</span></div></a></li>
+<li><a href="#refreshing-a-user-access-token-with-a-refresh-token"><div><span>Refreshing a user access token with a refresh token</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-user-access-tokens-that-expire">About user access tokens that expire</a></h2>
+<div>
+<p>
+User access tokens that expire are currently an optional feature and are subject to change. For more information, see <a href="https://developer.github.com/changes/2020-04-30-expiring-user-to-server-access-tokens-for-github-apps">Expiring user-to-server access tokens for GitHub Apps</a>.</p>
+</div>
+<p>To enforce regular token rotation and reduce the impact of a compromised token, you can configure your GitHub App to use user access tokens that expire. If your app uses user access tokens that expire, then you will receive a refresh token when you generate a user access token. The user access token expires after eight hours, and the refresh token expires after six months. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app">Generating a user access token for a GitHub App</a>.</p>
+<p>You can use the refresh token to generate a new user access token and a new refresh token. Once you use a refresh token, that refresh token and the old user access token will no longer work.</p>
+<p>If your refresh token expires before you use it, you can regenerate a user access token and refresh token by sending users through the web application flow or device flow. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-user-access-token-for-a-github-app">Generating a user access token for a GitHub App</a>.</p>
+<h2><a href="#configuring-your-app-to-use-user-access-tokens-that-expire">Configuring your app to use user access tokens that expire</a></h2>
+<p>When you create your app, expiration of user access tokens is enabled unless you opt out. For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/creating-a-github-app">Registering a GitHub App</a>. You can also configure this setting after your app has been created.</p>
+<ol>
+<li>
+<p>In the upper-right corner of any page on GitHub, click your profile photo.</p>
+</li>
+<li>
+<p>Navigate to your account settings.</p>
+<ul>
+<li>For an app owned by a personal account, click <strong>Settings</strong>.</li>
+<li>For an app owned by an organization:
+<ol>
+<li>Click <strong>Your organizations</strong>.</li>
+<li>To the right of the organization, click <strong>Settings</strong>.</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p>In the left sidebar, click </p>
+</li>
+<li>
+<p>In the left sidebar, click <strong>GitHub Apps</strong>.</p>
+</li>
+<li>
+<p>Next to the GitHub App that you want to modify, click <strong>Edit</strong>.</p>
+</li>
+<li>
+<p>In the GitHub Apps settings sidebar, click <strong>Optional Features</strong>.</p>
+</li>
+<li>
+<p>Next to "User-to-server token expiration", click <strong>Opt-in</strong> or <strong>Opt-out</strong>. This setting may take a couple of seconds to apply.</p>
+<p>GitHub recommends that you opt in to this feature for improved security.</p>
+</li>
+</ol>
+<p>If you opt into user access tokens that expire after you have already generated user access tokens, the previously generated user access tokens will not expire. You can delete these tokens by using the <code>DELETE /applications/CLIENT_ID/token</code> endpoint. For more information, see <a href="/en/rest/apps/oauth-applications#delete-an-app-token">REST API endpoints for OAuth authorizations</a>.</p>
+<h2><a href="#refreshing-a-user-access-token-with-a-refresh-token">Refreshing a user access token with a refresh token</a></h2>
+<ol>
+<li>
+<p>Make a <code>POST</code> request to this URL, along with the following query parameters: <code>https://github.com/login/oauth/access_token</code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Query parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>client_id</code></td>
+<td><code>string</code></td>
+<td>
+<strong>Required.</strong> The client ID for your GitHub App. The client ID is different from the app ID. You can find the client ID on the settings page for your app.</td>
+</tr>
+<tr>
+<td><code>client_secret</code></td>
+<td><code>string</code></td>
+<td>
+<strong>Required</strong> unless the user access token was generated using the device flow. The client secret for your GitHub App.</td>
+</tr>
+<tr>
+<td><code>grant_type</code></td>
+<td><code>string</code></td>
+<td>
+<strong>Required.</strong> The value must be "refresh_token".</td>
+</tr>
+<tr>
+<td><code>refresh_token</code></td>
+<td><code>string</code></td>
+<td>
+<strong>Required.</strong> The refresh token that you received when you generated a user access token.</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>GitHub will give a response that includes the following parameters:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead><tr>
+<th>Response parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>access_token</code></td>
+<td><code>string</code></td>
+<td>The user access token. The token starts with <code>ghu_</code>.</td>
+</tr>
+<tr>
+<td><code>expires_in</code></td>
+<td><code>integer</code></td>
+<td>The number of seconds until <code>access_token</code> expires. If you disabled expiration of user access tokens, this parameter will be omitted. The value will always be <code>28800</code> (8 hours).</td>
+</tr>
+<tr>
+<td><code>refresh_token</code></td>
+<td><code>string</code></td>
+<td>The refresh token. If you disabled expiration of user access tokens, this parameter will be omitted. The token starts with <code>ghr_</code>.</td>
+</tr>
+<tr>
+<td><code>refresh_token_<wbr>expires_in</wbr></code></td>
+<td><code>integer</code></td>
+<td>The number of seconds until <code>refresh_token</code> expires. If you disabled expiration of user access tokens, this parameter will be omitted. The value will always be <code>15897600</code> (6 months).</td>
+</tr>
+<tr>
+<td><code>scope</code></td>
+<td><code>string</code></td>
+<td>The scopes that the token has. This value will always be an empty string. Unlike a traditional OAuth token, the user access token is limited to the permissions that both your app and the user have.</td>
+</tr>
+<tr>
+<td><code>token_type</code></td>
+<td><code>string</code></td>
+<td>The type of token. The value will always be <code>bearer</code>.</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

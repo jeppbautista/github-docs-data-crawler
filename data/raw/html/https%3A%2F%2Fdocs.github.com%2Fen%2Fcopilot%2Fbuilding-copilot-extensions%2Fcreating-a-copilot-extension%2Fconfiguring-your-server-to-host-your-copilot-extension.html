@@ -1,0 +1,86 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="GitHub Copilot" href="/en/copilot">GitHub Copilot</a><span>/</span>
+</li>
+<li>
+<a title="Build Copilot Extensions" href="/en/copilot/building-copilot-extensions">Build Copilot Extensions</a><span>/</span>
+</li>
+<li>
+<a title="Create a Copilot Extension" href="/en/copilot/building-copilot-extensions/creating-a-copilot-extension">Create a Copilot Extension</a><span>/</span>
+</li>
+<li><a title="Host your extension" href="/en/copilot/building-copilot-extensions/creating-a-copilot-extension/configuring-your-server-to-host-your-copilot-extension">Host your extension</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Configuring your server to host your Copilot extension</h1></div></div>
+<div><div><p>Learn how to make your Copilot extension accessible to the internet.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#prerequisites"><div><span>Prerequisites</span></div></a></li>
+<li><a href="#configuring-your-server"><div><span>Configuring your server</span></div></a></li>
+<li><a href="#next-steps"><div><span>Next steps</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<p>Your Copilot Extension must be hosted on a server that is accessible to the internet. In this guide, we will use <a href="https://ngrok.com/">ngrok</a> to create a tunnel to your local server, but you could also use a service like <a href="https://localtunnel.github.io/www/">localtunnel</a>.</p>
+<p>Alternatively, if you are a Codespaces user, you can use the built-in Codespaces port forwarding. For more information, see <a href="/en/codespaces/developing-in-a-codespace/forwarding-ports-in-your-codespace">Forwarding ports in your codespace</a>.</p>
+<h2><a href="#prerequisites">Prerequisites</a></h2>
+<ul>
+<li>You have created a Copilot Extension. For more information, see <a href="/en/copilot/building-copilot-extensions/building-a-copilot-agent-for-your-copilot-extension">Building a Copilot agent for your Copilot Extension</a> or <a href="/en/copilot/building-copilot-extensions/building-a-copilot-skillset-for-your-copilot-extension">Building a Copilot skillset for your Copilot Extension</a>.</li>
+</ul>
+<h2><a href="#configuring-your-server">Configuring your server</a></h2>
+<ol>
+<li>
+<p>Visit the <a href="https://dashboard.ngrok.com/get-started/setup/">ngrok setup &amp; installation page</a>.</p>
+</li>
+<li>
+<p>If you do not yet have an account, follow the instructions on screen to sign up.</p>
+</li>
+<li>
+<p>Under "Agents," ensure the correct operating system is selected.</p>
+</li>
+<li>
+<p>Under "Installation," follow the instructions for your operating system to download and install ngrok.</p>
+</li>
+<li>
+<p>Under "Deploy your app online," select <strong>Ephemeral domain</strong> or <strong>Static domain</strong>.</p>
+</li>
+<li>
+<p>Run the command provided in your terminal, replacing the port number with the port your extension is configured to run on. For example:</p>
+<ul>
+<li>
+<p>For an ephemeral domain:</p>
+<div>
+<header><span>Shell</span><pre>ngrok http http://localhost:EXTENSION-PORT-NUMBER
+</pre></header><pre><code>ngrok http http://localhost:EXTENSION-PORT-NUMBER
+</code></pre>
+</div>
+</li>
+<li>
+<p>For a static domain:</p>
+<div>
+<header><span>Shell</span><pre>ngrok http --domain=YOUR-STATIC-DOMAIN.ngrok-free.app EXTENSION-PORT-NUMBER
+</pre></header><pre><code>ngrok http --domain=YOUR-STATIC-DOMAIN.ngrok-free.app EXTENSION-PORT-NUMBER
+</code></pre>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p>In your terminal, next to "Forwarding," copy the URL that ngrok has assigned to your server. You will need this forwarding endpoint when you are configuring your GitHub App.</p>
+<div>
+<p> Do not copy the <code>-&gt; http://localhost:XXXX</code> part of the URL.</p>
+<p>Keep the terminal window open while you are using your extension.</p>
+</div>
+</li>
+</ol>
+<h2><a href="#next-steps">Next steps</a></h2>
+<ul>
+<li><a href="/en/copilot/building-copilot-extensions/creating-a-copilot-extension/creating-a-github-app-for-your-copilot-extension">Creating a GitHub App for your Copilot Extension</a></li>
+</ul>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

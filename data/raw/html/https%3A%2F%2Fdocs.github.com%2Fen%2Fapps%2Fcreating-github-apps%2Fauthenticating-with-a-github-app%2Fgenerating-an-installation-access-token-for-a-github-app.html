@@ -1,0 +1,66 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Apps" href="/en/apps">Apps</a><span>/</span>
+</li>
+<li>
+<a title="Creating GitHub Apps" href="/en/apps/creating-github-apps">Creating GitHub Apps</a><span>/</span>
+</li>
+<li>
+<a title="Authenticate with a GitHub App" href="/en/apps/creating-github-apps/authenticating-with-a-github-app">Authenticate with a GitHub App</a><span>/</span>
+</li>
+<li><a title="Generate an installation access token" href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-an-installation-access-token-for-a-github-app">Generate an installation access token</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Generating an installation access token for a GitHub App</h1></div></div>
+<div><div><p>Learn how to generate an installation access token for your GitHub App.</p></div></div>
+<div>
+<h2>In this article</h2>
+<nav><ul>
+<li><a href="#about-installation-access-tokens"><div><span>About installation access tokens</span></div></a></li>
+<li><a href="#generating-an-installation-access-token"><div><span>Generating an installation access token</span></div></a></li>
+</ul></nav>
+</div>
+<div><div><div>
+<h2><a href="#about-installation-access-tokens">About installation access tokens</a></h2>
+<p>In order to authenticate as an app installation, you must generate an installation access token. For more information about authenticating as an app installation, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app-installation">Authenticating as a GitHub App installation</a>.</p>
+<div>
+<p>
+Instead of generating an installation access token, you can use GitHub's Octokit SDKs to authenticate as an app. The SDK will take care of generating an installation access token for you and will regenerate the token once it expires. For more information about authenticating as an app installation, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app-installation">Authenticating as a GitHub App installation</a>.</p>
+</div>
+<p>You should keep your installation access token secure. For more information, see <a href="/en/apps/creating-github-apps/setting-up-a-github-app/best-practices-for-creating-a-github-app">Best practices for creating a GitHub App</a>.</p>
+<h2><a href="#generating-an-installation-access-token">Generating an installation access token</a></h2>
+<ol>
+<li>
+<p>Generate a JSON web token (JWT) for your app. For more information, see <a href="/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-a-json-web-token-jwt-for-a-github-app">Generating a JSON Web Token (JWT) for a GitHub App</a>.</p>
+</li>
+<li>
+<p>Get the ID of the installation that you want to authenticate as.</p>
+<p>If you are responding to a webhook event, the webhook payload will include the installation ID.</p>
+<p>You can also use the REST API to find the ID for an installation of your app. For example, you can get an installation ID with the <code>GET /users/{username}/installation</code>, <code>GET /repos/{owner}/{repo}/installation</code>, <code>GET /orgs/{org}/installation</code>, or <code>GET /app/installations</code> endpoints. For more information, see <a href="/en/rest/apps/apps">REST API endpoints for GitHub Apps</a>.</p>
+<p>You can also find the app ID on the settings page for your app. The app ID is different from the client ID. For more information about navigating to the settings page for your GitHub App, see <a href="/en/apps/maintaining-github-apps/modifying-a-github-app-registration#navigating-to-your-github-app-settings">Modifying a GitHub App registration</a>.</p>
+</li>
+<li>
+<p>Send a REST API <code>POST</code> request to <code>/app/installations/INSTALLATION_ID/access_tokens</code>. Include your JSON web token in the <code>Authorization</code> header of your request. Replace <code>INSTALLATION_ID</code> with the ID of the installation that you want to authenticate as.</p>
+<p>For example, send this curl request. Replace <code>INSTALLATION_ID</code> with the ID of the installation and <code>JWT</code> with your JSON web token:</p>
+<pre><code>curl --request POST \
+--url "https://api.github.com/app/installations/INSTALLATION_ID/access_tokens" \
+--header "Accept: application/vnd.github+json" \
+--header "Authorization: Bearer JWT" \
+--header "X-GitHub-Api-Version: 2022-11-28"
+</code></pre>
+<p>Optionally, you can use the <code>repositories</code> or <code>repository_ids</code> body parameters to specify individual repositories that the installation access token can access. If you don't use <code>repositories</code> or <code>repository_ids</code> to grant access to specific repositories, the installation access token will have access to all repositories that the installation was granted access to. The installation access token cannot be granted access to repositories that the installation was not granted access to. You can list up to 500 repositories.</p>
+<p>Optionally, use the <code>permissions</code> body parameter to specify the permissions that the installation access token should have. If <code>permissions</code> is not specified, the installation access token will have all of the permissions that were granted to the app. The installation access token cannot be granted permissions that the app was not granted.</p>
+<p>The response will include an installation access token, the time that the token expires, the permissions that the token has, and the repositories that the token can access. The installation access token will expire after 1 hour.</p>
+<p>For more information about this endpoint, see <a href="/en/rest/apps/apps">REST API endpoints for GitHub Apps</a>.</p>
+<div>
+<p>
+In most cases, you can use <code>Authorization: Bearer</code> or <code>Authorization: token</code> to pass a token. However, if you are passing a JSON web token (JWT), you must use <code>Authorization: Bearer</code>.</p>
+</div>
+</li>
+</ol>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>

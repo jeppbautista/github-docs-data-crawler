@@ -1,0 +1,127 @@
+<html><body><div>
+<main><div>
+<div><nav><ul>
+<li>
+<a title="Organizations" href="/en/organizations">Organizations</a><span>/</span>
+</li>
+<li>
+<a title="Manage organization settings" href="/en/organizations/managing-organization-settings">Manage organization settings</a><span>/</span>
+</li>
+<li><a title="Troubleshooting Azure private networking" href="/en/organizations/managing-organization-settings/troubleshooting-azure-private-network-configurations-for-github-hosted-runners-in-your-organization">Troubleshooting Azure private networking</a></li>
+</ul></nav></div>
+<div>
+<div><div><h1>Troubleshooting Azure private network configurations for GitHub-hosted runners in your organization</h1></div></div>
+<div>
+<div><p>Learn how to fix common issues while creating Azure private network configurations to use GitHub-hosted runners with an Azure VNET.</p></div>
+<div><div>
+<div><h2>Who can use this feature?</h2></div>
+<div><div><p>Organization owners with the GitHub Team plan can configure Azure private networking for GitHub-hosted runners at the organization level.</p></div></div>
+</div></div>
+</div>
+<div><div><div>
+<h2><a href="#troubleshooting-configuring-private-networking-for-github-hosted-runners-in-your-organization">Troubleshooting configuring private networking for GitHub-hosted runners in your organization</a></h2>
+<h3><a href="#configuring-azure-resources-before-creating-a-network-configuration-in-github">Configuring Azure resources before creating a network configuration in GitHub</a></h3>
+<p>Ensure your Azure resources have been configured <em>before</em> adding a network configuration in GitHub.</p>
+<h3><a href="#supported-regions">Supported regions</a></h3>
+<p>The GitHub Actions service supports a subset of all the regions that Azure provides. To facilitate communication between the GitHub Actions service and your subnet, your subnet must be in one of the supported regions.</p>
+<div>
+<p> If you use data residency on GHE.com, the supported regions are different. See <a href="/en/enterprise-cloud@latest/admin/data-residency/network-details-for-ghecom#supported-regions-for-azure-private-networking">Network details for GHE.com</a>.</p>
+</div>
+<p>The following regions are supported on GitHub.com.</p>
+<ul>
+<li><code>AustraliaEast</code></li>
+<li><code>BrazilSouth</code></li>
+<li><code>CanadaCentral</code></li>
+<li><code>CanadaEast</code></li>
+<li><code>CentralUs</code></li>
+<li><code>EastAsia</code></li>
+<li><code>EastUs</code></li>
+<li><code>EastUs2</code></li>
+<li><code>FranceCentral</code></li>
+<li><code>GermanyWestCentral</code></li>
+<li><code>JapanEast</code></li>
+<li><code>KoreaCentral</code></li>
+<li><code>NorthCentralUs</code></li>
+<li><code>NorthEurope</code></li>
+<li><code>NorwayEast</code></li>
+<li><code>SouthCentralUs</code></li>
+<li><code>SoutheastAsia</code></li>
+<li><code>SouthIndia</code></li>
+<li><code>SwedenCentral</code></li>
+<li><code>SwitzerlandNorth</code></li>
+<li><code>UkSouth</code></li>
+<li><code>WestUs</code></li>
+<li><code>WestUs2</code></li>
+<li><code>WestUs3</code></li>
+</ul>
+<p>Azure private networking supports GPU runners in the following regions.</p>
+<ul>
+<li><code>EastUs</code></li>
+<li><code>NorthCentralUs</code></li>
+<li><code>SouthCentralUs</code></li>
+<li><code>WestUs</code></li>
+</ul>
+<p>Azure private networking supports arm64 runners in the following regions.</p>
+<ul>
+<li><code>CentralUs</code></li>
+<li><code>EastUs</code></li>
+<li><code>EastUs2</code></li>
+<li><code>NorthCentralUs</code></li>
+<li><code>SouthCentralUs</code></li>
+<li><code>WestUs</code></li>
+<li><code>WestUs2</code></li>
+<li><code>WestUs3</code></li>
+</ul>
+<p>If your desired region is not supported, please submit a request for new region availability in <a href="https://resources.github.com/private-networking-for-github-hosted-runners-with-azure-virtual-networks/">this GitHub form</a>. You may also use global virtual network peering to connect virtual networks across Azure regions. For more information, see <a href="https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview">Virtual network peering</a> in the Azure documentation.</p>
+<h3><a href="#runner-failed-to-connect-to-the-internet">Runner failed to connect to the internet</a></h3>
+<p>GitHub-hosted runners need to be able to make outbound connections to GitHub as well as other necessary URLs for GitHub Actions.</p>
+<p>If GitHub Actions cannot communicate with the runners, the pool will never be able to bring runners online and so no jobs will be picked up. In this case, the pool will have the following error code.</p>
+<pre><code>VNetInjectionFailedToConnectToInternet
+</code></pre>
+<p>To fix this, ensure that you have configured your Azure resources according to the "Configuring your Azure resources" procedures.</p>
+<h3><a href="#deployment-scope-is-locked">Deployment scope is locked</a></h3>
+<p>You can put locks on the Azure subscription or resource group, which can prevent NIC creation or deletion.</p>
+<p>Locks that prevent NIC creation fail to pick up jobs, while locks that prevent NIC deletion either exhaust subnet address space (by continuing to create NICs) or have long queue-to-assign (QTA) times as the service retries deployment exceptions.</p>
+<p>In this case, the pool will have the following error code.</p>
+<pre><code>RunnerDeploymentScopeLocked
+</code></pre>
+<p>To fix this, remove the lock or change the subnet you are using to one without a lock.</p>
+<h3><a href="#deployment-blocked-by-policy">Deployment blocked by policy</a></h3>
+<p>You can create policies on their management group, subscription, resource group, or individual resources. The most common policy is requiring a resource to have certain tags or to have a specific name.</p>
+<p>The policy will prevent creation of NICs, which means the pool will not pick up jobs since no VMs can come online.</p>
+<p>In this case, the pool will have the following error code.</p>
+<pre><code>RunnerDeploymentBlockedByPolicy
+</code></pre>
+<p>To fix this, remove the policy or change the subnet you are using to one without a policy.</p>
+<h3><a href="#subnet-is-full">Subnet is full</a></h3>
+<p>Subnets have a limited amount of IP addresses to distribute. Each runner consumes one IP address. If the service attempts to scale up beyond the maximum runner count setting, it will encounter deployment errors.</p>
+<p>This impacts the ability of the pool to add additional runners. If the queue depth is high enough, you may experience increased queue-to-assign (QTA) times. Jobs will still be processed, but not at a level of concurrency that you may expect.</p>
+<p>In this case, the pool will have the following error code.</p>
+<pre><code>VNetInjectionSubnetIsFull
+</code></pre>
+<p>To fix this, either increase the size of the subnet you are using or reduce the pool's maximum runner count to match your subnet size.</p>
+<h3><a href="#cannot-delete-subnet">Cannot delete subnet</a></h3>
+<p>In some cases, a subnet cannot be deleted because it has a Service Association Link (SAL) applied to it. For more information, see <a href="/en/organizations/managing-organization-settings/configuring-private-networking-for-github-hosted-runners-in-your-organization#deleting-a-subnet">Configuring private networking for GitHub-hosted runners in your organization</a>.</p>
+<p>If you need to identify the network settings resource associated with the subnet, you can run the following <code>curl</code> command.
+To obtain an Azure Entra token, please refer to the <a href="https://learn.microsoft.com/en-us/cli/azure/authenticate-azure-cli">Azure documentation</a>. Use the same <code>api-version</code> you used to create the resource.</p>
+<pre><code>curl --request GET \
+  --url "https://management.azure.com/subscriptions/{subscriptionId}/providers/GitHub.Network/NetworkSettings?api-version={api-version}&amp;subnetId={subnetId}" \
+  --header 'Content-Type: application/json' \
+  --header "Authorization: Bearer {entra_token}"
+</code></pre>
+<h3><a href="#incorrect-nsg-or-firewall-rules">Incorrect NSG or firewall rules</a></h3>
+<p>The "Configuring your Azure resources" procedures list the required openings. However, you may have complex production networks with multiple downstream proxies or firewalls.</p>
+<p>If runners are failing to come online, no jobs will be picked up. Your setup process may involve setting up the runner application and communicating back to the GitHub Actions service to indicate it is ready, as well as fetching and installing anti-abuse tooling. If either of these processes fail, the runner cannot pick up any jobs.</p>
+<p>If you are experiencing these issues, try setting up a virtual machine on the same subnet that you are using for private networking with GitHub-hosted runners. However, if you have a service association link (SAL) in place, this is not possible.</p>
+<p>If you have a SAL in place, try setting up a similar subnet in the virtual network and place a virtual machine on that network. Then attempt to register a self-hosted runner on it.</p>
+<h3><a href="#http-request-payload-failure-when-configuring-azure-resources">HTTP request payload failure when configuring Azure resources</a></h3>
+<p>While running the command to configure Azure resources, ensure you are using the correct API version and the <code>businessId</code> property. If you are using a different property, your command may return the following error.</p>
+<pre><code>(HttpRequestPayloadAPISpecValidationFailed) HTTP request payload failed validation against API specification with one or more errors. Please see details <span>for</span> more information.
+</code></pre>
+<p>If you experience this error, you can see more information by running the command using the <code>---debug</code> flag.</p>
+<h3><a href="#network-settings-configured-at-the-wrong-level">Network settings configured at the wrong level</a></h3>
+<p>If network settings were configured using an organization's <code>databaseId</code> instead of an enterprise <code>databaseId</code>, an error will occur. The error message will indicate that a private network cannot be established with the provided resource ID because it is already associated with a different enterprise or organization. To resolve this, delete the existing network settings and recreate them using the enterprise <code>databaseId</code>.</p>
+</div></div></div>
+</div>
+</div></main>
+</div></body></html>
