@@ -29,7 +29,7 @@ async def main():
         scraping_strategy=LXMLWebScrapingStrategy(),
         verbose=True,
         simulate_user=True,
-        delay_before_return_html=2.0
+        delay_before_return_html=2.0 
     )
 
     links =[]
